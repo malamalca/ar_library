@@ -1,1 +1,6 @@
-﻿CALL "arJašek 22" PARAMETERS ALLhotspot2 -A/2, -B/2hotspot2 -A/2, B/2hotspot2 A/2, -B/2hotspot2 A/2, B/2
+﻿CALL "arJašek 24" PARAMETERS ALL
+
+hotspot2 -A/2, -B/2
+hotspot2 -A/2, B/2
+hotspot2 A/2, -B/2
+hotspot2 A/2, B/2
