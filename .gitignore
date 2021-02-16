@@ -11,6 +11,8 @@ Icon?
 ehthumbs.db
 Thumbs.db
 .directory
+Scr_*
+.bpn
 
 # Tool specific files #
 #######################
