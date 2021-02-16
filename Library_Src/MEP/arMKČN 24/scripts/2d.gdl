@@ -1,0 +1,1 @@
+﻿CALL "arJašek 22" PARAMETERS ALLIF kind = KIND_TIMS_6PE THEN	PEN penUnderground	LINE_TYPE lineUnderground	CIRCLE2 0, 0, A/2	HOTARC2 0, 0, A/2, 0, 360, unId: unId = unId + 1	!! connections	LINE2 0, 0, A/2, 0	HOTSPOT2 A/2, 0, unId: unId = unId + 1	ROT2 90	LINE2 0, 0, A/2, 0	HOTSPOT2 A/2, 0, unId: unId = unId + 1	DEL 1ENDIF

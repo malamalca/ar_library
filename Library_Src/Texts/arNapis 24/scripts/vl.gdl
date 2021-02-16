@@ -1,0 +1,1 @@
+﻿DIM fontNames[]res = REQUEST("FONTNAMES_LIST", "", fontNames)VALUES "fontFace", fontNames, CUSTOM

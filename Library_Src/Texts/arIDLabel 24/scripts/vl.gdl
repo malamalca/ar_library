@@ -1,0 +1,1 @@
+﻿DIM font_names[]result = REQUEST("FONTNAMES_LIST", "", font_names)VALUES{2} "labelOrientation" 1, "Follow Label Rotation", 2, "Always Horizontal"

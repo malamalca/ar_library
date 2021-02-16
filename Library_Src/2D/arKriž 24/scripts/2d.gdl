@@ -1,0 +1,1 @@
+﻿PEN penLineLINE2 -A/2, 0, A/2, 0LINE2 0, -B/2, 0, B/2HOTLINE2 -A/2, 0, A/2, 0HOTLINE2 0, -B/2, 0, B/2

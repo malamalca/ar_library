@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ParamSection>
+	<ParamSectHeader>
+		<AutoHotspots>false</AutoHotspots>
+		<StatBits>
+			<STBit_FixSize/>
+		</StatBits>
+		<WDLeftFrame>0</WDLeftFrame>
+		<WDRightFrame>0</WDRightFrame>
+		<WDTopFrame>0</WDTopFrame>
+		<WDBotFrame>0</WDBotFrame>
+		<LayFlags>65535</LayFlags>
+		<WDMirrorThickness>0</WDMirrorThickness>
+		<WDWallInset>0</WDWallInset>
+	</ParamSectHeader>
+	<Parameters SectVersion="27" SectionFlags="0" SubIdent="0">
+		<String Name="floorFinish">
+			<Description><![CDATA["Floor Finish"]]></Description>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="buildingNo">
+			<Description><![CDATA["Building Number"]]></Description>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="apartmentNo">
+			<Description><![CDATA["Apartment Number"]]></Description>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="roomNumberFull">
+			<Description><![CDATA["Zone Number w. MasterID"]]></Description>
+			<Value><![CDATA[" 001"]]></Value>
+		</String>
+
+		<!-- arZone22_s_A: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="arZone22_s_A">
+			<Description><![CDATA["Display Settings"]]></Description>
+		</Title>
+		<Boolean Name="drawLineUnderTitle">
+			<Description><![CDATA["Line Under Title"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="showArea">
+			<Description><![CDATA["Show Area"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="showElevation">
+			<Description><![CDATA["Show Elevation"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Length Name="A">
+			<Description><![CDATA["Dimension 1"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</Length>
+		<Length Name="B">
+			<Description><![CDATA["Dimension 2"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</Length>
+		<RealNum Name="AC_TextSize_1">
+			<Description><![CDATA["Marker Text 1 Size (default)"]]></Description>
+			<Fix/>
+			<Value>3</Value>
+		</RealNum>
+		<Integer Name="AC_TextStyle_1">
+			<Description><![CDATA["Marker Text 1 Style (default)"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Integer>
+		<Integer Name="AC_TextAlignment_1">
+			<Description><![CDATA["Marker Text 1 Alignment (default)"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</Integer>
+		<RealNum Name="AC_TextLeading_1">
+			<Description><![CDATA["Marker Text 1 Leading (default)"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</RealNum>
+		<RealNum Name="AC_TextCharWidthFactor_1">
+			<Description><![CDATA["Marker Text 1 Char Width Factor (default)"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</RealNum>
+		<RealNum Name="AC_TextCharSpaceFactor_1">
+			<Description><![CDATA["Marker Text 1 Text Char Space Factor (default)"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</RealNum>
+		<PenColor Name="AC_TextPen_1">
+			<Description><![CDATA["Marker Text 1 Pen (default)"]]></Description>
+			<Fix/>
+			<Value>46</Value>
+		</PenColor>
+		<String Name="ROOM_NAME">
+			<Description><![CDATA["Zone Name"]]></Description>
+			<Fix/>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="ROOM_NUMBER">
+			<Description><![CDATA["Zone Number"]]></Description>
+			<Fix/>
+			<Value><![CDATA["001"]]></Value>
+		</String>
+		<RealNum Name="ROOM_LSIZE">
+			<Description><![CDATA["Letter Size [mm]"]]></Description>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_AREA">
+			<Description><![CDATA["Measured Area [m2]"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<Length Name="ROOM_PERIM">
+			<Description><![CDATA["Perimeter"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Length>
+		<Length Name="ROOM_HOLES_PRM">
+			<Description><![CDATA["Perimeter of Holes"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Length>
+		<Length Name="ROOM_WALLS_PRM">
+			<Description><![CDATA["Length of Perimeter Walls"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Length>
+		<Integer Name="ROOM_CORNERS">
+			<Description><![CDATA["Number of All Corners"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Integer>
+		<Integer Name="ROOM_CONCAVES">
+			<Description><![CDATA["Number of Concave Corners"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Integer>
+		<RealNum Name="ROOM_WALLS_SURF">
+			<Description><![CDATA["Surface Area of Perimeter Walls"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<Length Name="ROOM_DOORS_WID">
+			<Description><![CDATA["Combined Width of Doors"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Length>
+		<RealNum Name="ROOM_DOORS_SURF">
+			<Description><![CDATA["Surface Area of Doors"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<Length Name="ROOM_WINDS_WID">
+			<Description><![CDATA["Combined Width of Windows"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Length>
+		<RealNum Name="ROOM_WINDS_SURF">
+			<Description><![CDATA["Surface Area of Windows"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<Length Name="ROOM_BASELEV">
+			<Description><![CDATA["Floor Level"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Length>
+		<Length Name="ROOM_FL_THICK">
+			<Description><![CDATA["Subfloor Thickness"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Length>
+		<Length Name="ROOM_HEIGHT">
+			<Description><![CDATA["Height"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Length>
+		<RealNum Name="ROOM_NET_AREA">
+			<Description><![CDATA["Measured Net Area"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<Length Name="ROOM_NET_PERIMETER">
+			<Description><![CDATA["Net Perimeter"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</Length>
+		<RealNum Name="ROOM_WALL_EXTR_AREA">
+			<Description><![CDATA["Extracted Wall Area"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_CURTAINWALL_EXTR_AREA">
+			<Description><![CDATA["Extracted Curtain Wall Area"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_COLUMN_EXTR_AREA">
+			<Description><![CDATA["Extracted Column Area"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_FILL_EXTR_AREA">
+			<Description><![CDATA["Extracted Fill Area"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_LOW_EXTR_AREA">
+			<Description><![CDATA["Extracted Low Areas"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_TOTAL_EXTR_AREA">
+			<Description><![CDATA["Extracted Area Total"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_REDUCED_AREA">
+			<Description><![CDATA["Reduced Area"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_AREA_FACTOR">
+			<Description><![CDATA["Zone Area Factor"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</RealNum>
+		<RealNum Name="ROOM_CALC_AREA">
+			<Description><![CDATA["Calculated Area"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_VOLUME">
+			<Description><![CDATA["Volume"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_BOUNDARY_SURF">
+			<Description><![CDATA["Boundary Surface Area"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_TOP_SURFACE">
+			<Description><![CDATA["Top Surface Area"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_BOT_SURFACE">
+			<Description><![CDATA["Bottom Surface Area"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_ROOF_TOP_SURF">
+			<Description><![CDATA["Roof Surface Area at the Top"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_ROOF_BOT_SURF">
+			<Description><![CDATA["Roof Surface Area at the Bottom"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_SLAB_TOP_SURF">
+			<Description><![CDATA["Slab Surface Area at the Top"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_SLAB_BOT_SURF">
+			<Description><![CDATA["Slab Surface Area at the Bottom"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_BEAM_TOP_SURF">
+			<Description><![CDATA["Beam Surface Area at the Top"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_BEAM_BOT_SURF">
+			<Description><![CDATA["Beam Surface at the Bottom"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_WALL_IN_TOP_SURF">
+			<Description><![CDATA["Top Surface Area of Wall Insets"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_WALL_IN_BACK_SURF">
+			<Description><![CDATA["Back Surface of Wall Insets"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="ROOM_WALL_IN_SIDE_SURF">
+			<Description><![CDATA["Side Surface Area of Wall Insets"]]></Description>
+			<Fix/>
+			<Value>0</Value>
+		</RealNum>
+		<String Name="AC_TextFont_1">
+			<Description><![CDATA["Text Font 1"]]></Description>
+			<Fix/>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="listZoneProperty">
+			<Description><![CDATA[""]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="1" SecondDimension="2">
+				<AVal Column="1" Row="1"><![CDATA[""]]></AVal>
+				<AVal Column="2" Row="1"><![CDATA[""]]></AVal>
+			</ArrayValues>
+		</String>
+	</Parameters>
+</ParamSection>

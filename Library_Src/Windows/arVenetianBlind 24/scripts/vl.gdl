@@ -1,0 +1,1 @@
+﻿values "slatAngle" range [-88, 88]values "loweredDistance" range [0, B-slatBottomOffset]

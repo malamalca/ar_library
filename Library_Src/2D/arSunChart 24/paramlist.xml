@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ParamSection>
+	<ParamSectHeader>
+		<AutoHotspots>false</AutoHotspots>
+		<StatBits>
+			<STBit_FixSize/>
+		</StatBits>
+		<WDLeftFrame>0</WDLeftFrame>
+		<WDRightFrame>0</WDRightFrame>
+		<WDTopFrame>0</WDTopFrame>
+		<WDBotFrame>0</WDBotFrame>
+		<LayFlags>65535</LayFlags>
+		<WDMirrorThickness>0</WDMirrorThickness>
+		<WDWallInset>0</WDWallInset>
+	</ParamSectHeader>
+	<Parameters SectVersion="27" SectionFlags="0" SubIdent="0">
+		<Length Name="A">
+			<Description><![CDATA["Dimension 1"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</Length>
+		<Length Name="B">
+			<Description><![CDATA["Dimension 2"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</Length>
+		<Length Name="ZZYZX">
+			<Description><![CDATA["Height"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</Length>
+		<Boolean Name="AC_show2DHotspotsIn3D">
+			<Description><![CDATA["Show 2D Hotspots in 3D"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Length Name="ac_bottomlevel">
+			<Description><![CDATA["Bottom Level"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Length>
+		<Length Name="ac_toplevel">
+			<Description><![CDATA["Top Level"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="dTgmt">
+			<Description><![CDATA["Time Zone"]]></Description>
+			<Value>1</Value>
+		</Length>
+		<Length Name="latitude">
+			<Description><![CDATA["Latitude"]]></Description>
+			<Value>45</Value>
+		</Length>
+		<Length Name="longitude">
+			<Description><![CDATA["Longitude"]]></Description>
+			<Value>15</Value>
+		</Length>
+		<Integer Name="n">
+			<Description><![CDATA[""]]></Description>
+			<Value>2</Value>
+		</Integer>
+		<Length Name="shadeX">
+			<Description><![CDATA[""]]></Description>
+			<ArrayValues FirstDimension="20" SecondDimension="0">
+				<AVal Row="1">0</AVal>
+				<AVal Row="2">0</AVal>
+				<AVal Row="3">0</AVal>
+				<AVal Row="4">0</AVal>
+				<AVal Row="5">0</AVal>
+				<AVal Row="6">0</AVal>
+				<AVal Row="7">0</AVal>
+				<AVal Row="8">0</AVal>
+				<AVal Row="9">0</AVal>
+				<AVal Row="10">0</AVal>
+				<AVal Row="11">0</AVal>
+				<AVal Row="12">0</AVal>
+				<AVal Row="13">0</AVal>
+				<AVal Row="14">0</AVal>
+				<AVal Row="15">0</AVal>
+				<AVal Row="16">0</AVal>
+				<AVal Row="17">0</AVal>
+				<AVal Row="18">0</AVal>
+				<AVal Row="19">0</AVal>
+				<AVal Row="20">0</AVal>
+			</ArrayValues>
+		</Length>
+		<Length Name="shadeY">
+			<Description><![CDATA[""]]></Description>
+			<ArrayValues FirstDimension="20" SecondDimension="0">
+				<AVal Row="1">0</AVal>
+				<AVal Row="2">0</AVal>
+				<AVal Row="3">0</AVal>
+				<AVal Row="4">0</AVal>
+				<AVal Row="5">0</AVal>
+				<AVal Row="6">0</AVal>
+				<AVal Row="7">0</AVal>
+				<AVal Row="8">0</AVal>
+				<AVal Row="9">0</AVal>
+				<AVal Row="10">0</AVal>
+				<AVal Row="11">0</AVal>
+				<AVal Row="12">0</AVal>
+				<AVal Row="13">0</AVal>
+				<AVal Row="14">0</AVal>
+				<AVal Row="15">0</AVal>
+				<AVal Row="16">0</AVal>
+				<AVal Row="17">0</AVal>
+				<AVal Row="18">0</AVal>
+				<AVal Row="19">0</AVal>
+				<AVal Row="20">0</AVal>
+			</ArrayValues>
+		</Length>
+		<String Name="axisFont">
+			<Description><![CDATA["Font"]]></Description>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="legendFont">
+			<Description><![CDATA["Legend Font"]]></Description>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<Length Name="legendFontSize">
+			<Description><![CDATA[""]]></Description>
+			<Value>0</Value>
+		</Length>
+		<PenColor Name="penOutline">
+			<Description><![CDATA[""]]></Description>
+			<Value>221</Value>
+		</PenColor>
+		<PenColor Name="penShadeFill">
+			<Description><![CDATA[""]]></Description>
+			<Value>247</Value>
+		</PenColor>
+		<PenColor Name="penShadeBg">
+			<Description><![CDATA[""]]></Description>
+			<Value>-1</Value>
+		</PenColor>
+		<FillPattern Name="fillShade">
+			<Description><![CDATA[""]]></Description>
+			<Value>14</Value>
+		</FillPattern>
+		<PenColor Name="penGrid">
+			<Description><![CDATA[""]]></Description>
+			<Value>1</Value>
+		</PenColor>
+		<PenColor Name="penSunpath">
+			<Description><![CDATA[""]]></Description>
+			<Value>234</Value>
+		</PenColor>
+		<PenColor Name="penSunpath2">
+			<Description><![CDATA[""]]></Description>
+			<Value>101</Value>
+		</PenColor>
+		<PenColor Name="penHours">
+			<Description><![CDATA[""]]></Description>
+			<Value>20</Value>
+		</PenColor>
+		<Length Name="fontsizeGrid">
+			<Description><![CDATA[""]]></Description>
+			<Value>2</Value>
+		</Length>
+		<Length Name="gridSpacing">
+			<Description><![CDATA[""]]></Description>
+			<Value>0.15</Value>
+		</Length>
+		<String Name="chartTitle">
+			<Description><![CDATA[""]]></Description>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<Length Name="fontsizeCharTitle">
+			<Description><![CDATA[""]]></Description>
+			<Value>2</Value>
+		</Length>
+		<String Name="fontChartTitle">
+			<Description><![CDATA[""]]></Description>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<PenColor Name="penChartTitle">
+			<Description><![CDATA[""]]></Description>
+			<Value>1</Value>
+		</PenColor>
+	</Parameters>
+</ParamSection>

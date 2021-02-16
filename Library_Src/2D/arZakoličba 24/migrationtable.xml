@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>B55CFC74-87C4-448C-94D7-0FCC0A811B62</MainGUID>
+		<Version>19</Version>
+		<Name><![CDATA["Zakolicba 19"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>48BDA7C1-C934-4721-AF1F-384E6A759CA3</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["arZakoličba 22"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

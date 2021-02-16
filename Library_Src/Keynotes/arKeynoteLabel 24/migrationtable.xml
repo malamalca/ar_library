@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>8A0C415F-6130-4DF9-B1EB-3B5A7C4473D5</MainGUID>
+		<Version>20</Version>
+		<Name><![CDATA["ArLabel 19"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>1647155C-9683-4D08-9F26-0009209AA2DC</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["arKeynoteLabel 22"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

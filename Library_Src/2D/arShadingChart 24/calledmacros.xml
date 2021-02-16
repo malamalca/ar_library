@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CalledMacros>
+	<Macro>
+		<MName><![CDATA["ar3DPolygon 24"]]></MName>
+		<MainGUID>8602A081-0CE2-4011-B3C2-E1C1BDA5D22B</MainGUID>
+	</Macro>
+	<Macro>
+		<MName><![CDATA["arSunChart 24"]]></MName>
+		<MainGUID>959976D9-EC10-4D56-830A-0468D9A8425F</MainGUID>
+	</Macro>
+</CalledMacros>

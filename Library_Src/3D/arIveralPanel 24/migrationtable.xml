@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>4BD3BA13-CFA4-4FF2-8E7F-A9429C46D8D5</MainGUID>
+		<Version>21</Version>
+		<Name><![CDATA["arIveralPanel21.gsm"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>65B11C16-21E4-42A6-AC0B-37D4347C30A6</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["arIveralPanel 22"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

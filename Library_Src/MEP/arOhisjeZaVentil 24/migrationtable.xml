@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>695803F8-373A-43A8-8819-B67C7349DC15</MainGUID>
+		<Version>21</Version>
+		<Name><![CDATA["ArOhisjeZaVentil21.gsm"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>34261901-0FC8-476F-93D8-070B6CFAA3F5</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["arOhisjeZaVentil 22"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

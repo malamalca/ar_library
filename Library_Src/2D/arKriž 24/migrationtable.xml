@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>130928F7-7B10-4D68-A73F-4AB3CFEE4DBA</MainGUID>
+		<Version>24</Version>
+		<Name><![CDATA["arKriž 22"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

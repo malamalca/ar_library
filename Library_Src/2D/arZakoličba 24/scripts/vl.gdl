@@ -1,0 +1,1 @@
+﻿PARAMETERS coord_x = coord_xPARAMETERS coord_y = coord_yPARAMETERS coord_z = coord_zHIDEPARAMETER "a"HIDEPARAMETER "b"IF use_project_z THEN	HIDEPARAMETER "base_z"ENDIF

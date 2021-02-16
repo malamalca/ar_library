@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<libpartdocs>
+	<Copyright>
+		<Author>ARHIM d.o.o.</Author>
+		<License>
+			<Type>Commercial</Type>
+			<Version></Version>
+		</License>
+	</Copyright>
+	<Keywords SectVersion="1" SectionFlags="0" SubIdent="0">
+		<![CDATA[2D, cross, crossmark]]>
+	</Keywords>
+	<CommentSection>
+		<![CDATA[Simple cross mark.]]>
+	</CommentSection>
+
+</libpartdocs>

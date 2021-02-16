@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>4DDF3EDA-781C-42E7-B8D8-D3D73FFB1B80</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["arRešetka 22"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

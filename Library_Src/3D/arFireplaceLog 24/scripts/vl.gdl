@@ -1,0 +1,1 @@
+﻿PARAMETERS ZZYZX = AVALUES "show_3d" "none", "simple", "detailed"IF show_3d <> "detailed" THEN	HIDEPARAMETER "mat_crust", "crust_width"ENDIF

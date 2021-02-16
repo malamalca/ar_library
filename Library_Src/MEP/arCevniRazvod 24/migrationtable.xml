@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>815E2636-A7C8-4C51-A8C2-C7CA628B9103</MainGUID>
+		<Version>19</Version>
+		<Name><![CDATA["ArCevniRazvod 19"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>65E1E587-770E-467D-8D93-09B8903E113D</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["arCevniRazvod 22"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

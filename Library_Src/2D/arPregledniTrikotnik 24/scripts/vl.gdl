@@ -1,0 +1,1 @@
+﻿DIM font_names[]res = REQUEST("FONTNAMES_LIST", "", font_names)VALUES "fontFace", font_names, CUSTOMVALUES{2} "iSpeed" iProjektnaHitrost, projektnaHitrostVALUES{2} "iSlope" iNagibNivelete, nagibNiveleteif GLOB_MODPAR_NAME = "iSlope" or GLOB_MODPAR_NAME = "iSpeed" then	PARAMETERS stoppingDistance = zaustavitvenaRazdalja[iSlope][iSpeed]endif

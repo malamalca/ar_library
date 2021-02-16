@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>E801BD88-227D-4C6B-90EC-EB43CEEE69B7</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["ar3DPolygon 22"]]></Name>
+		<AutoMigration>false</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

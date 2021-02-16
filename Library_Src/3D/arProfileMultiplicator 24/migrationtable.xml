@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>BA91A233-267B-4866-80C2-A22538DEED9D</MainGUID>
+		<Version>21</Version>
+		<Name><![CDATA["ArProfileMultiplicator.gsm"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>279F4714-72FD-4959-B4D6-75775629F2C9</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["arProfileMultiplicator 22"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

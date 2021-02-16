@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UnusedParsToSkip>
+    <LibPart>
+        <Name>RotoVoda 22.gsm</Name>
+        <Param>SHAFT_COVER</Param>
+        <Param>B_ADDITIONAL_HEIGHT_ELEMENT</Param>
+        <Param>B_ADDITIONAL_FILTER</Param>
+        <Param>B_ADDITIONA_UV</Param>
+    </LibPart>
+</UnusedParsToSkip>

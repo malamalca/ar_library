@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>95E76054-3D3A-4C34-A220-B80764375DD6</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["arVodomerniJašek 22"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

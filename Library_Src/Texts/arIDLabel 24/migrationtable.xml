@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>14A8397F-7003-48FE-B51C-928DE3B707BA</MainGUID>
+		<Version>21</Version>
+		<Name><![CDATA["ArIDLabel 21"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>748357E7-A6A8-442E-A86F-91D78AFBBC7C</MainGUID>
+		<Version>20</Version>
+		<Name><![CDATA["ArIDLabel 19"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+	<MigrationTableElement>
+		<MainGUID>9F015D95-AECE-4C35-B0DA-CA9ADE0E0FF8</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["arIDLabel 22"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

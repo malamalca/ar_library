@@ -1,0 +1,1 @@
+﻿hideparameter allparameters x = x, y = y, n = nparameters insx = insx, insy = insydim fontNames[]n = request("FONTNAMES_LIST", "", fontNames)values "axisFont" fontNamesvalues "legendFont" fontNamesvalues "gridSpacing" range (0, )

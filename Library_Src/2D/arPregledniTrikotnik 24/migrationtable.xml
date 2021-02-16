@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>2473B313-7426-47A6-BA39-148C1E0E314B</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["arPregledniTrikotnik 22"]]></Name>
+		<AutoMigration>false</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

@@ -1,0 +1,1 @@
+﻿RECT2 0,0, A, BlineCount = INT(A / spacing)endsOffset = (A - (lineCount-1) * spacing) / 2FOR i = 0 TO lineCount-1  LINE2 endsOffset + i*spacing, 0, endsOffset + i*spacing, BNEXT iHOTSPOT2 A/2, B/2HOTSPOT2 0, 0HOTSPOT2 0, BHOTSPOT2 A, 0HOTSPOT2 A, BHOTLINE2 0, 0, A, 0HOTLINE2 0, B, A, BHOTLINE2 0, 0, 0, BHOTLINE2 A, 0, A, B

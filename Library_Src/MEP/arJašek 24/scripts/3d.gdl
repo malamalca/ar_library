@@ -1,0 +1,1 @@
+﻿MODEL SOLIDPEN SYMB_VIEW_PENMATERIAL matUndergroundPRISM_ 12, ZZYZX,		-A/2,0, 13+66,	0,0,900,	0, 180, 4000+13+66,	0,0,900,	0, 180, 4000+13+66,	-A/2, 0, -1,	A/2-wallWidth, 0, 13,	0,0,900,	0, -180, 4013,	0,0,900,	0,-180, 4013,	A/2-wallWidth,0,-1

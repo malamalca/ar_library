@@ -1,0 +1,1 @@
+﻿!RECT2 0,0, A, BPEN penFrameFILL fillTypePOLY2_B 5,	FRAMEFILL_DRAWCONTOUR + FRAMEFILL_DRAWFILL + FRAMEFILL_LOCALFILLORIENTATION, 	penFill, penFillBg,	0, 0, 1,	A, 0, 1,	A, B, 1,	0, B, 1,	0, 0, -1

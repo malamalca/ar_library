@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>F176DA3D-1F66-4622-9662-5D02C386DB67</MainGUID>
+		<Version>22</Version>
+		<Name><![CDATA["arMKČN 22"]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

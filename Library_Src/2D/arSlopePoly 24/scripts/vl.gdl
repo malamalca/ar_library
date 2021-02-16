@@ -1,0 +1,1 @@
+﻿parameters xyz = xyz, n = n, xyz_ea = xyz_e, degrees = degreesdim fontNames[]res = request("FONTNAMES_LIST", "", fontNames)values "fontFace", fontNames, CUSTOMparameters totalElevation = totalElevationlock "totalElevation"if GLOB_MODPAR_NAME = "degrees" then	for i = 1 to n-1		!slopes[i] = degrees[i] / 2	next i	!parameters slopes = slopesendif

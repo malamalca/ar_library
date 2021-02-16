@@ -1,0 +1,1 @@
+﻿hideparameter alldim font_names[]result = request("FONTNAMES_LIST", "", font_names)
