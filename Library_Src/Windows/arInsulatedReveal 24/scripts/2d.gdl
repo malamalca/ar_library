@@ -1,1 +1,75 @@
-﻿openingWidth = Awallhole2 4, 0, 0, -1,	0, 0, 0,	-openingWidth/2 + thk_insulation, 	0, 			1,	openingWidth/2 - thk_insulation, 	0, 			1,	openingWidth/2 - thk_insulation, 	-WALL_THICKNESS+WIDO_SILL, 	1,	-openingWidth/2 + thk_insulation, 	-WALL_THICKNESS+WIDO_SILL, 	1!rect2 -openingWidth/2, 0, openingWidth/2, boxWidthdim fillProperties[3]n = REQUEST{2} ("Building_Material_info", mat_insulation, "gs_bmat_cutFill_properties", fillProperties)set fill fillProperties[1]poly2_b 4, 1+2+4, 	fillProperties[2], fillProperties[3],	-openingWidth/2, 					0, 				1,	-openingWidth/2 + thk_insulation, 	0, 				1,	-openingWidth/2 + thk_insulation, 	-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1,	-openingWidth/2, 					-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1poly2_b 4, 1+2+4, 	fillProperties[2], fillProperties[3],	openingWidth/2, 					0, 				1,	openingWidth/2 - thk_insulation, 	0, 				1,	openingWidth/2 - thk_insulation, 	-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1,	openingWidth/2, 					-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1
+﻿openingWidth = A
+
+wallhole2 4, 0, 0, -1,
+	0, 0, 0,
+	-openingWidth/2 + thk_insulation, 	0, 			1,
+	openingWidth/2 - thk_insulation, 	0, 			1,
+	openingWidth/2 - thk_insulation, 	-WALL_THICKNESS+WIDO_SILL, 	1,
+	-openingWidth/2 + thk_insulation, 	-WALL_THICKNESS+WIDO_SILL, 	1
+
+!rect2 -openingWidth/2, 0, openingWidth/2, boxWidth
+
+dim fillProperties[3]
+n = REQUEST{2} ("Building_Material_info", mat_insulation, "gs_bmat_cutFill_properties", fillProperties)
+set fill fillProperties[1]
+
+dim fillPlasterProperties[3]
+n = REQUEST{2} ("Building_Material_info", mat_plaster, "gs_bmat_cutFill_properties", fillPlasterProperties)
+
+
+if GLOB_STRUCTURE_DISPLAY = 0 OR GLOB_STRUCTURE_DISPLAY = 2 then
+	if sides[_LEFT] then
+	poly2_b 4, 1+2+4,
+		fillProperties[2], fillProperties[3],
+		-openingWidth/2, 					0, 				1,
+		-openingWidth/2 + thk_insulation, 	0, 				1,
+		-openingWidth/2 + thk_insulation, 	-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1,
+		-openingWidth/2, 					-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1
+	endif
+
+
+	if sides[_RIGHT] then
+	poly2_b 4, 1+2+4,
+		fillProperties[2], fillProperties[3],
+		openingWidth/2, 					0, 				1,
+		openingWidth/2 - thk_insulation, 	0, 				1,
+		openingWidth/2 - thk_insulation, 	-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1,
+		openingWidth/2, 					-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1
+	endif
+endif
+
+if GLOB_STRUCTURE_DISPLAY = 0 then
+	! reveal plaster
+	dim v[4]
+	v = sides
+
+	pen pen_plaster
+	set fill fillPlasterProperties[1]
+
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	! plaster on top of insulation
+
+	if v[_RIGHT] then
+		poly2_b 7, 1+2+4,
+		fillPlasterProperties[2], fillPlasterProperties[3],
+		openingWidth/2 - thk_insulation, 				-offset_plaster, 				1,
+		openingWidth/2 - thk_insulation - thk_plaster, 	-offset_plaster, 				1,
+		openingWidth/2 - thk_insulation - thk_plaster, 	-WALL_THICKNESS + WIDO_SILL, 1,
+		openingWidth/2, 								-WALL_THICKNESS + WIDO_SILL, 1,
+		openingWidth/2, 								-WALL_THICKNESS + WIDO_SILL, 0,
+		openingWidth/2, 								-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1,
+		openingWidth/2 - thk_insulation, 				-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1
+	endif
+
+	if v[_LEFT] then
+		poly2_b 7, 1+2+4,
+		fillPlasterProperties[2], fillPlasterProperties[3],
+		-openingWidth/2 + thk_insulation, 					-offset_plaster, 				1,
+		-openingWidth/2 + thk_insulation + thk_plaster, 	-offset_plaster, 				1,
+		-openingWidth/2 + thk_insulation + thk_plaster, 	-WALL_THICKNESS + WIDO_SILL, 1,
+		-openingWidth/2, 									-WALL_THICKNESS + WIDO_SILL, 1,
+		-openingWidth/2, 									-WALL_THICKNESS + WIDO_SILL, 0,
+		-openingWidth/2, 									-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1,
+		-openingWidth/2 + thk_insulation, 					-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1
+	endif
+endif
