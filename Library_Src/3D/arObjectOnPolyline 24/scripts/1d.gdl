@@ -1,0 +1,1 @@
+﻿unId = 1call "ar3DPolygon 24" parameters n = n, xyz = xyz, xyz_e = xyz_e, xyz_ea = xyz_ea  returned_parameters unIdOBJ_DISTR_NO = 0OBJ_DISTR_SPACING = 1OBJ_KIND_RECT = 0OBJ_KIND_CIRCLE = 1OBJ_KIND_PROFILE = 2

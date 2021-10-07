@@ -156,6 +156,10 @@
 			<Description><![CDATA["Rotation Angle"]]></Description>
 			<Value>0</Value>
 		</Angle>
+		<Integer Name="slopeMarker">
+			<Description><![CDATA[""]]></Description>
+			<Value>0</Value>
+		</Integer>
 		<Length Name="deltaX">
 			<Description><![CDATA["Delta X"]]></Description>
 			<Value>0</Value>
@@ -163,6 +167,10 @@
 		<Length Name="deltaY">
 			<Description><![CDATA["Delty Y"]]></Description>
 			<Value>0.3</Value>
+		</Length>
+		<Length Name="coord_z">
+			<Description><![CDATA[""]]></Description>
+			<Value>-3</Value>
 		</Length>
 	</Parameters>
 </ParamSection>

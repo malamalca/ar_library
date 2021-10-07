@@ -66,6 +66,10 @@
 			<Description><![CDATA["Number of Points"]]></Description>
 			<Value>2</Value>
 		</Integer>
+		<Integer Name="max_points">
+			<Description><![CDATA["Max Points"]]></Description>
+			<Value>20</Value>
+		</Integer>
 		<Length Name="xyz">
 			<Description><![CDATA["Point Coords"]]></Description>
 			<ArrayValues FirstDimension="50" SecondDimension="3">

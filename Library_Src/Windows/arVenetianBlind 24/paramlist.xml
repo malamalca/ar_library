@@ -317,6 +317,18 @@
 			</Flags>
 			<Value>0</Value>
 		</Integer>
+		<Length Name="sideOffset">
+			<Description><![CDATA["Side offset"]]></Description>
+			<Value>0.01</Value>
+		</Length>
+		<Length Name="bottomOffset">
+			<Description><![CDATA["Bottom offset"]]></Description>
+			<Value>0</Value>
+		</Length>
+		<Length Name="insideOffset">
+			<Description><![CDATA["Offset from Reveal"]]></Description>
+			<Value>0</Value>
+		</Length>
 
 		<!-- bBox: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
@@ -324,7 +336,6 @@
 			<Description><![CDATA["Show Box"]]></Description>
 			<Flags>
 				<ParFlg_BoldName/>
-				<ParFlg_Hidden/>
 			</Flags>
 			<Value>1</Value>
 		</Boolean>
@@ -337,10 +348,16 @@
 		</Length>
 		<Length Name="boxHeight">
 			<Description><![CDATA["Height"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
 			<Value>0.2</Value>
 		</Length>
 		<BuildingMaterial Name="boxMat">
 			<Description><![CDATA["Material"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
 			<Value>33</Value>
 		</BuildingMaterial>
 
@@ -363,17 +380,19 @@
 			</Flags>
 			<Value>33</Value>
 		</BuildingMaterial>
-		<Length Name="sideOffset">
-			<Description><![CDATA["Side offset"]]></Description>
-			<Value>0.01</Value>
-		</Length>
-		<Length Name="bottomOffset">
-			<Description><![CDATA["Bottom offset"]]></Description>
-			<Value>0</Value>
-		</Length>
 		<Length Name="loweredDistance">
 			<Description><![CDATA["Lowered Distance"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
 			<Value>0</Value>
 		</Length>
+		<Boolean Name="bRail">
+			<Description><![CDATA["Show Rail"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
 	</Parameters>
 </ParamSection>

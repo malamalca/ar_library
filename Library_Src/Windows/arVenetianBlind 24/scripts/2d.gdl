@@ -1,10 +1,1 @@
-﻿openingWidth = A - sideOffset * 2
-
-wallhole2 4, 0, 0, -1,
-	0, 0, 0,
-	-openingWidth/2, 	0, 			1,
-	openingWidth/2, 	0, 			1,
-	openingWidth/2, 	WIDO_SILL, 	1,
-	-openingWidth/2, 	WIDO_SILL, 	1
-
-rect2 -openingWidth/2, 0, openingWidth/2, boxWidth
+﻿openingWidth = A - sideOffset * 2wallhole2 4, 0, 0, -1,	0, 0, 0,	-openingWidth/2, 	0, 			1,	openingWidth/2, 	0, 			1,	openingWidth/2, 	WIDO_SILL, 	1,	-openingWidth/2, 	WIDO_SILL, 	1rect2 -openingWidth/2, 0, openingWidth/2, boxWidthhotspot2 0,boxWidth/2,0

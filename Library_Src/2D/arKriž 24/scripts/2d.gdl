@@ -1,1 +1,1 @@
-﻿PEN penLineLINE2 -A/2, 0, A/2, 0LINE2 0, -B/2, 0, B/2HOTLINE2 -A/2, 0, A/2, 0HOTLINE2 0, -B/2, 0, B/2
+﻿PEN penLineif kind = 0 then	line2 -A/2, 0, A/2, 0	line2 0, -B/2, 0, B/2		hotline2 -A/2, 0, A/2, 0	hotline2 0, -B/2, 0, B/2else	line2 -A/2, B/2, A/2, B/2	line2 -A/2, -B/2, A/2, -B/2	line2 -A/2, B/2, -A/2, -B/2	line2 A/2, B/2, A/2, -B/2	hotline2 -A/2, B/2, A/2, B/2	hotline2 -A/2, -B/2, A/2, -B/2	hotline2 -A/2, B/2, -A/2, -B/2	hotline2 A/2, B/2, A/2, -B/2endif

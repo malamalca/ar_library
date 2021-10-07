@@ -343,11 +343,32 @@
 		</Length>
 		<Boolean Name="visibility_plaster">
 			<Description><![CDATA["Plaster Visibility"]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
 			<ArrayValues FirstDimension="4" SecondDimension="0">
 				<AVal Row="1">1</AVal>
 				<AVal Row="2">1</AVal>
 				<AVal Row="3">1</AVal>
 				<AVal Row="4">0</AVal>
+			</ArrayValues>
+		</Boolean>
+		<Boolean Name="sides">
+			<Description><![CDATA["Insulation Sides"]]></Description>
+			<ArrayValues FirstDimension="4" SecondDimension="0">
+				<AVal Row="1">1</AVal>
+				<AVal Row="2">1</AVal>
+				<AVal Row="3">1</AVal>
+				<AVal Row="4">1</AVal>
+			</ArrayValues>
+		</Boolean>
+		<Boolean Name="plaster_sides">
+			<Description><![CDATA["Plaster Sides"]]></Description>
+			<ArrayValues FirstDimension="4" SecondDimension="0">
+				<AVal Row="1">1</AVal>
+				<AVal Row="2">1</AVal>
+				<AVal Row="3">1</AVal>
+				<AVal Row="4">1</AVal>
 			</ArrayValues>
 		</Boolean>
 	</Parameters>

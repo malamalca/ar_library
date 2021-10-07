@@ -1,4 +1,6 @@
 /Library/*
+/Library_Build/*
+/Test/*
 
 # OS generated files #
 ######################

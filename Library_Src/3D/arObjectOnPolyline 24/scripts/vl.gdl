@@ -1,0 +1,1 @@
+﻿values{2} "object_distribution" OBJ_DISTR_NO, "No of objects between nodes", OBJ_DISTR_SPACING, "Minimal distance between objects"values{2} "object_kind" OBJ_KIND_RECT, "Rectangle", OBJ_KIND_CIRCLE, "Circle", OBJ_KIND_PROFILE, "Complex Profile"

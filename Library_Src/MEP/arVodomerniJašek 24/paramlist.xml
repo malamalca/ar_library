@@ -17,17 +17,11 @@
 		<Length Name="A">
 			<Description><![CDATA["Dimension 1"]]></Description>
 			<Fix/>
-			<Flags>
-				<ParFlg_Hidden/>
-			</Flags>
 			<Value>1</Value>
 		</Length>
 		<Length Name="B">
 			<Description><![CDATA["Dimension 2"]]></Description>
 			<Fix/>
-			<Flags>
-				<ParFlg_Hidden/>
-			</Flags>
 			<Value>1</Value>
 		</Length>
 		<Length Name="ZZYZX">

@@ -70,6 +70,13 @@
 			</Flags>
 			<Value>0.6</Value>
 		</Length>
+		<Length Name="latchExtension">
+			<Description><![CDATA["Povišek"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Length>
 		<PenColor Name="penLatch">
 			<Description><![CDATA["Barva"]]></Description>
 			<Flags>
@@ -181,5 +188,25 @@
 			</Flags>
 			<Value>6</Value>
 		</LineType>
+
+		<!-- arJaek24_s_A: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="arJaek24_s_A">
+			<Description><![CDATA["3D Prikaz"]]></Description>
+		</Title>
+		<Length Name="bottomThickness">
+			<Description><![CDATA["Show Bottom Plate"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="topThickness">
+			<Description><![CDATA["Show Top Plate"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
 	</Parameters>
 </ParamSection>

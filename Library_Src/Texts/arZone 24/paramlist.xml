@@ -36,6 +36,13 @@
 		<Title Name="arZone22_s_A">
 			<Description><![CDATA["Display Settings"]]></Description>
 		</Title>
+		<Boolean Name="hideAll">
+			<Description><![CDATA["Hide Entire Label"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
 		<Boolean Name="drawLineUnderTitle">
 			<Description><![CDATA["Line Under Title"]]></Description>
 			<Flags>
