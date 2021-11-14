@@ -1,7 +1,12 @@
-# AR_Library
+# AR Library
 
 ARCHICAD Library of GDL objects
 
-## What is AR_Library
+## Objects Summary
+Objects are organized in subfolders by their intent.
 
-AR_Library is a collection of ARCHICAD objects that are used in real world.
+## "2D" Folder
+
+
+
+
