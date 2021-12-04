@@ -58,7 +58,7 @@
 			<Value>1</Value>
 		</PenColor>
 		<Integer Name="kind">
-			<Description><![CDATA["Cross / Square"]]></Description>
+			<Description><![CDATA["Kind"]]></Description>
 			<Value>0</Value>
 		</Integer>
 	</Parameters>

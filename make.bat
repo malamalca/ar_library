@@ -11,7 +11,7 @@ echo.
 set "hsf2gsmCommand=C:\Program Files\GRAPHISOFT\ARCHICAD 24\LP_XMLConverter.exe"
 
 set "passwd="
-set /p passwd="Enter password for GDL objects: "
+rem set /p passwd="Enter password for GDL objects: "
 
 echo.
 echo Converting HSF to GSM...
@@ -32,4 +32,4 @@ echo Converting GSM to LCF...
 rem Create empty file back
 rem copy NUL Library\.gitkeep
 
-PAUSE
+rem PAUSE

@@ -1,1 +1,1 @@
-﻿dim fontNames[]n = request("FONTNAMES_LIST", "", fontNames)values "axisFont" fontNamesvalues "legendFont" fontNamesvalues "fontChartTitle" fontNamesvalues "gridSpacing" range (0, )
+﻿dim fontNames[]n = request("FONTNAMES_LIST", "", fontNames)values "axisFont" fontNamesvalues "legendFont" fontNamesvalues "fontChartTitle" fontNamesvalues "baseFont" fontNamesvalues "gridSpacing" range (0, )

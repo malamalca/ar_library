@@ -37,7 +37,7 @@
 			<Description><![CDATA["Display Settings"]]></Description>
 		</Title>
 		<Boolean Name="hideAll">
-			<Description><![CDATA["Hide Entire Label"]]></Description>
+			<Description><![CDATA["Hide All"]]></Description>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>

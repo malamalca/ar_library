@@ -30,9 +30,6 @@
 		<Length Name="ZZYZX">
 			<Description><![CDATA["Height"]]></Description>
 			<Fix/>
-			<Flags>
-				<ParFlg_Hidden/>
-			</Flags>
 			<Value>1</Value>
 		</Length>
 		<Boolean Name="AC_show2DHotspotsIn3D">
@@ -59,41 +56,156 @@
 			</Flags>
 			<Value>0</Value>
 		</Length>
+
+		<!-- latchKind: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
 		<Integer Name="latchKind">
 			<Description><![CDATA["Tip pokrova"]]></Description>
-			<Value>1</Value>
-		</Integer>
-		<Integer Name="kind">
-			<Description><![CDATA["Tip"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
 			<Value>1</Value>
 		</Integer>
 		<Length Name="latchSize">
 			<Description><![CDATA["Velikost pokrova"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
 			<Value>0.6</Value>
 		</Length>
-		<FillPattern Name="fillType">
-			<Description><![CDATA["Šrafura"]]></Description>
-			<Value>24</Value>
-		</FillPattern>
+		<Length Name="latchExtension">
+			<Description><![CDATA["Povišek"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
 		<PenColor Name="penLatch">
 			<Description><![CDATA["Barva pokrova"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
 			<Value>203</Value>
 		</PenColor>
+		<LineType Name="lineLatch">
+			<Description><![CDATA["Črta"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</LineType>
+		<FillPattern Name="fillType">
+			<Description><![CDATA["Šrafura"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>24</Value>
+		</FillPattern>
 		<PenColor Name="penFill">
 			<Description><![CDATA["Barva šrafure"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
 			<Value>203</Value>
 		</PenColor>
 		<PenColor Name="penFillBg">
 			<Description><![CDATA["Barva ozadja"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
 			<Value>0</Value>
 		</PenColor>
+		<Length Name="deltaX">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="deltaY">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+
+		<!-- kind: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Integer Name="kind">
+			<Description><![CDATA["Oblika v zemljini"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>2</Value>
+		</Integer>
 		<PenColor Name="penUnderground">
 			<Description><![CDATA["Barva pod zemljino"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
 			<Value>183</Value>
 		</PenColor>
 		<LineType Name="lineUnderground">
 			<Description><![CDATA["Linija pod zemljino"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
 			<Value>21</Value>
+		</LineType>
+		<Material Name="matUnderground">
+			<Description><![CDATA["Material"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>99</Value>
+		</Material>
+		<Length Name="wallWidth">
+			<Description><![CDATA["Debelina stene"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.05</Value>
+		</Length>
+		<Length Name="bottomThickness">
+			<Description><![CDATA["Debelina dna"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="topThickness">
+			<Description><![CDATA["Debelina vrha"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.05</Value>
+		</Length>
+
+		<!-- showAxis: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Boolean Name="showAxis">
+			<Description><![CDATA["Prikaži os jaška"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<PenColor Name="penAxis">
+			<Description><![CDATA["Linija"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>60</Value>
+		</PenColor>
+		<LineType Name="lineAxis">
+			<Description><![CDATA["Črta"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>6</Value>
 		</LineType>
 	</Parameters>
 </ParamSection>

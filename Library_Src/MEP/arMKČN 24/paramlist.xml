@@ -27,9 +27,6 @@
 		<Length Name="ZZYZX">
 			<Description><![CDATA["Height"]]></Description>
 			<Fix/>
-			<Flags>
-				<ParFlg_Hidden/>
-			</Flags>
 			<Value>1</Value>
 		</Length>
 		<Boolean Name="AC_show2DHotspotsIn3D">
@@ -72,6 +69,13 @@
 				<ParFlg_Child/>
 			</Flags>
 			<Value>0.6</Value>
+		</Length>
+		<Length Name="latchExtension">
+			<Description><![CDATA["Povišek"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.5</Value>
 		</Length>
 		<PenColor Name="penLatch">
 			<Description><![CDATA["Barva"]]></Description>
@@ -155,6 +159,20 @@
 		</Material>
 		<Length Name="wallWidth">
 			<Description><![CDATA["Debelina stene"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.05</Value>
+		</Length>
+		<Length Name="bottomThickness">
+			<Description><![CDATA["Debelina dna"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.05</Value>
+		</Length>
+		<Length Name="topThickness">
+			<Description><![CDATA["Debelina vrha"]]></Description>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>

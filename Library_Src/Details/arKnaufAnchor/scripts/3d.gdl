@@ -1,0 +1,35 @@
+﻿!
+!   Name     : arKnaufAnchor.gsm
+!   Date     : Sunday, 24 October 2021
+!   Version  : 24.00
+!   Written by ARCHICAD 
+!
+
+mulx	A/       0.013
+muly	B/      0.0385
+mulz	ZZYZX/           1
+add     0.006499999259298,       0.0385,         -6.1
+body    -1
+model solid
+resol       36
+if (use_stored_environment) then
+GLOB_SCRIPT_TYPE =      3
+GLOB_CONTEXT =      3
+GLOB_VIEW_TYPE =      3
+GLOB_SCALE =     50
+GLOB_NORTH_DIR =           90
+GLOB_PROJECT_LONGITUDE =    19.054779
+GLOB_PROJECT_LATITUDE =    47.559708
+GLOB_PROJECT_ALTITUDE =        320.8
+GLOB_DRAWING_BGD_PEN = penAttribute_2
+GLOB_FRAME_NR =     -1
+GLOB_EYEPOS_X = 24.42226168444
+GLOB_EYEPOS_Y = 25.6634990759
+GLOB_EYEPOS_Z = 5.922373521173
+GLOB_TARGPOS_X = 12.26806733743
+GLOB_TARGPOS_Y = -4.191813912461
+GLOB_TARGPOS_Z = 6.889764932184
+GLOB_SUN_AZIMUTH =          240
+GLOB_SUN_ALTITUDE =           35
+GLOB_STRUCTURE_DISPLAY =      1
+endif

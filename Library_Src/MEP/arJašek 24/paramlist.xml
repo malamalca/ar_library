@@ -17,13 +17,17 @@
 		<Length Name="A">
 			<Description><![CDATA["Dimension 1"]]></Description>
 			<Fix/>
-			<Value>1</Value>
+			<Value>0.3</Value>
 		</Length>
 		<Length Name="B">
 			<Description><![CDATA["Dimension 2"]]></Description>
 			<Fix/>
 			<Value>1</Value>
 		</Length>
+		<Integer Name="standardSize">
+			<Description><![CDATA["Standard dimension"]]></Description>
+			<Value>1</Value>
+		</Integer>
 		<Length Name="ZZYZX">
 			<Description><![CDATA["Height"]]></Description>
 			<Fix/>
@@ -162,7 +166,7 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value>0.05</Value>
+			<Value>0.04</Value>
 		</Length>
 
 		<!-- showAxis: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->

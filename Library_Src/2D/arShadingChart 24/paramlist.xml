@@ -405,6 +405,37 @@
 			<Value>1</Value>
 		</RealNum>
 
+		<!-- showBasePoint: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Boolean Name="showBasePoint">
+			<Description><![CDATA["Točka v tlorisu"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<String Name="basePointFont">
+			<Description><![CDATA["Pisava za točko"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA["@Arial Unicode MS srednjeevropska"]]></Value>
+		</String>
+		<RealNum Name="basePointFontSize">
+			<Description><![CDATA["Velikost pisave"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>3</Value>
+		</RealNum>
+		<PenColor Name="basePointPen">
+			<Description><![CDATA["Barva pisave"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>25</Value>
+		</PenColor>
+
 		<!-- arShadingC_B: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
 		<Title Name="arShadingC_B">

@@ -661,6 +661,13 @@
 			</Flags>
 			<Value>0</Value>
 		</Length>
+		<Length Name="firstOffsetDelta">
+			<Description><![CDATA["First Offset Delta"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
 
 		<!-- textShow: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
@@ -751,6 +758,13 @@
 			<Description><![CDATA["Show Elevations"]]></Description>
 			<Flags>
 				<ParFlg_BoldName/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Boolean Name="textAbsolute">
+			<Description><![CDATA["Absolute Heights"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
 			</Flags>
 			<Value>0</Value>
 		</Boolean>

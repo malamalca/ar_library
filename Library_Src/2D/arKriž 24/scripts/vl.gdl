@@ -1,0 +1,5 @@
+values{2} "kind" OBJ_KIND_CROSS, "Križ", OBJ_KIND_RECT, "Pravokotnik"
+
+if kind = OBJ_KIND_CROSS then
+	hideparameter "B"
+endif

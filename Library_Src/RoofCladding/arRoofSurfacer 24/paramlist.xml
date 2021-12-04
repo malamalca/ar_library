@@ -73,6 +73,29 @@
 			<Description><![CDATA["Shadow Casting"]]></Description>
 			<Value>0</Value>
 		</Boolean>
+		<Length Name="fwd_offset">
+			<Description><![CDATA["Forward Offset"]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="batten_height">
+			<Description><![CDATA["Batten Height"]]></Description>
+			<Value>0.03</Value>
+		</Length>
+		<Length Name="batten_width">
+			<Description><![CDATA["Batten Width"]]></Description>
+			<Value>0</Value>
+		</Length>
+		<Boolean Name="is_irregular">
+			<Description><![CDATA["Use Cutting Body"]]></Description>
+			<Value>0</Value>
+		</Boolean>
+		<Boolean Name="gs_gdl_debug">
+			<Description><![CDATA["Debug"]]></Description>
+			<Value>0</Value>
+		</Boolean>
 
 		<!-- gs_tile: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
@@ -104,6 +127,7 @@
 			<Description><![CDATA["Spacing of Tile Rows"]]></Description>
 			<Flags>
 				<ParFlg_Child/>
+				<ParFlg_Hidden/>
 			</Flags>
 			<Value>0.15</Value>
 		</Length>
@@ -121,28 +145,6 @@
 			</Flags>
 			<Value>66</Value>
 		</Material>
-		<Length Name="batten_height">
-			<Description><![CDATA["Batten Height"]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-			</Flags>
-			<Value>0.03</Value>
-		</Length>
-		<Length Name="batten_width">
-			<Description><![CDATA["Batten Width"]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-				<ParFlg_Hidden/>
-			</Flags>
-			<Value>0</Value>
-		</Length>
-		<Boolean Name="is_irregular">
-			<Description><![CDATA["Use Cutting Body"]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-			</Flags>
-			<Value>0</Value>
-		</Boolean>
 		<Boolean Name="half_offset">
 			<Description><![CDATA["Offset Every Other Line by Half"]]></Description>
 			<Flags>
@@ -409,13 +411,6 @@
 			</Flags>
 			<Value>0</Value>
 		</FillPattern>
-		<Boolean Name="gs_gdl_debug">
-			<Description><![CDATA[""]]></Description>
-			<Flags>
-				<ParFlg_Unique/>
-			</Flags>
-			<Value>0</Value>
-		</Boolean>
 
 		<!-- gs_list: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
