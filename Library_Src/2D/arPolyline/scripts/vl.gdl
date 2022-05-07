@@ -1,0 +1,1 @@
+﻿parameters x = x, y = y, n = n, xea = xe, yea = ye, zea = zeif not(showaxis) then	hideparameter "axislinetype"	hideparameter "axispen"endifif not(showoffset) then	hideparameter "offsetlinetype"	hideparameter "offsetpen"endifparameters total_length = total_lengthlock "total_length"

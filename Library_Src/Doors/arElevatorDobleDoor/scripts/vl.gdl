@@ -1,0 +1,1 @@
+﻿IF AC_HoleSideMaterial = 0 THEN	LOCK "AC_HoleMaterialCurved"ENDIFvalues "open_width" RANGE [0, A - frame_width * 2 - pocket_offset]

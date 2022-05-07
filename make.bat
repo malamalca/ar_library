@@ -8,7 +8,7 @@ echo "ARCHICAD Library Builder"
 echo "-----------------------------------------"
 echo.
 
-set "hsf2gsmCommand=C:\Program Files\GRAPHISOFT\ARCHICAD 24\LP_XMLConverter.exe"
+set "hsf2gsmCommand=C:\Program Files\GRAPHISOFT\ARCHICAD 25\LP_XMLConverter.exe"
 
 set "passwd="
 rem set /p passwd="Enter password for GDL objects: "
@@ -27,7 +27,7 @@ rem del Library\.gitkeep /s
 
 echo.
 echo Converting GSM to LCF...
-"C:\Program Files\GRAPHISOFT\ARCHICAD 24\LP_XMLConverter.exe" createcontainer "Library_Build\ArLibrary24.lcf" Library
+"C:\Program Files\GRAPHISOFT\ARCHICAD 25\LP_XMLConverter.exe" createcontainer "Library_Build\ArLibrary.lcf" Library
 
 rem Create empty file back
 rem copy NUL Library\.gitkeep
