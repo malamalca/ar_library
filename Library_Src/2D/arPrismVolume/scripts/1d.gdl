@@ -1,1 +1,98 @@
-﻿unId = 1call "ar3DPolygon 24" parameters n = n, xyz = xyz, xyz_e = xyz_e, xyz_ea = xyz_ea, max_points = 20 returned_parameters unId! length of reference lineref_length = 10 ! calculate plane equationdim planePoints[3][3]planePoints[1][1] = ref_length * cos(cutplane_rotation) + cutplane_offset[1]planePoints[1][2] = ref_length * sin(cutplane_rotation) + cutplane_offset[2]planePoints[1][3] = cutplane_elevationplanePoints[2][1] = -ref_length * cos(cutplane_rotation) + cutplane_offset[1]planePoints[2][2] = -ref_length * sin(cutplane_rotation) + cutplane_offset[2]planePoints[2][3] = cutplane_elevationplanePoints[3][1] = ref_length / 2 * cos(cutplane_rotation + 90) + cutplane_offset[1]planePoints[3][2] = ref_length / 2 * sin(cutplane_rotation + 90) + cutplane_offset[2]planePoints[3][3] = cutplane_elevation + ref_length / 2 * tan(cutplane_angle)! two vectors on cutplanedim vects[2][3]vects[1][1] = planePoints[2][1] - planePoints[1][1]vects[1][2] = planePoints[2][2] - planePoints[1][2]vects[1][3] = planePoints[2][3] - planePoints[1][3]vects[2][1] = planePoints[3][1] - planePoints[1][1]vects[2][2] = planePoints[3][2] - planePoints[1][2]vects[2][3] = planePoints[3][3] - planePoints[1][3]! plane equation factors ax+by+cz+d=0a = vects[1][2] * vects[2][3] - vects[2][2] * vects[1][3]b = vects[2][1] * vects[1][3] - vects[1][1] * vects[2][3]c = vects[1][1] * vects[2][2] - vects[1][2] * vects[2][1]d = - a * planePoints[1][1] - b * planePoints[1][2] - c * planePoints[1][3]! total circumreference lengthbase_circumreference = 0! total areabase_area = 0! body volumebody_volume = 0! calculationsn0 = 0x0 = xyz[n][1]y0 = xyz[n][2]sumVertsLengths = 0maxVertLength = 0! cutplane max dimensionsdim cutplaneBounds[2][2]cutplaneBounds[1][1] = xyz[1][1]: cutplaneBounds[1][2] = xyz[1][2]cutplaneBounds[2][1] = xyz[2][1]: cutplaneBounds[2][2] = xyz[1][2]for i = 1 to n	dx = xyz[i][1] - x0	dy = xyz[i][2] - y0	segmentLength = sqr(dx^2 + dy^2)	base_circumreference = base_circumreference + segmentLength	base_area = base_area + (x0 * xyz[i][2] - y0 * xyz[i][1]) / 2	vertLength = ((- a * xyz[i][1] - b * xyz[i][2] - d) / c)	sumVertsLengths = sumVertsLengths + vertLength	if vertLength > maxVertLength then		maxVertLength = vertLength 	endif	if xyz[i][1] < cutplaneBounds[1][1] then		cutplaneBounds[1][1] = xyz[i][1]	endif	if xyz[i][2] < cutplaneBounds[1][2] then		cutplaneBounds[1][2] = xyz[i][2]	endif	if xyz[i][1] > cutplaneBounds[2][1] then		cutplaneBounds[2][1] = xyz[i][1]	endif	if xyz[i][2] > cutplaneBounds[2][2] then		cutplaneBounds[2][2] = xyz[i][2]	endif	x0 = xyz[i][1]	y0 = xyz[i][2]next ibody_volume = base_area * sumVertsLengths / n
+﻿unId = 1
+
+call "ar3DPolygon" parameters n = n, xyz = xyz, xyz_e = xyz_e, xyz_ea = xyz_ea, max_points = 20 returned_parameters unId
+
+
+! length of reference line
+ref_length = 10 
+
+! calculate plane equation
+dim planePoints[3][3]
+
+planePoints[1][1] = ref_length * cos(cutplane_rotation) + cutplane_offset[1]
+planePoints[1][2] = ref_length * sin(cutplane_rotation) + cutplane_offset[2]
+planePoints[1][3] = cutplane_elevation
+
+planePoints[2][1] = -ref_length * cos(cutplane_rotation) + cutplane_offset[1]
+planePoints[2][2] = -ref_length * sin(cutplane_rotation) + cutplane_offset[2]
+planePoints[2][3] = cutplane_elevation
+
+planePoints[3][1] = ref_length / 2 * cos(cutplane_rotation + 90) + cutplane_offset[1]
+planePoints[3][2] = ref_length / 2 * sin(cutplane_rotation + 90) + cutplane_offset[2]
+planePoints[3][3] = cutplane_elevation + ref_length / 2 * tan(cutplane_angle)
+
+! two vectors on cutplane
+dim vects[2][3]
+
+vects[1][1] = planePoints[2][1] - planePoints[1][1]
+vects[1][2] = planePoints[2][2] - planePoints[1][2]
+vects[1][3] = planePoints[2][3] - planePoints[1][3]
+
+vects[2][1] = planePoints[3][1] - planePoints[1][1]
+vects[2][2] = planePoints[3][2] - planePoints[1][2]
+vects[2][3] = planePoints[3][3] - planePoints[1][3]
+
+! plane equation factors ax+by+cz+d=0
+a = vects[1][2] * vects[2][3] - vects[2][2] * vects[1][3]
+b = vects[2][1] * vects[1][3] - vects[1][1] * vects[2][3]
+c = vects[1][1] * vects[2][2] - vects[1][2] * vects[2][1]
+d = - a * planePoints[1][1] - b * planePoints[1][2] - c * planePoints[1][3]
+
+! total circumreference length
+base_circumreference = 0
+
+! total area
+base_area = 0
+
+! body volume
+body_volume = 0
+
+! calculations
+n0 = 0
+x0 = xyz[n][1]
+y0 = xyz[n][2]
+
+sumVertsLengths = 0
+maxVertLength = 0
+
+! cutplane max dimensions
+dim cutplaneBounds[2][2]
+cutplaneBounds[1][1] = xyz[1][1]: cutplaneBounds[1][2] = xyz[1][2]
+cutplaneBounds[2][1] = xyz[2][1]: cutplaneBounds[2][2] = xyz[1][2]
+
+
+for i = 1 to n
+	dx = xyz[i][1] - x0
+	dy = xyz[i][2] - y0
+
+	segmentLength = sqr(dx^2 + dy^2)
+	base_circumreference = base_circumreference + segmentLength
+	base_area = base_area + (x0 * xyz[i][2] - y0 * xyz[i][1]) / 2
+
+	vertLength = ((- a * xyz[i][1] - b * xyz[i][2] - d) / c)
+	sumVertsLengths = sumVertsLengths + vertLength
+	if vertLength > maxVertLength then
+		maxVertLength = vertLength 
+	endif
+
+	if xyz[i][1] < cutplaneBounds[1][1] then
+		cutplaneBounds[1][1] = xyz[i][1]
+	endif
+	if xyz[i][2] < cutplaneBounds[1][2] then
+		cutplaneBounds[1][2] = xyz[i][2]
+	endif
+	if xyz[i][1] > cutplaneBounds[2][1] then
+		cutplaneBounds[2][1] = xyz[i][1]
+	endif
+	if xyz[i][2] > cutplaneBounds[2][2] then
+		cutplaneBounds[2][2] = xyz[i][2]
+	endif
+
+
+
+	x0 = xyz[i][1]
+	y0 = xyz[i][2]
+next i
+
+body_volume = base_area * sumVertsLengths / n
+

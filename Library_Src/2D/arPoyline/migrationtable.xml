@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<MigrationTable>
-	<MigrationTableElement>
-		<MainGUID>0D25D0EA-D52A-4D20-AC10-88E86305F18A</MainGUID>
-		<Version>22</Version>
-		<Name><![CDATA["arPoyline 22"]]></Name>
-		<AutoMigration>true</AutoMigration>
-	</MigrationTableElement>
-</MigrationTable>

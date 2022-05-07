@@ -4,7 +4,7 @@ del Thumbs.db /s /q
 cls
 @echo off
 
-echo "ARCHICAD Library Builder"
+echo "ARCHICAD Library Checker"
 echo "-----------------------------------------"
 echo.
 
@@ -17,19 +17,7 @@ echo.
 echo Converting HSF to GSM...
 if "%passwd%" NEQ "" (set hsf2gsmCommand=%hsf2gsmCommand% -password %passwd%)
 
-set hsf2gsmCommand="%hsf2gsmCommand%" hsf2l Library_Src Library_GSM
+set hsf2gsmCommand="%hsf2gsmCommand%" finalizelibrary -reportlevel 1 -format HSF Library_Src Library_GSM Library_Base
 
 rem Execute command
 %hsf2gsmCommand%
-
-rem Delete empty file needed for GIT
-rem del Library\.gitkeep /s
-
-echo.
-echo Converting GSM to LCF...
-"C:\Program Files\GRAPHISOFT\ARCHICAD 25\LP_XMLConverter.exe" createcontainer "Library_LCF\ArLibrary.lcf" Library
-
-rem Create empty file back
-rem copy NUL Library\.gitkeep
-
-rem PAUSE

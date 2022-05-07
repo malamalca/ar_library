@@ -17,18 +17,22 @@
 	<Parameters SectVersion="27" SectionFlags="0" SubIdent="0">
 		<Length Name="A">
 			<Description><![CDATA["Dimension 1"]]></Description>
+			<Fix/>
 			<Value>0.0129999999999999</Value>
 		</Length>
 		<Length Name="B">
 			<Description><![CDATA["Dimension 2"]]></Description>
+			<Fix/>
 			<Value>0.0385000000000001</Value>
 		</Length>
 		<Length Name="ZZYZX">
 			<Description><![CDATA["Height"]]></Description>
+			<Fix/>
 			<Value>1</Value>
 		</Length>
 		<Boolean Name="AC_show2DHotspotsIn3D">
 			<Description><![CDATA["Show 2D Hotspots in 3D"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
@@ -36,6 +40,7 @@
 		</Boolean>
 		<Length Name="ac_bottomlevel">
 			<Description><![CDATA["Bottom Level"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
@@ -43,6 +48,7 @@
 		</Length>
 		<Length Name="ac_toplevel">
 			<Description><![CDATA["Top Level"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>

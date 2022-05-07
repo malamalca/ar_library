@@ -1,5 +1,5 @@
-/Library/*
-/Library_Build/*
+/Library_GSM/*
+/Library_LCF/*
 /Test/*
 
 # OS generated files #

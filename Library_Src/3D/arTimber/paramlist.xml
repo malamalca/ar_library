@@ -96,11 +96,9 @@
 
 		<Title Name="gs_2D_representation">
 			<Description><![CDATA["2D Representation"]]></Description>
-			<Fix/>
 		</Title>
 		<PenColor Name="gs_cont_pen">
 			<Description><![CDATA["Contour Pen"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -108,7 +106,6 @@
 		</PenColor>
 		<FillPattern Name="gs_fill_type">
 			<Description><![CDATA["Fill Type"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -116,7 +113,6 @@
 		</FillPattern>
 		<PenColor Name="gs_fill_pen">
 			<Description><![CDATA["Fill Pen"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -124,7 +120,6 @@
 		</PenColor>
 		<PenColor Name="gs_back_pen">
 			<Description><![CDATA["Fill Background Pen"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -162,11 +157,9 @@
 
 		<Title Name="gs_list">
 			<Description><![CDATA["Description"]]></Description>
-			<Fix/>
 		</Title>
 		<RealNum Name="gs_list_cost">
 			<Description><![CDATA["Cost"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -174,7 +167,6 @@
 		</RealNum>
 		<String Name="gs_list_manufacturer">
 			<Description><![CDATA["Manufacturer"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -182,7 +174,6 @@
 		</String>
 		<String Name="gs_list_note">
 			<Description><![CDATA["Note/Remarks"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -190,7 +181,6 @@
 		</String>
 		<String Name="gs_list_location">
 			<Description><![CDATA["Location"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -198,7 +188,6 @@
 		</String>
 		<String Name="gs_list_accessories">
 			<Description><![CDATA["Accessories"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -206,7 +195,6 @@
 		</String>
 		<String Name="FM_Type">
 			<Description><![CDATA["Group Type"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -214,7 +202,6 @@
 		</String>
 		<Integer Name="iFMType">
 			<Description><![CDATA["Group Type"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -223,7 +210,6 @@
 		</Integer>
 		<String Name="FM_InventoryNumber">
 			<Description><![CDATA["Inventory Number"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -231,7 +217,6 @@
 		</String>
 		<String Name="FM_SerialNumber">
 			<Description><![CDATA["Serial Number"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -239,7 +224,6 @@
 		</String>
 		<String Name="FM_ProductionYear">
 			<Description><![CDATA["Production Year"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -247,7 +231,6 @@
 		</String>
 		<RealNum Name="FM_ObjectWeight">
 			<Description><![CDATA["Object Weight"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -255,7 +238,6 @@
 		</RealNum>
 		<String Name="FM_ObjectWeightUnit">
 			<Description><![CDATA["Object Weight Unit"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -263,7 +245,6 @@
 		</String>
 		<String Name="gs_list_custom1">
 			<Description><![CDATA["User Defined 1"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -271,7 +252,6 @@
 		</String>
 		<String Name="gs_list_custom2">
 			<Description><![CDATA["User Defined 2"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -279,7 +259,6 @@
 		</String>
 		<String Name="gs_list_custom3">
 			<Description><![CDATA["User Defined 3"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -287,7 +266,6 @@
 		</String>
 		<String Name="gs_list_custom4">
 			<Description><![CDATA["User Defined 4"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -295,7 +273,6 @@
 		</String>
 		<String Name="gs_list_custom5">
 			<Description><![CDATA["User Defined 5"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>

@@ -1,1 +1,0 @@
-﻿parameters x = x, y = y, n = n, xea = xe, yea = yeif not(showaxis) then	hideparameter "axislinetype"	hideparameter "axispen"endifif not(showoffset) then	hideparameter "offsetlinetype"	hideparameter "offsetpen"endif

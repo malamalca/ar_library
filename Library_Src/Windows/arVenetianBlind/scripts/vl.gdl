@@ -1,1 +1,7 @@
-﻿values "slatAngle" range [-88, 88]values "loweredDistance" range [0, B-slatBottomOffset]values{2} "bShowText" 	SHOWTEXT_ALWAYS, "Always",						SHOWTEXT_NEVER, "Never",						SHOWTEXT_MVO, "By MVO"
+﻿values "slatAngle" range [-88, 88]
+
+values "loweredDistance" range [0, B-slatBottomOffset]
+
+values{2} "bShowText" 	SHOWTEXT_ALWAYS, "Always",
+						SHOWTEXT_NEVER, "Never",
+						SHOWTEXT_MVO, "By MVO"
