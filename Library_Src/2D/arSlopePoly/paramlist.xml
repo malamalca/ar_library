@@ -337,10 +337,6 @@
 			<Description><![CDATA["Outline Pen"]]></Description>
 			<Value>82</Value>
 		</PenColor>
-		<PenColor Name="penText">
-			<Description><![CDATA["Text pen"]]></Description>
-			<Value>1</Value>
-		</PenColor>
 		<PenColor Name="penFill">
 			<Description><![CDATA["Pen Fill"]]></Description>
 			<Value>81</Value>
@@ -348,6 +344,14 @@
 		<PenColor Name="penBg">
 			<Description><![CDATA["Pen Background"]]></Description>
 			<Value>121</Value>
+		</PenColor>
+		<Boolean Name="showElevations">
+			<Description><![CDATA["Show Elevations"]]></Description>
+			<Value>1</Value>
+		</Boolean>
+		<PenColor Name="penText">
+			<Description><![CDATA["Text pen"]]></Description>
+			<Value>1</Value>
 		</PenColor>
 		<String Name="fontFace">
 			<Description><![CDATA["Font Face"]]></Description>

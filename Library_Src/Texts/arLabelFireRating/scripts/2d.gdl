@@ -1,0 +1,1 @@
+﻿hotspot2 0, 0hotspot2 0, -A/2hotspot2 0, +A/2hotline2 0, -0.5, 0, 0.5pen AC_LabelPointerPenline2 0, -0.5, 0, 0.5arcRadius = A * 0.1arc2 0, A/2 - arcRadius, arcRadius, 270, 90define style "LabelMarker" LABEL_FONT_NAME, LABEL_TEXT_SIZE, 8, LABEL_FONT_STYLEset style "LabelMarker"rot2 -90text2 0, 0, "EI30"

@@ -58,6 +58,7 @@
 		</Boolean>
 		<Length Name="AC_Sill_To_Curr_Story">
 			<Description><![CDATA["Sill Height to Current Story"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Unique/>
 				<ParFlg_Hidden/>
@@ -89,12 +90,14 @@
 
 		<Title Name="gs_door_frame">
 			<Description><![CDATA["Door Frame"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
 		</Title>
 		<Length Name="gs_frame_thk">
 			<Description><![CDATA["Frame Thickness"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -103,6 +106,7 @@
 		</Length>
 		<Length Name="gs_frame_width">
 			<Description><![CDATA["Frame Width"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -114,12 +118,14 @@
 
 		<Title Name="gs_door_panel">
 			<Description><![CDATA["Door Panel"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
 		</Title>
 		<Length Name="gs_leaf_thk">
 			<Description><![CDATA["Leaf Thickness"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -131,9 +137,11 @@
 
 		<Title Name="gs_2D_representation">
 			<Description><![CDATA["2D Representation"]]></Description>
+			<Fix/>
 		</Title>
 		<Angle Name="gs_open_2D">
 			<Description><![CDATA["Opening Angle in 2D"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -142,6 +150,7 @@
 		</Angle>
 		<PenColor Name="gs_pen_2D">
 			<Description><![CDATA["Symbol Pen"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -173,12 +182,14 @@
 
 		<Title Name="gs_3D_representation">
 			<Description><![CDATA["3D Representation"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
 		</Title>
 		<Angle Name="gs_open_3D">
 			<Description><![CDATA["Opening Angle in 3D"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -187,6 +198,7 @@
 		</Angle>
 		<PenColor Name="gs_frame_pen">
 			<Description><![CDATA["Frame Pen"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -195,6 +207,7 @@
 		</PenColor>
 		<PenColor Name="gs_leaf_pen">
 			<Description><![CDATA["Leaf Pen"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -206,12 +219,14 @@
 
 		<Title Name="gs_door_material">
 			<Description><![CDATA["Surfaces"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
 		</Title>
 		<Material Name="gs_frame_mat">
 			<Description><![CDATA["Frame Surface"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -220,6 +235,7 @@
 		</Material>
 		<Material Name="gs_leaf_mat">
 			<Description><![CDATA["Leaf Surface"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -231,12 +247,14 @@
 
 		<Title Name="ac_details">
 			<Description><![CDATA["Details"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
 		</Title>
 		<Length Name="ac_left_oversize">
 			<Description><![CDATA["AC Left Opening Oversize"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -245,6 +263,7 @@
 		</Length>
 		<Length Name="ac_right_oversize">
 			<Description><![CDATA["AC Right Opening Oversize"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -253,6 +272,7 @@
 		</Length>
 		<Length Name="ac_upper_oversize">
 			<Description><![CDATA["AC Upper Opening Oversize"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -261,6 +281,7 @@
 		</Length>
 		<Length Name="ac_lower_oversize">
 			<Description><![CDATA["AC Lower Opening Oversize"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Child/>
 				<ParFlg_Hidden/>
@@ -269,6 +290,7 @@
 		</Length>
 		<String Name="ifc_optypestr">
 			<Description><![CDATA["IFC Operation"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
@@ -276,6 +298,7 @@
 		</String>
 		<Integer Name="ifc_optype">
 			<Description><![CDATA["IFC Operation"]]></Description>
+			<Fix/>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>

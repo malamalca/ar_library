@@ -9,7 +9,7 @@
 		<WDRightFrame>0</WDRightFrame>
 		<WDTopFrame>0</WDTopFrame>
 		<WDBotFrame>0</WDBotFrame>
-		<LayFlags>96</LayFlags>
+		<LayFlags>1</LayFlags>
 		<WDMirrorThickness>0</WDMirrorThickness>
 		<WDWallInset>0</WDWallInset>
 	</ParamSectHeader>

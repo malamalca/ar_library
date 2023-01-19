@@ -3,9 +3,7 @@
 	<ParamSectHeader>
 		<AutoHotspots>false</AutoHotspots>
 		<StatBits>
-			<STBit_UIDefault/>
 			<STBit_FixSize/>
-			<STBit_UIUseHierarchicalPages/>
 		</StatBits>
 		<WDLeftFrame>0</WDLeftFrame>
 		<WDRightFrame>0</WDRightFrame>
@@ -27,9 +25,6 @@
 		<Length Name="B">
 			<Description><![CDATA["Dimension 2"]]></Description>
 			<Fix/>
-			<Flags>
-				<ParFlg_Hidden/>
-			</Flags>
 			<Value>1</Value>
 		</Length>
 		<Boolean Name="AC_CustomReadability">
@@ -129,62 +124,6 @@
 			<Description><![CDATA[""]]></Description>
 			<Fix/>
 			<Value>0</Value>
-		</Integer>
-		<String Name="labelLine1">
-			<Description><![CDATA["Line 1"]]></Description>
-			<Value><![CDATA[""]]></Value>
-		</String>
-		<String Name="labelLine2">
-			<Description><![CDATA["Line 2"]]></Description>
-			<Value><![CDATA[""]]></Value>
-		</String>
-		<String Name="labelLine3">
-			<Description><![CDATA["Line 2"]]></Description>
-			<Value><![CDATA[""]]></Value>
-		</String>
-		<Boolean Name="showLine1">
-			<Description><![CDATA[""]]></Description>
-			<Value>1</Value>
-		</Boolean>
-		<Boolean Name="showLine2">
-			<Description><![CDATA[""]]></Description>
-			<Value>1</Value>
-		</Boolean>
-		<Boolean Name="showLine3">
-			<Description><![CDATA[""]]></Description>
-			<Value>1</Value>
-		</Boolean>
-		<Integer Name="customBorder">
-			<Description><![CDATA["Custom Border"]]></Description>
-			<Value>0</Value>
-		</Integer>
-		<Length Name="borderOffset">
-			<Description><![CDATA["Border Offset"]]></Description>
-			<Value>0</Value>
-		</Length>
-		<Angle Name="rotAngle">
-			<Description><![CDATA["Rotation Angle"]]></Description>
-			<Value>0</Value>
-		</Angle>
-		<Integer Name="slopeMarker">
-			<Description><![CDATA[""]]></Description>
-			<Value>0</Value>
-		</Integer>
-		<Length Name="deltaX">
-			<Description><![CDATA["Delta X"]]></Description>
-			<Value>0</Value>
-		</Length>
-		<Length Name="deltaY">
-			<Description><![CDATA["Delty Y"]]></Description>
-			<Value>0.3</Value>
-		</Length>
-		<Length Name="coord_z">
-			<Description><![CDATA[""]]></Description>
-			<Value>-3</Value>
-		</Length>
-		<Integer Name="gs_ui_current_page">
-			<Description><![CDATA[""]]></Description>
-			<Value>1</Value>
 		</Integer>
 	</Parameters>
 </ParamSection>

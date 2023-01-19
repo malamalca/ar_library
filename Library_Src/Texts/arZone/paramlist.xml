@@ -26,6 +26,10 @@
 			<Description><![CDATA["Apartment Number"]]></Description>
 			<Value><![CDATA[""]]></Value>
 		</String>
+		<Boolean Name="isHeated">
+			<Description><![CDATA["Heated Zone"]]></Description>
+			<Value>1</Value>
+		</Boolean>
 		<String Name="roomNumberFull">
 			<Description><![CDATA["Zone Number w. MasterID"]]></Description>
 			<Value><![CDATA[" 001"]]></Value>

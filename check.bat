@@ -17,7 +17,9 @@ echo.
 echo Converting HSF to GSM...
 if "%passwd%" NEQ "" (set hsf2gsmCommand=%hsf2gsmCommand% -password %passwd%)
 
-set hsf2gsmCommand="%hsf2gsmCommand%" finalizelibrary -reportlevel 1 -format HSF Library_Src Library_GSM Library_Base
+
+rem convchecklibrary or finalizelibrary
+set hsf2gsmCommand="%hsf2gsmCommand%" finalizelibrary -reportlevel 1 -format HSF Library_Src Library_GSM "..\Library_Base"
 
 rem Execute command
 %hsf2gsmCommand%

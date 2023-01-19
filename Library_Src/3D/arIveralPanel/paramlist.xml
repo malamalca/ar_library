@@ -111,6 +111,13 @@
 			<Description><![CDATA["3d Representation"]]></Description>
 			<Value><![CDATA[""]]></Value>
 		</String>
+		<Boolean Name="hasLaminate">
+			<Description><![CDATA["Has Laminate"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
 		<Material Name="matMain">
 			<Description><![CDATA["Laminate Material"]]></Description>
 			<Flags>

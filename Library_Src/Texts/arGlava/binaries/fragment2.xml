@@ -2,8 +2,8 @@
 <Fragment2 Ordering="DrawQueue">
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>29</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>79</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -13,8 +13,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>4</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>11</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -24,8 +24,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>35</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>74</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -35,8 +35,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>17</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>80</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -46,8 +46,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>18</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>81</StyleInd>
 		<Face>1</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -57,8 +57,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>19</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>82</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -68,8 +68,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>55</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>83</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -79,8 +79,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>60</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>84</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -90,8 +90,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>61</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>85</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -101,8 +101,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>56</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>86</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -112,8 +112,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>57</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>87</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -123,8 +123,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>58</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>88</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -134,8 +134,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>59</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>89</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -145,8 +145,8 @@
 	</Font>
 	<Font>
 		<FamilyType>0</FamilyType>
-		<FontName><![CDATA["Open Sans Condensed Light srednjeevropska"]]></FontName>
-		<StyleInd>20</StyleInd>
+		<FontName><![CDATA["Open Sans Condensed Light Central European"]]></FontName>
+		<StyleInd>90</StyleInd>
 		<Face>0</Face>
 		<Centre>1</Centre>
 		<Justification>0</Justification>
@@ -6208,7 +6208,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Naziv objekta:"]]></L>
 					</TStyle>
@@ -6241,7 +6241,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Datum:"]]></L>
 					</TStyle>
@@ -6274,7 +6274,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Številka izvoda:"]]></L>
 					</TStyle>
@@ -6308,7 +6308,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<PROJECTNAME>"]]></L>
 					</TStyle>
@@ -6342,7 +6342,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<PROJECTNUMBER>"]]></L>
 					</TStyle>
@@ -6375,7 +6375,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Vrsta gradnje:"]]></L>
 					</TStyle>
@@ -6408,7 +6408,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Številka projekta:"]]></L>
 					</TStyle>
@@ -6442,7 +6442,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2.5</Size>
-						<StyleInd>35</StyleInd>
+						<StyleInd>74</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<PROJECTSTATUS>"]]></L>
 					</TStyle>
@@ -6475,7 +6475,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Vrsta projekta:"]]></L>
 					</TStyle>
@@ -6509,7 +6509,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<SUBSETID>"]]></L>
 					</TStyle>
@@ -6542,7 +6542,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Vsebina:"]]></L>
 					</TStyle>
@@ -6576,7 +6576,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CURRENTISSUEDATE>"]]></L>
 					</TStyle>
@@ -6609,7 +6609,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2</Size>
-						<StyleInd>17</StyleInd>
+						<StyleInd>80</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Naziv objekta:"]]></L>
 					</TStyle>
@@ -6642,7 +6642,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2</Size>
-						<StyleInd>17</StyleInd>
+						<StyleInd>80</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Datum:"]]></L>
 					</TStyle>
@@ -6675,7 +6675,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2</Size>
-						<StyleInd>17</StyleInd>
+						<StyleInd>80</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Številka izvoda:"]]></L>
 					</TStyle>
@@ -6709,7 +6709,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>4</Size>
-						<StyleInd>18</StyleInd>
+						<StyleInd>81</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<PROJECTNAME>"]]></L>
 					</TStyle>
@@ -6743,7 +6743,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>4</Size>
-						<StyleInd>19</StyleInd>
+						<StyleInd>82</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<PROJECTNUMBER>"]]></L>
 					</TStyle>
@@ -6776,7 +6776,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2</Size>
-						<StyleInd>17</StyleInd>
+						<StyleInd>80</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Vrsta gradnje:"]]></L>
 					</TStyle>
@@ -6809,7 +6809,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2</Size>
-						<StyleInd>17</StyleInd>
+						<StyleInd>80</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Številka projekta:"]]></L>
 					</TStyle>
@@ -6843,7 +6843,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>4</Size>
-						<StyleInd>19</StyleInd>
+						<StyleInd>82</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<PROJECTSTATUS>"]]></L>
 					</TStyle>
@@ -6876,7 +6876,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2</Size>
-						<StyleInd>17</StyleInd>
+						<StyleInd>80</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Vrsta projekta:"]]></L>
 					</TStyle>
@@ -6910,7 +6910,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>4</Size>
-						<StyleInd>19</StyleInd>
+						<StyleInd>82</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<SUBSETID>"]]></L>
 					</TStyle>
@@ -6943,7 +6943,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2</Size>
-						<StyleInd>17</StyleInd>
+						<StyleInd>80</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["Vsebina:"]]></L>
 					</TStyle>
@@ -6977,7 +6977,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>4</Size>
-						<StyleInd>19</StyleInd>
+						<StyleInd>82</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CURRENTISSUEDATE>"]]></L>
 					</TStyle>
@@ -8752,7 +8752,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Naziv objekta:"]]></L>
 					</TStyle>
@@ -8786,7 +8786,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Investitor:"]]></L>
 					</TStyle>
@@ -8820,7 +8820,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Datum:"]]></L>
 					</TStyle>
@@ -8854,7 +8854,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Št. risbe:"]]></L>
 					</TStyle>
@@ -8888,7 +8888,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<LAYOUTID>"]]></L>
 					</TStyle>
@@ -8900,7 +8900,7 @@
 	<RichText>
 		<DrawIndex>10</DrawIndex>
 		<Layer>1</Layer>
-		<LocX>-0.0230500886018</LocX>
+		<LocX>-0.037</LocX>
 		<LocY>0.0066428487988</LocY>
 		<Width>6</Width>
 		<Ang>0</Ang>
@@ -8922,7 +8922,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Spr.:"]]></L>
 					</TStyle>
@@ -8956,7 +8956,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<DRAWINGSCALE>"]]></L>
 					</TStyle>
@@ -8990,7 +8990,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Merilo:"]]></L>
 					</TStyle>
@@ -9024,7 +9024,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Vrsta načrta:"]]></L>
 					</TStyle>
@@ -9058,7 +9058,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<CURRENTISSUEDATE>"]]></L>
 					</TStyle>
@@ -9092,7 +9092,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>4.5</Size>
-						<StyleInd>55</StyleInd>
+						<StyleInd>83</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<PROJECTNAME>"]]></L>
 					</TStyle>
@@ -9126,7 +9126,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTNAME>"]]></L>
 					</TStyle>
@@ -9142,13 +9142,13 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTADDRESS1>"]]></L>
 					</TStyle>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA[" "]]></L>
 					</TStyle>
@@ -9164,19 +9164,19 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTPOSTCODE>"]]></L>
 					</TStyle>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA[" "]]></L>
 					</TStyle>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTCITY>"]]></L>
 					</TStyle>
@@ -9192,7 +9192,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.20475532112</Size>
-						<StyleInd>60</StyleInd>
+						<StyleInd>84</StyleInd>
 						<PenInd>0</PenInd>
 						<L><![CDATA[""]]></L>
 					</TStyle>
@@ -9226,7 +9226,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<PROJECTNUMBER>"]]></L>
 					</TStyle>
@@ -9260,7 +9260,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Vrsta gradnje:"]]></L>
 					</TStyle>
@@ -9294,7 +9294,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Številka projekta:"]]></L>
 					</TStyle>
@@ -9328,7 +9328,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<PROJECTSTATUS>"]]></L>
 					</TStyle>
@@ -9362,7 +9362,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<SUBSETNAME>"]]></L>
 					</TStyle>
@@ -9396,7 +9396,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.31045383109</Size>
-						<StyleInd>61</StyleInd>
+						<StyleInd>85</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Odgovorni vodja projekta:"]]></L>
 					</TStyle>
@@ -9430,7 +9430,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2.7</Size>
-						<StyleInd>56</StyleInd>
+						<StyleInd>86</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<ARCHITECT>"]]></L>
 					</TStyle>
@@ -9464,7 +9464,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Projektant:"]]></L>
 					</TStyle>
@@ -9498,7 +9498,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Odgovorni projektant:"]]></L>
 					</TStyle>
@@ -9532,7 +9532,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2.7</Size>
-						<StyleInd>56</StyleInd>
+						<StyleInd>86</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<ARCHITECT>"]]></L>
 					</TStyle>
@@ -9566,7 +9566,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Slakova ulica 36, 8210 Trebnje"]]></L>
 					</TStyle>
@@ -9600,7 +9600,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Tel.: 041 891 824"]]></L>
 					</TStyle>
@@ -9634,7 +9634,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["http://www.arhim.si, e-mail: info@arhim.si"]]></L>
 					</TStyle>
@@ -9668,7 +9668,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["ARHIM, arhitektura, projektiranje, notranja oprema, d.o.o."]]></L>
 					</TStyle>
@@ -9702,7 +9702,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Vsebina risbe:"]]></L>
 					</TStyle>
@@ -9736,7 +9736,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<LAYOUTNAME>"]]></L>
 					</TStyle>
@@ -9770,7 +9770,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Vrsta projekta:"]]></L>
 					</TStyle>
@@ -9804,7 +9804,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<SUBSETID>"]]></L>
 					</TStyle>
@@ -9838,7 +9838,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Naziv objekta:"]]></L>
 					</TStyle>
@@ -9872,7 +9872,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Investitor:"]]></L>
 					</TStyle>
@@ -9906,7 +9906,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Datum:"]]></L>
 					</TStyle>
@@ -9940,7 +9940,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Št. risbe:"]]></L>
 					</TStyle>
@@ -9974,7 +9974,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<LAYOUTID>"]]></L>
 					</TStyle>
@@ -10008,7 +10008,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Spr.:"]]></L>
 					</TStyle>
@@ -10042,7 +10042,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<DRAWINGSCALE>"]]></L>
 					</TStyle>
@@ -10076,7 +10076,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Merilo:"]]></L>
 					</TStyle>
@@ -10110,7 +10110,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Vrsta načrta:"]]></L>
 					</TStyle>
@@ -10144,7 +10144,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<CURRENTISSUEDATE>"]]></L>
 					</TStyle>
@@ -10178,7 +10178,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>4.5</Size>
-						<StyleInd>55</StyleInd>
+						<StyleInd>83</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<PROJECTNAME>"]]></L>
 					</TStyle>
@@ -10212,7 +10212,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTNAME>"]]></L>
 					</TStyle>
@@ -10228,7 +10228,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTADDRESS1>"]]></L>
 					</TStyle>
@@ -10244,19 +10244,19 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTPOSTCODE>"]]></L>
 					</TStyle>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA[" "]]></L>
 					</TStyle>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTCITY>"]]></L>
 					</TStyle>
@@ -10290,7 +10290,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<PROJECTNUMBER>"]]></L>
 					</TStyle>
@@ -10324,7 +10324,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Vrsta gradnje:"]]></L>
 					</TStyle>
@@ -10358,7 +10358,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Številka projekta:"]]></L>
 					</TStyle>
@@ -10392,7 +10392,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<PROJECTSTATUS>"]]></L>
 					</TStyle>
@@ -10426,7 +10426,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<SUBSETNAME>"]]></L>
 					</TStyle>
@@ -10460,7 +10460,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Odgovorni vodja projekta:"]]></L>
 					</TStyle>
@@ -10494,7 +10494,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2.7</Size>
-						<StyleInd>56</StyleInd>
+						<StyleInd>86</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<ARCHITECT>"]]></L>
 					</TStyle>
@@ -10528,7 +10528,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Projektant:"]]></L>
 					</TStyle>
@@ -10562,7 +10562,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Odgovorni projektant:"]]></L>
 					</TStyle>
@@ -10596,7 +10596,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2.7</Size>
-						<StyleInd>56</StyleInd>
+						<StyleInd>86</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<ARCHITECT>"]]></L>
 					</TStyle>
@@ -10630,7 +10630,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Slakova ulica 36, 8210 Trebnje"]]></L>
 					</TStyle>
@@ -10664,7 +10664,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Tel.: 041 891 824"]]></L>
 					</TStyle>
@@ -10698,7 +10698,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["http://www.arhim.si, e-mail: info@arhim.si"]]></L>
 					</TStyle>
@@ -10732,7 +10732,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["ARHIM, arhitektura, projektiranje, notranja oprema, d.o.o."]]></L>
 					</TStyle>
@@ -10766,7 +10766,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Vsebina risbe:"]]></L>
 					</TStyle>
@@ -10800,7 +10800,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<LAYOUTNAME>"]]></L>
 					</TStyle>
@@ -10834,7 +10834,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Vrsta projekta:"]]></L>
 					</TStyle>
@@ -10868,7 +10868,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<SUBSETID>"]]></L>
 					</TStyle>
@@ -10881,7 +10881,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.117</LocX>
-		<LocY>0.0271428498121</LocY>
+		<LocY>0.0266428268638</LocY>
 		<Width>46</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -10902,7 +10902,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Naziv objekta:"]]></L>
 					</TStyle>
@@ -10915,7 +10915,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.117</LocX>
-		<LocY>0.0171428527983</LocY>
+		<LocY>0.0166428389625</LocY>
 		<Width>46</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -10936,7 +10936,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Investitor:"]]></L>
 					</TStyle>
@@ -10949,7 +10949,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.057</LocX>
-		<LocY>0.00714285385917</LocY>
+		<LocY>0.00664283528834</LocY>
 		<Width>21.0838450522</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -10970,7 +10970,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Št. risbe:"]]></L>
 					</TStyle>
@@ -10983,7 +10983,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.057</LocX>
-		<LocY>0.00100000404702</LocY>
+		<LocY>0.000499992286197</LocY>
 		<Width>20.757696802</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -11004,7 +11004,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<LAYOUTID>"]]></L>
 					</TStyle>
@@ -11017,7 +11017,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.0389161549478</LocX>
-		<LocY>0.00714285385917</LocY>
+		<LocY>0.00664283528834</LocY>
 		<Width>6</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -11038,7 +11038,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Spr.:"]]></L>
 					</TStyle>
@@ -11051,7 +11051,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.027</LocX>
-		<LocY>0.00100000269894</LocY>
+		<LocY>0.000499992286197</LocY>
 		<Width>26.5</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -11072,7 +11072,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<DRAWINGSCALE>"]]></L>
 					</TStyle>
@@ -11085,7 +11085,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.027</LocX>
-		<LocY>0.00714285251109</LocY>
+		<LocY>0.00664283528834</LocY>
 		<Width>26.5</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -11106,7 +11106,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Merilo:"]]></L>
 					</TStyle>
@@ -11119,7 +11119,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.057</LocX>
-		<LocY>0.0171428546915</LocY>
+		<LocY>0.0166428389625</LocY>
 		<Width>46</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -11140,7 +11140,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Vsebina risbe:"]]></L>
 					</TStyle>
@@ -11153,7 +11153,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.057</LocX>
-		<LocY>0.0171428546915</LocY>
+		<LocY>0.0166428389625</LocY>
 		<Width>56.5</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -11174,7 +11174,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<LAYOUTNAME>"]]></L>
 					</TStyle>
@@ -11208,7 +11208,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<PROJECTNAME>"]]></L>
 					</TStyle>
@@ -11242,7 +11242,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<PROJECTNUMBER>"]]></L>
 					</TStyle>
@@ -11255,7 +11255,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.057</LocX>
-		<LocY>0.0271428403947</LocY>
+		<LocY>0.0266428187886</LocY>
 		<Width>30</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -11276,7 +11276,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Številka projekta:"]]></L>
 					</TStyle>
@@ -11310,7 +11310,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Odgovorni projektant:"]]></L>
 					</TStyle>
@@ -11344,7 +11344,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2.5</Size>
-						<StyleInd>35</StyleInd>
+						<StyleInd>74</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<ARCHITECT>"]]></L>
 					</TStyle>
@@ -11378,7 +11378,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Projektant:"]]></L>
 					</TStyle>
@@ -11391,7 +11391,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.027</LocX>
-		<LocY>0.0271427968382</LocY>
+		<LocY>0.0266428187886</LocY>
 		<Width>26.5</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -11412,7 +11412,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.5</Size>
-						<StyleInd>29</StyleInd>
+						<StyleInd>79</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Datum"]]></L>
 					</TStyle>
@@ -11426,13 +11426,12 @@
 		<Layer>3</Layer>
 		<LocX>-0.027</LocX>
 		<LocY>0.0267353</LocY>
-		<Width>26.5</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
 		<CharSpaceFactor>1</CharSpaceFactor>
 		<Anchor>1</Anchor>
 		<FixedHeight>true</FixedHeight>
-		<NonBreaking>false</NonBreaking>
+		<NonBreaking>true</NonBreaking>
 		<ParamInd>0</ParamInd>
 		<Ind1>0</Ind1>
 		<Ind2>0</Ind2>
@@ -11446,7 +11445,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>3</Size>
-						<StyleInd>4</StyleInd>
+						<StyleInd>11</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["<CURRENTISSUEDATE>"]]></L>
 					</TStyle>
@@ -11480,7 +11479,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>0.84375</Size>
-						<StyleInd>57</StyleInd>
+						<StyleInd>87</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Slakova ulica 36, 8210 Trebnje"]]></L>
 					</TStyle>
@@ -11514,7 +11513,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>0.84375</Size>
-						<StyleInd>57</StyleInd>
+						<StyleInd>87</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Tel.: 041 891 824"]]></L>
 					</TStyle>
@@ -11548,7 +11547,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>0.84375</Size>
-						<StyleInd>57</StyleInd>
+						<StyleInd>87</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["http://www.arhim.si, e-mail: info@arhim.si"]]></L>
 					</TStyle>
@@ -11582,7 +11581,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>0.84375</Size>
-						<StyleInd>57</StyleInd>
+						<StyleInd>87</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["ARHIM, arhitektura, projektiranje, notranja oprema, d.o.o."]]></L>
 					</TStyle>
@@ -11595,7 +11594,7 @@
 		<DrawIndex>10</DrawIndex>
 		<Layer>3</Layer>
 		<LocX>-0.117</LocX>
-		<LocY>0.0171428546915</LocY>
+		<LocY>0.0167353065704</LocY>
 		<Width>59</Width>
 		<Ang>0</Ang>
 		<WidthFactor>1</WidthFactor>
@@ -11616,7 +11615,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2.8</Size>
-						<StyleInd>58</StyleInd>
+						<StyleInd>88</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTNAME>"]]></L>
 					</TStyle>
@@ -11632,7 +11631,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2.8</Size>
-						<StyleInd>58</StyleInd>
+						<StyleInd>88</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTADDRESS1>"]]></L>
 					</TStyle>
@@ -11648,13 +11647,13 @@
 				<TextStyles>
 					<TStyle>
 						<Size>2.8</Size>
-						<StyleInd>58</StyleInd>
+						<StyleInd>88</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTPOSTCODE>"]]></L>
 					</TStyle>
 					<TStyle>
 						<Size>2.8</Size>
-						<StyleInd>58</StyleInd>
+						<StyleInd>88</StyleInd>
 						<PenInd>1</PenInd>
 						<L><![CDATA["<CLIENTCITY>"]]></L>
 					</TStyle>
@@ -11688,7 +11687,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>0.675</Size>
-						<StyleInd>59</StyleInd>
+						<StyleInd>89</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Slakova ulica 36, 8210 Trebnje"]]></L>
 					</TStyle>
@@ -11722,7 +11721,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>0.675</Size>
-						<StyleInd>59</StyleInd>
+						<StyleInd>89</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Tel.: 041 891 824"]]></L>
 					</TStyle>
@@ -11756,7 +11755,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>0.675</Size>
-						<StyleInd>59</StyleInd>
+						<StyleInd>89</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["http://www.arhim.si, e-mail: info@arhim.si"]]></L>
 					</TStyle>
@@ -11790,7 +11789,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>0.675</Size>
-						<StyleInd>59</StyleInd>
+						<StyleInd>89</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["ARHIM, arhitektura, projektiranje, notranja oprema, d.o.o."]]></L>
 					</TStyle>
@@ -11824,7 +11823,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.485</Size>
-						<StyleInd>20</StyleInd>
+						<StyleInd>90</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Slakova ulica 36, 8210 Trebnje"]]></L>
 					</TStyle>
@@ -11858,7 +11857,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.485</Size>
-						<StyleInd>20</StyleInd>
+						<StyleInd>90</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["Tel.: 041 891 824"]]></L>
 					</TStyle>
@@ -11892,7 +11891,7 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.485</Size>
-						<StyleInd>20</StyleInd>
+						<StyleInd>90</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["http://www.arhim.si, e-mail: info@arhim.si"]]></L>
 					</TStyle>
@@ -11926,9 +11925,77 @@
 				<TextStyles>
 					<TStyle>
 						<Size>1.485</Size>
-						<StyleInd>20</StyleInd>
+						<StyleInd>90</StyleInd>
 						<PenInd>7</PenInd>
 						<L><![CDATA["ARHIM, arhitektura, projektiranje, notranja oprema, d.o.o."]]></L>
+					</TStyle>
+				</TextStyles>
+				<Tabulators/>
+			</Paragraph>
+		</Content>
+	</RichText>
+	<RichText>
+		<DrawIndex>10</DrawIndex>
+		<Layer>2</Layer>
+		<LocX>-0.0645500886018</LocX>
+		<LocY>0.000499992286197</LocY>
+		<Width>27</Width>
+		<Ang>0</Ang>
+		<WidthFactor>1</WidthFactor>
+		<CharSpaceFactor>1</CharSpaceFactor>
+		<Anchor>7</Anchor>
+		<FixedHeight>true</FixedHeight>
+		<NonBreaking>false</NonBreaking>
+		<ParamInd>0</ParamInd>
+		<Ind1>0</Ind1>
+		<Ind2>0</Ind2>
+		<Content>
+			<Paragraph>
+				<Alignment>1</Alignment>
+				<FirstLineIndent>0</FirstLineIndent>
+				<LeftIndent>0</LeftIndent>
+				<RightIndent>0</RightIndent>
+				<LineSpacing>-1</LineSpacing>
+				<TextStyles>
+					<TStyle>
+						<Size>3</Size>
+						<StyleInd>11</StyleInd>
+						<PenInd>7</PenInd>
+						<L><![CDATA["<CURRENTREVISIONID>"]]></L>
+					</TStyle>
+				</TextStyles>
+				<Tabulators/>
+			</Paragraph>
+		</Content>
+	</RichText>
+	<RichText>
+		<DrawIndex>10</DrawIndex>
+		<Layer>1</Layer>
+		<LocX>-0.046</LocX>
+		<LocY>0.000500005796656</LocY>
+		<Width>24</Width>
+		<Ang>0</Ang>
+		<WidthFactor>1</WidthFactor>
+		<CharSpaceFactor>1</CharSpaceFactor>
+		<Anchor>7</Anchor>
+		<FixedHeight>true</FixedHeight>
+		<NonBreaking>false</NonBreaking>
+		<ParamInd>0</ParamInd>
+		<Ind1>0</Ind1>
+		<Ind2>0</Ind2>
+		<Content>
+			<Paragraph>
+				<Alignment>1</Alignment>
+				<FirstLineIndent>0</FirstLineIndent>
+				<LeftIndent>0</LeftIndent>
+				<RightIndent>0</RightIndent>
+				<LineSpacing>-1</LineSpacing>
+				<TextStyles>
+					<TStyle>
+						<Size>3</Size>
+						<StyleInd>11</StyleInd>
+						<PenInd>7</PenInd>
+						<L><![CDATA["<CURRENTREVISIONID>"]]></L>
 					</TStyle>
 				</TextStyles>
 				<Tabulators/>

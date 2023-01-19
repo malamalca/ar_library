@@ -302,9 +302,6 @@
 		</Length>
 		<Angle Name="directions">
 			<Description><![CDATA[""]]></Description>
-			<Flags>
-				<ParFlg_Hidden/>
-			</Flags>
 			<ArrayValues FirstDimension="50" SecondDimension="0">
 				<AVal Row="1">0</AVal>
 				<AVal Row="2">30</AVal>
