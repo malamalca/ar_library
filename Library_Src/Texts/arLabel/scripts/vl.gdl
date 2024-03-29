@@ -1,1 +1,10 @@
-﻿hideparameter alldim font_names[]result = request("FONTNAMES_LIST", "", font_names)values{2} "slopeMarker", SLOPEMARKER_NONE, "Brez", SLOPEMARKER_TRIANGLE, "Trikotnik", SLOPEMARKER_INCLINATION, "Naklon"values{2} "customBorder", BORDER_NONE, "Brez", BORDER_RECT, "Pravokotnik", BORDER_1, "Večkotnik"
+﻿hideparameter all
+
+dim font_names[]
+result = request("FONTNAMES_LIST", "", font_names)
+
+values{2} "slopeMarker", SLOPEMARKER_NONE, "Brez", SLOPEMARKER_TRIANGLE, "Trikotnik", SLOPEMARKER_INCLINATION, "Naklon"
+
+values{2} "customBorder", BORDER_NONE, "Brez", BORDER_RECT, "Pravokotnik", BORDER_1, "Večkotnik"
+
+values "textOptionMVO" "Default", "Small"

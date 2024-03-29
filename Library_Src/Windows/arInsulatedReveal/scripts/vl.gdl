@@ -1,1 +1,1 @@
-﻿values "slatAngle" range [-88, 88]values "loweredDistance" range [0, B-slatBottomOffset]
+﻿lock "length_insulation"parameters length_insulation = length_insulation

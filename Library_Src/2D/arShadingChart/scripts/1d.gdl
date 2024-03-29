@@ -1,1 +1,7 @@
-﻿nix = 0.001unId = 1call "ar3DPolygon" parameters n = n, xyz = xyz, xyz_e = xyz_e, xyz_ea = xyz_ea  returned_parameters unId
+﻿nix = 0.001
+unId = 1
+call "ar3DPolygon" parameters n = n, xyz = xyz, xyz_e = xyz_e, xyz_ea = xyz_ea  returned_parameters unId
+
+!dim xyz_e[51][3]
+!dim xyz_ea[51][3]
+

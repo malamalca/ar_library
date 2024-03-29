@@ -385,5 +385,9 @@
 			<Description><![CDATA["Cast Shadow"]]></Description>
 			<Value>0</Value>
 		</Boolean>
+		<Length Name="total_length">
+			<Description><![CDATA["Total Length"]]></Description>
+			<Value>3</Value>
+		</Length>
 	</Parameters>
 </ParamSection>

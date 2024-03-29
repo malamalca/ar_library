@@ -8,7 +8,7 @@ echo "ARCHICAD Library Checker"
 echo "-----------------------------------------"
 echo.
 
-set "hsf2gsmCommand=C:\Program Files\GRAPHISOFT\ARCHICAD 25\LP_XMLConverter.exe"
+set "hsf2gsmCommand=C:\Program Files\GRAPHISOFT\ARCHICAD 27\LP_XMLConverter.exe"
 
 set "passwd="
 rem set /p passwd="Enter password for GDL objects: "
@@ -23,3 +23,5 @@ set hsf2gsmCommand="%hsf2gsmCommand%" finalizelibrary -reportlevel 1 -format HSF
 
 rem Execute command
 %hsf2gsmCommand%
+
+pause

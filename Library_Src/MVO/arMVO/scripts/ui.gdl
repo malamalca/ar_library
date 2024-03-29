@@ -1,1 +1,45 @@
-﻿! ------------------------------------------------------------! set basic variables! ------------------------------------------------------------_yCurr		= 5_dy		= 25		! generic line spacing		_totalWidth	= 600		! fixed value to match the exisiting panels_totalHeight	= 4* _dy	! calculate the height from line spacing_stDialogTitle	= `arLibrary Settings`! ------------------------------------------------------------! set title and height for the custom MVO panel! ------------------------------------------------------------ui_dialog _stDialogTitle, _totalWidth, _totalHeight! in UI script of the MVO objectui_style 0, 1ui_outfield `Openings Settings`, 0, _yCurr, 150, 15_yCurr = _yCurr + 20ui_style 0, 0ui_outfield `Show Caption on Blinds`, 10, _yCurr, 150, 15ui_infield "blindsShowCaptionMVO", 155, _yCurr-4, 19, 19
+﻿! ------------------------------------------------------------
+! set basic variables
+! ------------------------------------------------------------
+_yCurr		= 5
+_dy			= 23		! generic line spacing		
+
+_totalWidth	= 600		! fixed value to match the exisiting panels
+_totalHeight	= 6 * _dy	! calculate the height from line spacing
+_stDialogTitle	= `arLibrary Settings`
+
+! ------------------------------------------------------------
+! set title and height for the custom MVO panel
+! ------------------------------------------------------------
+ui_dialog _stDialogTitle, _totalWidth, _totalHeight
+
+! in UI script of the MVO object
+ui_style 0, 1
+ui_outfield `Objects Font settings`, 0, _yCurr, 150, 15
+
+ui_style 0, 0
+
+_yCurr = _yCurr + _dy
+ui_outfield `Default font:`, 10, _yCurr, 140, 15
+ui_infield "arFontDefaultMVO", 155, _yCurr-5, 150, 21
+ui_infield "arFontSizeDefaultMVO", 155 + 155, _yCurr-5, 40, 21
+ui_infield "arFontPenDefaultMVO", 155 + 155 + 45, _yCurr-5, 30, 21
+ui_textstyle_infield{2} "arFontStyleDefaultMVO", 1+2+4+0+0+0, 155 + 155 + 35 + 45, _yCurr-3, 19, 19, 2
+
+_yCurr = _yCurr + _dy
+ui_outfield `Small font:`, 10, _yCurr, 140, 15
+ui_infield "arFontSmallMVO", 155, _yCurr-5, 150, 21
+ui_infield "arFontSizeSmallMVO", 155 + 155, _yCurr-5, 40, 21
+ui_infield "arFontPenSmallMVO", 155 + 155 + 45, _yCurr-5, 30, 21
+ui_textstyle_infield{2} "arFontStyleSmallMVO", 1+2+4+0+0+0, 155 + 155 + 35 + 45, _yCurr-3, 19, 19, 2
+
+
+_yCurr = _yCurr * 1.5
+! in UI script of the MVO object
+ui_style 0, 1
+ui_outfield `Openings Settings:`, 0, _yCurr, 150, 15
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Show Caption on Blinds:`, 10, _yCurr, 140, 15
+ui_infield "blindsShowCaptionMVO", 155, _yCurr-4, 19, 19

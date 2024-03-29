@@ -1,0 +1,133 @@
+﻿! initialization
+unId = 1
+innerFrameInset = 0.03
+innerFrameOffset = 0.02
+innerFrameWidth = A - innerFrameInset * 2
+
+
+DEFINE STYLE "roomStyleText"  MarkerFont, MarkerFontSize, 5, 1
+SET STYLE roomStyleText
+
+! outer frame
+!RECT2 -A/2, 0, -A/2+frameWidth, -frameWidth
+POLY2_ 6, 1+0+4, 
+	-A/2, 0, 1,
+	-A/2+frameWidth, 0, 1,
+	-A/2+frameWidth, - innerFrameOffset, 1,
+	-A/2+frameWidth - frameWidth + innerFrameInset, -innerFrameOffset, 1,
+	-A/2+frameWidth - frameWidth + innerFrameInset, -frameWidth, 1,
+	-A/2, -frameWidth, 1
+
+!RECT2 A/2, 0, A/2-frameWidth, -frameWidth
+POLY2_ 6, 1+0+4, 
+	A/2, 0, 1,
+	A/2-frameWidth, 0, 1,
+	A/2-frameWidth, - innerFrameOffset, 1,
+	A/2-frameWidth + frameWidth - innerFrameInset, -innerFrameOffset, 1,
+	A/2-frameWidth + frameWidth - innerFrameInset, -frameWidth, 1,
+	A/2, -frameWidth, 1
+
+
+! top line
+LINE2 -A/2, 0, A/2, 0
+HOTSPOT2 -A/2, 0
+HOTSPOT2 A/2, 0
+
+! inner frame
+RECT2 -innerFrameWidth/2, -innerFrameOffset, -innerFrameWidth/2 + frameWidth, -innerFrameOffset-frameWidth
+RECT2 innerFrameWidth/2, -innerFrameOffset, innerFrameWidth/2 - frameWidth, -innerFrameOffset-frameWidth
+
+LINE2 -innerFrameWidth/2 + frameWidth, -innerFrameOffset, 					innerFrameWidth/2 - frameWidth, -innerFrameOffset
+LINE2 -innerFrameWidth/2 + frameWidth, -innerFrameOffset - frameWidth/2, 	innerFrameWidth/2 - frameWidth, -innerFrameOffset - frameWidth/2
+LINE2 -innerFrameWidth/2 + frameWidth, -innerFrameOffset - frameWidth,		innerFrameWidth/2 - frameWidth, -innerFrameOffset - frameWidth
+
+! hotline for frame width
+hotline2 -A/2, 0, -A/2, -frameWidth
+hotline2 A/2, 0, A/2, -frameWidth
+
+! *
+! REVEAL
+if drawReveal then
+	line2 -A/2, 0, -A/2, revealOutsideLength
+	hotline2 -A/2, 0, -A/2, revealOutsideLength
+	line2 A/2, 0, A/2, revealOutsideLength
+	hotline2 A/2, 0, A/2, revealOutsideLength
+
+	! outside reveal length
+	hotspot2 0, 0, unId, revealOutsideLength, 1: unId = unId + 1
+	hotspot2 0, revealOutsideLength, unId, revealOutsideLength, 2: unId = unId + 1
+	hotspot2 0, -1, unId, revealOutsideLength, 3: unId = unId + 1
+
+	! draw inside reveal
+	line2 		-A/2, -frameWidth, -A/2-revealInsideOffset, -revealInsideLength
+	hotline2 	-A/2, -frameWidth, -A/2-revealInsideOffset, -revealInsideLength
+	line2 		A/2, -frameWidth, A/2+revealInsideOffset, -revealInsideLength
+	hotline2	A/2, -frameWidth, A/2+revealInsideOffset, -revealInsideLength
+
+	! inside reveal length
+	hotspot2 0, 0, unId, revealInsideLength, 1: unId = unId + 1
+	hotspot2 0, -revealInsideLength, unId, revealInsideLength, 2: unId = unId + 1
+	hotspot2 0, 1, unId, revealInsideLength, 3: unId = unId + 1
+
+	! inside reveal offset
+	hotspot2 -A/2, -revealInsideLength, unId, revealInsideOffset, 1: unId = unId + 1
+	hotspot2 -A/2-revealInsideOffset, -revealInsideLength, unId, revealInsideOffset, 2: unId = unId + 1
+	hotspot2 -A/2-revealInsideOffset+1, -revealInsideLength, unId, revealInsideOffset, 3: unId = unId + 1
+endif
+
+! *
+! MARKER
+result = REQUEST ("window_show_dim", "", showMarker)
+
+IF showMarker THEN
+	markerLineToOutside = 0.5
+	markerLineToInside = markerExtension
+
+	LINE2 0, markerLineToOutside, 0, -markerLineToInside
+	HOTSPOT2 0, markerLineToOutside, unId: unId = unId + 1
+	HOTSPOT2 0, -markerLineToInside, unId: unId = unId + 1
+
+	! marker inside offset
+	hotspot2 0, 0, unId, markerExtension, 1: unId = unId + 1
+	hotspot2 0, -markerExtension, unId, markerExtension, 2: unId = unId + 1
+	hotspot2 0, 1, unId, markerExtension, 3: unId = unId + 1
+	
+	heightOfStyle = 0
+	result = REQUEST("Height_of_style", "roomStyleText", heightOfStyle)
+	heightOfStyle = heightOfStyle * GLOB_SCALE / 1000
+	
+	! *
+	! MARKER - parapet
+	result = REQUEST("Sill_height_dimension", "", sillFormat)
+	
+	ADD2 0, -markerLineToInside
+	IF SYMB_ROTANGLE > 90 THEN
+		ROT2 180
+	ENDIF
+	
+	TEXT2 0, 0, "P=" + STR(sillFormat, ZZYZX)
+	DEL TOP
+	
+	
+	! *
+	! MARKER - width and height
+	result = REQUEST("Window_door_dimension", "", widoFormat)
+	
+	maxWidthAB = MAX(STW(STR(widoFormat, A)), STW(STR(widoFormat, B))) * GLOB_SCALE / 1000
+	rotatedMarker = SYMB_ROTANGLE > 89 AND SYMB_ROTANGLE < 270
+	rotationFactor = 1
+	IF rotatedMarker THEN rotationFactor = -1
+	
+	
+	ADD2 -1 * rotationFactor * heightOfStyle / 2, markerLineToOutside - maxWidthAB/2
+	ROT2 90
+	IF rotatedMarker THEN ROT2 180
+	TEXT2 0, 0, STR(widoFormat, A)
+	DEL TOP
+	
+	ADD2 rotationFactor * heightOfStyle / 2, markerLineToOutside - maxWidthAB/2
+	ROT2 90
+	IF rotatedMarker THEN ROT2 180
+	TEXT2 0, 0, STR(widoFormat, B)
+	DEL TOP
+ENDIF

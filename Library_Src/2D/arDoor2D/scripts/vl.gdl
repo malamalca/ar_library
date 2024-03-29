@@ -1,0 +1,4 @@
+﻿values "revealOutsideLength" range [0,)
+values "revealInsideLength" range [0,)
+
+values{2} "doorType" DOORTYPE_SINGLE, "Single Door", DOORTYPE_DOUBLE, "Double Door"

@@ -5,3 +5,15 @@ values "loweredDistance" range [0, B-slatBottomOffset]
 values{2} "bShowText" 	SHOWTEXT_ALWAYS, "Always",
 						SHOWTEXT_NEVER, "Never",
 						SHOWTEXT_MVO, "By MVO"
+
+
+if not(bInsulation) then
+	hideparameter "insulationMat"
+	hideparameter "insulationThickness"
+endif
+
+if bTextStyleByMVO then
+	hideparameter "textPen"
+	hideparameter "textFont"
+	hideparameter "textSize"
+endif

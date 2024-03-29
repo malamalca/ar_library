@@ -165,7 +165,7 @@
 			</ArrayValues>
 		</Integer>
 		<Integer Name="angles">
-			<Description><![CDATA[""]]></Description>
+			<Description><![CDATA["Angles"]]></Description>
 			<ArrayValues FirstDimension="50" SecondDimension="0">
 				<AVal Row="1">45</AVal>
 				<AVal Row="2">0</AVal>

@@ -17,7 +17,7 @@
 		<Length Name="A">
 			<Description><![CDATA["Dimension 1"]]></Description>
 			<Fix/>
-			<Value>0.3</Value>
+			<Value>1</Value>
 		</Length>
 		<Length Name="B">
 			<Description><![CDATA["Dimension 2"]]></Description>
@@ -79,7 +79,11 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value>1</Value>
+			<Value>0</Value>
+		</Length>
+		<Length Name="latchWallWidth">
+			<Description><![CDATA["Debelina stene"]]></Description>
+			<Value>0.04</Value>
 		</Length>
 		<PenColor Name="penLatch">
 			<Description><![CDATA["Barva"]]></Description>
@@ -117,14 +121,14 @@
 			<Value>121</Value>
 		</PenColor>
 		<Length Name="deltaX">
-			<Description><![CDATA[""]]></Description>
+			<Description><![CDATA["Premik pokrova X"]]></Description>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
 			<Value>0</Value>
 		</Length>
 		<Length Name="deltaY">
-			<Description><![CDATA[""]]></Description>
+			<Description><![CDATA["Premik pokrova Y"]]></Description>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -199,14 +203,14 @@
 			<Description><![CDATA["3D Prikaz"]]></Description>
 		</Title>
 		<Length Name="bottomThickness">
-			<Description><![CDATA["Show Bottom Plate"]]></Description>
+			<Description><![CDATA["Debelina spodnje plošče"]]></Description>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
 			<Value>0</Value>
 		</Length>
 		<Length Name="topThickness">
-			<Description><![CDATA["Show Top Plate"]]></Description>
+			<Description><![CDATA["Debelina zgornje plošče"]]></Description>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>

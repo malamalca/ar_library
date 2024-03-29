@@ -170,6 +170,10 @@
 			<Description><![CDATA[""]]></Description>
 			<Value>0</Value>
 		</Integer>
+		<RealNum Name="slopeScaleFactor">
+			<Description><![CDATA["SlopeFactor"]]></Description>
+			<Value>1</Value>
+		</RealNum>
 		<Length Name="deltaX">
 			<Description><![CDATA["Delta X"]]></Description>
 			<Value>0</Value>
@@ -186,5 +190,13 @@
 			<Description><![CDATA[""]]></Description>
 			<Value>1</Value>
 		</Integer>
+		<Boolean Name="bTextStyleByMVO">
+			<Description><![CDATA["Text Style By MVO"]]></Description>
+			<Value>0</Value>
+		</Boolean>
+		<String Name="textOptionMVO">
+			<Description><![CDATA["MVO Text Style Option"]]></Description>
+			<Value><![CDATA["Default"]]></Value>
+		</String>
 	</Parameters>
 </ParamSection>

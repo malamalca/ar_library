@@ -18,7 +18,19 @@ if bShowText = SHOWTEXT_MVO then
 endif
 
 if _showText then
-	define style "own" textFont, textSize, 5, 0
+	textStyle = 0
+	
+	if bTextStyleByMVO then
+		textOption = "Small"
+		_bSuccess = libraryglobal("arMVO", "arFont" + textOption + "MVO", textFont)
+		_bSuccess = libraryglobal("arMVO", "arFontSize" + textOption + "MVO", textSize)
+		_bSuccess = libraryglobal("arMVO", "arFontPen" + textOption + "MVO", textPen)
+		_bSuccess = libraryglobal("arMVO", "arFontStyle" + textOption + "MVO", textStyle)
+	endif
+
+	pen textPen
+
+	define style "own" textFont, textSize, 5, textStyle
 	set style "own"
 	text2 0, boxWidth/2, textCaption
 endif

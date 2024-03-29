@@ -303,7 +303,6 @@
 		</Length>
 		<String Name="ifc_optypestr">
 			<Description><![CDATA["IFC Operation"]]></Description>
-			<Fix/>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
@@ -360,10 +359,41 @@
 			</Flags>
 			<Value>33</Value>
 		</BuildingMaterial>
+		<Boolean Name="bRail">
+			<Description><![CDATA["Show Rail"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
 
-		<!-- ArVenetian_A: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+		<!-- bInsulation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
-		<Title Name="ArVenetian_A">
+		<Boolean Name="bInsulation">
+			<Description><![CDATA["Show Insulation"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Length Name="insulationThickness">
+			<Description><![CDATA["Thickness"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.03</Value>
+		</Length>
+		<BuildingMaterial Name="insulationMat">
+			<Description><![CDATA["Material"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>63</Value>
+		</BuildingMaterial>
+
+		<!-- slatsProperties: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="slatsProperties">
 			<Description><![CDATA["Slats"]]></Description>
 		</Title>
 		<Angle Name="slatAngle">
@@ -387,13 +417,6 @@
 			</Flags>
 			<Value>0</Value>
 		</Length>
-		<Boolean Name="bRail">
-			<Description><![CDATA["Show Rail"]]></Description>
-			<Flags>
-				<ParFlg_BoldName/>
-			</Flags>
-			<Value>0</Value>
-		</Boolean>
 
 		<!-- bShowText: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
@@ -404,6 +427,13 @@
 			</Flags>
 			<Value>2</Value>
 		</Integer>
+		<Boolean Name="bTextStyleByMVO">
+			<Description><![CDATA["Text Style By MVO"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
 		<PenColor Name="textPen">
 			<Description><![CDATA["Pen"]]></Description>
 			<Flags>

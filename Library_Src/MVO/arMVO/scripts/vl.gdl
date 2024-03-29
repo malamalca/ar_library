@@ -1,0 +1,5 @@
+﻿dim fontnames[]
+n = request("FONTNAMES_LIST", "", fontnames)
+
+values "arFontDefaultMVO" fontnames, CUSTOM
+values "arFontSmallMVO" fontnames, CUSTOM

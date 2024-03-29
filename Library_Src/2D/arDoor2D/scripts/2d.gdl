@@ -1,0 +1,112 @@
+﻿unId = 1
+tresholdWidth = 0.04
+tresholdDepth = 0.1
+
+doorPanelWidth = 0.04
+
+markerLineToOutside = 0.3
+markerLineToInside = 0.3
+
+DEFINE STYLE "roomStyleText"  markerFont, markerFontSize, 5, 1
+SET STYLE roomStyleText
+
+
+RECT2 -A/2, 0, -A/2 + tresholdWidth, -tresholdDepth 
+RECT2 A/2, 0, A/2 - tresholdWidth, -tresholdDepth 
+
+HOTSPOT2 0,0
+HOTSPOT2 -A/2, 0
+HOTSPOT2 -A/2, -tresholdDepth
+HOTSPOT2 A/2, 0
+HOTSPOT2 A/2, -tresholdDepth
+
+! *
+! DOOR PANEL
+if doorType = DOORTYPE_SINGLE then
+	RECT2 -A/2 + tresholdWidth, 0, -A/2 + tresholdWidth + doorPanelWidth, A - tresholdWidth*2
+	HOTLINE2 -A/2 + tresholdWidth, 0, -A/2 + tresholdWidth, A - tresholdWidth*2
+	ARC2 -A/2 + tresholdWidth, 0, A - tresholdWidth*2, 0, 90
+else
+	RECT2 -A/2 + tresholdWidth, 0, -A/2 + tresholdWidth + doorPanelWidth, (A - tresholdWidth*2) / 2
+	HOTLINE2 -A/2 + tresholdWidth, 0, -A/2 + tresholdWidth, (A - tresholdWidth*2) / 2
+	ARC2 -A/2 + tresholdWidth, 0, (A - tresholdWidth*2) / 2, 0, 90
+
+	RECT2 A/2 - tresholdWidth, 0, A/2 - tresholdWidth + doorPanelWidth, (A - tresholdWidth*2) / 2
+	HOTLINE2 A/2 - tresholdWidth, 0, A/2 - tresholdWidth, (A - tresholdWidth*2) / 2
+	ARC2 A/2 - tresholdWidth, 0, (A - tresholdWidth*2) / 2, 90, 180
+endif
+
+! hotline for frame width
+hotline2 -A/2, 0, -A/2, -tresholdDepth
+hotline2 A/2, 0, A/2, -tresholdDepth
+
+! *
+! REVEAL
+if drawReveal then
+	! draw outside reveal
+	line2 -A/2, 0, -A/2-revealOutsideOffset, revealOutsideLength
+	hotline2 -A/2, 0, -A/2-revealOutsideOffset, revealOutsideLength
+	line2 A/2, 0, A/2+revealOutsideOffset, revealOutsideLength
+	hotline2 A/2, 0, A/2+revealOutsideOffset, revealOutsideLength
+
+	! outside reveal length
+	hotspot2 0, 0, unId, revealOutsideLength, 1: unId = unId + 1
+	hotspot2 0, revealOutsideLength, unId, revealOutsideLength, 2: unId = unId + 1
+	hotspot2 0, -1, unId, revealOutsideLength, 3: unId = unId + 1
+
+	! outside reveal offset
+	hotspot2 -A/2, revealOutsideLength, unId, revealOutsideOffset, 1: unId = unId + 1
+	hotspot2 -A/2-revealOutsideOffset, revealOutsideLength, unId, revealOutsideOffset, 2: unId = unId + 1
+	hotspot2 -A/2-revealOutsideOffset+1, revealOutsideLength, unId, revealOutsideOffset, 3: unId = unId + 1
+
+	! draw inside reveal
+	line2 		-A/2, -tresholdDepth, -A/2-revealInsideOffset, -revealInsideLength
+	hotline2 	-A/2, -tresholdDepth, -A/2-revealInsideOffset, -revealInsideLength
+	line2 		A/2, -tresholdDepth, A/2+revealInsideOffset, -revealInsideLength
+	hotline2	A/2, -tresholdDepth, A/2+revealInsideOffset, -revealInsideLength
+
+	! inside reveal length
+	hotspot2 0, 0, unId, revealInsideLength, 1: unId = unId + 1
+	hotspot2 0, -revealInsideLength, unId, revealInsideLength, 2: unId = unId + 1
+	hotspot2 0, 1, unId, revealInsideLength, 3: unId = unId + 1
+
+	! inside reveal offset
+	hotspot2 -A/2, -revealInsideLength, unId, revealInsideOffset, 1: unId = unId + 1
+	hotspot2 -A/2-revealInsideOffset, -revealInsideLength, unId, revealInsideOffset, 2: unId = unId + 1
+	hotspot2 -A/2-revealInsideOffset+1, -revealInsideLength, unId, revealInsideOffset, 3: unId = unId + 1
+endif
+
+! *
+! MARKER
+result = REQUEST ("door_show_dim", "", showMarker)
+
+IF showMarker THEN
+	LINE2 0, markerLineToOutside, 0, -markerLineToInside
+	HOTSPOT2 0, markerLineToOutside
+	HOTSPOT2 0, -markerLineToInside
+	
+	heightOfStyle = 0
+	result = REQUEST("Height_of_style", "roomStyleText", heightOfStyle)
+	heightOfStyle = heightOfStyle * GLOB_SCALE / 1000
+	
+	! *
+	! MARKER - width and height
+	result = REQUEST("Window_door_dimension", "", widoFormat)
+	
+	maxWidthAB = MAX(STW(STR(widoFormat, A)), STW(STR(widoFormat, B))) * GLOB_SCALE / 1000
+	rotatedMarker = SYMB_ROTANGLE > 89 AND SYMB_ROTANGLE < 270
+	rotationFactor = 1
+	IF rotatedMarker THEN rotationFactor = -1
+	
+	
+	ADD2 -1 * rotationFactor * heightOfStyle / 2, markerLineToOutside - maxWidthAB/2
+	ROT2 90
+	IF rotatedMarker THEN ROT2 180
+	TEXT2 0, 0, STR(widoFormat, A)
+	DEL TOP
+	
+	ADD2 rotationFactor * heightOfStyle / 2, markerLineToOutside - maxWidthAB/2
+	ROT2 90
+	IF rotatedMarker THEN ROT2 180
+	TEXT2 0, 0, STR(widoFormat, B)
+ENDIF

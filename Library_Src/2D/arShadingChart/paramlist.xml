@@ -672,7 +672,7 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value><![CDATA["@Malgun Gothic Western"]]></Value>
+			<Value><![CDATA["@Malgun Gothic zahodna"]]></Value>
 		</String>
 		<RealNum Name="fontsizeGrid">
 			<Description><![CDATA["Velikost fonta"]]></Description>
@@ -686,7 +686,7 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value><![CDATA["@Malgun Gothic Western"]]></Value>
+			<Value><![CDATA["@Malgun Gothic zahodna"]]></Value>
 		</String>
 		<RealNum Name="legendFontSize">
 			<Description><![CDATA["Velikost fonta legende"]]></Description>
@@ -769,7 +769,7 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value><![CDATA["@Malgun Gothic Western"]]></Value>
+			<Value><![CDATA["@Malgun Gothic zahodna"]]></Value>
 		</String>
 		<Length Name="fontsizeCharTitle">
 			<Description><![CDATA["Velikost pisave naslova"]]></Description>

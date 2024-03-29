@@ -68,6 +68,13 @@
 			</Flags>
 			<Value>1</Value>
 		</Boolean>
+		<Boolean Name="showDescription">
+			<Description><![CDATA["Show Description"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
 		<Length Name="A">
 			<Description><![CDATA["Dimension 1"]]></Description>
 			<Fix/>
