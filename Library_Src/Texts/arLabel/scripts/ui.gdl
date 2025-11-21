@@ -15,11 +15,11 @@ yRow = 40
 hintSpacing = 20
 
 
-UI_PAGE iPageIDSettings, iPageIDRoot, `Teksti`, "uiTab_Style_hl(1)"
+UI_PAGE iPageIDSettings, iPageIDRoot, `Teksti`, "uiTab_Descriptions_hl(1)"
 gosub "settingsPage"
 
-UI_PAGE iPageIDOther, iPageIDRoot, `Ostalo`, "uiTab_Text(1)"
-gosub "otherPage"
+!UI_PAGE iPageIDOther, iPageIDRoot, `Ostalo`, "uiTab_2DRepr_hl(1)"
+!gosub "otherPage"
 
 if gs_ui_current_page = iPageIDSettings then
 	
@@ -31,15 +31,8 @@ endif
 END
 
 "otherPage":
-	ui_style 2, 0
 
-	aRow = 1
-	ui_outfield `Uporabi MVO font:`, xLeft + xOffset, yTop + (aRow - 1) * yRow, 140, 15
-	ui_infield "bTextStyleByMVO", xLeft + xOffset + 145, yTop + (aRow - 1) * yRow - 2, 19, 19
 
-	if bTextStyleByMVO then
-		ui_infield "textOptionMVO", xLeft + xOffset + 145 + 25, yTop + (aRow - 1) * yRow - 2, 80, 19
-	endif
 
 	return
 
@@ -111,5 +104,55 @@ END
 	for i = 1 to ix
 		ui_outfield "<" + variables[i][1] + ">", xLeft + xOffset - 20 + xLabel + 20, yTop + (aRow - 1) * yRow + (i-1) * 15
 	next i
+
+
+	! side
+	ui_style 2, 0
+	xOffset = 300
+
+	aRow = 1
+	ui_outfield `Uporabi MVO font`, xLeft + xOffset + 20, yTop + (aRow - 1) * yRow, 140, 15
+	ui_infield "bTextStyleByMVO", xLeft + xOffset, yTop + (aRow - 1) * yRow - 2, 19, 19
+
+	if bTextStyleByMVO then
+		ui_infield "textOptionMVO", xLeft + xOffset + 20, 20+ yTop + (aRow - 1) * yRow - 2, 80, 19
+	endif
+
+	aRow = aRow + 1.2
+	ui_outfield `Anchor Position:`, xLeft + xOffset, yTop + (aRow - 1) * yRow, 140, 15
+	!ui_infield "anchor", xLeft + xOffset + 145, yTop + (aRow - 1) * yRow - 2, 40, 19
+
+
+	!aRow = aRow + 1
+	!ui_infield "checkedCount", xLeft + xOffset + 145, yTop + (aRow - 1) * yRow - 2, 40, 19
+
+	aRow = aRow + 0.5
+
+	anchorX = xLeft + xOffset + 20
+	anchorY = yTop + (aRow - 1) * yRow
+	anchorSpacing = 3
+	anchorWidth = 12
+	anchorHeight = 13
+
+	for col = 1 to 3
+		for row = 1 to 3
+			anchX = anchorX + (col-1) * (anchorWidth + anchorSpacing)
+			anchY = anchorY + (row-1) * (anchorHeight + anchorSpacing)
+
+			!"ui_anchor[" + str(row, 1, 0) + "][" + str(col, 1, 0) + "]"
+			ui_infield{3} ui_anchor[row][col], anchX, anchY, anchorWidth, anchorHeight,
+				5, "", 0, 0,
+				0, 0, 0, 0,
+				0, "", 1,
+				0, "", 0
+		
+			if not(ui_anchor[row][col]) then
+				ui_separator anchX-1, anchY-1, anchX+anchorWidth+1, anchY-1
+				ui_separator anchX-1, anchY+anchorHeight, anchX+anchorWidth+1, anchY+anchorHeight
+				ui_separator anchX-1, anchY-1, anchX-1, anchY+anchorHeight+1
+				ui_separator anchX+anchorWidth, anchY-1, anchX+anchorWidth, anchY+anchorHeight+2
+			endif
+		next row
+	next col
 
 	return

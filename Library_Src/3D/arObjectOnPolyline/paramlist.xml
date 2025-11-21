@@ -389,5 +389,9 @@
 			<Description><![CDATA["Total Length"]]></Description>
 			<Value>3</Value>
 		</Length>
+		<Length Name="object_offset">
+			<Description><![CDATA["Object Offset"]]></Description>
+			<Value>0</Value>
+		</Length>
 	</Parameters>
 </ParamSection>

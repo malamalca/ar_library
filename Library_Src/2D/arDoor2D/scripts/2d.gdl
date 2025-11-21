@@ -27,13 +27,22 @@ if doorType = DOORTYPE_SINGLE then
 	HOTLINE2 -A/2 + tresholdWidth, 0, -A/2 + tresholdWidth, A - tresholdWidth*2
 	ARC2 -A/2 + tresholdWidth, 0, A - tresholdWidth*2, 0, 90
 else
-	RECT2 -A/2 + tresholdWidth, 0, -A/2 + tresholdWidth + doorPanelWidth, (A - tresholdWidth*2) / 2
-	HOTLINE2 -A/2 + tresholdWidth, 0, -A/2 + tresholdWidth, (A - tresholdWidth*2) / 2
-	ARC2 -A/2 + tresholdWidth, 0, (A - tresholdWidth*2) / 2, 0, 90
+	! double door
+	leftWingWidth = (A - tresholdWidth * 2) / 2
+	rightWingWidth = leftWingWidth
 
-	RECT2 A/2 - tresholdWidth, 0, A/2 - tresholdWidth + doorPanelWidth, (A - tresholdWidth*2) / 2
-	HOTLINE2 A/2 - tresholdWidth, 0, A/2 - tresholdWidth, (A - tresholdWidth*2) / 2
-	ARC2 A/2 - tresholdWidth, 0, (A - tresholdWidth*2) / 2, 90, 180
+	if doorWidth > 0.0 then
+		leftWingWidth = A - doorWidth - tresholdWidth
+		rightWingWidth = doorWidth - tresholdWidth
+	endif
+
+	RECT2 -A/2 + tresholdWidth, 0, -A/2 + tresholdWidth + doorPanelWidth, leftWingWidth
+	HOTLINE2 -A/2 + tresholdWidth, 0, -A/2 + tresholdWidth, leftWingWidth
+	ARC2 -A/2 + tresholdWidth, 0, leftWingWidth, 0, 90
+
+	RECT2 A/2 - tresholdWidth - doorPanelWidth, 0, A/2 - tresholdWidth, rightWingWidth
+	HOTLINE2 A/2 - tresholdWidth, 0, A/2 - tresholdWidth, rightWingWidth
+	ARC2 A/2 - tresholdWidth, 0, rightWingWidth, 90, 180
 endif
 
 ! hotline for frame width

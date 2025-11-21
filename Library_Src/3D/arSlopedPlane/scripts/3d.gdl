@@ -1,0 +1,17 @@
+﻿unId = n * 9 + (n-1) * 9 + 9 + 1
+
+!------------------------- base shape --------------------------
+for i = 1 to n
+	!coordZ = (slopeInclination / 100) * (((xyz[i][1] - _x2) * (_x1 - _x2) + (xyz[i][2] - _y2) * (_y1 - _y2)) / _mag)
+	coordZ = -(a * xyz[i][1] + b * xyz[i][2] + d) / c
+
+	put xyz[i][1], xyz[i][2], coordZ
+	hotspot xyz[i][1], xyz[i][2], coordZ: unId = unId + 1
+next i
+
+plane n, get(3 * n)
+
+!hotspot _x1, _y1, 0, unId, inclinationAngle, 4: unId = unId + 1
+!hotspot _x1, _y1, _z1, unId, inclinationAngle, 5: unId = unId + 1
+!hotspot _x2, _y2, 0, unId, inclinationAngle, 6: unId = unId + 1
+!hotspot _x1, _y1, _z1-1, unId, inclinationAngle, 7: unId = unId + 1

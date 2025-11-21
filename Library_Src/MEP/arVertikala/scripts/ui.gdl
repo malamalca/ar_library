@@ -1,0 +1,117 @@
+﻿ui_dialog "ARHIM Vertikala"
+UI_CURRENT_PAGE gs_ui_current_page
+
+xLeft = 20
+
+yTop = 0
+yLabel = 14
+yRow = 35
+
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Tube Diameter:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "A", 				xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 90
+	ui_outfield "Wall Thickness:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "wallThickness", 				xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 180
+	ui_outfield "No of Segments:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "nSegments", xLeft + xOffset,				yTop + (aRow - 1) * yRow + yLabel, 80, 22
+
+	xOffset = 280
+	ui_outfield "Prikaži 2D kot projekcijo",	xLeft + xOffset + 20, 	yTop + (aRow - 1) * yRow + yLabel + 5, 200, 14
+	ui_infield "showProjection",				xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 15, 24
+
+	
+	aRow = 1.8
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
+	ui_outfield "Edit Segment:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel + 4, 80, 14
+	ui_infield "ui_segment_index", xLeft + xOffset + 80, 	yTop + (aRow - 1) * yRow + yLabel, 50, 22
+	ui_separator xLeft + xOffset + 135, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+
+	aRow = aRow + 1.1
+	xOffset = 0
+	ui_outfield "Length:", xLeft + xOffset, 						yTop + (aRow - 1) * yRow + 4 , 50, 14
+	ui_infield "ui_segment_length", xLeft + xOffset + 50, 			yTop + (aRow - 1) * yRow, 50, 22
+
+	xOffset = xOffset + 110
+	ui_outfield "Direction:", xLeft + xOffset, 						yTop + (aRow - 1) * yRow + 4, 50, 14
+	ui_infield "ui_segment_direction", xLeft + xOffset + 50,		yTop + (aRow - 1) * yRow , 50, 22
+
+	xOffset = xOffset + 110
+	ui_outfield "Angle:", xLeft + xOffset, 							yTop + (aRow - 1) * yRow + 4, 35, 14
+	ui_infield "ui_segment_angle", xLeft + xOffset + 35,			yTop + (aRow - 1) * yRow, 50, 22
+
+	aRow = aRow + 0.8
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 				yTop + (aRow - 1) * yRow, 			xLeft + xOffset + 450,	 	yTop + (aRow - 1) * yRow
+	ui_separator xLeft + xOffset - 10, 				yTop + (aRow - 2.1) * yRow, 		xLeft + xOffset - 10,	 	yTop + (aRow - 1) * yRow
+	ui_separator xLeft + xOffset + 450, 			yTop + (aRow - 2.1) * yRow, 		xLeft + xOffset + 450,	 	yTop + (aRow - 1) * yRow
+
+	aRow = aRow - 0.4
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
+	ui_outfield "2D Representation:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel + 4, 120, 14
+	ui_separator xLeft + xOffset + 100, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+
+	aRow = aRow + 1
+	ui_outfield "Pen:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + 4, 30, 14
+	ui_infield "pen_body", 	xLeft + xOffset + 25, 		yTop + (aRow - 1) * yRow , 40, 24
+
+	xOffset = 80
+	ui_outfield "Fill:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + 4 , 30, 14
+	ui_infield "fill_body",	xLeft + xOffset + 20, 		yTop + (aRow - 1) * yRow, 40, 24
+
+	xOffset = 150
+	ui_outfield "Fill Pen:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + 4, 40, 14
+	ui_infield "pen_fill",		xLeft + xOffset + 40, 		yTop + (aRow - 1) * yRow, 40, 24
+
+	xOffset = 240
+	ui_outfield "Fill Bg:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + 4, 50, 14
+	ui_infield "pen_fill_bg",	xLeft + xOffset + 40, 		yTop + (aRow - 1) * yRow, 40, 24
+
+	aRow = aRow + 0.8
+	xOffset = 0
+	ui_outfield "Bottom Cut Offset:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + 4, 100, 14
+	ui_infield "cutOffsetBottom",	xLeft + xOffset + 100, 		yTop + (aRow - 1) * yRow, 40, 24
+
+	xOffset = 180
+	ui_outfield "Top Cut Offset:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + 4, 100, 14
+	ui_infield "cutOffsetTop",	xLeft + xOffset + 100, 		yTop + (aRow - 1) * yRow, 40, 24
+
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 				yTop + (aRow - 1.2) * yRow,			xLeft + xOffset + 450,	 	yTop + (aRow - 1.2) * yRow
+	ui_separator xLeft + xOffset - 10, 				yTop + (aRow - 3.0) * yRow, 		xLeft + xOffset - 10,	 	yTop + (aRow - 1.2) * yRow
+	ui_separator xLeft + xOffset + 450, 			yTop + (aRow - 3.0) * yRow, 		xLeft + xOffset + 450,	 	yTop + (aRow - 1.2) * yRow
+
+
+
+	aRow = aRow - 0.6
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
+	ui_outfield "3D Representation:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel + 4, 120, 14
+	ui_separator xLeft + xOffset + 100, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Material:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 50, 14
+	ui_infield "mat", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 160, 24
+
+	xOffset = 180
+	ui_outfield "Override With Surface", xLeft + xOffset + 20, 			yTop + (aRow - 1) * yRow + 0, 200, 14
+	ui_infield "override_surface", xLeft + xOffset, 			yTop + (aRow - 1) * yRow - 5, 15, 24
+
+	xOffset = 180
+	ui_infield "surf", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 150, 24
+
+	aRow = aRow + 1.2
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 				yTop + (aRow - 1) * yRow, 			xLeft + xOffset + 450,	 	yTop + (aRow - 1) * yRow
+	ui_separator xLeft + xOffset - 10, 				yTop + (aRow - 2.4) * yRow, 		xLeft + xOffset - 10,	 	yTop + (aRow - 1) * yRow
+	ui_separator xLeft + xOffset + 450, 			yTop + (aRow - 2.4) * yRow, 		xLeft + xOffset + 450,	 	yTop + (aRow - 1) * yRow
+

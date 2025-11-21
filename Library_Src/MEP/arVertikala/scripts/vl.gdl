@@ -1,12 +1,100 @@
-﻿!
-!pipeHeight = segments[1]
-!for i = 2 TO nSegments
-!	pipeHeight = pipeHeight + segments[i] * tan(angles[i])
-!next i
-!
-!parameters ac_bottomlevel = SYMB_POS_Z
-!parameters ac_toplevel = SYMB_POS_Z + pipeHeight
-!parameters ZZYZX = ac_toplevel-ac_bottomlevel
+﻿hideparameter all 
 
- !ZZYZX = ZZYZX
-!PARAMETERS ac_toplevel = ac_toplevel, ac_bottomlevel = ac_bottomlevel
+!parameters nSegments = nSegments, segments = segments, angles = angles, directions = directions
+
+parameters ac_toplevel = ac_toplevel, ac_bottomlevel = ac_bottomlevel
+
+
+if not(override_surface) then
+	lock "surf"
+else
+	lock "mat"
+endif
+
+values "nSegments" range[1, 50)
+values "segment_edit_index", range[1, nSegments]
+
+dim ui_segment_index_range[]
+for i = 1 to nSegments: ui_segment_index_range[i] = i: next i
+values "ui_segment_index" ui_segment_index_range
+
+if GLOB_MODPAR_NAME = "ui_segment_index" then
+	ui_segment_length = segments[ui_segment_index]
+	parameters ui_segment_length = ui_segment_length
+
+	ui_segment_direction = directions[ui_segment_index]
+	parameters ui_segment_direction = ui_segment_direction
+
+	ui_segment_angle = angles[ui_segment_index]
+	parameters ui_segment_angle = ui_segment_angle
+endif
+
+if GLOB_MODPAR_NAME = "ui_segment_length" then
+	segments[ui_segment_index] = ui_segment_length
+	parameters segments = segments
+
+	if ui_segment_index = segment_edit_index then
+		segment_edit_x_proj = segments[ui_segment_index] * cos(angles[ui_segment_index])
+		parameters segment_edit_x_proj = segment_edit_x_proj
+	endif
+endif
+
+if GLOB_MODPAR_NAME = "ui_segment_direction" then
+	directions[ui_segment_index] = ui_segment_direction
+	parameters directions = directions
+endif
+
+if GLOB_MODPAR_NAME = "ui_segment_angle" then
+	angles[ui_segment_index] = ui_segment_angle
+	parameters angles = angles
+
+	if ui_segment_index = segment_edit_index then
+		segment_edit_x_proj = segments[ui_segment_index] * cos(angles[ui_segment_index])
+		parameters segment_edit_x_proj = segment_edit_x_proj
+	endif
+endif
+
+
+if GLOB_MODPAR_NAME = "segment_edit_x_proj" then
+	segments[segment_edit_index] = segment_edit_x_proj / cos(angles[segment_edit_index])
+	parameters segments = segments
+
+	if ui_segment_index = segment_edit_index then
+		ui_segment_length = segments[ui_segment_index] / cos(angles[ui_segment_index])
+		parameters ui_segment_length = ui_segment_length
+	endif
+endif
+
+if GLOB_MODPAR_NAME = "nSegments" then
+	if segment_edit_index >= nSegments then
+		segment_edit_index = nSegments
+
+		parameters segment_edit_index = segment_edit_index
+	endif
+endif
+
+if (GLOB_MODPAR_NAME = "segment_edit_x") OR (GLOB_MODPAR_NAME = "segment_edit_y") OR (GLOB_MODPAR_NAME = "segment_edit_z") then
+	segment_edit_index = 1
+	prevX = 0: prevY = 0: prevZ = 0
+	indexX = 0: indexY = 0: indexZ = 0
+	minDistance = sqr((segment_edit_x)^2 + (segment_edit_y)^2 + (segment_edit_z)^2)
+
+	for i = 1 to nSegments-1
+		prevX = prevX + segments[i] * cos(directions[i]) * cos(angles[i])
+		prevY = prevY + segments[i] * sin(directions[i]) * cos(angles[i])
+		prevZ = prevZ + segments[i] * sin(angles[i])
+		
+		dist = sqr((segment_edit_x - prevX)^2 + (segment_edit_y - prevY)^2 + (segment_edit_z - prevZ)^2)
+		if (minDistance < 0) or (dist < minDistance) then
+			minDistance = dist
+			segment_edit_index = i+1
+			indexX = prevX: indexY = prevY: indexZ = prevZ
+		endif
+	next i
+
+	segment_edit_x_proj = segments[segment_edit_index] * cos(angles[segment_edit_index])
+	parameters segment_edit_x_proj = segment_edit_x_proj
+
+	parameters segment_edit_x = indexX, segment_edit_y = indexY, segment_edit_z = indexZ
+	parameters segment_edit_index = segment_edit_index
+endif

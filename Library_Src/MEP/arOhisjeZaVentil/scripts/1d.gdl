@@ -1,1 +1,26 @@
-﻿KIND_INTAKE = 1KIND_EXHAUST = 2BUILTIN_CEILING = 1BUILTIN_WALL = 2DIM arKinds[2]arKinds[KIND_INTAKE] = "Zajem"arKinds[KIND_EXHAUST] = "Izpust"iKind = 1: IF cKind = arKinds[2] THEN iKind = 2PARAMETERS iKind = iKindDIM arBuiltin[2]arBuiltin[BUILTIN_CEILING] = "Strop"arBuiltin[BUILTIN_WALL] = "Stena"iBuiltin = 1: IF cBuiltin = arBuiltin[2] THEN iBuiltin = 2PARAMETERS iBuiltin = iBuiltin
+﻿KIND_INTAKE = 1
+KIND_EXHAUST = 2
+
+BUILTIN_CEILING = 1
+BUILTIN_WALL = 2
+
+DISPLAY_SIMPLE = 1
+DISPLAY_DETAILED = 2
+DISPLAY_MVO = 3
+
+
+DIM arKinds[2]
+arKinds[KIND_INTAKE] = "Zajem"
+arKinds[KIND_EXHAUST] = "Izpust"
+
+iKind = 1: IF cKind = arKinds[2] THEN iKind = 2
+PARAMETERS iKind = iKind
+
+
+DIM arBuiltin[2]
+arBuiltin[BUILTIN_CEILING] = "Strop"
+arBuiltin[BUILTIN_WALL] = "Stena"
+
+
+iBuiltin = 1: IF cBuiltin = arBuiltin[2] THEN iBuiltin = 2
+PARAMETERS iBuiltin = iBuiltin

@@ -35,10 +35,7 @@
 		<Boolean Name="AC_show2DHotspotsIn3D">
 			<Description><![CDATA["Show 2D Hotspots in 3D"]]></Description>
 			<Fix/>
-			<Flags>
-				<ParFlg_Hidden/>
-			</Flags>
-			<Value>1</Value>
+			<Value>0</Value>
 		</Boolean>
 		<Length Name="ac_bottomlevel">
 			<Description><![CDATA["Bottom Level"]]></Description>
@@ -48,7 +45,54 @@
 		<Length Name="ac_toplevel">
 			<Description><![CDATA["Top Level"]]></Description>
 			<Fix/>
+			<Value>1.37460659341591</Value>
+		</Length>
+		<Integer Name="gs_ui_current_page">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
 			<Value>1</Value>
+		</Integer>
+		<Integer Name="ui_segment_index">
+			<Description><![CDATA[""]]></Description>
+			<Value>1</Value>
+		</Integer>
+		<Length Name="ui_segment_length">
+			<Description><![CDATA[""]]></Description>
+			<Value>1</Value>
+		</Length>
+		<Angle Name="ui_segment_direction">
+			<Description><![CDATA[""]]></Description>
+			<Value>0</Value>
+		</Angle>
+		<Angle Name="ui_segment_angle">
+			<Description><![CDATA[""]]></Description>
+			<Value>45</Value>
+		</Angle>
+		<Boolean Name="showProjection">
+			<Description><![CDATA["Show entire projection"]]></Description>
+			<Value>1</Value>
+		</Boolean>
+		<Integer Name="segment_edit_index">
+			<Description><![CDATA["Segment Edit Index"]]></Description>
+			<Value>1</Value>
+		</Integer>
+		<Length Name="segment_edit_x_proj">
+			<Description><![CDATA[""]]></Description>
+			<Value>1</Value>
+		</Length>
+		<Length Name="segment_edit_x">
+			<Description><![CDATA[""]]></Description>
+			<Value>0</Value>
+		</Length>
+		<Length Name="segment_edit_y">
+			<Description><![CDATA[""]]></Description>
+			<Value>0</Value>
+		</Length>
+		<Length Name="segment_edit_z">
+			<Description><![CDATA[""]]></Description>
+			<Value>0</Value>
 		</Length>
 		<Integer Name="nSegments">
 			<Description><![CDATA["Segment Count"]]></Description>
@@ -58,7 +102,7 @@
 			<Description><![CDATA["Segment Length"]]></Description>
 			<ArrayValues FirstDimension="50" SecondDimension="0">
 				<AVal Row="1">1</AVal>
-				<AVal Row="2">2</AVal>
+				<AVal Row="2">1</AVal>
 				<AVal Row="3">0</AVal>
 				<AVal Row="4">0</AVal>
 				<AVal Row="5">0</AVal>
@@ -167,8 +211,8 @@
 		<Integer Name="angles">
 			<Description><![CDATA["Angles"]]></Description>
 			<ArrayValues FirstDimension="50" SecondDimension="0">
-				<AVal Row="1">45</AVal>
-				<AVal Row="2">0</AVal>
+				<AVal Row="1">90</AVal>
+				<AVal Row="2">22</AVal>
 				<AVal Row="3">0</AVal>
 				<AVal Row="4">0</AVal>
 				<AVal Row="5">0</AVal>
@@ -219,13 +263,92 @@
 				<AVal Row="50">0</AVal>
 			</ArrayValues>
 		</Integer>
-		<Material Name="mat">
-			<Description><![CDATA[""]]></Description>
-			<Value>0</Value>
-		</Material>
 		<Length Name="wallThickness">
 			<Description><![CDATA["Wall Thickness"]]></Description>
 			<Value>0.01</Value>
 		</Length>
+		<Length Name="cutOffsetTop">
+			<Description><![CDATA["Top Cut Offset"]]></Description>
+			<Value>0</Value>
+		</Length>
+		<Length Name="cutOffsetBottom">
+			<Description><![CDATA["Bottom Cut Offset"]]></Description>
+			<Value>0</Value>
+		</Length>
+
+		<!-- representation2D: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="representation2D">
+			<Description><![CDATA["2D Representation"]]></Description>
+		</Title>
+		<PenColor Name="pen_body">
+			<Description><![CDATA["Body Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</PenColor>
+		<FillPattern Name="fill_body">
+			<Description><![CDATA["Body Fill"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>16</Value>
+		</FillPattern>
+		<PenColor Name="pen_fill">
+			<Description><![CDATA["Fill Foreground Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>19</Value>
+		</PenColor>
+		<PenColor Name="pen_fill_bg">
+			<Description><![CDATA["Fill Background Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>-1</Value>
+		</PenColor>
+		<LineType Name="line_visible">
+			<Description><![CDATA["Visible Line"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</LineType>
+		<LineType Name="line_hidden">
+			<Description><![CDATA["Hidden Line"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>21</Value>
+		</LineType>
+
+		<!-- arVertikal_A: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="arVertikal_A">
+			<Description><![CDATA[""]]></Description>
+		</Title>
+		<BuildingMaterial Name="mat">
+			<Description><![CDATA["Material"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>57</Value>
+		</BuildingMaterial>
+		<Boolean Name="override_surface">
+			<Description><![CDATA["Override Surface"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Material Name="surf">
+			<Description><![CDATA["Surface"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Material>
 	</Parameters>
 </ParamSection>

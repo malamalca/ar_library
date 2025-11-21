@@ -1,1 +1,46 @@
-﻿VALUES{2} "borderLeft", borderTypeValues, borderTypeDescriptionsVALUES{2} "borderRight", borderTypeValues, borderTypeDescriptionsVALUES{2} "borderFront", borderTypeValues, borderTypeDescriptionsVALUES{2} "borderBack", borderTypeValues, borderTypeDescriptions!VALUES{2} "_borderTop", borderTypeValues, borderTypeDescriptions!VALUES{2} "_borderBottom", borderTypeValues, borderTypeDescriptionsVALUES{2} "matType", matTypeValues, matTypeDescriptionsVALUES "angle", RANGE [0, 90]if not(abs(angle-90)) < NIX then	hideparameter "ZZYZX"endifif abs(angle) > NIX then	hideparameter "A"endifif GLOB_MODPAR_NAME = "ZZYZX" then	panelLength = ZZYZXelse	if GLOB_MODPAR_NAME = "A" then		panelLength = A	endif		ZZYZX = panelLength * sin(angle) + panelThickness * cos(angle)endifac_bottomlevel = 0ac_toplevel = ZZYZXpanelLengthMM = panelLength * 1000PARAMETERS panelLength = panelLength, panelLenghtMM = panelLenghtMM, ZZYZX = ZZYZX, ac_toplevel = ac_toplevel, ac_bottomlevel = ac_bottomlevelparameters borderCode = borderCode lock "borderCode"lock "panelLenghtMM"
+﻿VALUES{2} "borderLeft", borderTypeValues, borderTypeDescriptions
+VALUES{2} "borderRight", borderTypeValues, borderTypeDescriptions
+VALUES{2} "borderFront", borderTypeValues, borderTypeDescriptions
+VALUES{2} "borderBack", borderTypeValues, borderTypeDescriptions
+
+!VALUES{2} "_borderTop", borderTypeValues, borderTypeDescriptions
+!VALUES{2} "_borderBottom", borderTypeValues, borderTypeDescriptions
+
+DIM fontNames[]
+res = REQUEST("FONTNAMES_LIST", "", fontNames)
+VALUES "scheduleFont", fontNames, CUSTOM
+
+VALUES{2} "matType", matTypeValues, matTypeDescriptions
+
+
+VALUES "angle", RANGE [0, 90]
+
+
+if not(abs(angle-90)) < NIX then
+	hideparameter "ZZYZX"
+endif
+
+if abs(angle) > NIX then
+	hideparameter "A"
+endif
+
+if GLOB_MODPAR_NAME = "ZZYZX" then
+	panelLength = ZZYZX
+else
+	if GLOB_MODPAR_NAME = "A" then
+		panelLength = A
+	endif
+	
+	ZZYZX = panelLength * sin(angle) + panelThickness * cos(angle)
+endif
+
+ac_bottomlevel = 0
+ac_toplevel = ZZYZX
+
+panelLengthMM = panelLength * 1000
+
+PARAMETERS panelLength = panelLength, panelLenghtMM = panelLenghtMM, ZZYZX = ZZYZX, ac_toplevel = ac_toplevel, ac_bottomlevel = ac_bottomlevel
+
+parameters borderCode = borderCode 
+lock "borderCode"
+lock "panelLenghtMM"

@@ -590,7 +590,7 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value><![CDATA["@Arial Unicode MS srednjeevropska"]]></Value>
+			<Value><![CDATA["@Malgun Gothic zahodna"]]></Value>
 		</String>
 		<RealNum Name="basePointFontSize">
 			<Description><![CDATA["Velikost pisave"]]></Description>
@@ -606,12 +606,26 @@
 			</Flags>
 			<Value>25</Value>
 		</PenColor>
+		<Length Name="basePointDiameter">
+			<Description><![CDATA["Premer točke"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.2</Value>
+		</Length>
 
 		<!-- arShadingC_B: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
 		<Title Name="arShadingC_B">
 			<Description><![CDATA["2D Representation"]]></Description>
 		</Title>
+		<Boolean Name="showOutline">
+			<Description><![CDATA["Prikaz poligona"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
 		<PenColor Name="penOutline">
 			<Description><![CDATA["Barva poligona"]]></Description>
 			<Flags>
@@ -626,6 +640,13 @@
 			</Flags>
 			<Value>1</Value>
 		</LineType>
+		<Boolean Name="showRays">
+			<Description><![CDATA["Prikaz žarkov"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
 		<PenColor Name="penRay">
 			<Description><![CDATA["Barva žarka"]]></Description>
 			<Flags>

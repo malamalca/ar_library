@@ -366,6 +366,13 @@
 			</Flags>
 			<Value>0</Value>
 		</Boolean>
+		<Length Name="railBottomOffset">
+			<Description><![CDATA["Rail Bottom Offset"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.03</Value>
+		</Length>
 
 		<!-- bInsulation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 

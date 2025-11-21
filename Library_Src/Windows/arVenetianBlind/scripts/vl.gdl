@@ -17,3 +17,7 @@ if bTextStyleByMVO then
 	hideparameter "textFont"
 	hideparameter "textSize"
 endif
+
+if not(bRail) then
+	hideparameter "railBottomOffset"
+endif

@@ -1,0 +1,1792 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ParamSection>
+	<ParamSectHeader>
+		<AutoHotspots>false</AutoHotspots>
+		<StatBits>
+			<STBit_FixSize/>
+			<STBit_UIUseHierarchicalPages/>
+		</StatBits>
+		<WDLeftFrame>0</WDLeftFrame>
+		<WDRightFrame>0</WDRightFrame>
+		<WDTopFrame>0</WDTopFrame>
+		<WDBotFrame>0</WDBotFrame>
+		<LayFlags>65535</LayFlags>
+		<WDMirrorThickness>0</WDMirrorThickness>
+		<WDWallInset>0</WDWallInset>
+	</ParamSectHeader>
+	<Parameters SectVersion="27" SectionFlags="0" SubIdent="0">
+		<Length Name="A">
+			<Description><![CDATA["Dimension 1"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0.1</Value>
+		</Length>
+		<Length Name="B">
+			<Description><![CDATA["Dimension 2"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Length>
+		<Length Name="ZZYZX">
+			<Description><![CDATA["Height"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Length>
+		<Boolean Name="AC_show2DHotspotsIn3D">
+			<Description><![CDATA["Show 2D Hotspots in 3D"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Length Name="ac_bottomlevel">
+			<Description><![CDATA["Bottom Level"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Length>
+		<Length Name="ac_toplevel">
+			<Description><![CDATA["Top Level"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Integer Name="n">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>2</Value>
+		</Integer>
+		<Length Name="xyz">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="50" SecondDimension="3">
+				<AVal Column="1" Row="1">3</AVal>
+				<AVal Column="2" Row="1">0</AVal>
+				<AVal Column="3" Row="1">0</AVal>
+				<AVal Column="1" Row="2">0</AVal>
+				<AVal Column="2" Row="2">0</AVal>
+				<AVal Column="3" Row="2">0</AVal>
+				<AVal Column="1" Row="3">0</AVal>
+				<AVal Column="2" Row="3">0</AVal>
+				<AVal Column="3" Row="3">0</AVal>
+				<AVal Column="1" Row="4">0</AVal>
+				<AVal Column="2" Row="4">0</AVal>
+				<AVal Column="3" Row="4">0</AVal>
+				<AVal Column="1" Row="5">0</AVal>
+				<AVal Column="2" Row="5">0</AVal>
+				<AVal Column="3" Row="5">0</AVal>
+				<AVal Column="1" Row="6">0</AVal>
+				<AVal Column="2" Row="6">0</AVal>
+				<AVal Column="3" Row="6">0</AVal>
+				<AVal Column="1" Row="7">0</AVal>
+				<AVal Column="2" Row="7">0</AVal>
+				<AVal Column="3" Row="7">0</AVal>
+				<AVal Column="1" Row="8">0</AVal>
+				<AVal Column="2" Row="8">0</AVal>
+				<AVal Column="3" Row="8">0</AVal>
+				<AVal Column="1" Row="9">0</AVal>
+				<AVal Column="2" Row="9">0</AVal>
+				<AVal Column="3" Row="9">0</AVal>
+				<AVal Column="1" Row="10">0</AVal>
+				<AVal Column="2" Row="10">0</AVal>
+				<AVal Column="3" Row="10">0</AVal>
+				<AVal Column="1" Row="11">0</AVal>
+				<AVal Column="2" Row="11">0</AVal>
+				<AVal Column="3" Row="11">0</AVal>
+				<AVal Column="1" Row="12">0</AVal>
+				<AVal Column="2" Row="12">0</AVal>
+				<AVal Column="3" Row="12">0</AVal>
+				<AVal Column="1" Row="13">0</AVal>
+				<AVal Column="2" Row="13">0</AVal>
+				<AVal Column="3" Row="13">0</AVal>
+				<AVal Column="1" Row="14">0</AVal>
+				<AVal Column="2" Row="14">0</AVal>
+				<AVal Column="3" Row="14">0</AVal>
+				<AVal Column="1" Row="15">0</AVal>
+				<AVal Column="2" Row="15">0</AVal>
+				<AVal Column="3" Row="15">0</AVal>
+				<AVal Column="1" Row="16">0</AVal>
+				<AVal Column="2" Row="16">0</AVal>
+				<AVal Column="3" Row="16">0</AVal>
+				<AVal Column="1" Row="17">0</AVal>
+				<AVal Column="2" Row="17">0</AVal>
+				<AVal Column="3" Row="17">0</AVal>
+				<AVal Column="1" Row="18">0</AVal>
+				<AVal Column="2" Row="18">0</AVal>
+				<AVal Column="3" Row="18">0</AVal>
+				<AVal Column="1" Row="19">0</AVal>
+				<AVal Column="2" Row="19">0</AVal>
+				<AVal Column="3" Row="19">0</AVal>
+				<AVal Column="1" Row="20">0</AVal>
+				<AVal Column="2" Row="20">0</AVal>
+				<AVal Column="3" Row="20">0</AVal>
+				<AVal Column="1" Row="21">0</AVal>
+				<AVal Column="2" Row="21">0</AVal>
+				<AVal Column="3" Row="21">0</AVal>
+				<AVal Column="1" Row="22">0</AVal>
+				<AVal Column="2" Row="22">0</AVal>
+				<AVal Column="3" Row="22">0</AVal>
+				<AVal Column="1" Row="23">0</AVal>
+				<AVal Column="2" Row="23">0</AVal>
+				<AVal Column="3" Row="23">0</AVal>
+				<AVal Column="1" Row="24">0</AVal>
+				<AVal Column="2" Row="24">0</AVal>
+				<AVal Column="3" Row="24">0</AVal>
+				<AVal Column="1" Row="25">0</AVal>
+				<AVal Column="2" Row="25">0</AVal>
+				<AVal Column="3" Row="25">0</AVal>
+				<AVal Column="1" Row="26">0</AVal>
+				<AVal Column="2" Row="26">0</AVal>
+				<AVal Column="3" Row="26">0</AVal>
+				<AVal Column="1" Row="27">0</AVal>
+				<AVal Column="2" Row="27">0</AVal>
+				<AVal Column="3" Row="27">0</AVal>
+				<AVal Column="1" Row="28">0</AVal>
+				<AVal Column="2" Row="28">0</AVal>
+				<AVal Column="3" Row="28">0</AVal>
+				<AVal Column="1" Row="29">0</AVal>
+				<AVal Column="2" Row="29">0</AVal>
+				<AVal Column="3" Row="29">0</AVal>
+				<AVal Column="1" Row="30">0</AVal>
+				<AVal Column="2" Row="30">0</AVal>
+				<AVal Column="3" Row="30">0</AVal>
+				<AVal Column="1" Row="31">0</AVal>
+				<AVal Column="2" Row="31">0</AVal>
+				<AVal Column="3" Row="31">0</AVal>
+				<AVal Column="1" Row="32">0</AVal>
+				<AVal Column="2" Row="32">0</AVal>
+				<AVal Column="3" Row="32">0</AVal>
+				<AVal Column="1" Row="33">0</AVal>
+				<AVal Column="2" Row="33">0</AVal>
+				<AVal Column="3" Row="33">0</AVal>
+				<AVal Column="1" Row="34">0</AVal>
+				<AVal Column="2" Row="34">0</AVal>
+				<AVal Column="3" Row="34">0</AVal>
+				<AVal Column="1" Row="35">0</AVal>
+				<AVal Column="2" Row="35">0</AVal>
+				<AVal Column="3" Row="35">0</AVal>
+				<AVal Column="1" Row="36">0</AVal>
+				<AVal Column="2" Row="36">0</AVal>
+				<AVal Column="3" Row="36">0</AVal>
+				<AVal Column="1" Row="37">0</AVal>
+				<AVal Column="2" Row="37">0</AVal>
+				<AVal Column="3" Row="37">0</AVal>
+				<AVal Column="1" Row="38">0</AVal>
+				<AVal Column="2" Row="38">0</AVal>
+				<AVal Column="3" Row="38">0</AVal>
+				<AVal Column="1" Row="39">0</AVal>
+				<AVal Column="2" Row="39">0</AVal>
+				<AVal Column="3" Row="39">0</AVal>
+				<AVal Column="1" Row="40">0</AVal>
+				<AVal Column="2" Row="40">0</AVal>
+				<AVal Column="3" Row="40">0</AVal>
+				<AVal Column="1" Row="41">0</AVal>
+				<AVal Column="2" Row="41">0</AVal>
+				<AVal Column="3" Row="41">0</AVal>
+				<AVal Column="1" Row="42">0</AVal>
+				<AVal Column="2" Row="42">0</AVal>
+				<AVal Column="3" Row="42">0</AVal>
+				<AVal Column="1" Row="43">0</AVal>
+				<AVal Column="2" Row="43">0</AVal>
+				<AVal Column="3" Row="43">0</AVal>
+				<AVal Column="1" Row="44">0</AVal>
+				<AVal Column="2" Row="44">0</AVal>
+				<AVal Column="3" Row="44">0</AVal>
+				<AVal Column="1" Row="45">0</AVal>
+				<AVal Column="2" Row="45">0</AVal>
+				<AVal Column="3" Row="45">0</AVal>
+				<AVal Column="1" Row="46">0</AVal>
+				<AVal Column="2" Row="46">0</AVal>
+				<AVal Column="3" Row="46">0</AVal>
+				<AVal Column="1" Row="47">0</AVal>
+				<AVal Column="2" Row="47">0</AVal>
+				<AVal Column="3" Row="47">0</AVal>
+				<AVal Column="1" Row="48">0</AVal>
+				<AVal Column="2" Row="48">0</AVal>
+				<AVal Column="3" Row="48">0</AVal>
+				<AVal Column="1" Row="49">0</AVal>
+				<AVal Column="2" Row="49">0</AVal>
+				<AVal Column="3" Row="49">0</AVal>
+				<AVal Column="1" Row="50">0</AVal>
+				<AVal Column="2" Row="50">0</AVal>
+				<AVal Column="3" Row="50">0</AVal>
+			</ArrayValues>
+		</Length>
+		<Length Name="xyz_e">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="51" SecondDimension="3">
+				<AVal Column="1" Row="1">0</AVal>
+				<AVal Column="2" Row="1">0</AVal>
+				<AVal Column="3" Row="1">0</AVal>
+				<AVal Column="1" Row="2">0</AVal>
+				<AVal Column="2" Row="2">0</AVal>
+				<AVal Column="3" Row="2">0</AVal>
+				<AVal Column="1" Row="3">0</AVal>
+				<AVal Column="2" Row="3">0</AVal>
+				<AVal Column="3" Row="3">0</AVal>
+				<AVal Column="1" Row="4">0</AVal>
+				<AVal Column="2" Row="4">0</AVal>
+				<AVal Column="3" Row="4">0</AVal>
+				<AVal Column="1" Row="5">0</AVal>
+				<AVal Column="2" Row="5">0</AVal>
+				<AVal Column="3" Row="5">0</AVal>
+				<AVal Column="1" Row="6">0</AVal>
+				<AVal Column="2" Row="6">0</AVal>
+				<AVal Column="3" Row="6">0</AVal>
+				<AVal Column="1" Row="7">0</AVal>
+				<AVal Column="2" Row="7">0</AVal>
+				<AVal Column="3" Row="7">0</AVal>
+				<AVal Column="1" Row="8">0</AVal>
+				<AVal Column="2" Row="8">0</AVal>
+				<AVal Column="3" Row="8">0</AVal>
+				<AVal Column="1" Row="9">0</AVal>
+				<AVal Column="2" Row="9">0</AVal>
+				<AVal Column="3" Row="9">0</AVal>
+				<AVal Column="1" Row="10">0</AVal>
+				<AVal Column="2" Row="10">0</AVal>
+				<AVal Column="3" Row="10">0</AVal>
+				<AVal Column="1" Row="11">0</AVal>
+				<AVal Column="2" Row="11">0</AVal>
+				<AVal Column="3" Row="11">0</AVal>
+				<AVal Column="1" Row="12">0</AVal>
+				<AVal Column="2" Row="12">0</AVal>
+				<AVal Column="3" Row="12">0</AVal>
+				<AVal Column="1" Row="13">0</AVal>
+				<AVal Column="2" Row="13">0</AVal>
+				<AVal Column="3" Row="13">0</AVal>
+				<AVal Column="1" Row="14">0</AVal>
+				<AVal Column="2" Row="14">0</AVal>
+				<AVal Column="3" Row="14">0</AVal>
+				<AVal Column="1" Row="15">0</AVal>
+				<AVal Column="2" Row="15">0</AVal>
+				<AVal Column="3" Row="15">0</AVal>
+				<AVal Column="1" Row="16">0</AVal>
+				<AVal Column="2" Row="16">0</AVal>
+				<AVal Column="3" Row="16">0</AVal>
+				<AVal Column="1" Row="17">0</AVal>
+				<AVal Column="2" Row="17">0</AVal>
+				<AVal Column="3" Row="17">0</AVal>
+				<AVal Column="1" Row="18">0</AVal>
+				<AVal Column="2" Row="18">0</AVal>
+				<AVal Column="3" Row="18">0</AVal>
+				<AVal Column="1" Row="19">0</AVal>
+				<AVal Column="2" Row="19">0</AVal>
+				<AVal Column="3" Row="19">0</AVal>
+				<AVal Column="1" Row="20">0</AVal>
+				<AVal Column="2" Row="20">0</AVal>
+				<AVal Column="3" Row="20">0</AVal>
+				<AVal Column="1" Row="21">0</AVal>
+				<AVal Column="2" Row="21">0</AVal>
+				<AVal Column="3" Row="21">0</AVal>
+				<AVal Column="1" Row="22">0</AVal>
+				<AVal Column="2" Row="22">0</AVal>
+				<AVal Column="3" Row="22">0</AVal>
+				<AVal Column="1" Row="23">0</AVal>
+				<AVal Column="2" Row="23">0</AVal>
+				<AVal Column="3" Row="23">0</AVal>
+				<AVal Column="1" Row="24">0</AVal>
+				<AVal Column="2" Row="24">0</AVal>
+				<AVal Column="3" Row="24">0</AVal>
+				<AVal Column="1" Row="25">0</AVal>
+				<AVal Column="2" Row="25">0</AVal>
+				<AVal Column="3" Row="25">0</AVal>
+				<AVal Column="1" Row="26">0</AVal>
+				<AVal Column="2" Row="26">0</AVal>
+				<AVal Column="3" Row="26">0</AVal>
+				<AVal Column="1" Row="27">0</AVal>
+				<AVal Column="2" Row="27">0</AVal>
+				<AVal Column="3" Row="27">0</AVal>
+				<AVal Column="1" Row="28">0</AVal>
+				<AVal Column="2" Row="28">0</AVal>
+				<AVal Column="3" Row="28">0</AVal>
+				<AVal Column="1" Row="29">0</AVal>
+				<AVal Column="2" Row="29">0</AVal>
+				<AVal Column="3" Row="29">0</AVal>
+				<AVal Column="1" Row="30">0</AVal>
+				<AVal Column="2" Row="30">0</AVal>
+				<AVal Column="3" Row="30">0</AVal>
+				<AVal Column="1" Row="31">0</AVal>
+				<AVal Column="2" Row="31">0</AVal>
+				<AVal Column="3" Row="31">0</AVal>
+				<AVal Column="1" Row="32">0</AVal>
+				<AVal Column="2" Row="32">0</AVal>
+				<AVal Column="3" Row="32">0</AVal>
+				<AVal Column="1" Row="33">0</AVal>
+				<AVal Column="2" Row="33">0</AVal>
+				<AVal Column="3" Row="33">0</AVal>
+				<AVal Column="1" Row="34">0</AVal>
+				<AVal Column="2" Row="34">0</AVal>
+				<AVal Column="3" Row="34">0</AVal>
+				<AVal Column="1" Row="35">0</AVal>
+				<AVal Column="2" Row="35">0</AVal>
+				<AVal Column="3" Row="35">0</AVal>
+				<AVal Column="1" Row="36">0</AVal>
+				<AVal Column="2" Row="36">0</AVal>
+				<AVal Column="3" Row="36">0</AVal>
+				<AVal Column="1" Row="37">0</AVal>
+				<AVal Column="2" Row="37">0</AVal>
+				<AVal Column="3" Row="37">0</AVal>
+				<AVal Column="1" Row="38">0</AVal>
+				<AVal Column="2" Row="38">0</AVal>
+				<AVal Column="3" Row="38">0</AVal>
+				<AVal Column="1" Row="39">0</AVal>
+				<AVal Column="2" Row="39">0</AVal>
+				<AVal Column="3" Row="39">0</AVal>
+				<AVal Column="1" Row="40">0</AVal>
+				<AVal Column="2" Row="40">0</AVal>
+				<AVal Column="3" Row="40">0</AVal>
+				<AVal Column="1" Row="41">0</AVal>
+				<AVal Column="2" Row="41">0</AVal>
+				<AVal Column="3" Row="41">0</AVal>
+				<AVal Column="1" Row="42">0</AVal>
+				<AVal Column="2" Row="42">0</AVal>
+				<AVal Column="3" Row="42">0</AVal>
+				<AVal Column="1" Row="43">0</AVal>
+				<AVal Column="2" Row="43">0</AVal>
+				<AVal Column="3" Row="43">0</AVal>
+				<AVal Column="1" Row="44">0</AVal>
+				<AVal Column="2" Row="44">0</AVal>
+				<AVal Column="3" Row="44">0</AVal>
+				<AVal Column="1" Row="45">0</AVal>
+				<AVal Column="2" Row="45">0</AVal>
+				<AVal Column="3" Row="45">0</AVal>
+				<AVal Column="1" Row="46">0</AVal>
+				<AVal Column="2" Row="46">0</AVal>
+				<AVal Column="3" Row="46">0</AVal>
+				<AVal Column="1" Row="47">0</AVal>
+				<AVal Column="2" Row="47">0</AVal>
+				<AVal Column="3" Row="47">0</AVal>
+				<AVal Column="1" Row="48">0</AVal>
+				<AVal Column="2" Row="48">0</AVal>
+				<AVal Column="3" Row="48">0</AVal>
+				<AVal Column="1" Row="49">0</AVal>
+				<AVal Column="2" Row="49">0</AVal>
+				<AVal Column="3" Row="49">0</AVal>
+				<AVal Column="1" Row="50">0</AVal>
+				<AVal Column="2" Row="50">0</AVal>
+				<AVal Column="3" Row="50">0</AVal>
+				<AVal Column="1" Row="51">0</AVal>
+				<AVal Column="2" Row="51">0</AVal>
+				<AVal Column="3" Row="51">0</AVal>
+			</ArrayValues>
+		</Length>
+		<Length Name="xyz_ea">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="51" SecondDimension="3">
+				<AVal Column="1" Row="1">0</AVal>
+				<AVal Column="2" Row="1">0</AVal>
+				<AVal Column="3" Row="1">0</AVal>
+				<AVal Column="1" Row="2">0</AVal>
+				<AVal Column="2" Row="2">0</AVal>
+				<AVal Column="3" Row="2">0</AVal>
+				<AVal Column="1" Row="3">0</AVal>
+				<AVal Column="2" Row="3">0</AVal>
+				<AVal Column="3" Row="3">0</AVal>
+				<AVal Column="1" Row="4">0</AVal>
+				<AVal Column="2" Row="4">0</AVal>
+				<AVal Column="3" Row="4">0</AVal>
+				<AVal Column="1" Row="5">0</AVal>
+				<AVal Column="2" Row="5">0</AVal>
+				<AVal Column="3" Row="5">0</AVal>
+				<AVal Column="1" Row="6">0</AVal>
+				<AVal Column="2" Row="6">0</AVal>
+				<AVal Column="3" Row="6">0</AVal>
+				<AVal Column="1" Row="7">0</AVal>
+				<AVal Column="2" Row="7">0</AVal>
+				<AVal Column="3" Row="7">0</AVal>
+				<AVal Column="1" Row="8">0</AVal>
+				<AVal Column="2" Row="8">0</AVal>
+				<AVal Column="3" Row="8">0</AVal>
+				<AVal Column="1" Row="9">0</AVal>
+				<AVal Column="2" Row="9">0</AVal>
+				<AVal Column="3" Row="9">0</AVal>
+				<AVal Column="1" Row="10">0</AVal>
+				<AVal Column="2" Row="10">0</AVal>
+				<AVal Column="3" Row="10">0</AVal>
+				<AVal Column="1" Row="11">0</AVal>
+				<AVal Column="2" Row="11">0</AVal>
+				<AVal Column="3" Row="11">0</AVal>
+				<AVal Column="1" Row="12">0</AVal>
+				<AVal Column="2" Row="12">0</AVal>
+				<AVal Column="3" Row="12">0</AVal>
+				<AVal Column="1" Row="13">0</AVal>
+				<AVal Column="2" Row="13">0</AVal>
+				<AVal Column="3" Row="13">0</AVal>
+				<AVal Column="1" Row="14">0</AVal>
+				<AVal Column="2" Row="14">0</AVal>
+				<AVal Column="3" Row="14">0</AVal>
+				<AVal Column="1" Row="15">0</AVal>
+				<AVal Column="2" Row="15">0</AVal>
+				<AVal Column="3" Row="15">0</AVal>
+				<AVal Column="1" Row="16">0</AVal>
+				<AVal Column="2" Row="16">0</AVal>
+				<AVal Column="3" Row="16">0</AVal>
+				<AVal Column="1" Row="17">0</AVal>
+				<AVal Column="2" Row="17">0</AVal>
+				<AVal Column="3" Row="17">0</AVal>
+				<AVal Column="1" Row="18">0</AVal>
+				<AVal Column="2" Row="18">0</AVal>
+				<AVal Column="3" Row="18">0</AVal>
+				<AVal Column="1" Row="19">0</AVal>
+				<AVal Column="2" Row="19">0</AVal>
+				<AVal Column="3" Row="19">0</AVal>
+				<AVal Column="1" Row="20">0</AVal>
+				<AVal Column="2" Row="20">0</AVal>
+				<AVal Column="3" Row="20">0</AVal>
+				<AVal Column="1" Row="21">0</AVal>
+				<AVal Column="2" Row="21">0</AVal>
+				<AVal Column="3" Row="21">0</AVal>
+				<AVal Column="1" Row="22">0</AVal>
+				<AVal Column="2" Row="22">0</AVal>
+				<AVal Column="3" Row="22">0</AVal>
+				<AVal Column="1" Row="23">0</AVal>
+				<AVal Column="2" Row="23">0</AVal>
+				<AVal Column="3" Row="23">0</AVal>
+				<AVal Column="1" Row="24">0</AVal>
+				<AVal Column="2" Row="24">0</AVal>
+				<AVal Column="3" Row="24">0</AVal>
+				<AVal Column="1" Row="25">0</AVal>
+				<AVal Column="2" Row="25">0</AVal>
+				<AVal Column="3" Row="25">0</AVal>
+				<AVal Column="1" Row="26">0</AVal>
+				<AVal Column="2" Row="26">0</AVal>
+				<AVal Column="3" Row="26">0</AVal>
+				<AVal Column="1" Row="27">0</AVal>
+				<AVal Column="2" Row="27">0</AVal>
+				<AVal Column="3" Row="27">0</AVal>
+				<AVal Column="1" Row="28">0</AVal>
+				<AVal Column="2" Row="28">0</AVal>
+				<AVal Column="3" Row="28">0</AVal>
+				<AVal Column="1" Row="29">0</AVal>
+				<AVal Column="2" Row="29">0</AVal>
+				<AVal Column="3" Row="29">0</AVal>
+				<AVal Column="1" Row="30">0</AVal>
+				<AVal Column="2" Row="30">0</AVal>
+				<AVal Column="3" Row="30">0</AVal>
+				<AVal Column="1" Row="31">0</AVal>
+				<AVal Column="2" Row="31">0</AVal>
+				<AVal Column="3" Row="31">0</AVal>
+				<AVal Column="1" Row="32">0</AVal>
+				<AVal Column="2" Row="32">0</AVal>
+				<AVal Column="3" Row="32">0</AVal>
+				<AVal Column="1" Row="33">0</AVal>
+				<AVal Column="2" Row="33">0</AVal>
+				<AVal Column="3" Row="33">0</AVal>
+				<AVal Column="1" Row="34">0</AVal>
+				<AVal Column="2" Row="34">0</AVal>
+				<AVal Column="3" Row="34">0</AVal>
+				<AVal Column="1" Row="35">0</AVal>
+				<AVal Column="2" Row="35">0</AVal>
+				<AVal Column="3" Row="35">0</AVal>
+				<AVal Column="1" Row="36">0</AVal>
+				<AVal Column="2" Row="36">0</AVal>
+				<AVal Column="3" Row="36">0</AVal>
+				<AVal Column="1" Row="37">0</AVal>
+				<AVal Column="2" Row="37">0</AVal>
+				<AVal Column="3" Row="37">0</AVal>
+				<AVal Column="1" Row="38">0</AVal>
+				<AVal Column="2" Row="38">0</AVal>
+				<AVal Column="3" Row="38">0</AVal>
+				<AVal Column="1" Row="39">0</AVal>
+				<AVal Column="2" Row="39">0</AVal>
+				<AVal Column="3" Row="39">0</AVal>
+				<AVal Column="1" Row="40">0</AVal>
+				<AVal Column="2" Row="40">0</AVal>
+				<AVal Column="3" Row="40">0</AVal>
+				<AVal Column="1" Row="41">0</AVal>
+				<AVal Column="2" Row="41">0</AVal>
+				<AVal Column="3" Row="41">0</AVal>
+				<AVal Column="1" Row="42">0</AVal>
+				<AVal Column="2" Row="42">0</AVal>
+				<AVal Column="3" Row="42">0</AVal>
+				<AVal Column="1" Row="43">0</AVal>
+				<AVal Column="2" Row="43">0</AVal>
+				<AVal Column="3" Row="43">0</AVal>
+				<AVal Column="1" Row="44">0</AVal>
+				<AVal Column="2" Row="44">0</AVal>
+				<AVal Column="3" Row="44">0</AVal>
+				<AVal Column="1" Row="45">0</AVal>
+				<AVal Column="2" Row="45">0</AVal>
+				<AVal Column="3" Row="45">0</AVal>
+				<AVal Column="1" Row="46">0</AVal>
+				<AVal Column="2" Row="46">0</AVal>
+				<AVal Column="3" Row="46">0</AVal>
+				<AVal Column="1" Row="47">0</AVal>
+				<AVal Column="2" Row="47">0</AVal>
+				<AVal Column="3" Row="47">0</AVal>
+				<AVal Column="1" Row="48">0</AVal>
+				<AVal Column="2" Row="48">0</AVal>
+				<AVal Column="3" Row="48">0</AVal>
+				<AVal Column="1" Row="49">0</AVal>
+				<AVal Column="2" Row="49">0</AVal>
+				<AVal Column="3" Row="49">0</AVal>
+				<AVal Column="1" Row="50">0</AVal>
+				<AVal Column="2" Row="50">0</AVal>
+				<AVal Column="3" Row="50">0</AVal>
+				<AVal Column="1" Row="51">0</AVal>
+				<AVal Column="2" Row="51">0</AVal>
+				<AVal Column="3" Row="51">0</AVal>
+			</ArrayValues>
+		</Length>
+		<String Name="prefix">
+			<Description><![CDATA["Prefix"]]></Description>
+			<Value><![CDATA["P"]]></Value>
+		</String>
+		<Length Name="totalLength">
+			<Description><![CDATA["Total Length"]]></Description>
+			<Value>3</Value>
+		</Length>
+		<Integer Name="gs_ui_current_page">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Integer Name="ui_pipe_index">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Length Name="ui_pipe_diameter">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0.1</Value>
+		</Length>
+		<Integer Name="ui_shaft_index">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Length Name="ui_shaft_cover_dim1">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="ui_shaft_cover_dim2">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="ui_shaft_dim1">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="ui_shaft_height">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+
+		<!-- ttShaftOptions: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="ttShaftOptions">
+			<Description><![CDATA["Jaški"]]></Description>
+		</Title>
+		<Integer Name="shaftDataOptions">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="51" SecondDimension="5">
+				<AVal Column="1" Row="1">0</AVal>
+				<AVal Column="2" Row="1">0</AVal>
+				<AVal Column="3" Row="1">0</AVal>
+				<AVal Column="4" Row="1">0</AVal>
+				<AVal Column="5" Row="1">0</AVal>
+				<AVal Column="1" Row="2">0</AVal>
+				<AVal Column="2" Row="2">0</AVal>
+				<AVal Column="3" Row="2">0</AVal>
+				<AVal Column="4" Row="2">0</AVal>
+				<AVal Column="5" Row="2">0</AVal>
+				<AVal Column="1" Row="3">0</AVal>
+				<AVal Column="2" Row="3">0</AVal>
+				<AVal Column="3" Row="3">0</AVal>
+				<AVal Column="4" Row="3">0</AVal>
+				<AVal Column="5" Row="3">0</AVal>
+				<AVal Column="1" Row="4">0</AVal>
+				<AVal Column="2" Row="4">0</AVal>
+				<AVal Column="3" Row="4">0</AVal>
+				<AVal Column="4" Row="4">0</AVal>
+				<AVal Column="5" Row="4">0</AVal>
+				<AVal Column="1" Row="5">0</AVal>
+				<AVal Column="2" Row="5">0</AVal>
+				<AVal Column="3" Row="5">0</AVal>
+				<AVal Column="4" Row="5">0</AVal>
+				<AVal Column="5" Row="5">0</AVal>
+				<AVal Column="1" Row="6">0</AVal>
+				<AVal Column="2" Row="6">0</AVal>
+				<AVal Column="3" Row="6">0</AVal>
+				<AVal Column="4" Row="6">0</AVal>
+				<AVal Column="5" Row="6">0</AVal>
+				<AVal Column="1" Row="7">0</AVal>
+				<AVal Column="2" Row="7">0</AVal>
+				<AVal Column="3" Row="7">0</AVal>
+				<AVal Column="4" Row="7">0</AVal>
+				<AVal Column="5" Row="7">0</AVal>
+				<AVal Column="1" Row="8">0</AVal>
+				<AVal Column="2" Row="8">0</AVal>
+				<AVal Column="3" Row="8">0</AVal>
+				<AVal Column="4" Row="8">0</AVal>
+				<AVal Column="5" Row="8">0</AVal>
+				<AVal Column="1" Row="9">0</AVal>
+				<AVal Column="2" Row="9">0</AVal>
+				<AVal Column="3" Row="9">0</AVal>
+				<AVal Column="4" Row="9">0</AVal>
+				<AVal Column="5" Row="9">0</AVal>
+				<AVal Column="1" Row="10">0</AVal>
+				<AVal Column="2" Row="10">0</AVal>
+				<AVal Column="3" Row="10">0</AVal>
+				<AVal Column="4" Row="10">0</AVal>
+				<AVal Column="5" Row="10">0</AVal>
+				<AVal Column="1" Row="11">0</AVal>
+				<AVal Column="2" Row="11">0</AVal>
+				<AVal Column="3" Row="11">0</AVal>
+				<AVal Column="4" Row="11">0</AVal>
+				<AVal Column="5" Row="11">0</AVal>
+				<AVal Column="1" Row="12">0</AVal>
+				<AVal Column="2" Row="12">0</AVal>
+				<AVal Column="3" Row="12">0</AVal>
+				<AVal Column="4" Row="12">0</AVal>
+				<AVal Column="5" Row="12">0</AVal>
+				<AVal Column="1" Row="13">0</AVal>
+				<AVal Column="2" Row="13">0</AVal>
+				<AVal Column="3" Row="13">0</AVal>
+				<AVal Column="4" Row="13">0</AVal>
+				<AVal Column="5" Row="13">0</AVal>
+				<AVal Column="1" Row="14">0</AVal>
+				<AVal Column="2" Row="14">0</AVal>
+				<AVal Column="3" Row="14">0</AVal>
+				<AVal Column="4" Row="14">0</AVal>
+				<AVal Column="5" Row="14">0</AVal>
+				<AVal Column="1" Row="15">0</AVal>
+				<AVal Column="2" Row="15">0</AVal>
+				<AVal Column="3" Row="15">0</AVal>
+				<AVal Column="4" Row="15">0</AVal>
+				<AVal Column="5" Row="15">0</AVal>
+				<AVal Column="1" Row="16">0</AVal>
+				<AVal Column="2" Row="16">0</AVal>
+				<AVal Column="3" Row="16">0</AVal>
+				<AVal Column="4" Row="16">0</AVal>
+				<AVal Column="5" Row="16">0</AVal>
+				<AVal Column="1" Row="17">0</AVal>
+				<AVal Column="2" Row="17">0</AVal>
+				<AVal Column="3" Row="17">0</AVal>
+				<AVal Column="4" Row="17">0</AVal>
+				<AVal Column="5" Row="17">0</AVal>
+				<AVal Column="1" Row="18">0</AVal>
+				<AVal Column="2" Row="18">0</AVal>
+				<AVal Column="3" Row="18">0</AVal>
+				<AVal Column="4" Row="18">0</AVal>
+				<AVal Column="5" Row="18">0</AVal>
+				<AVal Column="1" Row="19">0</AVal>
+				<AVal Column="2" Row="19">0</AVal>
+				<AVal Column="3" Row="19">0</AVal>
+				<AVal Column="4" Row="19">0</AVal>
+				<AVal Column="5" Row="19">0</AVal>
+				<AVal Column="1" Row="20">0</AVal>
+				<AVal Column="2" Row="20">0</AVal>
+				<AVal Column="3" Row="20">0</AVal>
+				<AVal Column="4" Row="20">0</AVal>
+				<AVal Column="5" Row="20">0</AVal>
+				<AVal Column="1" Row="21">0</AVal>
+				<AVal Column="2" Row="21">0</AVal>
+				<AVal Column="3" Row="21">0</AVal>
+				<AVal Column="4" Row="21">0</AVal>
+				<AVal Column="5" Row="21">0</AVal>
+				<AVal Column="1" Row="22">0</AVal>
+				<AVal Column="2" Row="22">0</AVal>
+				<AVal Column="3" Row="22">0</AVal>
+				<AVal Column="4" Row="22">0</AVal>
+				<AVal Column="5" Row="22">0</AVal>
+				<AVal Column="1" Row="23">0</AVal>
+				<AVal Column="2" Row="23">0</AVal>
+				<AVal Column="3" Row="23">0</AVal>
+				<AVal Column="4" Row="23">0</AVal>
+				<AVal Column="5" Row="23">0</AVal>
+				<AVal Column="1" Row="24">0</AVal>
+				<AVal Column="2" Row="24">0</AVal>
+				<AVal Column="3" Row="24">0</AVal>
+				<AVal Column="4" Row="24">0</AVal>
+				<AVal Column="5" Row="24">0</AVal>
+				<AVal Column="1" Row="25">0</AVal>
+				<AVal Column="2" Row="25">0</AVal>
+				<AVal Column="3" Row="25">0</AVal>
+				<AVal Column="4" Row="25">0</AVal>
+				<AVal Column="5" Row="25">0</AVal>
+				<AVal Column="1" Row="26">0</AVal>
+				<AVal Column="2" Row="26">0</AVal>
+				<AVal Column="3" Row="26">0</AVal>
+				<AVal Column="4" Row="26">0</AVal>
+				<AVal Column="5" Row="26">0</AVal>
+				<AVal Column="1" Row="27">0</AVal>
+				<AVal Column="2" Row="27">0</AVal>
+				<AVal Column="3" Row="27">0</AVal>
+				<AVal Column="4" Row="27">0</AVal>
+				<AVal Column="5" Row="27">0</AVal>
+				<AVal Column="1" Row="28">0</AVal>
+				<AVal Column="2" Row="28">0</AVal>
+				<AVal Column="3" Row="28">0</AVal>
+				<AVal Column="4" Row="28">0</AVal>
+				<AVal Column="5" Row="28">0</AVal>
+				<AVal Column="1" Row="29">0</AVal>
+				<AVal Column="2" Row="29">0</AVal>
+				<AVal Column="3" Row="29">0</AVal>
+				<AVal Column="4" Row="29">0</AVal>
+				<AVal Column="5" Row="29">0</AVal>
+				<AVal Column="1" Row="30">0</AVal>
+				<AVal Column="2" Row="30">0</AVal>
+				<AVal Column="3" Row="30">0</AVal>
+				<AVal Column="4" Row="30">0</AVal>
+				<AVal Column="5" Row="30">0</AVal>
+				<AVal Column="1" Row="31">0</AVal>
+				<AVal Column="2" Row="31">0</AVal>
+				<AVal Column="3" Row="31">0</AVal>
+				<AVal Column="4" Row="31">0</AVal>
+				<AVal Column="5" Row="31">0</AVal>
+				<AVal Column="1" Row="32">0</AVal>
+				<AVal Column="2" Row="32">0</AVal>
+				<AVal Column="3" Row="32">0</AVal>
+				<AVal Column="4" Row="32">0</AVal>
+				<AVal Column="5" Row="32">0</AVal>
+				<AVal Column="1" Row="33">0</AVal>
+				<AVal Column="2" Row="33">0</AVal>
+				<AVal Column="3" Row="33">0</AVal>
+				<AVal Column="4" Row="33">0</AVal>
+				<AVal Column="5" Row="33">0</AVal>
+				<AVal Column="1" Row="34">0</AVal>
+				<AVal Column="2" Row="34">0</AVal>
+				<AVal Column="3" Row="34">0</AVal>
+				<AVal Column="4" Row="34">0</AVal>
+				<AVal Column="5" Row="34">0</AVal>
+				<AVal Column="1" Row="35">0</AVal>
+				<AVal Column="2" Row="35">0</AVal>
+				<AVal Column="3" Row="35">0</AVal>
+				<AVal Column="4" Row="35">0</AVal>
+				<AVal Column="5" Row="35">0</AVal>
+				<AVal Column="1" Row="36">0</AVal>
+				<AVal Column="2" Row="36">0</AVal>
+				<AVal Column="3" Row="36">0</AVal>
+				<AVal Column="4" Row="36">0</AVal>
+				<AVal Column="5" Row="36">0</AVal>
+				<AVal Column="1" Row="37">0</AVal>
+				<AVal Column="2" Row="37">0</AVal>
+				<AVal Column="3" Row="37">0</AVal>
+				<AVal Column="4" Row="37">0</AVal>
+				<AVal Column="5" Row="37">0</AVal>
+				<AVal Column="1" Row="38">0</AVal>
+				<AVal Column="2" Row="38">0</AVal>
+				<AVal Column="3" Row="38">0</AVal>
+				<AVal Column="4" Row="38">0</AVal>
+				<AVal Column="5" Row="38">0</AVal>
+				<AVal Column="1" Row="39">0</AVal>
+				<AVal Column="2" Row="39">0</AVal>
+				<AVal Column="3" Row="39">0</AVal>
+				<AVal Column="4" Row="39">0</AVal>
+				<AVal Column="5" Row="39">0</AVal>
+				<AVal Column="1" Row="40">0</AVal>
+				<AVal Column="2" Row="40">0</AVal>
+				<AVal Column="3" Row="40">0</AVal>
+				<AVal Column="4" Row="40">0</AVal>
+				<AVal Column="5" Row="40">0</AVal>
+				<AVal Column="1" Row="41">0</AVal>
+				<AVal Column="2" Row="41">0</AVal>
+				<AVal Column="3" Row="41">0</AVal>
+				<AVal Column="4" Row="41">0</AVal>
+				<AVal Column="5" Row="41">0</AVal>
+				<AVal Column="1" Row="42">0</AVal>
+				<AVal Column="2" Row="42">0</AVal>
+				<AVal Column="3" Row="42">0</AVal>
+				<AVal Column="4" Row="42">0</AVal>
+				<AVal Column="5" Row="42">0</AVal>
+				<AVal Column="1" Row="43">0</AVal>
+				<AVal Column="2" Row="43">0</AVal>
+				<AVal Column="3" Row="43">0</AVal>
+				<AVal Column="4" Row="43">0</AVal>
+				<AVal Column="5" Row="43">0</AVal>
+				<AVal Column="1" Row="44">0</AVal>
+				<AVal Column="2" Row="44">0</AVal>
+				<AVal Column="3" Row="44">0</AVal>
+				<AVal Column="4" Row="44">0</AVal>
+				<AVal Column="5" Row="44">0</AVal>
+				<AVal Column="1" Row="45">0</AVal>
+				<AVal Column="2" Row="45">0</AVal>
+				<AVal Column="3" Row="45">0</AVal>
+				<AVal Column="4" Row="45">0</AVal>
+				<AVal Column="5" Row="45">0</AVal>
+				<AVal Column="1" Row="46">0</AVal>
+				<AVal Column="2" Row="46">0</AVal>
+				<AVal Column="3" Row="46">0</AVal>
+				<AVal Column="4" Row="46">0</AVal>
+				<AVal Column="5" Row="46">0</AVal>
+				<AVal Column="1" Row="47">0</AVal>
+				<AVal Column="2" Row="47">0</AVal>
+				<AVal Column="3" Row="47">0</AVal>
+				<AVal Column="4" Row="47">0</AVal>
+				<AVal Column="5" Row="47">0</AVal>
+				<AVal Column="1" Row="48">0</AVal>
+				<AVal Column="2" Row="48">0</AVal>
+				<AVal Column="3" Row="48">0</AVal>
+				<AVal Column="4" Row="48">0</AVal>
+				<AVal Column="5" Row="48">0</AVal>
+				<AVal Column="1" Row="49">0</AVal>
+				<AVal Column="2" Row="49">0</AVal>
+				<AVal Column="3" Row="49">0</AVal>
+				<AVal Column="4" Row="49">0</AVal>
+				<AVal Column="5" Row="49">0</AVal>
+				<AVal Column="1" Row="50">0</AVal>
+				<AVal Column="2" Row="50">0</AVal>
+				<AVal Column="3" Row="50">0</AVal>
+				<AVal Column="4" Row="50">0</AVal>
+				<AVal Column="5" Row="50">0</AVal>
+				<AVal Column="1" Row="51">0</AVal>
+				<AVal Column="2" Row="51">0</AVal>
+				<AVal Column="3" Row="51">0</AVal>
+				<AVal Column="4" Row="51">0</AVal>
+				<AVal Column="5" Row="51">0</AVal>
+			</ArrayValues>
+		</Integer>
+		<Length Name="shaftDataDimensions">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="51" SecondDimension="10">
+				<AVal Column="1" Row="1">0</AVal>
+				<AVal Column="2" Row="1">0</AVal>
+				<AVal Column="3" Row="1">0</AVal>
+				<AVal Column="4" Row="1">0</AVal>
+				<AVal Column="5" Row="1">0</AVal>
+				<AVal Column="6" Row="1">0</AVal>
+				<AVal Column="7" Row="1">0</AVal>
+				<AVal Column="8" Row="1">0</AVal>
+				<AVal Column="9" Row="1">0</AVal>
+				<AVal Column="10" Row="1">0</AVal>
+				<AVal Column="1" Row="2">0.6</AVal>
+				<AVal Column="2" Row="2">0</AVal>
+				<AVal Column="3" Row="2">0</AVal>
+				<AVal Column="4" Row="2">0</AVal>
+				<AVal Column="5" Row="2">0</AVal>
+				<AVal Column="6" Row="2">0</AVal>
+				<AVal Column="7" Row="2">0</AVal>
+				<AVal Column="8" Row="2">0</AVal>
+				<AVal Column="9" Row="2">0</AVal>
+				<AVal Column="10" Row="2">0</AVal>
+				<AVal Column="1" Row="3">0.6</AVal>
+				<AVal Column="2" Row="3">0</AVal>
+				<AVal Column="3" Row="3">0</AVal>
+				<AVal Column="4" Row="3">0</AVal>
+				<AVal Column="5" Row="3">0</AVal>
+				<AVal Column="6" Row="3">0</AVal>
+				<AVal Column="7" Row="3">0</AVal>
+				<AVal Column="8" Row="3">0</AVal>
+				<AVal Column="9" Row="3">0</AVal>
+				<AVal Column="10" Row="3">0</AVal>
+				<AVal Column="1" Row="4">0</AVal>
+				<AVal Column="2" Row="4">0</AVal>
+				<AVal Column="3" Row="4">0</AVal>
+				<AVal Column="4" Row="4">0</AVal>
+				<AVal Column="5" Row="4">0</AVal>
+				<AVal Column="6" Row="4">0</AVal>
+				<AVal Column="7" Row="4">0</AVal>
+				<AVal Column="8" Row="4">0</AVal>
+				<AVal Column="9" Row="4">0</AVal>
+				<AVal Column="10" Row="4">0</AVal>
+				<AVal Column="1" Row="5">0</AVal>
+				<AVal Column="2" Row="5">0</AVal>
+				<AVal Column="3" Row="5">0</AVal>
+				<AVal Column="4" Row="5">0</AVal>
+				<AVal Column="5" Row="5">0</AVal>
+				<AVal Column="6" Row="5">0</AVal>
+				<AVal Column="7" Row="5">0</AVal>
+				<AVal Column="8" Row="5">0</AVal>
+				<AVal Column="9" Row="5">0</AVal>
+				<AVal Column="10" Row="5">0</AVal>
+				<AVal Column="1" Row="6">0</AVal>
+				<AVal Column="2" Row="6">0</AVal>
+				<AVal Column="3" Row="6">0</AVal>
+				<AVal Column="4" Row="6">0</AVal>
+				<AVal Column="5" Row="6">0</AVal>
+				<AVal Column="6" Row="6">0</AVal>
+				<AVal Column="7" Row="6">0</AVal>
+				<AVal Column="8" Row="6">0</AVal>
+				<AVal Column="9" Row="6">0</AVal>
+				<AVal Column="10" Row="6">0</AVal>
+				<AVal Column="1" Row="7">0</AVal>
+				<AVal Column="2" Row="7">0</AVal>
+				<AVal Column="3" Row="7">0</AVal>
+				<AVal Column="4" Row="7">0</AVal>
+				<AVal Column="5" Row="7">0</AVal>
+				<AVal Column="6" Row="7">0</AVal>
+				<AVal Column="7" Row="7">0</AVal>
+				<AVal Column="8" Row="7">0</AVal>
+				<AVal Column="9" Row="7">0</AVal>
+				<AVal Column="10" Row="7">0</AVal>
+				<AVal Column="1" Row="8">0</AVal>
+				<AVal Column="2" Row="8">0</AVal>
+				<AVal Column="3" Row="8">0</AVal>
+				<AVal Column="4" Row="8">0</AVal>
+				<AVal Column="5" Row="8">0</AVal>
+				<AVal Column="6" Row="8">0</AVal>
+				<AVal Column="7" Row="8">0</AVal>
+				<AVal Column="8" Row="8">0</AVal>
+				<AVal Column="9" Row="8">0</AVal>
+				<AVal Column="10" Row="8">0</AVal>
+				<AVal Column="1" Row="9">0</AVal>
+				<AVal Column="2" Row="9">0</AVal>
+				<AVal Column="3" Row="9">0</AVal>
+				<AVal Column="4" Row="9">0</AVal>
+				<AVal Column="5" Row="9">0</AVal>
+				<AVal Column="6" Row="9">0</AVal>
+				<AVal Column="7" Row="9">0</AVal>
+				<AVal Column="8" Row="9">0</AVal>
+				<AVal Column="9" Row="9">0</AVal>
+				<AVal Column="10" Row="9">0</AVal>
+				<AVal Column="1" Row="10">0</AVal>
+				<AVal Column="2" Row="10">0</AVal>
+				<AVal Column="3" Row="10">0</AVal>
+				<AVal Column="4" Row="10">0</AVal>
+				<AVal Column="5" Row="10">0</AVal>
+				<AVal Column="6" Row="10">0</AVal>
+				<AVal Column="7" Row="10">0</AVal>
+				<AVal Column="8" Row="10">0</AVal>
+				<AVal Column="9" Row="10">0</AVal>
+				<AVal Column="10" Row="10">0</AVal>
+				<AVal Column="1" Row="11">0</AVal>
+				<AVal Column="2" Row="11">0</AVal>
+				<AVal Column="3" Row="11">0</AVal>
+				<AVal Column="4" Row="11">0</AVal>
+				<AVal Column="5" Row="11">0</AVal>
+				<AVal Column="6" Row="11">0</AVal>
+				<AVal Column="7" Row="11">0</AVal>
+				<AVal Column="8" Row="11">0</AVal>
+				<AVal Column="9" Row="11">0</AVal>
+				<AVal Column="10" Row="11">0</AVal>
+				<AVal Column="1" Row="12">0</AVal>
+				<AVal Column="2" Row="12">0</AVal>
+				<AVal Column="3" Row="12">0</AVal>
+				<AVal Column="4" Row="12">0</AVal>
+				<AVal Column="5" Row="12">0</AVal>
+				<AVal Column="6" Row="12">0</AVal>
+				<AVal Column="7" Row="12">0</AVal>
+				<AVal Column="8" Row="12">0</AVal>
+				<AVal Column="9" Row="12">0</AVal>
+				<AVal Column="10" Row="12">0</AVal>
+				<AVal Column="1" Row="13">0</AVal>
+				<AVal Column="2" Row="13">0</AVal>
+				<AVal Column="3" Row="13">0</AVal>
+				<AVal Column="4" Row="13">0</AVal>
+				<AVal Column="5" Row="13">0</AVal>
+				<AVal Column="6" Row="13">0</AVal>
+				<AVal Column="7" Row="13">0</AVal>
+				<AVal Column="8" Row="13">0</AVal>
+				<AVal Column="9" Row="13">0</AVal>
+				<AVal Column="10" Row="13">0</AVal>
+				<AVal Column="1" Row="14">0</AVal>
+				<AVal Column="2" Row="14">0</AVal>
+				<AVal Column="3" Row="14">0</AVal>
+				<AVal Column="4" Row="14">0</AVal>
+				<AVal Column="5" Row="14">0</AVal>
+				<AVal Column="6" Row="14">0</AVal>
+				<AVal Column="7" Row="14">0</AVal>
+				<AVal Column="8" Row="14">0</AVal>
+				<AVal Column="9" Row="14">0</AVal>
+				<AVal Column="10" Row="14">0</AVal>
+				<AVal Column="1" Row="15">0</AVal>
+				<AVal Column="2" Row="15">0</AVal>
+				<AVal Column="3" Row="15">0</AVal>
+				<AVal Column="4" Row="15">0</AVal>
+				<AVal Column="5" Row="15">0</AVal>
+				<AVal Column="6" Row="15">0</AVal>
+				<AVal Column="7" Row="15">0</AVal>
+				<AVal Column="8" Row="15">0</AVal>
+				<AVal Column="9" Row="15">0</AVal>
+				<AVal Column="10" Row="15">0</AVal>
+				<AVal Column="1" Row="16">0</AVal>
+				<AVal Column="2" Row="16">0</AVal>
+				<AVal Column="3" Row="16">0</AVal>
+				<AVal Column="4" Row="16">0</AVal>
+				<AVal Column="5" Row="16">0</AVal>
+				<AVal Column="6" Row="16">0</AVal>
+				<AVal Column="7" Row="16">0</AVal>
+				<AVal Column="8" Row="16">0</AVal>
+				<AVal Column="9" Row="16">0</AVal>
+				<AVal Column="10" Row="16">0</AVal>
+				<AVal Column="1" Row="17">0</AVal>
+				<AVal Column="2" Row="17">0</AVal>
+				<AVal Column="3" Row="17">0</AVal>
+				<AVal Column="4" Row="17">0</AVal>
+				<AVal Column="5" Row="17">0</AVal>
+				<AVal Column="6" Row="17">0</AVal>
+				<AVal Column="7" Row="17">0</AVal>
+				<AVal Column="8" Row="17">0</AVal>
+				<AVal Column="9" Row="17">0</AVal>
+				<AVal Column="10" Row="17">0</AVal>
+				<AVal Column="1" Row="18">0</AVal>
+				<AVal Column="2" Row="18">0</AVal>
+				<AVal Column="3" Row="18">0</AVal>
+				<AVal Column="4" Row="18">0</AVal>
+				<AVal Column="5" Row="18">0</AVal>
+				<AVal Column="6" Row="18">0</AVal>
+				<AVal Column="7" Row="18">0</AVal>
+				<AVal Column="8" Row="18">0</AVal>
+				<AVal Column="9" Row="18">0</AVal>
+				<AVal Column="10" Row="18">0</AVal>
+				<AVal Column="1" Row="19">0</AVal>
+				<AVal Column="2" Row="19">0</AVal>
+				<AVal Column="3" Row="19">0</AVal>
+				<AVal Column="4" Row="19">0</AVal>
+				<AVal Column="5" Row="19">0</AVal>
+				<AVal Column="6" Row="19">0</AVal>
+				<AVal Column="7" Row="19">0</AVal>
+				<AVal Column="8" Row="19">0</AVal>
+				<AVal Column="9" Row="19">0</AVal>
+				<AVal Column="10" Row="19">0</AVal>
+				<AVal Column="1" Row="20">0</AVal>
+				<AVal Column="2" Row="20">0</AVal>
+				<AVal Column="3" Row="20">0</AVal>
+				<AVal Column="4" Row="20">0</AVal>
+				<AVal Column="5" Row="20">0</AVal>
+				<AVal Column="6" Row="20">0</AVal>
+				<AVal Column="7" Row="20">0</AVal>
+				<AVal Column="8" Row="20">0</AVal>
+				<AVal Column="9" Row="20">0</AVal>
+				<AVal Column="10" Row="20">0</AVal>
+				<AVal Column="1" Row="21">0</AVal>
+				<AVal Column="2" Row="21">0</AVal>
+				<AVal Column="3" Row="21">0</AVal>
+				<AVal Column="4" Row="21">0</AVal>
+				<AVal Column="5" Row="21">0</AVal>
+				<AVal Column="6" Row="21">0</AVal>
+				<AVal Column="7" Row="21">0</AVal>
+				<AVal Column="8" Row="21">0</AVal>
+				<AVal Column="9" Row="21">0</AVal>
+				<AVal Column="10" Row="21">0</AVal>
+				<AVal Column="1" Row="22">0</AVal>
+				<AVal Column="2" Row="22">0</AVal>
+				<AVal Column="3" Row="22">0</AVal>
+				<AVal Column="4" Row="22">0</AVal>
+				<AVal Column="5" Row="22">0</AVal>
+				<AVal Column="6" Row="22">0</AVal>
+				<AVal Column="7" Row="22">0</AVal>
+				<AVal Column="8" Row="22">0</AVal>
+				<AVal Column="9" Row="22">0</AVal>
+				<AVal Column="10" Row="22">0</AVal>
+				<AVal Column="1" Row="23">0</AVal>
+				<AVal Column="2" Row="23">0</AVal>
+				<AVal Column="3" Row="23">0</AVal>
+				<AVal Column="4" Row="23">0</AVal>
+				<AVal Column="5" Row="23">0</AVal>
+				<AVal Column="6" Row="23">0</AVal>
+				<AVal Column="7" Row="23">0</AVal>
+				<AVal Column="8" Row="23">0</AVal>
+				<AVal Column="9" Row="23">0</AVal>
+				<AVal Column="10" Row="23">0</AVal>
+				<AVal Column="1" Row="24">0</AVal>
+				<AVal Column="2" Row="24">0</AVal>
+				<AVal Column="3" Row="24">0</AVal>
+				<AVal Column="4" Row="24">0</AVal>
+				<AVal Column="5" Row="24">0</AVal>
+				<AVal Column="6" Row="24">0</AVal>
+				<AVal Column="7" Row="24">0</AVal>
+				<AVal Column="8" Row="24">0</AVal>
+				<AVal Column="9" Row="24">0</AVal>
+				<AVal Column="10" Row="24">0</AVal>
+				<AVal Column="1" Row="25">0</AVal>
+				<AVal Column="2" Row="25">0</AVal>
+				<AVal Column="3" Row="25">0</AVal>
+				<AVal Column="4" Row="25">0</AVal>
+				<AVal Column="5" Row="25">0</AVal>
+				<AVal Column="6" Row="25">0</AVal>
+				<AVal Column="7" Row="25">0</AVal>
+				<AVal Column="8" Row="25">0</AVal>
+				<AVal Column="9" Row="25">0</AVal>
+				<AVal Column="10" Row="25">0</AVal>
+				<AVal Column="1" Row="26">0</AVal>
+				<AVal Column="2" Row="26">0</AVal>
+				<AVal Column="3" Row="26">0</AVal>
+				<AVal Column="4" Row="26">0</AVal>
+				<AVal Column="5" Row="26">0</AVal>
+				<AVal Column="6" Row="26">0</AVal>
+				<AVal Column="7" Row="26">0</AVal>
+				<AVal Column="8" Row="26">0</AVal>
+				<AVal Column="9" Row="26">0</AVal>
+				<AVal Column="10" Row="26">0</AVal>
+				<AVal Column="1" Row="27">0</AVal>
+				<AVal Column="2" Row="27">0</AVal>
+				<AVal Column="3" Row="27">0</AVal>
+				<AVal Column="4" Row="27">0</AVal>
+				<AVal Column="5" Row="27">0</AVal>
+				<AVal Column="6" Row="27">0</AVal>
+				<AVal Column="7" Row="27">0</AVal>
+				<AVal Column="8" Row="27">0</AVal>
+				<AVal Column="9" Row="27">0</AVal>
+				<AVal Column="10" Row="27">0</AVal>
+				<AVal Column="1" Row="28">0</AVal>
+				<AVal Column="2" Row="28">0</AVal>
+				<AVal Column="3" Row="28">0</AVal>
+				<AVal Column="4" Row="28">0</AVal>
+				<AVal Column="5" Row="28">0</AVal>
+				<AVal Column="6" Row="28">0</AVal>
+				<AVal Column="7" Row="28">0</AVal>
+				<AVal Column="8" Row="28">0</AVal>
+				<AVal Column="9" Row="28">0</AVal>
+				<AVal Column="10" Row="28">0</AVal>
+				<AVal Column="1" Row="29">0</AVal>
+				<AVal Column="2" Row="29">0</AVal>
+				<AVal Column="3" Row="29">0</AVal>
+				<AVal Column="4" Row="29">0</AVal>
+				<AVal Column="5" Row="29">0</AVal>
+				<AVal Column="6" Row="29">0</AVal>
+				<AVal Column="7" Row="29">0</AVal>
+				<AVal Column="8" Row="29">0</AVal>
+				<AVal Column="9" Row="29">0</AVal>
+				<AVal Column="10" Row="29">0</AVal>
+				<AVal Column="1" Row="30">0</AVal>
+				<AVal Column="2" Row="30">0</AVal>
+				<AVal Column="3" Row="30">0</AVal>
+				<AVal Column="4" Row="30">0</AVal>
+				<AVal Column="5" Row="30">0</AVal>
+				<AVal Column="6" Row="30">0</AVal>
+				<AVal Column="7" Row="30">0</AVal>
+				<AVal Column="8" Row="30">0</AVal>
+				<AVal Column="9" Row="30">0</AVal>
+				<AVal Column="10" Row="30">0</AVal>
+				<AVal Column="1" Row="31">0</AVal>
+				<AVal Column="2" Row="31">0</AVal>
+				<AVal Column="3" Row="31">0</AVal>
+				<AVal Column="4" Row="31">0</AVal>
+				<AVal Column="5" Row="31">0</AVal>
+				<AVal Column="6" Row="31">0</AVal>
+				<AVal Column="7" Row="31">0</AVal>
+				<AVal Column="8" Row="31">0</AVal>
+				<AVal Column="9" Row="31">0</AVal>
+				<AVal Column="10" Row="31">0</AVal>
+				<AVal Column="1" Row="32">0</AVal>
+				<AVal Column="2" Row="32">0</AVal>
+				<AVal Column="3" Row="32">0</AVal>
+				<AVal Column="4" Row="32">0</AVal>
+				<AVal Column="5" Row="32">0</AVal>
+				<AVal Column="6" Row="32">0</AVal>
+				<AVal Column="7" Row="32">0</AVal>
+				<AVal Column="8" Row="32">0</AVal>
+				<AVal Column="9" Row="32">0</AVal>
+				<AVal Column="10" Row="32">0</AVal>
+				<AVal Column="1" Row="33">0</AVal>
+				<AVal Column="2" Row="33">0</AVal>
+				<AVal Column="3" Row="33">0</AVal>
+				<AVal Column="4" Row="33">0</AVal>
+				<AVal Column="5" Row="33">0</AVal>
+				<AVal Column="6" Row="33">0</AVal>
+				<AVal Column="7" Row="33">0</AVal>
+				<AVal Column="8" Row="33">0</AVal>
+				<AVal Column="9" Row="33">0</AVal>
+				<AVal Column="10" Row="33">0</AVal>
+				<AVal Column="1" Row="34">0</AVal>
+				<AVal Column="2" Row="34">0</AVal>
+				<AVal Column="3" Row="34">0</AVal>
+				<AVal Column="4" Row="34">0</AVal>
+				<AVal Column="5" Row="34">0</AVal>
+				<AVal Column="6" Row="34">0</AVal>
+				<AVal Column="7" Row="34">0</AVal>
+				<AVal Column="8" Row="34">0</AVal>
+				<AVal Column="9" Row="34">0</AVal>
+				<AVal Column="10" Row="34">0</AVal>
+				<AVal Column="1" Row="35">0</AVal>
+				<AVal Column="2" Row="35">0</AVal>
+				<AVal Column="3" Row="35">0</AVal>
+				<AVal Column="4" Row="35">0</AVal>
+				<AVal Column="5" Row="35">0</AVal>
+				<AVal Column="6" Row="35">0</AVal>
+				<AVal Column="7" Row="35">0</AVal>
+				<AVal Column="8" Row="35">0</AVal>
+				<AVal Column="9" Row="35">0</AVal>
+				<AVal Column="10" Row="35">0</AVal>
+				<AVal Column="1" Row="36">0</AVal>
+				<AVal Column="2" Row="36">0</AVal>
+				<AVal Column="3" Row="36">0</AVal>
+				<AVal Column="4" Row="36">0</AVal>
+				<AVal Column="5" Row="36">0</AVal>
+				<AVal Column="6" Row="36">0</AVal>
+				<AVal Column="7" Row="36">0</AVal>
+				<AVal Column="8" Row="36">0</AVal>
+				<AVal Column="9" Row="36">0</AVal>
+				<AVal Column="10" Row="36">0</AVal>
+				<AVal Column="1" Row="37">0</AVal>
+				<AVal Column="2" Row="37">0</AVal>
+				<AVal Column="3" Row="37">0</AVal>
+				<AVal Column="4" Row="37">0</AVal>
+				<AVal Column="5" Row="37">0</AVal>
+				<AVal Column="6" Row="37">0</AVal>
+				<AVal Column="7" Row="37">0</AVal>
+				<AVal Column="8" Row="37">0</AVal>
+				<AVal Column="9" Row="37">0</AVal>
+				<AVal Column="10" Row="37">0</AVal>
+				<AVal Column="1" Row="38">0</AVal>
+				<AVal Column="2" Row="38">0</AVal>
+				<AVal Column="3" Row="38">0</AVal>
+				<AVal Column="4" Row="38">0</AVal>
+				<AVal Column="5" Row="38">0</AVal>
+				<AVal Column="6" Row="38">0</AVal>
+				<AVal Column="7" Row="38">0</AVal>
+				<AVal Column="8" Row="38">0</AVal>
+				<AVal Column="9" Row="38">0</AVal>
+				<AVal Column="10" Row="38">0</AVal>
+				<AVal Column="1" Row="39">0</AVal>
+				<AVal Column="2" Row="39">0</AVal>
+				<AVal Column="3" Row="39">0</AVal>
+				<AVal Column="4" Row="39">0</AVal>
+				<AVal Column="5" Row="39">0</AVal>
+				<AVal Column="6" Row="39">0</AVal>
+				<AVal Column="7" Row="39">0</AVal>
+				<AVal Column="8" Row="39">0</AVal>
+				<AVal Column="9" Row="39">0</AVal>
+				<AVal Column="10" Row="39">0</AVal>
+				<AVal Column="1" Row="40">0</AVal>
+				<AVal Column="2" Row="40">0</AVal>
+				<AVal Column="3" Row="40">0</AVal>
+				<AVal Column="4" Row="40">0</AVal>
+				<AVal Column="5" Row="40">0</AVal>
+				<AVal Column="6" Row="40">0</AVal>
+				<AVal Column="7" Row="40">0</AVal>
+				<AVal Column="8" Row="40">0</AVal>
+				<AVal Column="9" Row="40">0</AVal>
+				<AVal Column="10" Row="40">0</AVal>
+				<AVal Column="1" Row="41">0</AVal>
+				<AVal Column="2" Row="41">0</AVal>
+				<AVal Column="3" Row="41">0</AVal>
+				<AVal Column="4" Row="41">0</AVal>
+				<AVal Column="5" Row="41">0</AVal>
+				<AVal Column="6" Row="41">0</AVal>
+				<AVal Column="7" Row="41">0</AVal>
+				<AVal Column="8" Row="41">0</AVal>
+				<AVal Column="9" Row="41">0</AVal>
+				<AVal Column="10" Row="41">0</AVal>
+				<AVal Column="1" Row="42">0</AVal>
+				<AVal Column="2" Row="42">0</AVal>
+				<AVal Column="3" Row="42">0</AVal>
+				<AVal Column="4" Row="42">0</AVal>
+				<AVal Column="5" Row="42">0</AVal>
+				<AVal Column="6" Row="42">0</AVal>
+				<AVal Column="7" Row="42">0</AVal>
+				<AVal Column="8" Row="42">0</AVal>
+				<AVal Column="9" Row="42">0</AVal>
+				<AVal Column="10" Row="42">0</AVal>
+				<AVal Column="1" Row="43">0</AVal>
+				<AVal Column="2" Row="43">0</AVal>
+				<AVal Column="3" Row="43">0</AVal>
+				<AVal Column="4" Row="43">0</AVal>
+				<AVal Column="5" Row="43">0</AVal>
+				<AVal Column="6" Row="43">0</AVal>
+				<AVal Column="7" Row="43">0</AVal>
+				<AVal Column="8" Row="43">0</AVal>
+				<AVal Column="9" Row="43">0</AVal>
+				<AVal Column="10" Row="43">0</AVal>
+				<AVal Column="1" Row="44">0</AVal>
+				<AVal Column="2" Row="44">0</AVal>
+				<AVal Column="3" Row="44">0</AVal>
+				<AVal Column="4" Row="44">0</AVal>
+				<AVal Column="5" Row="44">0</AVal>
+				<AVal Column="6" Row="44">0</AVal>
+				<AVal Column="7" Row="44">0</AVal>
+				<AVal Column="8" Row="44">0</AVal>
+				<AVal Column="9" Row="44">0</AVal>
+				<AVal Column="10" Row="44">0</AVal>
+				<AVal Column="1" Row="45">0</AVal>
+				<AVal Column="2" Row="45">0</AVal>
+				<AVal Column="3" Row="45">0</AVal>
+				<AVal Column="4" Row="45">0</AVal>
+				<AVal Column="5" Row="45">0</AVal>
+				<AVal Column="6" Row="45">0</AVal>
+				<AVal Column="7" Row="45">0</AVal>
+				<AVal Column="8" Row="45">0</AVal>
+				<AVal Column="9" Row="45">0</AVal>
+				<AVal Column="10" Row="45">0</AVal>
+				<AVal Column="1" Row="46">0</AVal>
+				<AVal Column="2" Row="46">0</AVal>
+				<AVal Column="3" Row="46">0</AVal>
+				<AVal Column="4" Row="46">0</AVal>
+				<AVal Column="5" Row="46">0</AVal>
+				<AVal Column="6" Row="46">0</AVal>
+				<AVal Column="7" Row="46">0</AVal>
+				<AVal Column="8" Row="46">0</AVal>
+				<AVal Column="9" Row="46">0</AVal>
+				<AVal Column="10" Row="46">0</AVal>
+				<AVal Column="1" Row="47">0</AVal>
+				<AVal Column="2" Row="47">0</AVal>
+				<AVal Column="3" Row="47">0</AVal>
+				<AVal Column="4" Row="47">0</AVal>
+				<AVal Column="5" Row="47">0</AVal>
+				<AVal Column="6" Row="47">0</AVal>
+				<AVal Column="7" Row="47">0</AVal>
+				<AVal Column="8" Row="47">0</AVal>
+				<AVal Column="9" Row="47">0</AVal>
+				<AVal Column="10" Row="47">0</AVal>
+				<AVal Column="1" Row="48">0</AVal>
+				<AVal Column="2" Row="48">0</AVal>
+				<AVal Column="3" Row="48">0</AVal>
+				<AVal Column="4" Row="48">0</AVal>
+				<AVal Column="5" Row="48">0</AVal>
+				<AVal Column="6" Row="48">0</AVal>
+				<AVal Column="7" Row="48">0</AVal>
+				<AVal Column="8" Row="48">0</AVal>
+				<AVal Column="9" Row="48">0</AVal>
+				<AVal Column="10" Row="48">0</AVal>
+				<AVal Column="1" Row="49">0</AVal>
+				<AVal Column="2" Row="49">0</AVal>
+				<AVal Column="3" Row="49">0</AVal>
+				<AVal Column="4" Row="49">0</AVal>
+				<AVal Column="5" Row="49">0</AVal>
+				<AVal Column="6" Row="49">0</AVal>
+				<AVal Column="7" Row="49">0</AVal>
+				<AVal Column="8" Row="49">0</AVal>
+				<AVal Column="9" Row="49">0</AVal>
+				<AVal Column="10" Row="49">0</AVal>
+				<AVal Column="1" Row="50">0</AVal>
+				<AVal Column="2" Row="50">0</AVal>
+				<AVal Column="3" Row="50">0</AVal>
+				<AVal Column="4" Row="50">0</AVal>
+				<AVal Column="5" Row="50">0</AVal>
+				<AVal Column="6" Row="50">0</AVal>
+				<AVal Column="7" Row="50">0</AVal>
+				<AVal Column="8" Row="50">0</AVal>
+				<AVal Column="9" Row="50">0</AVal>
+				<AVal Column="10" Row="50">0</AVal>
+				<AVal Column="1" Row="51">0</AVal>
+				<AVal Column="2" Row="51">0</AVal>
+				<AVal Column="3" Row="51">0</AVal>
+				<AVal Column="4" Row="51">0</AVal>
+				<AVal Column="5" Row="51">0</AVal>
+				<AVal Column="6" Row="51">0</AVal>
+				<AVal Column="7" Row="51">0</AVal>
+				<AVal Column="8" Row="51">0</AVal>
+				<AVal Column="9" Row="51">0</AVal>
+				<AVal Column="10" Row="51">0</AVal>
+			</ArrayValues>
+		</Length>
+		<Length Name="shaftAdditionalDepth">
+			<Description><![CDATA["Additional Exc. Depth"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>3</Value>
+		</Length>
+		<Boolean Name="showLastShaft">
+			<Description><![CDATA["Show Last Shaft"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<PenColor Name="penShaftCover">
+			<Description><![CDATA["Shaft Cover Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</PenColor>
+		<PenColor Name="penShaftUnderground">
+			<Description><![CDATA["Shaft Undeground Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>2</Value>
+		</PenColor>
+		<LineType Name="lineShaftCover">
+			<Description><![CDATA["Shaft Cover Line"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</LineType>
+		<LineType Name="lineShaftUnderground">
+			<Description><![CDATA["Shaft Underground Line"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>21</Value>
+		</LineType>
+		<String Name="shaftCaptionLine1">
+			<Description><![CDATA["Line 1"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA["RJ <diameter>"]]></Value>
+		</String>
+		<String Name="shaftCaptionLine2">
+			<Description><![CDATA["Line 2"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA["h=<height>"]]></Value>
+		</String>
+		<String Name="shaftCaptionLine3">
+			<Description><![CDATA["Line 3"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA["k.d. <bottomLevel>"]]></Value>
+		</String>
+		<String Name="shaftCaptionLine4">
+			<Description><![CDATA["Line 4"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA["k.p. <topLevel>"]]></Value>
+		</String>
+		<Integer Name="showShaftCaption">
+			<Description><![CDATA["Show Shaft Caption"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Integer>
+		<Boolean Name="shaftCaptionTextStyleByMVO">
+			<Description><![CDATA["Shaft Caption Text Style By MVO"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<String Name="shaftCaptionTextFont">
+			<Description><![CDATA["Shaft Caption Text Font"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA["@Arial Unicode MS srednjeevropska"]]></Value>
+		</String>
+		<PenColor Name="shaftCaptionTextPen">
+			<Description><![CDATA["Shaft Caption Text Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>66</Value>
+		</PenColor>
+		<Length Name="shaftCaptionTextSize">
+			<Description><![CDATA["Shaft Caption Text Size"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.1</Value>
+		</Length>
+		<Integer Name="shaftCaptionTextStyle">
+			<Description><![CDATA["Shaft Caption Text Style"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Integer>
+
+		<!-- ttPipeOptions: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="ttPipeOptions">
+			<Description><![CDATA["Cevi"]]></Description>
+		</Title>
+		<Length Name="pipeDimensions">
+			<Description><![CDATA["Pipe Dimensions"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="50" SecondDimension="0">
+				<AVal Row="1">0.1</AVal>
+				<AVal Row="2">0</AVal>
+				<AVal Row="3">0</AVal>
+				<AVal Row="4">0</AVal>
+				<AVal Row="5">0</AVal>
+				<AVal Row="6">0</AVal>
+				<AVal Row="7">0</AVal>
+				<AVal Row="8">0</AVal>
+				<AVal Row="9">0</AVal>
+				<AVal Row="10">0</AVal>
+				<AVal Row="11">0</AVal>
+				<AVal Row="12">0</AVal>
+				<AVal Row="13">0</AVal>
+				<AVal Row="14">0</AVal>
+				<AVal Row="15">0</AVal>
+				<AVal Row="16">0</AVal>
+				<AVal Row="17">0</AVal>
+				<AVal Row="18">0</AVal>
+				<AVal Row="19">0</AVal>
+				<AVal Row="20">0</AVal>
+				<AVal Row="21">0</AVal>
+				<AVal Row="22">0</AVal>
+				<AVal Row="23">0</AVal>
+				<AVal Row="24">0</AVal>
+				<AVal Row="25">0</AVal>
+				<AVal Row="26">0</AVal>
+				<AVal Row="27">0</AVal>
+				<AVal Row="28">0</AVal>
+				<AVal Row="29">0</AVal>
+				<AVal Row="30">0</AVal>
+				<AVal Row="31">0</AVal>
+				<AVal Row="32">0</AVal>
+				<AVal Row="33">0</AVal>
+				<AVal Row="34">0</AVal>
+				<AVal Row="35">0</AVal>
+				<AVal Row="36">0</AVal>
+				<AVal Row="37">0</AVal>
+				<AVal Row="38">0</AVal>
+				<AVal Row="39">0</AVal>
+				<AVal Row="40">0</AVal>
+				<AVal Row="41">0</AVal>
+				<AVal Row="42">0</AVal>
+				<AVal Row="43">0</AVal>
+				<AVal Row="44">0</AVal>
+				<AVal Row="45">0</AVal>
+				<AVal Row="46">0</AVal>
+				<AVal Row="47">0</AVal>
+				<AVal Row="48">0</AVal>
+				<AVal Row="49">0</AVal>
+				<AVal Row="50">0</AVal>
+			</ArrayValues>
+		</Length>
+		<Boolean Name="showAxis">
+			<Description><![CDATA["Show Pipe Axis Line"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<LineType Name="linePipeAxis">
+			<Description><![CDATA["Pipe Axis Line"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>4</Value>
+		</LineType>
+		<PenColor Name="penPipeAxis">
+			<Description><![CDATA["Pipe Axis Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>203</Value>
+		</PenColor>
+		<Boolean Name="showPipeOffsetLines">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Integer Name="showPipeCaption">
+			<Description><![CDATA["Show Pipe Caption"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Integer>
+		<String Name="pipeCaption">
+			<Description><![CDATA["Pipe Caption"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA["Cev <diameter>, l=<length>, i=<slope>"]]></Value>
+		</String>
+		<Boolean Name="pipeCaptionTextStyleByMVO">
+			<Description><![CDATA["Pipe Caption Text Style By MVO"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<String Name="pipeCaptionTextFont">
+			<Description><![CDATA["Pipe Caption Text Font"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA["Arial Black zahodna"]]></Value>
+		</String>
+		<PenColor Name="pipeCaptionTextPen">
+			<Description><![CDATA["Pipe Caption Text Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>66</Value>
+		</PenColor>
+		<Length Name="pipeCaptionTextSize">
+			<Description><![CDATA["Pipe Caption Text Size"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.1</Value>
+		</Length>
+		<Integer Name="pipeCaptionTextStyle">
+			<Description><![CDATA["Pipe Caption Text Style"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Integer>
+
+		<!-- ttProfileOptions: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="ttProfileOptions">
+			<Description><![CDATA["Profil Prereza"]]></Description>
+		</Title>
+		<Length Name="profileWidth">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>20</Value>
+		</Length>
+		<Length Name="profileHeight">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>10</Value>
+		</Length>
+		<Length Name="profilePosX">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>10</Value>
+		</Length>
+		<Length Name="profilePosY">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>15</Value>
+		</Length>
+		<PenColor Name="profileGridPen">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</PenColor>
+		<LineType Name="profileGridLine">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</LineType>
+		<String Name="profileTextFont">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA["ISOCPEUR srednjeevropska"]]></Value>
+		</String>
+		<PenColor Name="profileTextPen">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</PenColor>
+		<Length Name="profileTextSize">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Length>
+		<Integer Name="profileTextStyle">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Integer>
+		<PenColor Name="profilePipePen">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>206</Value>
+		</PenColor>
+		<LineType Name="profilePipeLine">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</LineType>
+		<PenColor Name="profileTerrainPen">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>73</Value>
+		</PenColor>
+		<LineType Name="profileTerrainLine">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>22</Value>
+		</LineType>
+
+		<!-- tt2DDisplayOptions: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="tt2DDisplayOptions">
+			<Description><![CDATA["Display Options"]]></Description>
+		</Title>
+
+		<!-- tt3DProperties: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="tt3DProperties">
+			<Description><![CDATA["3D Properties"]]></Description>
+		</Title>
+		<Boolean Name="cast_shadow">
+			<Description><![CDATA["Cast Shadow"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Material Name="surface_mat">
+			<Description><![CDATA["Surface Material"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Material>
+	</Parameters>
+</ParamSection>

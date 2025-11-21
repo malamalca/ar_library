@@ -3,3 +3,11 @@ n = request("FONTNAMES_LIST", "", fontnames)
 
 values "arFontDefaultMVO" fontnames, CUSTOM
 values "arFontSmallMVO" fontnames, CUSTOM
+
+values{2} "arPrikazVentilaHomeStory" 	DISPLAY_SIMPLE, "Simple",
+										DISPLAY_DETAILED, "Detailed",
+										DISPLAY_OFF, "None"
+
+values{2} "arPrikazVentilaOtherStory" 	DISPLAY_SIMPLE, "Simple",
+										DISPLAY_DETAILED, "Detailed",
+										DISPLAY_OFF, "None"

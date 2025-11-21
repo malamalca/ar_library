@@ -1,0 +1,328 @@
+﻿
+! ==============================================================================
+! Hideparameter
+! ==============================================================================
+
+hideparameter all
+
+
+! ==============================================================================
+! Macro Call
+! ==============================================================================
+
+call "treadAccessories_m" parameters all
+
+
+! ==============================================================================
+! Parameter Values
+! ==============================================================================
+
+values{2} "iNosingMainType" NOSING_MAIN_TYPE_NOEXT,			stNosingMainTypes[1],
+							NOSING_MAIN_TYPE_EXT,			stNosingMainTypes[2],
+							NOSING_MAIN_TYPE_CUSTOM_PROF,	stNosingMainTypes[3]
+
+values{2} "iTreadNosingProfile"  _iNosingTypeValueList, _stNosingTypeValueList
+
+values{2} "iDefSlantingAngleCustom" CUSTOMSLANTING_BYDISTANCE,		`By Distance`,
+									CUSTOMSLANTING_BYANGLE,			`By Angle`
+
+if iTreadNosingProfile = NOSINGPROFILE_ROUNDED then
+	_maxFilletRadius = TREAD_THICKNESS / 2
+else
+	if	iTreadNosingProfile = NOSINGPROFILE_SLANTED_FILLET |\
+		iTreadNosingProfile = NOSINGPROFILE_SLANTED_CHAMFER then
+
+		_maxFilletRadius = _slantingStartPoint
+	else
+		_maxFilletRadius = TREAD_THICKNESS
+	endif
+endif
+
+values "filletRadius" range (0, _maxFilletRadius]
+
+_minOffsetFront	= 0
+_minOffsetRight	= 0
+_minOffsetLeft	= 0
+_minOffsetBack	= 0
+
+if _bEnableTreadNosingProfileOnFront then
+	if	iTreadNosingProfile	<> NOSINGPROFILE_SLANTED_ONLY	&\
+		iTreadNosingProfile	<> NOSINGPROFILE_SLANTED_SQUARE	&\
+		iTreadNosingProfile	<> NOSINGPROFILE_SQUARE			&\
+		iTreadNosingProfile	<> NOSINGPROFILE_CUSTOM_PROF	then
+
+		_minOffsetFront	= filletRadius
+	endif
+endif
+
+if _bEnableTreadNosingProfileOnRight then
+	if	iTreadNosingProfile	<> NOSINGPROFILE_SLANTED_ONLY	&\
+		iTreadNosingProfile	<> NOSINGPROFILE_SLANTED_SQUARE	&\
+		iTreadNosingProfile	<> NOSINGPROFILE_SQUARE			&\
+		iTreadNosingProfile	<> NOSINGPROFILE_CUSTOM_PROF	then
+
+		_minOffsetRight	= filletRadius
+	endif
+endif
+
+if _bEnableTreadNosingProfileOnLeft then
+	if	iTreadNosingProfile	<> NOSINGPROFILE_SLANTED_ONLY	&\
+		iTreadNosingProfile	<> NOSINGPROFILE_SLANTED_SQUARE	&\
+		iTreadNosingProfile	<> NOSINGPROFILE_SQUARE			&\
+		iTreadNosingProfile	<> NOSINGPROFILE_CUSTOM_PROF	then
+
+		_minOffsetLeft	= filletRadius
+	endif
+endif
+
+if _bEnableTreadNosingProfileOnBack then
+	if	iTreadNosingProfile	<> NOSINGPROFILE_SLANTED_ONLY	&\
+		iTreadNosingProfile	<> NOSINGPROFILE_SLANTED_SQUARE	&\
+		iTreadNosingProfile	<> NOSINGPROFILE_SQUARE			&\
+		iTreadNosingProfile	<> NOSINGPROFILE_CUSTOM_PROF	then
+
+		_minOffsetBack	= filletRadius
+	endif
+endif
+
+values "nosingProfileID"		PROFILETYPES_MASK 16	! other: Object
+
+values{2} "iAccessory"			ACC_NONSLIPBAND,	`Non-Slip Bands`,
+								ACC_EDGEPROTECTION,	`Edge Protection`,
+								ACC_CUSTOMPROFILE,	`Custom Profile`
+
+values{2} "iRecessMultiply"		RECESS_DISTRIBUTE,	`Distribute`,
+								RECESS_SPREAD,		`Spread`
+
+values "dRecess"				range [0, )
+values "recessWidth"			range (0, )
+values "recessDepth"			range (0, )
+values "iRecessNum"				range [1, )
+values "cuttingWidth"			range [recessWidth * iRecessNum, )
+
+values "iTreadNonSlipBandNum"	range [1, )
+values "treadNonSlipBandDist"	range (0, )
+values "treadNonSlipBandWidth"	range (0, )
+
+if iAccessory = ACC_NONSLIPBAND then
+	_minOffsetFront	= max(_minOffsetFront, _minOffsetRight * bAccRight, _minOffsetLeft * bAccLeft)
+
+	values "accOffsetFront"		range [_minOffsetFront, )
+	values "accOffsetRight"		range [_minOffsetRight, )
+	values "accOffsetLeft"		range [_minOffsetLeft, )
+	values "accOffsetBack"		range [_minOffsetBack, )
+endif
+
+values{2} "iTypeRaisedStrip"	STRIPTYPE_SQUARE,		`Square`,
+								STRIPTYPE_ROUNDED,		`Rounded`
+
+values "posRaisedStrip"			range [max(_minOffsetRight,_minOffsetLeft), 0.1]
+values "offsetFrontRaisedStrip"	range [_minOffsetFront, )
+values "offsetBackRaisedStrip"	range [_minOffsetBack, )
+values "radiusRounded"			range [0, min(widthRaisedStrip/2, heightRaisedStrip)]
+
+values "gs_cont_pen"			range [1, 255]
+values "penSection"				range [1, 255]
+values "penAccVisible"			range [1, 255]
+values "penAccHidden"			range [1, 255]
+! ==============================================================================
+! Parameter Lock
+! ==============================================================================
+
+if not(bNosingProfile) then
+	lock	"iNosingMainType",
+			"iTreadNosingProfile",
+			"filletRadius",
+			"bTreadNosingProfileOnFront",
+			"bTreadNosingProfileOnBack",
+			"bTreadNosingProfileOnLeft",
+			"bTreadNosingProfileOnRight",
+
+			"slantingAngleCustom",
+			"slantingDistCustom",
+			"bUseSlantingAngleRiser",
+			"iDefSlantingAngleCustom"
+endif
+
+
+if not(bMilledRecess) then
+	lock	"iRecessMultiply",
+			"iRecessNum",
+			"dRecess",
+			"recessWidth",
+			"recessDepth",
+			"mrOffsetStart",
+			"cuttingWidth",
+			"mrOffsetLeft",
+			"mrOffsetRight"
+else
+	if iRecessNum = 1 then
+		cuttingWidth 	= recessWidth
+		dRecess			= 0
+		parameters	cuttingWidth	= cuttingWidth,
+					dRecess			= dRecess
+		lock "cuttingWidth", "dRecess"
+	else
+		if iRecessMultiply = RECESS_DISTRIBUTE then
+			dRecess = (cuttingWidth - iRecessNum * recessWidth)/ (iRecessNum - 1)
+			if dRecess < eps then
+				dRecess = 0
+				cuttingWidth = iRecessNum * recessWidth
+				parameters cuttingWidth = cuttingWidth
+			endif
+			parameters dRecess = dRecess
+			lock "dRecess"
+		else
+			cuttingWidth = iRecessNum * recessWidth + dRecess * (iRecessNum - 1)
+			parameters cuttingWidth = cuttingWidth
+			lock "cuttingWidth"
+		endif
+	endif
+endif
+
+
+if GLOB_MODPAR_NAME = "bNosingProfile" then
+	if bNosingProfile then
+		if	not(bTreadNosingProfileOnFront)	&\
+			not(bTreadNosingProfileOnBack)	&\
+			not(bTreadNosingProfileOnLeft)	&\
+			not(bTreadNosingProfileOnRight)	then
+
+			bTreadNosingProfileOnFront = 1
+			parameters bTreadNosingProfileOnFront = bTreadNosingProfileOnFront
+		endif
+	endif
+endif
+
+if bNosingProfile then
+	if	bTreadNosingProfileOnFront		&\
+		not(bTreadNosingProfileOnBack)	&\
+		not(bTreadNosingProfileOnLeft)	&\
+		not(bTreadNosingProfileOnRight)	then
+
+		lock "bTreadNosingProfileOnFront"
+	endif
+	if	not(bTreadNosingProfileOnFront)	&\
+		bTreadNosingProfileOnBack		&\
+		not(bTreadNosingProfileOnLeft)	&\
+		not(bTreadNosingProfileOnRight)	then
+
+		lock "bTreadNosingProfileOnBack"
+	endif
+	if	not(bTreadNosingProfileOnFront)	&\
+		not(bTreadNosingProfileOnBack)	&\
+		bTreadNosingProfileOnLeft		&\
+		not(bTreadNosingProfileOnRight)	then
+
+		lock "bTreadNosingProfileOnLeft"
+	endif
+	if	not(bTreadNosingProfileOnFront)	&\
+		not(bTreadNosingProfileOnBack)	&\
+		not(bTreadNosingProfileOnLeft)	&\
+		bTreadNosingProfileOnRight		then
+
+		lock "bTreadNosingProfileOnRight"
+	endif
+endif
+
+if bShowStripLeft and not(bShowStripRight) then
+	bShowStripLeft = 1
+	parameters bShowStripLeft = bShowStripLeft
+	lock "bShowStripLeft"
+endif
+
+if bShowStripRight and not(bShowStripLeft) then
+	bShowStripRight = 1
+	parameters bShowStripRight = bShowStripRight
+	lock "bShowStripRight"
+endif
+
+if iTypeRaisedStrip # STRIPTYPE_ROUNDED then
+	lock "radiusRounded"
+endif
+
+if not(bRaisedStrip) then
+	lock	"iTypeRaisedStrip",
+			"radiusRounded",
+			"bShowStripLeft",
+			"bShowStripRight",
+			"offsetFrontRaisedStrip",
+			"offsetBackRaisedStrip",
+			"heightRaisedStrip",
+			"widthRaisedStrip",
+			"posRaisedStrip"
+endif
+
+! ==============================================================================
+! Slanted parameter handling
+! ==============================================================================
+
+if _bSlantedNosing then
+	if iDefSlantingAngleCustom = CUSTOMSLANTING_BYDISTANCE then
+		lock "slantingAngleCustom"
+	else
+		lock "slantingDistCustom"
+	endif
+
+	if bUseSlantingAngleRiser then
+		lock	"slantingAngleCustom",
+				"slantingDistCustom",
+				"iDefSlantingAngleCustom"
+	endif
+
+	_minSlantAngle	= 45
+	_maxSlantAngle	= 90
+	_minSlantDist	= 0
+
+	if GLOB_MODPAR_NAME = "slantingDistCustom" then
+		_slantingDist	= slantingDistCustom
+
+		_y2				= TREAD_THICKNESS - _slantingStartPoint * (iTreadNosingProfile <> NOSINGPROFILE_SLANTED_ONLY)
+		_maxSlantDist	= _y2
+		if abs(_slantingDist) > eps then
+			_slantingAngle	= atn(_y2 / _slantingDist)
+		else
+			_slantingAngle = 90
+		endif
+
+		parameters slantingAngleCustom = _slantingAngle
+	else
+		_slantingAngle	= slantingAngleCustom
+
+		_y2				= TREAD_THICKNESS - _slantingStartPoint * (iTreadNosingProfile <> NOSINGPROFILE_SLANTED_ONLY)
+		_slantingDist	= _y2 / tan(_slantingAngle)
+		_maxSlantDist	= _y2
+
+		parameters slantingDistCustom = _slantingDist
+	endif
+
+	values "slantingAngleCustom" range [_minSlantAngle, _maxSlantAngle]
+	values "slantingDistCustom" range [_minSlantDist, _maxSlantDist]
+
+	if _bManualSlantingStartPoint then
+		values "slantingStartPoint" range [0, )
+	else
+		lock	"slantingStartPoint"
+	endif
+else
+	lock	"slantingAngleCustom",
+			"slantingDistCustom",
+			"bUseSlantingAngleRiser",
+			"iDefSlantingAngleCustom"
+endif
+
+if not(_bNosingHasExtension) | not(bNosingProfile) then
+	lock	"extensionHeight",
+			"extensionWidth"
+else
+	values "extensionHeight" range [0, )
+
+	if _bSlantedNosing then
+		_minExtWidth	= slantingDistCustom + extensionHeight / tan(_slantingAngle)
+	else
+		_minExtWidth	= 0
+	endif
+
+	values "extensionWidth" range [_minExtWidth, )
+endif
+

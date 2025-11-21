@@ -1,0 +1,84 @@
+﻿if bShowLegs then
+	set material legSurface
+
+	addx -A/2 + legA/2: addy -B/2 + legB/2
+	gosub "drawLeg"
+	del top
+
+	addx A/2 - legA/2: addy -B/2 + legB/2
+	gosub "drawLeg"
+	del top
+
+	addx -A/2 + legA/2: addy B/2 - legB/2
+	gosub "drawLeg"
+	del top
+
+	addx A/2 - legA/2: addy B/2 - legB/2
+	gosub "drawLeg"
+	del top
+endif
+
+if bShowFrame then
+! draw frame
+addz ZZYZX - beamB
+
+set material beamSurface
+	prism_ 10, beamB,
+		-A/2, -B/2, 15,
+		A/2, -B/2, 15,
+		A/2, B/2, 15,
+		-A/2, B/2, 15,
+		-A/2, -B/2, -1,
+		-A/2 + beamA, -B/2 + beamA, 15,
+		A/2 - beamA, -B/2 + beamA, 15,
+		A/2 - beamA, B/2 - beamA, 15,
+		-A/2 + beamA, B/2 - beamA, 15,
+		-A/2 + beamA, -B/2 + beamA, -1
+
+	del top
+endif
+
+! draw slats
+addz ZZYZX - beamB / 2
+addx -A/2 + beamA + slatA / 2
+addy -B/2 + beamA
+rotx -90
+
+set material slatSurface
+
+slatLength = B - beamA * 2
+slatCount = int((A - beamA * 2) / slatA)
+
+! space between slats so that they are evenly spaced and no leftover hole is created
+slatSpacing = ((A - beamA * 2) - (slatCount * slatA)) / (slatCount + 1)
+!slatSpacing = 0
+
+addx slatSpacing
+for i = 1 to slatCount
+	rotz slatRotation
+	gosub "drawSlat"
+	del 1
+	addx slatA + slatSpacing
+next i
+
+end
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+"drawSlat":
+	prism 4, slatLength,
+		-slatA/2, -slatB/2,
+		slatA/2, -slatB/2,
+		slatA/2, slatB/2,
+		-slatA/2, slatB/2
+		
+	return
+
+"drawLeg":
+	prism 4, ZZYZX - beamB,
+		-legA/2, -legB/2,
+		legA/2, -legB/2,
+		legA/2, legB/2,
+		-legA/2, legB/2
+		
+	return

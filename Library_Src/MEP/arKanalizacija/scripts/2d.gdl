@@ -1,0 +1,526 @@
+﻿if n < 2 then end
+unId = 1
+
+
+!-------------------------INITIALIZATION--------------------------
+_showPipeCaption = showPipeCaption = SHOWTEXT_ALWAYS
+if showPipeCaption = SHOWTEXT_MVO then
+	ret = libraryglobal("arMVO", "pipeShowCaptionMVO", _showPipeCaption)
+endif
+if _showPipeCaption then
+	if pipeCaptionTextStyleByMVO then
+		textOption = "Small"
+		ret = libraryglobal("arMVO", "arFont" + textOption + "MVO", pipeCaptionTextFont)
+		ret = libraryglobal("arMVO", "arFontSize" + textOption + "MVO", pipeCaptionTextSize)
+		ret = libraryglobal("arMVO", "arFontPen" + textOption + "MVO", pipeCaptionTextPen)
+		ret = libraryglobal("arMVO", "arFontStyle" + textOption + "MVO", pipeCaptionTextStyle)
+	endif
+	define style "PipeCaptionText" pipeCaptionTextFont, pipeCaptionTextSize, 8, pipeCaptionTextStyle
+endif
+
+_showShaftCaption = showShaftCaption = SHOWTEXT_ALWAYS
+if showShaftCaption = SHOWTEXT_MVO then
+	ret = libraryglobal("arMVO", "shaftShowCaptionMVO", _showShaftCaption)
+endif
+if _showShaftCaption then
+	if shaftCaptionTextStyleByMVO then
+		textOption = "Small"
+		ret = libraryglobal("arMVO", "arFont" + textOption + "MVO", shaftCaptionTextFont)
+		ret = libraryglobal("arMVO", "arFontSize" + textOption + "MVO", shaftCaptionTextSize)
+		ret = libraryglobal("arMVO", "arFontPen" + textOption + "MVO", shaftCaptionTextPen)
+		ret = libraryglobal("arMVO", "arFontStyle" + textOption + "MVO", shaftCaptionTextStyle)
+	endif
+	define style "ShaftCaptionText" shaftCaptionTextFont, shaftCaptionTextSize, 1, shaftCaptionTextStyle
+	ret = request("Height_of_style", "ShaftCaptionText", ShaftCaptionStyleHeight)
+	ShaftCaptionStyleHeight = ShaftCaptionStyleHeight / 1000 * GLOB_SCALE
+endif
+
+define style "ProfileText" profileTextFont, profileTextSize, 2, profileTextStyle
+ret = request("Height_of_style", "ProfileText", profileTextStyleHeight)
+profileTextStyleHeight = profileTextStyleHeight / 1000 * GLOB_SCALE
+
+define style "ProfileSmallText" profileTextFont, profileTextStyleHeight, 2, profileTextStyle
+ret = request("Height_of_style", "ProfileSmallText", profileSmallTextStyleHeight)
+profileSmallTextStyleHeight = profileSmallTextStyleHeight / 1000 * GLOB_SCALE
+
+
+gosub "fnDrawHotspots"
+gosub "fnDrawProfile"
+
+dim fnFormatStringVariables[][]
+
+!-------------------------pipes--------------------------
+for i = 2 to n
+	if showAxis then
+		pen penPipeAxis
+		set line_type linePipeAxis
+		line2 		xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]
+		hotline2 	xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]
+	endif
+
+	if _showPipeCaption then
+		set style "PipeCaptionText"
+		pen pipeCaptionTextPen
+
+		fnFormatStringVariables[1][1] = "diameter": fnFormatStringVariables[1][2] = "DN" + str{2}("%*1.0mm", pipeDimensions[i-1])
+		fnFormatStringVariables[2][1] = "length": fnFormatStringVariables[2][2] = str{2}(linear_format, segmentData[i-1][SEGMENT_LENGTH_3D]) + " " + linear_unit
+		fnFormatStringVariables[3][1] = "slope": fnFormatStringVariables[3][2] = str{2}("%.1", -segmentData[i-1][SEGMENT_SLOPE]*100) + "%"
+
+		fnFormatStringParam = pipeCaption: fnFormatStringVariableCount = 3: gosub "fnFormatString"
+
+		add2 (xyz[i-1][1] + xyz[i][1]) / 2,  (xyz[i-1][2] + xyz[i][2]) / 2
+		rot2 atn((xyz[i-1][2] - xyz[i][2]) / (xyz[i-1][1] - xyz[i][1]))
+		text2 0, 0, fnFormatStringResult
+		del 2
+	endif
+next i
+
+!-------------------------shafts--------------------------
+for i = 1 to n
+	if showLastShaft or (i < n) then
+		add2 xyz[i][1], xyz[i][2]
+		call "arKanalizacijaJašek" parameters penCover = penShaftCover,
+			lineCover = lineShaftCover, lineUnderground = lineShaftUnderground,
+			shaftDataDimensions = shaftDataDimensions[i],
+			shaftDataOptions = shaftDataOptions[i] 
+
+		if _showShaftCaption then
+			set style "ShaftCaptionText"
+			pen shaftCaptionTextPen
+
+			add2 shaftDataDimensions[i][DIM_MARKER_POSX], shaftDataDimensions[i][DIM_MARKER_POSY]
+			fnShowShaftMarkerParamI = i
+			gosub "fnShowShaftMarker"
+			del 1
+		endif
+
+		del 1
+	endif
+next i
+
+end
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!
+!
+!
+! Marker, ki se pojavi na vsakem jašku in v profilu nad jaškom
+!
+!
+!
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+"fnShowShaftMarker":
+	dim fnFormatStringVariables[][]
+
+	fnFormatStringVariableCount = 6
+	fnFormatStringVariables[1][1] = "diameter"
+		fnFormatStringVariables[1][2] = str{2}("%*1.0cm", shaftDataDimensions[fnShowShaftMarkerParamI][DIM_SHAFT_DIM1])
+	fnFormatStringVariables[2][1] = "bottomLevel"
+		fnFormatStringVariables[2][2] = str{2}(linear_format, GLOB_PROJECT_ALTITUDE + GLOB_HSTORY_ELEV + GLOB_ELEVATION + xyz[fnShowShaftMarkerParamI][3])
+	fnFormatStringVariables[3][1] = "topLevel"
+		fnFormatStringVariables[3][2] = str{2}(linear_format, GLOB_PROJECT_ALTITUDE + GLOB_HSTORY_ELEV + GLOB_ELEVATION + xyz[fnShowShaftMarkerParamI][3] + shaftDataDimensions[fnShowShaftMarkerParamI][DIM_SHAFT_HEIGHT])
+	fnFormatStringVariables[4][1] = "height"
+		fnFormatStringVariables[4][2] = str{2}("%*1.2m", shaftDataDimensions[fnShowShaftMarkerParamI][DIM_SHAFT_HEIGHT]) + " m"
+	fnFormatStringVariables[5][1] = "no"
+		fnFormatStringVariables[5][2] = str{2}("%*1.0m", fnShowShaftMarkerParamI)
+	fnFormatStringVariables[6][1] = "prefix"
+		fnFormatStringVariables[6][2] = prefix
+	
+	dim shaftCaptionLines[4]
+	shaftCaptionLinesCount = 0
+	shaftMarkerWidth = 0
+	fnFormatStringResult = "" ! tole je potrebno, da prepozna tip variable kot string
+	
+	fnFormatStringParam = shaftCaptionLine1: gosub "fnFormatString"
+	if fnFormatStringLen > 0 then
+		shaftCaptionLinesCount = shaftCaptionLinesCount + 1
+		shaftCaptionLines[shaftCaptionLinesCount] = fnFormatStringResult
+		if (stw(fnFormatStringResult) > shaftMarkerWidth) then shaftMarkerWidth = stw(fnFormatStringResult)
+	endif
+	
+	fnFormatStringParam = shaftCaptionLine2: gosub "fnFormatString"
+	if fnFormatStringLen > 0 then
+		shaftCaptionLinesCount = shaftCaptionLinesCount + 1
+		shaftCaptionLines[shaftCaptionLinesCount] = fnFormatStringResult
+		if (stw(fnFormatStringResult) > shaftMarkerWidth) then shaftMarkerWidth = stw(fnFormatStringResult)
+	endif
+
+	fnFormatStringParam = shaftCaptionLine3: gosub "fnFormatString"
+	if fnFormatStringLen > 0 then
+		shaftCaptionLinesCount = shaftCaptionLinesCount + 1
+		shaftCaptionLines[shaftCaptionLinesCount] = fnFormatStringResult
+		if stw(fnFormatStringResult) > shaftMarkerWidth then shaftMarkerWidth = stw(fnFormatStringResult)
+	endif
+
+	fnFormatStringParam = shaftCaptionLine4: gosub "fnFormatString"
+	if fnFormatStringLen > 0 then
+		shaftCaptionLinesCount = shaftCaptionLinesCount + 1
+		shaftCaptionLines[shaftCaptionLinesCount] = fnFormatStringResult
+		if stw(fnFormatStringResult) > shaftMarkerWidth then shaftMarkerWidth = stw(fnFormatStringResult)
+	endif
+
+	shaftMarkerHeight = profileTextStyleHeight * shaftCaptionLinesCount
+
+	currentTextYPos = shaftMarkerHeight
+	for ii = 1 to shaftCaptionLinesCount
+		text2 0, currentTextYPos, shaftCaptionLines[ii]						!! lahko bi bilo tudi -shaftMarkerWidth/2  / 1000 * GLOB_SCALE
+		currentTextYPos = currentTextYPos - shaftCaptionStyleHeight
+	next ii
+return
+
+
+
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!
+!
+!
+! Funkcija zamenja vse placeholderje v stringu z dejansko vrednostjo.  Npr. "Premer jaška <diameter>" -> "Premer jaške 100mm"
+!
+!
+!
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+"fnFormatString":
+	string_c = fnFormatStringParam
+	for ii = 1 to fnFormatStringVariableCount
+		varName = fnFormatStringVariables[ii][1]
+		varName = "<" + varName + ">"
+		while strstr(string_c, varName) > 0 do
+			first_part = strsub(string_c, 1, strstr(string_c, varName) - 1)
+			second_part = strsub(string_c, strstr(string_c, varName)+strlen(varName), strlen(string_c)-strlen(first_part)-strlen(varName))
+			string_c = first_part + fnFormatStringVariables[ii][2] + second_part
+		endwhile
+	next ii
+	fnFormatStringResult = string_c
+	fnFormatStringLen = strlen(string_c)
+return
+
+
+
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!
+!
+!
+! Flavna Funkcija za izris profila
+!
+!
+!
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+"fnDrawProfile":
+	pen profileGridPen
+	line_type profileGridLine
+	set style "ProfileText" 
+
+	hotspot2 0,				profilePosY,	unId,	profilePosX,	129: 	unId = unId + 1
+	hotspot2 profilePosX,	profilePosY,	unId,	profilePosX,	2: 		unId = unId + 1
+	hotspot2 -1,			profilePosY,	unId,	profilePosX,	3: 		unId = unId + 1
+
+	hotspot2 profilePosX,			0,		unId,	profilePosY,	129: 	unId = unId + 1
+	hotspot2 profilePosX,	profilePosY,	unId,	profilePosY,	2: 		unId = unId + 1
+	hotspot2 profilePosX,			-1,		unId,	profilePosY,	3: 		unId = unId + 1
+
+	hotspot2 profilePosX,					profilePosY,	unId,	profileWidth,	129: 	unId = unId + 1
+	hotspot2 profilePosX + profileWidth,	profilePosY,	unId,	profileWidth,	2: 		unId = unId + 1
+	hotspot2 profilePosX - 1,				profilePosY,	unId,	profileWidth,	3: 		unId = unId + 1
+
+	hotspot2 profilePosX,	profilePosY,					unId,	profileHeight,	129: 	unId = unId + 1
+	hotspot2 profilePosX,	profilePosY + profileHeight,	unId,	profileHeight,	2: 		unId = unId + 1
+	hotspot2 profilePosX,	profilePosY - 1,				unId,	profileHeight,	3: 		unId = unId + 1
+
+	add2 profilePosX, profilePosY
+	rect2 0, 0, profileWidth, profileHeight
+
+	legendPadding = 0.1
+	legendRowHeight = profileTextStyleHeight
+
+	profilePadding = 1
+	canvasPaddingY = 0.5
+
+	dim legendText[8]
+	legendText[1] = str(GLOB_PROJECT_ALTITUDE, 5, 2) + " mnv"
+	legendText[2] = "Stacionaža"
+	legendText[3] = "Št. točke | Razdalja"
+	legendText[4] = "Kota terena"
+	legendText[5] = "Kota temena cevi"
+	legendText[6] = "Globina izkopa"
+	legendText[7] = "Cev"
+	legendText[8] = "Padec dna kanala"
+
+	! legend text lines
+	for i = 1 to 8:	text2 legendPadding + stw(legendText[i]) / 2 / 1000 * GLOB_SCALE, legendRowHeight * (9 - i), legendText[i]: next i
+
+	legendTextMaxWidth = max(stw(legendText[1]), stw(legendText[2]), stw(legendText[3]), stw(legendText[4]), stw(legendText[5]), stw(legendText[6]), stw(legendText[7]), stw(legendText[8])) / 1000 * GLOB_SCALE
+
+	! vertical line	
+	line2 legendPadding*2 + legendTextMaxWidth, 0, legendPadding*2 + legendTextMaxWidth, profileHeight
+	! horizontal lines
+	for i = 1 to 7:	line2 0, legendRowHeight * (8 - i), profileWidth, legendRowHeight * (8 - i): next i
+
+	canvasWidth = profileWidth - 2*legendPadding - legendTextMaxWidth - 2*profilePadding
+	aspectRatioX = canvasWidth / totalLength2D
+
+	canvasPosX = 2*legendPadding + legendTextMaxWidth + profilePadding
+	segmentPosX = 0
+	canvasPosY = 7 * legendRowHeight + canvasPaddingY
+
+	minShaftElevation = 0
+	maxShaftElevation = 0
+
+	for i = 1 to n
+		! tick
+		line2 canvasPosX, legendRowHeight * 7, canvasPosX, legendRowHeight * 7 + legendRowHeight / 2
+
+		_drawShaft = (i < n) or showLastShaft
+
+		if _drawShaft and (xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT] > maxShaftElevation) then
+			maxShaftElevation = xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT]
+		endif
+		if xyz[i][3] < minShaftElevation then
+			minShaftElevation = xyz[i][3]
+		endif
+
+		! jašek
+		if _drawShaft and (shaftDataDimensions[i][DIM_SHAFT_HEIGHT] > 0) then
+			rect2 	canvasPosX - shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,
+					canvasPosY - minZValue + xyz[i][3],
+					canvasPosX + shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,
+					canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT]
+
+			add2 canvasPosX, canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT] + 0.5
+			fnShowShaftMarkerParamI = i
+			gosub "fnShowShaftMarker"
+			del 1
+
+			if i > 1 then
+				! hotspot editing KASKADA
+				hotspot2 canvasPosX - shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,	canvasPosY - minZValue + xyz[i][3],													unId,	shaftDataDimensions[i][DIM_INLET_HEIGHT],	129: 	unId = unId + 1
+				hotspot2 canvasPosX - shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,	canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_INLET_HEIGHT],		unId,	shaftDataDimensions[i][DIM_INLET_HEIGHT],	2: 		unId = unId + 1
+				hotspot2 canvasPosX - shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,	canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_INLET_HEIGHT] - 10,	unId,	shaftDataDimensions[i][DIM_INLET_HEIGHT],	3: 		unId = unId + 1
+			endif
+			hotspot2 canvasPosX + shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,	canvasPosY - minZValue + xyz[i][3],													unId,	shaftDataDimensions[i][DIM_OUTLET_HEIGHT],	129: 	unId = unId + 1
+			hotspot2 canvasPosX + shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,	canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_OUTLET_HEIGHT],		unId,	shaftDataDimensions[i][DIM_OUTLET_HEIGHT],	2: 		unId = unId + 1
+			hotspot2 canvasPosX + shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,	canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_OUTLET_HEIGHT] - 10,	unId,	shaftDataDimensions[i][DIM_OUTLET_HEIGHT],	3: 		unId = unId + 1
+
+		endif
+
+		! hotspot editing KOTA Z
+		hotspot2 canvasPosX,	canvasPosY - minZValue,						unId,	xyz[i][3],	129: 	unId = unId + 1
+		hotspot2 canvasPosX,	canvasPosY - minZValue + xyz[i][3],			unId,	xyz[i][3],	2: 		unId = unId + 1
+		hotspot2 canvasPosX,	canvasPosY - minZValue + xyz[i][3] - 10,	unId,	xyz[i][3],	3: 		unId = unId + 1
+
+		! hotspot editing višina jaška
+		if shaftDataDimensions[i][DIM_SHAFT_HEIGHT] < nix then _dH = MIN_SHAFT_HEIGHT else _dH = 0
+		hotspot2 canvasPosX,	canvasPosY - minZValue + xyz[i][3],															unId,	shaftDataDimensions[i][DIM_SHAFT_HEIGHT],	129: 	unId = unId + 1
+		hotspot2 canvasPosX,	canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT] + _dH,		unId,	shaftDataDimensions[i][DIM_SHAFT_HEIGHT],	2: 		unId = unId + 1
+		hotspot2 canvasPosX,	canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT] - 10,			unId,	shaftDataDimensions[i][DIM_SHAFT_HEIGHT],	3: 		unId = unId + 1
+
+
+		! hotspot editing DIMENZIJA JAŠKA
+		hotspot2 canvasPosX - shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,		canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT],	unId,	shaftDataDimensions[i][DIM_SHAFT_DIM1],	129: 	unId = unId + 1
+		hotspot2 canvasPosX + shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,		canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT],	unId,	shaftDataDimensions[i][DIM_SHAFT_DIM1],	2: 		unId = unId + 1
+		hotspot2 canvasPosX - shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2 - 1,	canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT],	unId,	shaftDataDimensions[i][DIM_SHAFT_DIM1],	3: 		unId = unId + 1
+
+		! cev
+		pen profilePipePen
+		line_type profilePipeLine
+		if i > 1 then
+			if _drawShaft then _dX = shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2 else _dX = 0
+			line2 canvasPosX - segmentData[i-1][SEGMENT_LENGTH_2D] * aspectRatioX + shaftDataDimensions[i-1][DIM_SHAFT_DIM1] / 2,
+				canvasPosY - minZValue + xyz[i-1][3] + shaftDataDimensions[i-1][DIM_OUTLET_HEIGHT],
+				canvasPosX - _dX,
+				canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_INLET_HEIGHT]
+
+			line2 canvasPosX - segmentData[i-1][SEGMENT_LENGTH_2D] * aspectRatioX + shaftDataDimensions[i-1][DIM_SHAFT_DIM1] / 2,
+				canvasPosY - minZValue + xyz[i-1][3] + shaftDataDimensions[i-1][DIM_OUTLET_HEIGHT] + pipeDimensions[i-1],
+				canvasPosX - _dX,
+				canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_INLET_HEIGHT] + pipeDimensions[i-1]
+		endif
+
+		! teren
+		pen profileTerrainPen
+		line_type profileTerrainLine
+		if i > 1 then
+			if _drawShaft then _dX = shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2 else _dX = 0
+			line2 canvasPosX - segmentData[i-1][SEGMENT_LENGTH_2D] * aspectRatioX + shaftDataDimensions[i-1][DIM_SHAFT_DIM1] / 2,
+				canvasPosY - minZValue + xyz[i-1][3] + shaftDataDimensions[i-1][DIM_SHAFT_HEIGHT],
+				canvasPosX - _dX,
+				canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT]
+		endif
+
+		pen profileGridPen
+		line_type profileGridLine
+
+		! stacionaža
+		text2 canvasPosX, legendRowHeight * 7, str{2}("%.2m", segmentPosX)
+
+		! številka točke
+		if (i < n) or showLastShaft then
+		 text2 canvasPosX, legendRowHeight * 6, prefix + "." + str{2}("%.0", i)
+		endif
+
+		! razdalja
+		if i > 1 then
+			text2 canvasPosX - segmentData[i-1][SEGMENT_LENGTH_2D] * aspectRatioX / 2, legendRowHeight * 6, str{2}("%.2m", segmentData[i-1][SEGMENT_LENGTH_2D])
+		endif
+
+		! kota terena / pokrova
+		text2 canvasPosX, legendRowHeight * 5, str{2}("%.2m", GLOB_PROJECT_ALTITUDE + GLOB_HSTORY_ELEV + GLOB_ELEVATION + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT])
+
+		! nivo vtoka/ iztoka
+		add2 canvasPosX, legendRowHeight * 4
+		rot2 90
+		set style "ProfileSmallText" 
+		deltaTextPos = 0
+		if abs(shaftDataDimensions[i][DIM_INLET_HEIGHT]) > nix then
+			deltaTextPos = profileSmallTextStyleHeight / 2
+			text2 -legendRowHeight / 2, profileSmallTextStyleHeight / 2 + deltaTextPos, str{2}("%.2m", GLOB_PROJECT_ALTITUDE + GLOB_HSTORY_ELEV + GLOB_ELEVATION + xyz[i][3] + shaftDataDimensions[i][DIM_INLET_HEIGHT])
+		endif
+		text2 -legendRowHeight / 2,
+			profileSmallTextStyleHeight / 2 - deltaTextPos,
+			str{2}("%.2m", GLOB_PROJECT_ALTITUDE + GLOB_HSTORY_ELEV + GLOB_ELEVATION + xyz[i][3] - shaftDataDimensions[i][DIM_OUTLET_HEIGHT])
+		set style "ProfileText" 
+		del 2
+
+		! globina izkopa
+		text2 canvasPosX, legendRowHeight * 3, str{2}("%.2m", shaftDataDimensions[i][DIM_SHAFT_HEIGHT] + shaftAdditionalDepth)
+
+		! cev
+		if i > 1 then
+			text2 canvasPosX - segmentData[i-1][SEGMENT_LENGTH_2D] * aspectRatioX / 2, legendRowHeight * 2, "DN" + str{2}("%*1.0mm", pipeDimensions[i-1])
+		endif
+
+		! padec dna kanala
+		if i > 1 then
+			set style "ProfileSmallText" 
+			text2 canvasPosX - segmentData[i-1][SEGMENT_LENGTH_2D] * aspectRatioX / 2, legendRowHeight * 1, str{2}("%.1", -segmentData[i-1][SEGMENT_SLOPE]*100) + "% (" + str{2}("%.1", atn(-segmentData[i-1][SEGMENT_SLOPE])) + "°)"
+			text2 canvasPosX - segmentData[i-1][SEGMENT_LENGTH_2D] * aspectRatioX / 2, legendRowHeight * 1 - profileSmallTextStyleHeight, str{2}("%.2m", xyz[i-1][3] - xyz[i][3]) + " m"
+			set style "ProfileText" 
+		endif
+
+		if i < n then
+			segmentPosX = segmentPosX + segmentData[i][SEGMENT_LENGTH_2D]
+			canvasPosX = canvasPosX + segmentData[i][SEGMENT_LENGTH_2D] * aspectRatioX
+		endif
+	next i
+
+	! izris črtic ob strani
+	tickOffset = .05
+	tickCount = 20
+	tickSpacing = ceil((maxShaftElevation - minShaftElevation) / tickCount * 100) / 100
+
+	if tickSpacing < profileSmallTextStyleHeight then
+		tickCount = 10
+		tickSpacing = ceil((maxShaftElevation - minShaftElevation) / tickCount * 100) / 100
+	endif
+
+	! draw project +-0,00 line
+	line2 0,
+		canvasPosY - minShaftElevation - GLOB_ELEVATION,
+		legendPadding*2 + legendTextMaxWidth,
+		canvasPosY - minShaftElevation - GLOB_ELEVATION
+	hotline2 0,
+		canvasPosY - minShaftElevation - GLOB_ELEVATION,
+		legendPadding*2 + legendTextMaxWidth,
+		canvasPosY - minShaftElevation - GLOB_ELEVATION
+
+	set style "ProfileSmallText" 
+
+	for i = 0 to tickCount
+		line2 -tickOffset + legendPadding*2 + legendTextMaxWidth,
+			canvasPosY + tickSpacing * i,
+			+tickOffset + legendPadding*2 + legendTextMaxWidth,
+			canvasPosY + tickSpacing * i
+
+		tickString = str(GLOB_PROJECT_ALTITUDE + GLOB_HSTORY_ELEV + GLOB_ELEVATION + minShaftElevation + tickSpacing * i, 5, 2)
+		text2 legendPadding*2 + legendTextMaxWidth - stw(tickString) / 1000 * GLOB_SCALE,
+			canvasPosY + profileSmallTextStyleHeight / 2 + tickSpacing * i,
+			tickString
+	next i
+
+	del top
+return
+
+
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!
+!
+!
+! Izris HOTSPOT-ov
+!
+!
+!
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+"fnDrawHotspots":
+	x0 = xyz[n][1]
+	y0 = xyz[n][2]
+
+	for i = 1 to n
+
+		! node hotspots
+		hotspot2 0,			xyz[i][2],	unId,	xyz[i][1],	129: 	unId = unId + 1
+		hotspot2 xyz[i][1],	xyz[i][2],	unId,	xyz[i][1],	2: 		unId = unId + 1
+		hotspot2 -1,		xyz[i][2],	unId,	xyz[i][1],	3: 		unId = unId + 1
+
+		hotspot2 xyz[i][1],	0,			unId,	xyz[i][2],	129: 	unId = unId + 1
+		hotspot2 xyz[i][1],	xyz[i][2],	unId,	xyz[i][2],	2: 		unId = unId + 1
+		hotspot2 xyz[i][1],	-1,			unId,	xyz[i][2],	3: 		unId = unId + 1
+
+		! marker hotspots
+		markerDX = shaftDataDimensions[i][DIM_MARKER_POSX]: if abs(markerDX) < nix then markerDX = 0.1
+		markerDY = shaftDataDimensions[i][DIM_MARKER_POSY]: if abs(markerDY) < nix then markerDY = 0.1
+		hotspot2 xyz[i][1],				xyz[i][2]+markerDY,	unId,	shaftDataDimensions[i][DIM_MARKER_POSX],	129: 	unId = unId + 1
+		hotspot2 xyz[i][1]+markerDX,	xyz[i][2]+markerDY,	unId,	shaftDataDimensions[i][DIM_MARKER_POSX],	2: 		unId = unId + 1
+		hotspot2 xyz[i][1]-1,			xyz[i][2]+markerDY,	unId,	shaftDataDimensions[i][DIM_MARKER_POSX],	3: 		unId = unId + 1
+
+		hotspot2 xyz[i][1]+markerDX,	xyz[i][2],			unId,	shaftDataDimensions[i][DIM_MARKER_POSY],	129: 	unId = unId + 1
+		hotspot2 xyz[i][1]+markerDX,	xyz[i][2]+markerDY,	unId,	shaftDataDimensions[i][DIM_MARKER_POSY],	2: 		unId = unId + 1
+		hotspot2 xyz[i][1]+markerDX,	xyz[i][2]-1,		unId,	shaftDataDimensions[i][DIM_MARKER_POSY],	3: 		unId = unId + 1
+
+		! add new node hotspots
+		if i > 1 and n < max_points then
+			xins = (x0 - xyz[i][1]) / 2
+			yins = (y0 - xyz[i][2]) / 2
+
+			hotspot2 0,					yins + xyz[i][2],	unId,	xyz_e[i][1],	129: 	unId = unId + 1
+			hotspot2 xins + xyz[i][1],	yins + xyz[i][2],	unId,	xyz_e[i][1],	2: 		unId = unId + 1
+			hotspot2 -1,				yins + xyz[i][2],	unId,	xyz_e[i][1],	3: 		unId = unId + 1
+
+			hotspot2 xins + xyz[i][1],	0,					unId,	xyz_e[i][2],	129: 	unId = unId + 1
+			hotspot2 xins + xyz[i][1],	yins + xyz[i][2],	unId,	xyz_e[i][2],	2: 		unId = unId + 1
+			hotspot2 xins + xyz[i][1],	-1,					unId,	xyz_e[i][2],	3: 		unId = unId + 1
+		endif
+
+		x0 = xyz[i][1]
+		y0 = xyz[i][2]
+
+	next i
+
+	! add new node at the end
+
+	i = n
+	diagl = sqr((xyz[i-1][1] - xyz[i][1])^2 + (xyz[i-1][2] - xyz[i][2])^2)
+	xins = -(xyz[i-1][1] - xyz[i][1]) / diagl * ADD_FIRSTLAST_NODE_OFFSET
+	yins = -(xyz[i-1][2] - xyz[i][2]) / diagl * ADD_FIRSTLAST_NODE_OFFSET
+
+	hotspot2 0,						yins + xyz[i+1][2],		unId,	xyz_e[i+1][1],	129: 	unId = unId + 1
+	hotspot2 xins + xyz[i+1][1],	yins + xyz[i+1][2],		unId,	xyz_e[i+1][1],	2: 		unId = unId + 1
+	hotspot2 -1,					yins + xyz[i+1][2],		unId,	xyz_e[i+1][1],	3: 		unId = unId + 1
+
+	hotspot2 xins + xyz[i+1][1],	0,						unId,	xyz_e[i+1][2],	129: 	unId = unId + 1
+	hotspot2 xins + xyz[i+1][1],	yins + xyz[i+1][2],		unId,	xyz_e[i+1][2],	2: 		unId = unId + 1
+	hotspot2 xins + xyz[i+1][1],	-1,						unId,	xyz_e[i+1][2],	3: 		unId = unId + 1
+
+!-----------------------end hotspots-----------------------
+return

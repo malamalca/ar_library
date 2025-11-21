@@ -1,0 +1,99 @@
+﻿alignNode = 5
+IF textAlign = 1 THEN  		! left
+	alignNode = 4
+ENDIF
+IF textAlign = 3 THEN		! right
+	alignNode = 6
+ENDIF
+IF textAlign = 2 THEN		! center
+	alignNode = 5
+ENDIF
+
+faceCode = 0
+alignNode =1
+
+! Set the multiplier of the paper scale
+if GLOB_VIEW_TYPE = 8 then
+	PAPER_TO_MODEL = 1000
+else
+	PAPER_TO_MODEL = GLOB_SCALE / 1000
+endif
+
+
+NORMAL		= 0
+BOLD 		= 1
+ITALIC 		= 2
+UNDERLINE 	= 4
+SUPERSCRIPT	= 32
+SUBSCRIPT	= 64
+STRIKETHROUGH	= 128
+
+DEFINE STYLE "LabelMarker" fontName, fontSize * PAPER_TO_MODEL, alignNode, fontStyle
+DEFINE STYLE "LabelMarkerItalic" fontName, fontSize * PAPER_TO_MODEL, alignNode, ITALIC 
+
+!SET STYLE "LabelMarker"
+!ret = REQUEST ("Height_of_style", "LabelMarker", textHeight)
+!textHeight = textHeight / 1000 * GLOB_SCALE
+!textWidth = STW(GLOB_ID)/1000 * GLOB_SCALE
+
+! show label frame if checked
+!IF LABEL_FRAME_ON THEN
+!	RECT2 -textWidth/2 - frameOffset, -textHeight/2 - frameOffset, textWidth/2 + frameOffset, textHeight/2 + frameOffset
+!ENDIF
+
+
+unId = 1
+HOTSPOT2 0, 0, unId: unId = unId + 1
+HOTSPOT2 A, 0, unId: unId = unId + 1
+
+paragraph "TextPara1" 0,		! name, first line ident
+	0, 0, 1.2,					! left ident, right ident, line spacing
+	1							! tab position 1
+	style "LabelMarker"
+	GLOB_ID
+	" - "
+	longText
+endparagraph
+
+paragraph "TextPara2" 0,		! name, first line ident
+	0, 0, 1.2,					! left ident, right ident, line spacing
+	1							! tab position 1
+	style "LabelMarker"
+	" "
+endparagraph
+
+paragraph "TextPara3" 0,		! name, first line ident
+	0, 0, 1.2,					! left ident, right ident, line spacing
+	1							! tab position 1
+	style "LabelMarkerItalic"
+	additionalText
+endparagraph
+
+if GLOB_VIEW_TYPE = 8 then
+	isFixedHeight = 1
+	widthFactor = 1000
+else
+	isFixedHeight = 0
+	widthFactor = 1
+endif
+
+
+if additionalText = "" then
+	textblock "TextBlock1" A,					! name, width
+		1, 0, 1, 1,isFixedHeight,				! anchor, angle, width_factor, charspace_factor, fixed_height
+		'TextPara1'								! which paragraph to display
+
+	richtext2 0, 0, "TextBlock1"				! x, y, TextBlock name
+else
+	textblock "TextBlock2" A*widthFactor,		! name, width
+		1, 0, 1, 1, isFixedHeight,				! anchor, angle, width_factor, charspace_factor, fixed_height
+		'TextPara1', 'TextPara2', 'TextPara3'	! which paragraph to display
+
+	richtext2 0, 0, "TextBlock2"		! x, y, TextBlock name
+endif
+
+
+
+!text2 0, 0, GLOB_ID
+!text2 0, -textHeight, longText
+

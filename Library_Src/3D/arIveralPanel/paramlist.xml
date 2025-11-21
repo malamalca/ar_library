@@ -160,6 +160,13 @@
 			</Flags>
 			<Value>19</Value>
 		</PenColor>
+		<String Name="scheduleFont">
+			<Description><![CDATA["Schedule Font"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
 
 		<!-- gs_list: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 

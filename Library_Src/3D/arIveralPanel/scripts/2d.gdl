@@ -1,1 +1,95 @@
-﻿realAngle = angleunId = 1! If in Schedule then show upper viewIF GLOB_VIEW_TYPE = 9 THEN  realAngle = 0  ROT2 90ENDIFHOTSPOT2 0, 0, unId: unId = unId + 1HOTSPOT2 panelLength * COS(realAngle), 0, unId: unId = unId + 1HOTSPOT2 panelLength * COS(realAngle), B, unId: unId = unId + 1HOTSPOT2 0, B, unId: unId = unId + 1HOTSPOT2 panelLength/2 * COS(realAngle), B, unId: unId = unId + 1HOTLINE2 0, 0, panelLength * COS(realAngle), 0HOTLINE2 0, 0, 0, BHOTLINE2 0, B, panelLength * COS(realAngle), BHOTLINE2 panelLength * COS(realAngle), 0, panelLength * COS(realAngle), Bpen gs_cont_penRECT2 0, 0, panelLength * COS(realAngle), BIF angle > 0 THEN   RECT2 panelLength * COS(realAngle), 0, panelLength * COS(realAngle) - panelThickness * SIN(realAngle), B  HOTSPOT2 panelLength * COS(realAngle) - panelThickness * SIN(realAngle), 0  HOTSPOT2 panelLength * COS(realAngle) - panelThickness * SIN(realAngle), BENDIFfill gs_fill_typepen gs_fill_penPOLY2_B 5, 2+64, gs_fill_pen, gs_back_pen,	0 - panelThickness * SIN(realAngle), 0, 0,	panelLength * COS(realAngle), 0, 0,	panelLength * COS(realAngle), B, 0,	0 - panelThickness * SIN(realAngle), B, 0,	0 - panelThickness * SIN(realAngle), 0, -1FOR i = 1 TO noHoles	RECT2 holes[i][1]  * COS(realAngle), holes[i][2],		holes[i][1]  * COS(realAngle) + holes[i][3]  * COS(realAngle), holes[i][2] + holes[i][4]	HOTSPOT2 holes[i][1]  * COS(realAngle), holes[i][2], unId: unId = unId + 1	HOTSPOT2 holes[i][1]  * COS(realAngle), holes[i][2] + holes[i][4], unId: unId = unId + 1    HOTSPOT2 holes[i][1]  * COS(realAngle) + holes[i][3]  * COS(realAngle), holes[i][2], unId: unId = unId + 1	HOTSPOT2 holes[i][1]  * COS(realAngle) + holes[i][3]  * COS(realAngle), holes[i][2] + holes[i][4], unId: unId = unId + 1NEXT iIF detailed2D THEN  !IF borderFront > 1 THEN LINE2  0, B - borderTypeWidths[borderFront], panelLength, B - borderTypeWidths[borderFront]ENDIFIF GLOB_VIEW_TYPE = 9 THEN	pen gs_cont_pen	DEFINE STYLE "Abbr" "Open Sans Condensed Light", 3, 5, 0	SET STYLE "Abbr"	n = REQUEST ("Height_of_style", "Abbr", height)	height = height / 1000 * GLOB_SCALE	borderOffset = 0.01	IF borderFront > 1 THEN		LINE2 0, -borderOffset, panelLength, -borderOffset		ADD2 panelLength/2, 0-height/2		TEXT2 0, 0, borderTypeAbbrevs[borderFront ]		DEL 1	ENDIF	IF borderBack > 1 THEN		LINE2 0, B+borderOffset, panelLength, B+borderOffset		ADD2 panelLength/2, B+height/2		TEXT2 0, 0, borderTypeAbbrevs[borderBack]		DEL 1	ENDIF	IF borderLeft > 1 THEN		LINE2 -borderOffset, 0, -borderOffset, B		ADD2 0-height/2, B/2		ROT2 -90		TEXT2 0, 0, borderTypeAbbrevs[borderLeft]		DEL 2	ENDIF	IF borderRight > 1 THEN		LINE2 panelLength+borderOffset, 0, panelLength+borderOffset, B		ADD2 panelLength+height/2, B/2		ROT2 -90		TEXT2 0, 0, borderTypeAbbrevs[borderRight]		DEL 2	ENDIFENDIF
+﻿realAngle = angle
+
+unId = 1
+
+! If in Schedule then show upper view
+IF GLOB_VIEW_TYPE = 9 THEN
+  realAngle = 0
+  ROT2 90
+ENDIF
+
+HOTSPOT2 0, 0, unId: unId = unId + 1
+HOTSPOT2 panelLength * COS(realAngle), 0, unId: unId = unId + 1
+HOTSPOT2 panelLength * COS(realAngle), B, unId: unId = unId + 1
+HOTSPOT2 0, B, unId: unId = unId + 1
+
+HOTSPOT2 panelLength/2 * COS(realAngle), B, unId: unId = unId + 1
+
+HOTLINE2 0, 0, panelLength * COS(realAngle), 0
+HOTLINE2 0, 0, 0, B
+HOTLINE2 0, B, panelLength * COS(realAngle), B
+HOTLINE2 panelLength * COS(realAngle), 0, panelLength * COS(realAngle), B
+
+pen gs_cont_pen
+
+RECT2 0, 0, panelLength * COS(realAngle), B
+IF angle > 0 THEN 
+  RECT2 panelLength * COS(realAngle), 0, panelLength * COS(realAngle) - panelThickness * SIN(realAngle), B
+  HOTSPOT2 panelLength * COS(realAngle) - panelThickness * SIN(realAngle), 0
+  HOTSPOT2 panelLength * COS(realAngle) - panelThickness * SIN(realAngle), B
+ENDIF
+
+
+fill gs_fill_type
+pen gs_fill_pen
+
+POLY2_B 5, 2+64, gs_fill_pen, gs_back_pen,
+	0 - panelThickness * SIN(realAngle), 0, 0,
+	panelLength * COS(realAngle), 0, 0,
+	panelLength * COS(realAngle), B, 0,
+	0 - panelThickness * SIN(realAngle), B, 0,
+	0 - panelThickness * SIN(realAngle), 0, -1
+
+
+FOR i = 1 TO noHoles
+	RECT2 holes[i][1]  * COS(realAngle), holes[i][2],
+		holes[i][1]  * COS(realAngle) + holes[i][3]  * COS(realAngle), holes[i][2] + holes[i][4]
+
+	HOTSPOT2 holes[i][1]  * COS(realAngle), holes[i][2], unId: unId = unId + 1
+	HOTSPOT2 holes[i][1]  * COS(realAngle), holes[i][2] + holes[i][4], unId: unId = unId + 1
+    HOTSPOT2 holes[i][1]  * COS(realAngle) + holes[i][3]  * COS(realAngle), holes[i][2], unId: unId = unId + 1
+	HOTSPOT2 holes[i][1]  * COS(realAngle) + holes[i][3]  * COS(realAngle), holes[i][2] + holes[i][4], unId: unId = unId + 1
+
+NEXT i
+
+IF detailed2D THEN
+  !IF borderFront > 1 THEN LINE2  0, B - borderTypeWidths[borderFront], panelLength, B - borderTypeWidths[borderFront]
+ENDIF
+
+
+IF GLOB_VIEW_TYPE = 9 THEN
+	pen gs_cont_pen
+	DEFINE STYLE "Abbr" scheduleFont, 3, 5, 0
+	SET STYLE "Abbr"
+
+	n = REQUEST ("Height_of_style", "Abbr", height)
+	height = height / 1000 * GLOB_SCALE
+
+	borderOffset = 0.01
+	IF borderFront > 1 THEN
+		LINE2 0, -borderOffset, panelLength, -borderOffset
+		ADD2 panelLength/2, 0-height/2
+		TEXT2 0, 0, borderTypeAbbrevs[borderFront]
+		DEL 1
+	ENDIF
+	IF borderBack > 1 THEN
+		LINE2 0, B+borderOffset, panelLength, B+borderOffset
+		ADD2 panelLength/2, B+height/2
+		TEXT2 0, 0, borderTypeAbbrevs[borderBack]
+		DEL 1
+	ENDIF
+	IF borderLeft > 1 THEN
+		LINE2 -borderOffset, 0, -borderOffset, B
+		ADD2 0-height/2, B/2
+		ROT2 -90
+		TEXT2 0, 0, borderTypeAbbrevs[borderLeft]
+		DEL 2
+	ENDIF
+	IF borderRight > 1 THEN
+		LINE2 panelLength+borderOffset, 0, panelLength+borderOffset, B
+		ADD2 panelLength+height/2, B/2
+		ROT2 -90
+		TEXT2 0, 0, borderTypeAbbrevs[borderRight]
+		DEL 2
+	ENDIF
+ENDIF

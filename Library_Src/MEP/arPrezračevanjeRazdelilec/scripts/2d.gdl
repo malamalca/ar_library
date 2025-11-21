@@ -1,0 +1,12 @@
+﻿
+rect2 -A/2, -B/2, A/2, B/2
+
+rect2 -intakeDiameter/2, B/2, intakeDiameter/2, B/2 + 0.05
+
+hotspot2 -A/2, -B/2
+hotspot2 A/2, -B/2
+hotspot2 -A/2, B/2
+hotspot2 A/2, B/2
+
+
+hotspot2 0, B/2 + 0.025

@@ -8,3 +8,40 @@ values{2} "slopeMarker", SLOPEMARKER_NONE, "Brez", SLOPEMARKER_TRIANGLE, "Trikot
 values{2} "customBorder", BORDER_NONE, "Brez", BORDER_RECT, "Pravokotnik", BORDER_1, "Večkotnik"
 
 values "textOptionMVO" "Default", "Small"
+
+values "anchor" RANGE[1, 9]
+
+if GLOB_MODPAR_NAME = "ui_anchor" then
+	checkedCount = 0
+	for i = 1 to 3
+		for j = 1 to 3
+			if ui_anchor[i][j] then checkedCount = checkedCount + 1
+		next j
+	next i
+
+	parameters checkedCount = checkedCount
+
+	anchorRow = int((anchor-1) / 3) + 1
+	anchorCol = int((anchor-1) % 3) + 1
+
+	if checkedCount > 1 then 
+		! sprememba točke
+		ui_anchor[anchorRow][anchorCol] = 0
+		! še nastavimo spremenljivko anchor
+		for i = 1 to 3
+			for j = 1 to 3
+				if ui_anchor[i][j] then
+					anchor = (i-1) * 3 + j
+				endif
+			next j
+		next i
+		parameters ui_anchor = ui_anchor
+		parameters anchor = anchor
+	endif
+	if checkedCount = 0 then 
+		! uporabnik hoče počistiti točko, vrnemo nazaj
+		ui_anchor[anchorRow][anchorCol] = 1
+		parameters ui_anchor = ui_anchor
+	endif
+	!ui_anchor[anchorRow][anchorCol]
+endif

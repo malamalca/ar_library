@@ -4,10 +4,17 @@ n = request("FONTNAMES_LIST", "", fontNames)
 values "axisFont" fontNames
 values "legendFont" fontNames
 values "fontChartTitle" fontNames
-
-values "baseFont" fontNames
+values "basePointFont" fontNames
 
 values "gridSpacing" range (0, )
+
+if not(showOutline) then
+	hideparameter "penOutline", "lineOutline"
+endif
+
+if not(showRays) then
+	hideparameter "penRay", "lineRay"
+endif
 
 !parameters  xyz_ea= xyz_ea
 !parameters  xyz_e= xyz_e

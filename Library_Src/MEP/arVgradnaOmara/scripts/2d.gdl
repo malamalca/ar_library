@@ -1,0 +1,36 @@
+﻿openingWidth = A
+
+wallhole2 4, 0, 0, -1,
+	0, 0, 0,
+	-openingWidth/2, 	0, 			1,
+	openingWidth/2, 	0, 			1,
+	openingWidth/2, 	WIDO_SILL, 	1,
+	-openingWidth/2, 	WIDO_SILL, 	1
+
+rect2 -openingWidth/2, 0, openingWidth/2, WIDO_SILL
+
+hotspot2 0, WIDO_SILL / 2, 0
+
+
+_showText = bShowText = SHOWTEXT_ALWAYS
+if bShowText = SHOWTEXT_MVO then
+	_bSuccess = libraryglobal("arMVO", "mepShowCaptionMVO", _showText)
+endif
+
+if _showText then
+	textStyle = 0
+	
+	if bTextStyleByMVO then
+		textOption = "Small"
+		_bSuccess = libraryglobal("arMVO", "arFont" + textOption + "MVO", textFont)
+		_bSuccess = libraryglobal("arMVO", "arFontSize" + textOption + "MVO", textSize)
+		_bSuccess = libraryglobal("arMVO", "arFontPen" + textOption + "MVO", textPen)
+		_bSuccess = libraryglobal("arMVO", "arFontStyle" + textOption + "MVO", textStyle)
+	endif
+
+	pen textPen
+
+	define style "own" textFont, textSize, 5, textStyle
+	set style "own"
+	text2 0, WIDO_SILL / 2, textCaption
+endif

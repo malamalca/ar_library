@@ -1,0 +1,262 @@
+﻿!--- READ ONLY - GLOBALNA VARIJABLA ---!
+values "debljinaSlojevaPoda",ac_bottomlevel
+!--- READ ONLY - GLOBALNA VARIJABLA ---!
+
+
+
+!=======================================================================================================================
+
+
+
+!=============================================================================!
+!============ V A R I J A B L E     S A    O  D A B I R O M ==================!
+!=============================================================================!
+values{2}  "odabirKanalica",
+   1,"700",
+   2,"800",
+   3,"900",
+   4,"1000",
+   5,"1200",
+   6,"1500",
+   7,"700 - kutna",
+   8,"800 - kutna",
+   9,"900 - kutna",
+   10,"1000 - kutna",
+   11,"1200 - kutna",
+   12,"1500 - kutna"
+
+values{2} "odabirSifon",
+   1,"Extra flat Ø40",
+   2,"Flat Ø50",
+   3,"Standard Ø50",
+   4,"Vertical Ø50",
+   5,"Max Ø70"
+!=============================================================================!
+!============ V A R I J A B L E     S A    O  D A B I R O M ==================!
+!=============================================================================!
+
+
+
+!=======================================================================================================================
+
+
+
+!=========================================================!
+!============ Z A   3 D / 2 D   S K R I P T U ============!
+!=========================================================!
+ values "a",range [maskaA+0.02+0.060,]
+
+ values "b",range [0.5,3]
+
+ parameters maskaA=maskaA
+
+
+!==================================================!
+!============ POMAK OD RUBA TUŠ KABINE ============!
+!==================================================!
+ if odabirKanalica >=7 then ! AKO JE ZIDNA
+ 	values "pomakOdRuba",0.0342 !--- NEMODIFICIRATI VRIJEDNOST ---!
+ 	else
+ 	values "pomakOdRuba",range [0.0755,b-0.0755]
+ endif
+
+
+if odabirKanalica <=6 then
+	add 0,0.0755,-0.067+ac_bottomlevel		!0.0755 <---> centar rupe odmaknut od linije zida
+	else
+	add 0,0.0078+0.0342,ac_bottomlevel		!0.0078 <---> ispravak pomaka, centar nije bio sredini rupe kanalice ||| 0.0342 --> nakon centriranja micanje od centra rupa od linije zida
+endif
+
+!==================================================!
+!============ POMAK OD RUBA TUŠ KABINE ============!
+!==================================================!
+
+
+
+!=========================================================!
+!============ Z A   3 D / 2 D   S K R I P T U ============!
+!=========================================================!
+
+
+
+!=======================================================================================================================
+
+
+
+!===================================================!
+!============ Z A   2 D   S K R I P T U ============!
+!===================================================!
+
+!========================================!
+!============ PROMJER SIFONA ============!
+!========================================!
+ if odabirSifon=1 then values "promjerSifona" , 0.04
+ if odabirSifon=2 | odabirSifon=3 | odabirSifon=4 then values "promjerSifona" , 0.05
+ if odabirSifon=5 then values "promjerSifona" , 0.07
+
+!===========================================!
+!============ DUZINA KANALICE X ============!
+!===========================================!
+ if odabirKanalica=1 | odabirKanalica=7 then values "maskaA",0.64
+ if odabirKanalica=2 | odabirKanalica=8 then values "maskaA",0.74
+ if odabirKanalica=3 | odabirKanalica=9 then values "maskaA",0.84
+ if odabirKanalica=4 | odabirKanalica=10 then values "maskaA",0.94
+ if odabirKanalica=5 | odabirKanalica=11 then values "maskaA",1.14
+ if odabirKanalica=6 | odabirKanalica=12 then values "maskaA",1.44
+!===========================================!
+!============ ŠIRINA KANALICE Y ============!
+!===========================================!
+	values "maskaB",0.06
+
+!==================================================!
+!============ POMAK OD RUBA TUŠ KABINE ============!
+!==================================================!
+ if odabirKanalica >=7 then ! AKO JE ZIDNA
+ 	values "pomakOdRuba2D",maskaB/2+0.001				!--- NEMODIFICIRATI VRIJEDNOST ---!
+ 	else
+ 	values "pomakOdRuba2D",range [0.0755,b-0.0755]		!0.001 --> debljina lima
+ endif
+!===================================================!
+!============ Z A   2 D   S K R I P T U ============!
+!===================================================!
+
+
+
+!=======================================================================================================================
+
+
+
+!===============================================================================!
+!============ S K R I V A N J E    I    Z  A K L J  U Č A V A N J E ============!
+!===============================================================================!
+ lock "separator001"  !POMOCNA VAR ZA VIZUALNI PRIKAZ U UI <---> MAKNI UKOLIKO NEPOTREBNO
+!===============================================================================!
+!============ S K R I V A N J E    I    Z  A K L J  U Č A V A N J E ============!
+!===============================================================================!
+
+
+
+!=======================================================================================================================
+
+
+
+!===================================================!
+!============ M E P   P A R A M T E R I ============!
+!===================================================!
+
+!--- X KOORDINATA ZA MEP CIJEV OD 0 CM DUZINE ---!
+if odabirSifon=1 then values "sifonTockaX",0.225
+if odabirSifon=2 then values "sifonTockaX",0.12
+if odabirSifon=3 then values "sifonTockaX",0.12
+if odabirSifon=4 then values "sifonTockaX",0.05
+if odabirSifon=5 then values "sifonTockaX",0.146
+
+!--- Z KOORDINATA ZA MEP CIJEV OD 0 CM DUZINE ---!
+if odabirSifon=1 then values "sifonTockaZ",0.0535
+if odabirSifon=2 then values "sifonTockaZ",0.0720
+if odabirSifon=3 then values "sifonTockaZ",0.0720
+if odabirSifon=4 then values "sifonTockaZ",0.2020
+if odabirSifon=5 then values "sifonTockaZ",0.1060
+
+!===================================================!
+!============ M E P   P A R A M T E R I ============!
+!===================================================!
+
+
+
+!--- POZIVANJE MEP MACRO ---!
+!--- POZIVANJE MEP MACRO ---!
+!--- POZIVANJE MEP MACRO ---!
+
+
+DIM shape_typ_to_validation[3]
+	shape_typ_to_validation[1] = 0		! Rectangle
+	shape_typ_to_validation[2] = 1		! Circle
+	shape_typ_to_validation[3] = 0		! Oval
+
+
+
+					! --- CONNECTIONS --- !
+
+PARAMETERS MEP_NumberConnections = 1
+
+
+					! --- 1st CONNECTION --- !
+
+ConID = 1
+ConName = `Pipe Inlet Connection`
+
+! ConPosX_1 = sifonTockaX
+! ConPosY_1 = pomakOdRuba
+! ConPosZ_1 = -sifonTockaZ-0.037
+
+ConDVecX = cos(rotSifon)*1
+ConDVecY = sin(rotSifon)*1
+ConDVecZ = 0
+
+ConWVecX = 0
+ConWVecY = 0
+ConWVecZ = 1
+
+if not(SetProgram) then
+    values "ConWidth_1" range (0, min(A, B)]		     	! Add editing range
+    parameters ConDepth_1 = ConWidth_1			     		! Linking of size parameters
+
+    values "ConWallThickness_1" range [0, ConWidth_1]	    ! Add editing range
+
+    !values "ConPosX_1" range [-A/2+ConWidth_1/2, A/2-ConWidth_1/2]  ! Add moving range
+    !values "ConPosY_1" range [ConWidth_1/2, B-ConWidth_1/2]  ! Add moving range
+    !parameters ConPosZ_1 = 0				     ! Add fix position
+
+	parameters ConPosX_1 = 0+cos(rotSifon)*sifonTockaX
+	parameters ConPosY_1 = -B/2+pomakOdRuba+sin(rotSifon)*sifonTockaX
+	parameters ConPosZ_1 = -sifonTockaZ
+endif
+
+
+call "MEP_m_ConnectionsACL_4" parameters SetProgram = SetProgram,
+	gs_Connections			= gs_Connections,
+	MEP_NumConnectionData		= MEP_NumConnectionData,
+	MEP_StrConnectionData		= MEP_StrConnectionData,
+	MEP_NumberConnections		= MEP_NumberConnections,
+	gs_AddConnections		= gs_AddConnections,
+	ConName				= ConName,
+	ConID				= ConID,
+	ConPosX				= ConPosX_1,
+	ConPosY				= ConPosY_1,
+	ConPosZ				= ConPosZ_1,
+	ConDVecX			= ConDVecX,
+	ConDVecY			= ConDVecY,
+	ConDVecZ			= ConDVecZ,
+	ConWVecX			= ConWVecX,
+	ConWVecY			= ConWVecY,
+	ConWVecZ			= ConWVecZ,
+
+	ConNominalWidth			= ConNominalWidth_1,
+	ConNominalDepth			= ConNominalDepth_1,
+	ConWidth			= ConWidth_1,
+	ConDepth			= ConDepth_1,
+	ConLength			= ConLength_1,
+	ConWallThickness		= ConWallThickness_1,
+	ConConnectorWidth		= ConConnectorWidth_1,
+	ConConnectorDepth		= ConConnectorDepth_1,
+	ConConnectorWidth2		= ConConnectorWidth2_1,
+	ConToolType			= ConToolType_1,
+	ConStatus			= ConStatus_1,
+	ConType_1			= ConType_1,
+	ConConnectorType_1		= ConConnectorType_1,
+	ConSystem_1			= ConSystem_1,
+	!gs_ui				= 0
+	ui_current_con = ui_current_con,
+	shape_typ_to_validation = shape_typ_to_validation,
+	MEP_enabled_geometry_mod = 1,
+	bUIConnectionStatusCheckbox = 1
+
+parameters MEP_ConInfo[ConID][1] = str(ConToolType_1, 1, 0)
+parameters MEP_ConInfo[ConID][2] = ConName
+parameters MEP_ConInfo[ConID][3] = "0"
+
+IF setProgram THEN
+	SetProgram = 0
+	PARAMETERS SetProgram = SetProgram
+ENDIF

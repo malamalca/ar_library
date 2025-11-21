@@ -1,0 +1,30 @@
+﻿
+! ==============================================================================
+! Hideparameter
+! ==============================================================================
+
+hideparameter all
+
+
+! ==============================================================================
+! Parameter Values
+! ==============================================================================
+
+values "riserRevealWidthSide" range (0, )
+values "riserRevealWidthTop" range (0, )
+values "riserRevealWidthBottom" range (0, )
+values "riserRevealDepth" range (0, RISER_THICKNESS)
+
+
+! ==============================================================================
+! Parameter Lock
+! ==============================================================================
+
+if not(bRiserReveal) then
+	lock	"riserRevealWidthSide",
+			"riserRevealWidthTop",
+			"riserRevealWidthBottom",
+			"riserRevealDepth",
+			"matReveal"
+endif
+

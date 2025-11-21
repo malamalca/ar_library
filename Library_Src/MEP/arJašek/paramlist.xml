@@ -68,11 +68,18 @@
 			<Value>1</Value>
 		</Integer>
 		<Length Name="latchSize">
-			<Description><![CDATA["Velikost"]]></Description>
+			<Description><![CDATA["Velikost A"]]></Description>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
 			<Value>0.6</Value>
+		</Length>
+		<Length Name="latchSize2">
+			<Description><![CDATA["Velikost B"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.4</Value>
 		</Length>
 		<Length Name="latchExtension">
 			<Description><![CDATA["Povišek"]]></Description>
@@ -83,6 +90,9 @@
 		</Length>
 		<Length Name="latchWallWidth">
 			<Description><![CDATA["Debelina stene"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
 			<Value>0.04</Value>
 		</Length>
 		<PenColor Name="penLatch">

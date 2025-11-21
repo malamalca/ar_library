@@ -1,1 +1,110 @@
-﻿!no need, already in master!call "ar3DPolygon" parameters n = n, xyz = xyz, xyz_e = xyz_e, unId = 26 returned_parameters unId! draw object at 1st nodeput xyz[1][1], xyz[1][2]gosub "drawObject"!-------------------------polygon--------------------------for i = 2 to n	! draw object at node	!put xyz[i][1], xyz[i][2]	!gosub "drawObject"	line2 		xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]	hotline2 	xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]	dx = xyz[i][1] - xyz[i-1][1]	dy = xyz[i][2] - xyz[i-1][2]	! calculate spacing between objects and number of objects	if object_distribution = OBJ_DISTR_NO then		! draw object at node		put xyz[i][1], xyz[i][2]		gosub "drawObject"		objects_no = distribution_no		objects_dx = dx / (objects_no + 1)		objects_dy = dy / (objects_no + 1)	endif	if object_distribution = OBJ_DISTR_SPACING then		! draw object at node		put xyz[i][1], xyz[i][2]		gosub "drawObject"		segmentLength = sqr(dx^2 + dy^2)		objects_no = int(segmentLength / distribution_minspacing)		objects_dx = dx / (objects_no + 1)		objects_dy = dy / (objects_no + 1)	endif	if object_distribution = OBJ_DISTR_FIXED then		! draw object at node		put xyz[i][1], xyz[i][2]		gosub "drawObject"		segmentLength = sqr(dx^2 + dy^2)		objects_no = int(segmentLength / distribution_minspacing)		objects_dx = dx * distribution_minspacing / segmentLength		objects_dy = dy * distribution_minspacing / segmentLength	endif		for j = 1 to objects_no		put xyz[i-1][1] + objects_dx * j, xyz[i-1][2] + objects_dy * j		gosub "drawObject"	next jnext iend"drawObject":	objectPosX = get(1)	objectPosY = get(1)		if object_kind = OBJ_KIND_CIRCLE then		circle2 objectPosX, objectPosY, A	endif	if object_kind = OBJ_KIND_RECT then		rect2 objectPosX - A/2, objectPosY - B/2, objectPosX + A/2, objectPosY + B/2	endif	if object_kind = OBJ_KIND_PROFILE then		n = request("Profile_default_boundingbox", profile, xmin, ymin, xmax, ymax)		maxWidth = xmax - xmin		rect2 objectPosX - A/2, objectPosY, objectPosX + A/2, objectPosY + maxWidth	endif	return
+﻿!no need, already in master
+!call "ar3DPolygon" parameters n = n, xyz = xyz, xyz_e = xyz_e, unId = 26 returned_parameters unId
+
+! draw object at 1st node
+!put xyz[1][1], xyz[1][2]
+!gosub "drawObject"
+
+hotspot2 0, 0
+
+
+!-------------------------polygon--------------------------
+for i = 2 to n
+	! draw object at node
+	!put xyz[i][1], xyz[i][2]
+	!gosub "drawObject"
+
+	line2 		xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]
+	hotline2 	xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]
+
+	dx = xyz[i][1] - xyz[i-1][1]
+	dy = xyz[i][2] - xyz[i-1][2]
+
+	! calculate spacing between objects and number of objects
+
+	if object_distribution = OBJ_DISTR_NO then
+		! draw object at node
+		!put xyz[i][1], xyz[i][2]
+		!gosub "drawObject"
+
+		objects_no = distribution_no
+
+		objects_dx = dx / (objects_no + 1)
+		objects_dy = dy / (objects_no + 1)
+	endif
+
+	if object_distribution = OBJ_DISTR_SPACING then
+		! draw object at node
+		!put xyz[i][1], xyz[i][2]
+		!gosub "drawObject"
+
+
+		segmentLength = sqr(dx^2 + dy^2)
+		objects_no = int(segmentLength / distribution_minspacing)
+
+		objects_dx = dx / (objects_no + 1)
+		objects_dy = dy / (objects_no + 1)
+	endif
+
+	if object_distribution = OBJ_DISTR_FIXED then
+		! draw object at node
+		!put xyz[i][1], xyz[i][2]
+		!gosub "drawObject"
+
+		segmentLength = sqr(dx^2 + dy^2)
+		objects_no = int(segmentLength / distribution_minspacing)
+
+		objects_dx = dx * distribution_minspacing / segmentLength
+		objects_dy = dy * distribution_minspacing / segmentLength
+	endif
+	
+	for j = 1 to objects_no
+		! calculate rotation
+		_x = xyz[i][1] - xyz[i-1][1]
+		_y = xyz[i][2] - xyz[i-1][2]
+		_atan2 = 0
+		gosub "atan2"
+
+		put xyz[i-1][1] + objects_dx * j, xyz[i-1][2] + objects_dy * j, _atan2
+		gosub "drawObject"
+	next j
+
+
+
+next i
+
+end
+
+"drawObject":
+	objectPosX = get(1)
+	objectPosY = get(1)
+	objectRotation = get(1)
+
+	add2 objectPosX + object_offset * cos(objectRotation - 90), objectPosY + object_offset * sin(objectRotation - 90)
+	rot2 objectRotation
+
+	if object_kind = OBJ_KIND_CIRCLE then
+		circle2 objectPosX, objectPosY, A
+	endif
+
+	if object_kind = OBJ_KIND_RECT then
+		rect2 - A/2, - B/2, + A/2, + B/2
+	endif
+
+	if object_kind = OBJ_KIND_PROFILE then
+		n = request("Profile_default_boundingbox", profile, xmin, ymin, xmax, ymax)
+		maxWidth = xmax - xmin
+		rect2 - A/2, 0, + A/2, maxWidth
+	endif
+
+	del 2
+	return
+
+
+"atan2":
+	if abs(_x) > 0 then
+		_atan2 = atn(_y / _x) + 90 * (1 - sgn(_x)) * (1 - 2 * (sgn(_y) < 0))
+	else
+		_atan2 = sgn(_y * (abs(_y) > 0)) * 90
+	endif
+	return

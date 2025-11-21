@@ -57,6 +57,10 @@
 			<Description><![CDATA["Door Type"]]></Description>
 			<Value>1</Value>
 		</Integer>
+		<Length Name="doorWidth">
+			<Description><![CDATA["Door Width (double door)"]]></Description>
+			<Value>0</Value>
+		</Length>
 		<String Name="markerFont">
 			<Description><![CDATA["Marker Font"]]></Description>
 			<Value><![CDATA["ISOCP"]]></Value>

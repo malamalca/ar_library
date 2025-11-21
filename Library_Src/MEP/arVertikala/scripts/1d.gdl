@@ -1,25 +1,51 @@
 ﻿EPS=0.00001 !-----Error checking ----------------
 
+CL_HOMESTORY_BOTTOM = 1
+CL_HOMESTORY_TOP = 2
+CL_CURRENTSTORY_BOTTOM = 3
+CL_CURRENTSTORY_TOP = 4
+CL_CURRENTSTORY_SECTION = 5
+
 GLOB_ELEM_TYPE = 1 !----- element type (1= Object)
 
+! cleanup - TO ŠE NE DELA
+! tmpN = 1
+! put directions[1], angles[1], segments[1]
+! for i  = 2 to nSegments
+! 	if (abs(directions[i] - directions[i-1]) < EPS) and (abs(angles[i] - angles[i-1]) < EPS) then
+! 		tmp1 = get(1): tmp2 = get(1): tmp3 = get(1)
+! 		segments[i-1] = segments[i] + segments[i-1]
+! 		put directions[i-1], angles[i-1], segments[i-1]
+! 	else
+! 		put directions[i]
+! 		put angles[i]
+! 		put segments[i]
+! 		tmpN = tmpN + 1
+! 	endif
+! next i
+
+! for i = 1 to tmpN
+! 	directions[i] = get(1)
+! 	angles[i] = get(1)
+! 	segments[i] = get(1)
+! next i
+
+! nSegments = tmpN
 
 
-pipeHeight = segments[1]
-for i = 2 TO nSegments
-	pipeHeight = pipeHeight + segments[i] * tan(angles[i])
+maxZ = 0: minZ = 0
+prevX = 0: prevY = 0: prevZ = 0
+for i = 1 to nSegments
+	prevX = prevX + segments[i] * cos(directions[i]) * cos(angles[i])
+	prevY = prevY + segments[i] * sin(directions[i]) * cos(angles[i])
+	prevZ = prevZ + segments[i] * sin(angles[i])
+
+	if prevZ > maxZ then maxZ = prevZ
+	if prevZ < minZ then minZ = prevZ
+
 next i
-!ZZYZX = pipeHeight
-
-!!**** ac_bottomlevel
-ac_bottomlevel = GLOB_ELEVATION + GLOB_HSTORY_ELEV
-ac_bottomlevel = 0
 
 
-IF GLOB_ELEVATION < EPS THEN
-!!**** ac_toplevel
-!ac_toplevel = GLOB_ELEVATION + ZZYZX + GLOB_HSTORY_ELEV
-ELSE
-!ac_toplevel = ZZYZX + GLOB_ELEVATION + GLOB_HSTORY_ELEV
-ENDIF
 
-ac_toplevel = pipeHeight
+ac_bottomlevel = minZ
+ac_toplevel = maxZ

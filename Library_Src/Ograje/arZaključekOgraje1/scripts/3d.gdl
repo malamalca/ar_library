@@ -1,0 +1,49 @@
+﻿
+if abs(RAILINGEND_DIRECTION_AND_ANGLE[1]) < EPS & abs(RAILINGEND_DIRECTION_AND_ANGLE[2]) < EPS & abs(RAILINGEND_DIRECTION_AND_ANGLE[3]) < EPS then end	! undefined direction
+
+! + on right side, - on left side
+sgnRefline = 1 - 2 * (RAILING_REFLINE_DISTANCE[2] < 0)			! >=0: +1	<0: -1
+! SYMB_MIRRORED is 0 at start, 1 at end
+sgnStartEnd = -1 + 2 * SYMB_MIRRORED							! 0: -1		1: 1
+sgnMirrored = -sgnRefline * sgnStartEnd							! profile x axis
+sgnZ = 1 - 2  * (sgn(RAILINGEND_DIRECTION_AND_ANGLE[3]) < 0)	! 1:  1,	0: 1,		-1: 1
+
+pen ContPen3D			! contour pen always comes from parameter
+set building_material mat_profile
+sect_attrs{2} penSection
+
+! 3D representation
+if GLOB_FEEDBACK_MODE then
+	tubetoler		= 0.1
+	ellipseresol	= 8
+else
+	tubetoler		= 0.005
+	ellipseresol	= gs_resol
+endif
+resol ellipseresol
+
+rotx -90
+addx -delta_y
+roty sgnMirrored * 90
+rotx 90
+cone extension1_length, profile_diameter/2, profile_diameter/2, 90, 45
+
+addz extension1_length
+roty (-sgnMirrored) * 90
+rotz 90 + sgnMirrored * 90
+rotx 90 - sgnMirrored * 90
+
+cone extension2_length - thickness, profile_diameter/2, profile_diameter/2, 45, 90
+
+addz extension2_length - thickness
+
+rotz 180 - sgnMirrored * 90 - base_rotation
+prism_ 7, thickness,
+	-profile_diameter / 2,	0, 									13+66,
+	0,						0,									900,
+	0, 						180, 								4000+13+66,
+	profile_diameter / 2, 	base_length - profile_diameter, 	15,
+	0,						base_length - profile_diameter, 	900,
+	0, 						180, 								4000+13+66,
+	-profile_diameter / 2,	base_length - profile_diameter,		15
+

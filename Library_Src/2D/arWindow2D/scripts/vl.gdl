@@ -1,2 +1,6 @@
 ﻿values "revealOutsideLength" range [0,)
 values "revealInsideLength" range [0,)
+
+dim font_names[]
+REQUEST("FONTNAMES_LIST", "", font_names)
+values "markerFont", font_names, custom

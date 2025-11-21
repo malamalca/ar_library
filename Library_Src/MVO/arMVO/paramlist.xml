@@ -25,7 +25,11 @@
 			<Value>1</Value>
 		</Length>
 		<Boolean Name="blindsShowCaptionMVO">
-			<Description><![CDATA["Show Blinds Caption"]]></Description>
+			<Description><![CDATA["Show Blinds Captions"]]></Description>
+			<Value>0</Value>
+		</Boolean>
+		<Boolean Name="mepShowCaptionMVO">
+			<Description><![CDATA["Show MEP Captions"]]></Description>
 			<Value>0</Value>
 		</Boolean>
 		<String Name="arFontDefaultMVO">
@@ -59,6 +63,14 @@
 		<Integer Name="arFontStyleSmallMVO">
 			<Description><![CDATA["Small Font Style"]]></Description>
 			<Value>2</Value>
+		</Integer>
+		<Integer Name="arPrikazVentilaHomeStory">
+			<Description><![CDATA["Prikaz ventila za prezračevanje na njegovi domači etaži"]]></Description>
+			<Value>2</Value>
+		</Integer>
+		<Integer Name="arPrikazVentilaOtherStory">
+			<Description><![CDATA["Prikaz ventila za prezračevanje na drugih etažah"]]></Description>
+			<Value>1</Value>
 		</Integer>
 	</Parameters>
 </ParamSection>

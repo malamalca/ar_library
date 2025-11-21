@@ -137,12 +137,24 @@
 			<Value><![CDATA[""]]></Value>
 		</String>
 		<String Name="sectionText">
-			<Description><![CDATA[""]]></Description>
+			<Description><![CDATA["Lib ID"]]></Description>
 			<Value><![CDATA[""]]></Value>
 		</String>
 		<String Name="longText">
-			<Description><![CDATA[""]]></Description>
+			<Description><![CDATA["Lib Text"]]></Description>
 			<Value><![CDATA[""]]></Value>
 		</String>
+		<String Name="additionalText">
+			<Description><![CDATA["Lib Additonal Text"]]></Description>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<Length Name="lengthToLabel">
+			<Description><![CDATA["Length To Label"]]></Description>
+			<Value>0.5</Value>
+		</Length>
+		<Length Name="lengthExtension">
+			<Description><![CDATA["Extension Line Length"]]></Description>
+			<Value>0.5</Value>
+		</Length>
 	</Parameters>
 </ParamSection>

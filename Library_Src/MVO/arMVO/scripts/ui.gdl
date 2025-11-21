@@ -43,3 +43,23 @@ _yCurr = _yCurr + _dy
 ui_style 0, 0
 ui_outfield `Show Caption on Blinds:`, 10, _yCurr, 140, 15
 ui_infield "blindsShowCaptionMVO", 155, _yCurr-4, 19, 19
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Show Caption on MEP:`, 10, _yCurr, 140, 15
+ui_infield "mepShowCaptionMVO", 155, _yCurr-4, 19, 19
+
+
+_yCurr = _yCurr - 2 * _dy
+ui_style 0, 1
+ui_outfield `Prikaz elementov prezračevanja:`, 200, _yCurr, 200, 15
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Display on home story:`, 200, _yCurr, 140, 15
+ui_infield "arPrikazVentilaHomeStory", 200+155, _yCurr-4, 60, 19
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Display on other stories:`, 200, _yCurr, 140, 15
+ui_infield "arPrikazVentilaOtherStory", 200+155, _yCurr-4, 60, 19

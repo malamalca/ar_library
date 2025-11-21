@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LibpartData Owner="1196638531" Signature="1196644685" Version="45">
+	<Identification>
+		<MainGUID>1E1262E0-FA97-4B9B-A889-D45D6A8CE4B9</MainGUID>
+		<IsPlaceable>true</IsPlaceable>
+		<IsArchivable>false</IsArchivable>
+		<MigrationValue>Normal</MigrationValue>
+		<IsTemplate>false</IsTemplate>
+	</Identification>
+	<Ancestry SectVersion="1" SectionFlags="0" SubIdent="0"/>
+	<CalledMacros SectVersion="2" SectionFlags="0" SubIdent="0"/>
+	<Script_3D SectVersion="20" SectionFlags="0" SubIdent="0"/>
+	<Script_2D SectVersion="20" SectionFlags="0" SubIdent="0"/>
+	<Script_1D SectVersion="20" SectionFlags="0" SubIdent="0"/>
+	<Script_UI SectVersion="20" SectionFlags="0" SubIdent="0"/>
+	<Script_VL SectVersion="20" SectionFlags="0" SubIdent="0"/>
+	<ParamSection SectVersion="27" SectionFlags="0" SubIdent="0"/>
+	<Copyright SectVersion="1" SectionFlags="0" SubIdent="0"/>
+	<Picture MIME="image/png" Name="Picture_0.png" SectVersion="19" SectionFlags="0" SubIdent="0"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_1.tiff" SectVersion="19" SectionFlags="1" SubIdent="1"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_2.tiff" SectVersion="19" SectionFlags="1" SubIdent="2"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_3.tiff" SectVersion="19" SectionFlags="1" SubIdent="3"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_4.tiff" SectVersion="19" SectionFlags="1" SubIdent="4"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_5.tiff" SectVersion="19" SectionFlags="1" SubIdent="5"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_6.tiff" SectVersion="19" SectionFlags="1" SubIdent="6"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_7.tiff" SectVersion="19" SectionFlags="1" SubIdent="7"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_8.tiff" SectVersion="19" SectionFlags="1" SubIdent="8"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_9.tiff" SectVersion="19" SectionFlags="1" SubIdent="9"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_10.tiff" SectVersion="19" SectionFlags="1" SubIdent="10"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_11.tiff" SectVersion="19" SectionFlags="1" SubIdent="11"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_12.tiff" SectVersion="19" SectionFlags="1" SubIdent="12"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_13.tiff" SectVersion="19" SectionFlags="1" SubIdent="13"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_14.tiff" SectVersion="19" SectionFlags="1" SubIdent="14"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_15.tiff" SectVersion="19" SectionFlags="1" SubIdent="15"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_16.tiff" SectVersion="19" SectionFlags="1" SubIdent="16"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_17.tiff" SectVersion="19" SectionFlags="1" SubIdent="17"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_18.tiff" SectVersion="19" SectionFlags="1" SubIdent="18"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_19.tiff" SectVersion="19" SectionFlags="1" SubIdent="19"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_20.tiff" SectVersion="19" SectionFlags="1" SubIdent="20"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_21.tiff" SectVersion="19" SectionFlags="1" SubIdent="21"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_22.tiff" SectVersion="19" SectionFlags="1" SubIdent="22"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_23.tiff" SectVersion="19" SectionFlags="1" SubIdent="23"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_24.tiff" SectVersion="19" SectionFlags="1" SubIdent="24"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_25.tiff" SectVersion="19" SectionFlags="1" SubIdent="25"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_26.tiff" SectVersion="19" SectionFlags="1" SubIdent="26"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_27.tiff" SectVersion="19" SectionFlags="1" SubIdent="27"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_28.tiff" SectVersion="19" SectionFlags="1" SubIdent="28"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_29.tiff" SectVersion="19" SectionFlags="1" SubIdent="29"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_30.tiff" SectVersion="19" SectionFlags="1" SubIdent="30"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_31.tiff" SectVersion="19" SectionFlags="1" SubIdent="31"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_32.tiff" SectVersion="19" SectionFlags="1" SubIdent="32"/>
+	<GDLPict MIME="image/tiff" Name="GDLPict_33.tiff" SectVersion="19" SectionFlags="1" SubIdent="33"/>
+	<Keywords SectVersion="1" SectionFlags="0" SubIdent="0"/>
+	<MigrationTable SectVersion="1" SectionFlags="0" SubIdent="0"/>
+</LibpartData>

@@ -1,0 +1,52 @@
+﻿offset = (A - pipeDistance) / 2
+
+hotspot 0, 0, 0
+hotspot pipeDistance, 0, 0
+hotspot -offset, 0, ZZYZX / 2
+hotspot A - offset, 0, ZZYZX / 2
+
+hotspot -offset, B, 0
+hotspot A - offset, B, 0
+
+!shadow OFF
+
+group "body"
+	rotx 90
+	roty 90
+	addz -offset
+	addy -ZZYZX / 2
+
+	resol 32
+
+	curvatureHeight = CURVATURE_RADIUS - sqr((ZZYZX / 2)^2 + (CURVATURE_RADIUS)^2)
+
+	prism_ 7, A,
+		0,	0,		1+2+4+8,	
+		0,	ZZYZX,	15,
+		B + curvatureHeight,	ZZYZX,	15 + 64,
+		B + curvatureHeight - CURVATURE_RADIUS, ZZYZX / 2, 900,
+		B + curvatureHeight, 0, 3000,
+		B + curvatureHeight,	0,		15 + 64,
+		0,	0,		15
+	del top
+endgroup
+
+group "pipe"
+	rotx 90
+	addz -B - PIPE_EXTENSION_LENGTH
+	addy ZZYZX / 2
+	addy -ZZYZX / 2
+
+	cylind B + PIPE_EXTENSION_LENGTH, pipeInternalDiameter / 2
+	! prism_ 5, 0.1,
+	! 	0, pipeInternalDiameter / 2, 15+64,
+	! 	0, 0, 900,
+	! 	0, 180, 4000+15+64,
+	! 	0, 0, 900,
+	! 	0, 180, 4000+15+64
+	del top
+endgroup
+
+
+result = addgroup("body", "pipe")
+placegroup result

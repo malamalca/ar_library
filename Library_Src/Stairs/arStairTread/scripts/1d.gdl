@@ -1,0 +1,223 @@
+﻿
+EPS = 0.0001
+
+_bOverrideMVO			= STAIR2D_CUSTOMDISPLAY		! always false in param script and UI script
+_bDrawAsVisibleSymbol	= STAIR2D_VISIBILITY
+
+! MVO Values
+SHOW_NONE		= 0
+SHOW_VISIBLE	= 1
+SHOW_NON_VIS	= 2
+SHOW_ALL		= 3
+
+COORD_X			= 1
+COORD_Y			= 2
+COORD_STATUS	= 3
+
+COMPTYPE_CORE	= 0
+COMPTYPE_FINISH	= 1
+COMPTYPE_OTHER	= 2
+
+! GLOB_STRUCTURE_DISPLAY
+DISPLAY_ALL			= 0
+DISPLAY_COREONLY	= 1
+DISPLAY_NOFINISH	= 2
+
+! const values for: iNosingMainType
+NOSING_MAIN_TYPE_NOEXT			= 1
+NOSING_MAIN_TYPE_EXT			= 2
+NOSING_MAIN_TYPE_CUSTOM_PROF	= 3
+
+dim	stNosingMainTypes[]
+	stNosingMainTypes[1]	= `Nosing without Extension`
+	stNosingMainTypes[2]	= `Nosing with Extension`
+	stNosingMainTypes[3]	= `Custom Profile`
+
+! const values for: TREAD_NOSING_METHOD
+NOSING_METHOD_VALUE_LENGTH		= 1
+NOSING_METHOD_SLANTING_LENGTH	= 2
+
+_treadNosingMethod			= TREAD_NOSING_METHOD
+_bManualSlantingStartPoint	= (_treadNosingMethod	= NOSING_METHOD_VALUE_LENGTH)
+
+if _bManualSlantingStartPoint then
+	_slantingStartPoint	= slantingStartPoint
+else
+	_slantingStartPoint	= TREAD_NOSING_BY_SLANTING
+endif
+
+! const values for: iTreadNosingProfile
+NOSINGPROFILE_FILLET				= 1		!2
+NOSINGPROFILE_CHAMFER				= 2		!4
+NOSINGPROFILE_ROUNDED				= 3		!8
+NOSINGPROFILE_SLANTED_FILLET		= 4		!16
+NOSINGPROFILE_SLANTED_CHAMFER		= 5		!32
+NOSINGPROFILE_SLANTED_ONLY			= 6		!64
+NOSINGPROFILE_CUSTOM_PROF			= 7		!128
+NOSINGPROFILE_CLASSICAL				= 8		!256
+NOSINGPROFILE_SLANTED_SQUARE		= 9		!512
+NOSINGPROFILE_SQUARE				= 10	!1024
+
+dim	stNosingTypes[]
+	stNosingTypes[1]	= `Fillet`
+	stNosingTypes[2]	= `Chamfered`
+	stNosingTypes[3]	= `Rounded`
+	stNosingTypes[4]	= `Rounded with Slanting`
+	stNosingTypes[5]	= `Chamfered with Slanting`
+	stNosingTypes[6]	= `Slanted Only`
+	stNosingTypes[7]	= `Custom Profile`
+	stNosingTypes[8]	= `Classical`
+	stNosingTypes[9]	= `Square with Slanting`
+	stNosingTypes[10]	= `Square`
+
+_bNosingHasExtension	= (iNosingMainType	= NOSING_MAIN_TYPE_EXT)
+
+_stAllEnabledNosingTypes	= `Tread Profile Type:`
+if iNosingMainType	= NOSING_MAIN_TYPE_CUSTOM_PROF then
+	_iEnableNosingTypes	= 128
+	_stAllEnabledNosingTypes	= _stAllEnabledNosingTypes +\
+								  stNosingTypes[7] + ", "
+else
+	if _bManualSlantingStartPoint then
+		if _bNosingHasExtension then
+			_iEnableNosingTypes	= 2 + 4 + 16 + 32 + 64 + 512 + 1024
+			_stAllEnabledNosingTypes	= _stAllEnabledNosingTypes +\
+										  stNosingTypes[10] + ", " +\
+										  stNosingTypes[1] + ", " +\
+										  stNosingTypes[2] + ", " +\
+										  stNosingTypes[9] + ", " +\
+										  stNosingTypes[4] + ", " +\
+										  stNosingTypes[5] + ", " +\
+										  stNosingTypes[6]
+		else
+			_iEnableNosingTypes	= 2 + 4 + 8 + 16 + 32 + 64 + 512
+			_stAllEnabledNosingTypes	= _stAllEnabledNosingTypes +\
+										  stNosingTypes[3] + ", " +\
+										  stNosingTypes[1] + ", " +\
+										  stNosingTypes[2] + ", " +\
+										  stNosingTypes[9] + ", " +\
+										  stNosingTypes[4] + ", " +\
+										  stNosingTypes[5] + ", " +\
+										  stNosingTypes[6]
+		endif
+	else
+		if abs(_slantingStartPoint) > eps then
+			if _bNosingHasExtension then
+				_iEnableNosingTypes	= 2 + 4 + 16 + 32 + 512 + 1024
+				_stAllEnabledNosingTypes	= _stAllEnabledNosingTypes +\
+											  stNosingTypes[10] + ", " +\
+											  stNosingTypes[1] + ", " +\
+											  stNosingTypes[2] + ", " +\
+											  stNosingTypes[9] + ", " +\
+											  stNosingTypes[4] + ", " +\
+											  stNosingTypes[5]
+			else
+				_iEnableNosingTypes	= 2 + 4 + 8 + 16 + 32 + 512
+				_stAllEnabledNosingTypes	= _stAllEnabledNosingTypes +\
+											  stNosingTypes[3] + ", " +\
+											  stNosingTypes[1] + ", " +\
+											  stNosingTypes[2] + ", " +\
+											  stNosingTypes[9] + ", " +\
+											  stNosingTypes[4] + ", " +\
+											  stNosingTypes[5]
+			endif
+		else
+			if _bNosingHasExtension then
+				_iEnableNosingTypes	= 2 + 4 + 64 + 1024
+				_stAllEnabledNosingTypes	= _stAllEnabledNosingTypes +\
+											  stNosingTypes[10] + ", " +\
+											  stNosingTypes[1] + ", " +\
+											  stNosingTypes[2] + ", " +\
+											  stNosingTypes[6]
+			else
+				_iEnableNosingTypes	= 2 + 4 + 8 + 64
+				_stAllEnabledNosingTypes	= _stAllEnabledNosingTypes +\
+											  stNosingTypes[3] + ", " +\
+											  stNosingTypes[1] + ", " +\
+											  stNosingTypes[2] + ", " +\
+											  stNosingTypes[6]
+			endif
+		endif
+	endif
+endif
+
+dim _iNosingTypeValueList[]
+dim _stNosingTypeValueList[]
+j = 1
+for i = 1 to vardim1(stNosingTypes)
+	if bittest(_iEnableNosingTypes, i) then
+		_iNosingTypeValueList[j] = i
+		_stNosingTypeValueList[j] = stNosingTypes[i]
+		j = j + 1
+	endif
+next i
+
+_bEnableNosingExtension	=	(iTreadNosingProfile	= NOSINGPROFILE_FILLET) |\
+							(iTreadNosingProfile	= NOSINGPROFILE_CHAMFER) |\
+							(iTreadNosingProfile	= NOSINGPROFILE_SLANTED_FILLET) |\
+							(iTreadNosingProfile	= NOSINGPROFILE_SLANTED_CHAMFER) |\
+							(iTreadNosingProfile	= NOSINGPROFILE_SLANTED_ONLY) |\
+							(iTreadNosingProfile	= NOSINGPROFILE_SLANTED_SQUARE) |\
+							(iTreadNosingProfile	= NOSINGPROFILE_SQUARE)
+
+_bSlantedNosing	=	(iTreadNosingProfile	= NOSINGPROFILE_SLANTED_FILLET) |\
+					(iTreadNosingProfile	= NOSINGPROFILE_SLANTED_CHAMFER) |\
+					(iTreadNosingProfile	= NOSINGPROFILE_SLANTED_ONLY) |\
+					(iTreadNosingProfile	= NOSINGPROFILE_SLANTED_SQUARE)
+
+_bEnableSlantingStartPoint	=	_bSlantedNosing & not(iTreadNosingProfile	= NOSINGPROFILE_SLANTED_ONLY)
+
+_bFilletNosing	=	(iTreadNosingProfile	= NOSINGPROFILE_FILLET) |\
+					(iTreadNosingProfile	= NOSINGPROFILE_SLANTED_FILLET)
+
+_bChamferNosing	=	(iTreadNosingProfile	= NOSINGPROFILE_CHAMFER) |\
+					(iTreadNosingProfile	= NOSINGPROFILE_SLANTED_CHAMFER)
+
+
+TREAD_LEADINGEDGE			= 0
+TREAD_TRAILINGEDGE			= 1
+TREAD_LEFTSIDEEDGE			= 2
+TREAD_RIGHTSIDEEDGE			= 3
+
+CUTPOSITION_START			= 1
+CUTPOSITION_END				= 2
+
+EDGEDIR_090					= 1
+EDGEDIR_90180				= 2
+EDGEDIR_180270				= 3
+EDGEDIR_270360				= 4
+
+CUSTOMSLANTING_BYDISTANCE	= 1
+CUSTOMSLANTING_BYANGLE		= 2
+
+! iAccessory
+ACC_NONSLIPBAND				= 1
+ACC_EDGEPROTECTION			= 2
+ACC_CUSTOMPROFILE			= 99
+
+! iEdgeProtectionShape
+PROTECTION_SQUARE 	= 1
+PROTECTION_SLANTED 	= 2		! inside of Tread
+PROTECTION_SLANTED2 = 3		! outside of Tread
+PROTECTION_ROUND 	= 4		! inside of Tread
+PROTECTION_ROUND2 	= 5		! outside of Tread
+
+! iRecessMultiply
+RECESS_DISTRIBUTE			= 1
+RECESS_SPREAD				= 2
+
+_bEnableTreadNosingProfileOnFront	= bNosingProfile & bTreadNosingProfileOnFront
+_bEnableTreadNosingProfileOnLeft	= bNosingProfile & bTreadNosingProfileOnLeft
+_bEnableTreadNosingProfileOnRight	= bNosingProfile & bTreadNosingProfileOnRight
+_bEnableTreadNosingProfileOnBack	= bNosingProfile & bTreadNosingProfileOnBack
+
+_bNonSlipBands = 0
+if bAccessory then
+	if iAccessory = ACC_NONSLIPBAND		then _bNonSlipBands = 1
+endif
+
+! --- iTypeRaisedStrip ----------------------------------------------------------------
+STRIPTYPE_SQUARE = 1
+STRIPTYPE_ROUNDED = 2
+
+

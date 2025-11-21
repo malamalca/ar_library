@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CalledMacros>
+	<Macro>
+		<MName><![CDATA["arKanalizacijaJašek"]]></MName>
+		<MainGUID>AA862F5F-7FA8-4586-9366-8E890FF0CBF6</MainGUID>
+	</Macro>
+	<Macro>
+		<MName><![CDATA["arMVO"]]></MName>
+		<MainGUID>C5A1D2E2-89E9-4BFF-923E-3E4A6049BE3B</MainGUID>
+	</Macro>
+</CalledMacros>

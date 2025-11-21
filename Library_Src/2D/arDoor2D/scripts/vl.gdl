@@ -2,3 +2,9 @@
 values "revealInsideLength" range [0,)
 
 values{2} "doorType" DOORTYPE_SINGLE, "Single Door", DOORTYPE_DOUBLE, "Double Door"
+
+values "doorWidth" range [0, A]
+
+if doorType = DOORTYPE_SINGLE then
+	hideparameter "doorWidth"
+endif

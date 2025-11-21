@@ -1,0 +1,101 @@
+﻿if GLOB_STRUCTURE_DISPLAY >= 1 then
+	exit
+endif
+
+unID = 200
+_nTrans = 0
+
+_lineType	= 1
+
+! ==============================================================================
+! Content To Draw
+! ==============================================================================
+
+gosub "setContentToDraw"
+
+! ===============================================================================
+! Other Accessories - do not require cutform from Tread
+!	- Draw Non Slip Bands
+!	- Draw Raised Strip
+! ===============================================================================
+
+if bAccessory or bRaisedStrip then
+	pen			_penColor
+	line_type 	_lineType
+
+	if _bDrawCurrSymbol then
+		call "treadAccessories_m" parameters all
+	endif
+endif
+
+
+! ==============================================================================
+end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! en
+! ==============================================================================
+
+! ==============================================================================
+"setContentToDraw":
+! ------------------------------------------------------------------------------
+
+	if _bOverrideMVO then
+		gosub "GetAttributesBySymbol"
+	else
+		gosub "GetAttributesByMVO"
+	endif
+
+	gosub "AttributesSettings"
+return
+
+! ==============================================================================
+"GetAttributesBySymbol":
+! ------------------------------------------------------------------------------
+	_bAcc2DVisible		= (iAcc2DVisibility = SHOW_VISIBLE | iAcc2DVisibility = SHOW_ALL)
+	_bAcc2DHidden		= (iAcc2DVisibility = SHOW_NON_VIS | iAcc2DVisibility = SHOW_ALL)
+
+return
+
+! ==============================================================================
+"GetAttributesByMVO":
+! ------------------------------------------------------------------------------
+
+	iMVOTread2D	= SHOW_NONE
+
+	call "GetStairGlobals" parameters	bGetTreadSymbolMVOValues	= 1,
+					returned_parameters	dummy,			! Tread
+										dummy,			! Grid Fill
+										dummy,			! Nosing
+										dummy,			! Landing Line
+										dummy,			! Draining
+										dummy,			! Draining Fill
+										dummy,			! WalkLine
+										dummy,			! WL on Landing
+										dummy,			! WL Start
+										dummy,			! WL End
+										dummy,			! Numbering
+										iMVOTread2D,	! Tread 2D
+										dummy,			! Beam Structure
+										dummy,			! Stringers
+										dummy			! Cantilevered
+
+	_bAcc2DVisible		= (iMVOTread2D = SHOW_VISIBLE | iMVOTread2D = SHOW_ALL)
+	_bAcc2DHidden		= (iMVOTread2D = SHOW_NON_VIS | iMVOTread2D = SHOW_ALL)
+
+return
+
+! ==============================================================================
+"AttributesSettings":
+! ------------------------------------------------------------------------------
+
+	if _bDrawAsVisibleSymbol then
+		_lineType	= lineAccVisible
+		_penColor	= penAccVisible
+
+		_bDrawCurrSymbol = _bAcc2DVisible
+	else
+		_lineType	= lineAccHidden
+		_penColor	= penAccHidden
+
+		_bDrawCurrSymbol = _bAcc2DHidden
+	endif
+
+return

@@ -106,7 +106,7 @@ if GLOB_ELEM_TYPE = ET_OBJECT then
 		variables[ix][2] = str{2}("%1.0cm", h)
 	endif
 
-	if strsub(objectName,1,4)="HEA " or strsub(objectName,1,4)="HEB " or strsub(objectName,1,4)="HEM " or strsub(objectName,1,4)="IPE " then
+	if strsub(objectName,1,4)="HEA " or strsub(objectName,1,4)="HEB " or strsub(objectName,1,4)="HEM " or strsub(objectName,1,4)="IPE " or strsub(objectName,1,4)="RHS " or strsub(objectName,1,4)="SHS " then
 		result = request("ASSOCLP_PARVALUE", "stCurrentProfile", index, type, flags, dim1, dim2, profileName)
 		ix = ix+1
 		variables[ix][1] = "profile"
@@ -322,6 +322,14 @@ if GLOB_ELEM_TYPE = ET_WINDOW then
 	variables[ix][1] = "id"
 	variables[ix][2] = GLOB_ID
 
+	ix = ix+1
+	variables[ix][1] = "width"
+	variables[ix][2] = str{2}(linear_format, WIDO_RSIDE_WIDTH)
+
+	ix = ix+1
+	variables[ix][1] = "height"
+	variables[ix][2] = str{2}(linear_format, WIDO_RSIDE_HEIGHT)
+
 	defaultCaption = "<id>"
 endif
 
@@ -331,6 +339,14 @@ if GLOB_ELEM_TYPE = ET_DOOR then
 	ix = ix+1
 	variables[ix][1] = "id"
 	variables[ix][2] = GLOB_ID
+
+	ix = ix+1
+	variables[ix][1] = "width"
+	variables[ix][2] = str{2}(linear_format, WIDO_RSIDE_WIDTH)
+
+	ix = ix+1
+	variables[ix][1] = "height"
+	variables[ix][2] = str{2}(linear_format, WIDO_RSIDE_HEIGHT)
 
 	defaultCaption = "<id>"
 endif

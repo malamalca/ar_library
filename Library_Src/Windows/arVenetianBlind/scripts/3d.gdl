@@ -146,7 +146,7 @@ del top
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! SIDE rail profiles
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-railBottomOffset = 0.03
+! railBottomOffset = 0.03 ! defined by parameter
 railPWidth = 0.023
 railPHeight = 0.027
 railOffset = -railPWidth/2 + verticalOffset + insideOffset

@@ -1,1 +1,101 @@
-﻿hotspot2 0,0: unId = unId + 1dim shadeX[50]dim shadeY[50]xScale = gridSpacing * 0.2   !0.03yScale = gridSpacing * 0.6   !0.09if showBasePoint then	define style "basePointStyle" basePointFont, basePointFontSize, 5, 0	set style "basePointStyle"	pen basePointPen	text2 originOffsetX, originOffsetY, GLOB_ID	circle2 originOffsetX, originOffsetY, 0.1endif!-------------------------polygon--------------------------for i = 1 to n	if i > 1 then		! this is a horizont line		pen penOutline		set line_type lineOutline		line2 		xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]		hotline2 	xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]	endif	! line from basepoint to horizon	pen penRay	set line_type lineRay	line2 originOffsetX, originOffsetY, xyz[i][1], xyz[i][2]	dX = xyz[i][1] - originOffsetX	dY = xyz[i][2] - originOffsetY	iLen = sqr(dX^2 + dY^2)		iAngle = acs(dX/iLen)	if dY < nix then		iAngle = 360 - iAngle 	endif	!!! convert to solar azimuth	iAngle = 360 - iAngle + 90	if iAngle > 360 then		iAngle = iAngle - 360	endif	!text2 xyz[i][1], xyz[i][2], str(atn(xyz[i][3]/iLen), 5, 2)	!text2 xyz[i][1], xyz[i][2]+0.4, str(iAngle , 5, 2)	shadeX[i] = iAngle * xScale	shadeY[i] = atn(xyz[i][3]/iLen) * yScalenext iif n > 1 then	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	!!! display chart	set line_type lineGrid	add2 chartOffsetX, chartOffsetY	call "arSunChart" parameters dTgmt=dTgmt, latitude=latitude, longitude=longitude, 		n = n, shadeX = shadeX, shadeY = shadeY, 		fillShade = fillShade, penOutline = penObjects, penShadeFill = penShadeFill, penShadeBg = penShadeBg,		penGrid = penGrid, penSunpath = penSunpath, penSunpath2 = penSunpath2, penHours = penHours, 		axisFont = axisFont, fontsizeGrid = fontsizeGrid, legendFont = legendFont, legendFontSize = legendFontSize,		gridSpacing = gridSpacing, 		chartTitle = chartTitle, fontsizeCharTitle = fontsizeCharTitle, fontChartTitle = fontChartTitle, penChartTitle = penChartTitle	del 1endif!!! grid spacinghotspot2 chartOffsetX, chartOffsetY, unId, gridSpacing, 1+128: unId = unId + 1hotspot2 chartOffsetX, chartOffsetY+gridSpacing, unId, gridSpacing, 2: unId = unId + 1hotspot2 chartOffsetX, chartOffsetY-1, unId, gridSpacing, 3: unId = unId + 1!!! chart offset hotspothotspot2 0, chartOffsetY, unId, chartOffsetX, 1+128: unId = unId + 1hotspot2 chartOffsetX, chartOffsetY, unId, chartOffsetX, 2: unId = unId + 1hotspot2 -1, chartOffsetY, unId, chartOffsetX, 3: unId = unId + 1hotspot2 chartOffsetX, 0, unId, chartOffsetY, 1+128: unId = unId + 1hotspot2 chartOffsetX, chartOffsetY, unId, chartOffsetY, 2: unId = unId + 1hotspot2 chartOffsetX, -1, unId, chartOffsetY, 3: unId = unId + 1!!! origin offset hotspothotspot2 0, originOffsetY, unId, originOffsetX, 1+128: unId = unId + 1hotspot2 originOffsetX, originOffsetY, unId, originOffsetX, 2: unId = unId + 1hotspot2 -1, originOffsetY, unId, originOffsetX, 3: unId = unId + 1hotspot2 originOffsetX, 0, unId, originOffsetY, 1+128: unId = unId + 1hotspot2 originOffsetX, originOffsetY, unId, originOffsetY, 2: unId = unId + 1hotspot2 originOffsetX, -1, unId, originOffsetY, 3: unId = unId + 1end
+﻿hotspot2 0,0: unId = unId + 1
+dim shadeX[50]
+dim shadeY[50]
+
+
+xScale = gridSpacing * 0.2   !0.03
+yScale = gridSpacing * 0.6   !0.09
+
+
+if showBasePoint then
+	define style "basePointStyle" basePointFont, basePointFontSize, 5, 0
+	set style "basePointStyle"
+	pen basePointPen
+	text2 originOffsetX, originOffsetY, GLOB_ID
+	circle2 originOffsetX, originOffsetY, basePointDiameter
+endif
+
+
+!-------------------------polygon--------------------------
+for i = 1 to n
+	if i > 1 then
+		! this is a horizont line
+		if showOutline then
+			pen penOutline
+			set line_type lineOutline
+			line2 		xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]
+			hotline2 	xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]
+		endif
+	endif
+
+	! line from basepoint to horizon
+	if showRays then
+		pen penRay
+		set line_type lineRay
+		line2 originOffsetX, originOffsetY, xyz[i][1], xyz[i][2]
+	endif
+
+	dX = xyz[i][1] - originOffsetX
+	dY = xyz[i][2] - originOffsetY
+
+	iLen = sqr(dX^2 + dY^2)
+	
+	iAngle = acs(dX/iLen)
+	if dY < nix then
+		iAngle = 360 - iAngle 
+	endif
+
+	!!! convert to solar azimuth
+	iAngle = 360 - iAngle + 90
+	if iAngle > 360 then
+		iAngle = iAngle - 360
+	endif
+
+	!text2 xyz[i][1], xyz[i][2], str(atn(xyz[i][3]/iLen), 5, 2)
+	!text2 xyz[i][1], xyz[i][2]+0.4, str(iAngle , 5, 2)
+
+
+	shadeX[i] = iAngle * xScale
+	shadeY[i] = atn(xyz[i][3]/iLen) * yScale
+next i
+
+if n > 1 then
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	!!! display chart
+	set line_type lineGrid
+	add2 chartOffsetX, chartOffsetY
+	call "arSunChart" parameters dTgmt=dTgmt, latitude=latitude, longitude=longitude, 
+		n = n, shadeX = shadeX, shadeY = shadeY, 
+		fillShade = fillShade, penOutline = penObjects, penShadeFill = penShadeFill, penShadeBg = penShadeBg,
+		penGrid = penGrid, penSunpath = penSunpath, penSunpath2 = penSunpath2, penHours = penHours, 
+		axisFont = axisFont, fontsizeGrid = fontsizeGrid, legendFont = legendFont, legendFontSize = legendFontSize,
+		gridSpacing = gridSpacing, 
+		chartTitle = chartTitle, fontsizeCharTitle = fontsizeCharTitle, fontChartTitle = fontChartTitle, penChartTitle = penChartTitle
+	del 1
+endif
+
+
+!!! grid spacing
+hotspot2 chartOffsetX, chartOffsetY, unId, gridSpacing, 1+128: unId = unId + 1
+hotspot2 chartOffsetX, chartOffsetY+gridSpacing, unId, gridSpacing, 2: unId = unId + 1
+hotspot2 chartOffsetX, chartOffsetY-1, unId, gridSpacing, 3: unId = unId + 1
+
+!!! chart offset hotspot
+hotspot2 0, chartOffsetY, unId, chartOffsetX, 1+128: unId = unId + 1
+hotspot2 chartOffsetX, chartOffsetY, unId, chartOffsetX, 2: unId = unId + 1
+hotspot2 -1, chartOffsetY, unId, chartOffsetX, 3: unId = unId + 1
+
+hotspot2 chartOffsetX, 0, unId, chartOffsetY, 1+128: unId = unId + 1
+hotspot2 chartOffsetX, chartOffsetY, unId, chartOffsetY, 2: unId = unId + 1
+hotspot2 chartOffsetX, -1, unId, chartOffsetY, 3: unId = unId + 1
+
+!!! origin offset hotspot
+hotspot2 0, originOffsetY, unId, originOffsetX, 1+128: unId = unId + 1
+hotspot2 originOffsetX, originOffsetY, unId, originOffsetX, 2: unId = unId + 1
+hotspot2 -1, originOffsetY, unId, originOffsetX, 3: unId = unId + 1
+
+hotspot2 originOffsetX, 0, unId, originOffsetY, 1+128: unId = unId + 1
+hotspot2 originOffsetX, originOffsetY, unId, originOffsetY, 2: unId = unId + 1
+hotspot2 originOffsetX, -1, unId, originOffsetY, 3: unId = unId + 1
+
+end
