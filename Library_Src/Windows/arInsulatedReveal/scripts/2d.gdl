@@ -63,31 +63,43 @@ if GLOB_STRUCTURE_DISPLAY = 0 then
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	! plaster on top of insulation
 
-	if v[_RIGHT] then
-		hotspot2 openingWidth/2 - thk_insulation - thk_plaster_sill, -WALL_THICKNESS + WIDO_SILL, unId: unId = unId + 1
+	!if plaster_sides[_RIGHT] then
+		hotspot2 openingWidth/2 - thk_insulation - thk_plaster_sill, 0, unId, offset_plaster, 1: unId = unId + 1
+		hotspot2 openingWidth/2 - thk_insulation - thk_plaster_sill, -offset_plaster, unId, offset_plaster, 2: unId = unId + 1
+		hotspot2 openingWidth/2 - thk_insulation - thk_plaster_sill, +1, unId, offset_plaster, 3: unId = unId + 1
+
+		! to je primer, ko je izključen omet na špaleti
+		_offset = offset_plaster
+		if not(plaster_sides[_RIGHT]) then _offset = WALL_THICKNESS - WIDO_SILL
 
 		poly2_b 7, 1+2+4, 
 		fillPlasterProperties[2], fillPlasterProperties[3],
-		openingWidth/2 - thk_insulation, 				-offset_plaster, 				1,
-		openingWidth/2 - thk_insulation - thk_plaster_sill, 	-offset_plaster, 				1,		
-		openingWidth/2 - thk_insulation - thk_plaster_sill, 	-WALL_THICKNESS + WIDO_SILL, 1,
-		openingWidth/2, 								-WALL_THICKNESS + WIDO_SILL, 1,
-		openingWidth/2, 								-WALL_THICKNESS + WIDO_SILL, 0,
-		openingWidth/2, 								-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1,
-		openingWidth/2 - thk_insulation, 				-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1
-	endif
+		openingWidth/2 - thk_insulation * v[_RIGHT], 												-_offset, 				1,
+		openingWidth/2 - thk_insulation * v[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT], 	-_offset, 				1,		
+		openingWidth/2 - thk_insulation * v[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT], 	-WALL_THICKNESS + WIDO_SILL, 1,
+		openingWidth/2, 																			-WALL_THICKNESS + WIDO_SILL, 1,
+		openingWidth/2, 																			-WALL_THICKNESS + WIDO_SILL, 0,
+		openingWidth/2, 																			-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1,
+		openingWidth/2 - thk_insulation * v[_RIGHT], 												-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1
+	!endif
 
-	if v[_LEFT] then
-		hotspot2 -openingWidth/2 + thk_insulation + thk_plaster_sill, -WALL_THICKNESS + WIDO_SILL, unId: unId = unId + 1
+	!if plaster_sides[_LEFT] then
+		hotspot2 -openingWidth/2 + thk_insulation + thk_plaster_sill, 0, unId, offset_plaster, 1: unId = unId + 1
+		hotspot2 -openingWidth/2 + thk_insulation + thk_plaster_sill, -offset_plaster, unId, offset_plaster, 2: unId = unId + 1
+		hotspot2 -openingWidth/2 + thk_insulation + thk_plaster_sill, +1, unId, offset_plaster, 3: unId = unId + 1
+
+		! to je primer, ko je izključen omet na špaleti
+		_offset = offset_plaster
+		if not(plaster_sides[_LEFT]) then _offset = WALL_THICKNESS - WIDO_SILL
 
 		poly2_b 7, 1+2+4, 
 		fillPlasterProperties[2], fillPlasterProperties[3],
-		-openingWidth/2 + thk_insulation, 					-offset_plaster, 				1,
-		-openingWidth/2 + thk_insulation + thk_plaster_sill, 	-offset_plaster, 				1,		
-		-openingWidth/2 + thk_insulation + thk_plaster_sill, 	-WALL_THICKNESS + WIDO_SILL, 1,
-		-openingWidth/2, 									-WALL_THICKNESS + WIDO_SILL, 1,
-		-openingWidth/2, 									-WALL_THICKNESS + WIDO_SILL, 0,
-		-openingWidth/2, 									-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1,
-		-openingWidth/2 + thk_insulation, 					-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1
-	endif
+		-openingWidth/2 + thk_insulation * v[_LEFT], 											-_offset, 				1,
+		-openingWidth/2 + thk_insulation * v[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 	-_offset, 				1,		
+		-openingWidth/2 + thk_insulation * v[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 	-WALL_THICKNESS + WIDO_SILL, 1,
+		-openingWidth/2, 																		-WALL_THICKNESS + WIDO_SILL, 1,
+		-openingWidth/2, 																		-WALL_THICKNESS + WIDO_SILL, 0,
+		-openingWidth/2, 																		-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1,
+		-openingWidth/2 + thk_insulation * v[_LEFT], 											-WALL_THICKNESS + WIDO_SILL + thk_plaster, 1
+	!endif
 endif

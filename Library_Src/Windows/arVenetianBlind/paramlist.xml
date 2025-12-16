@@ -4,6 +4,7 @@
 		<AutoHotspots>false</AutoHotspots>
 		<StatBits>
 			<STBit_FixSize/>
+			<STBit_UIUseHierarchicalPages/>
 		</StatBits>
 		<WDLeftFrame>0</WDLeftFrame>
 		<WDRightFrame>0</WDRightFrame>
@@ -43,9 +44,6 @@
 		<Integer Name="AC_Hole_Hotspot_Control">
 			<Description><![CDATA["Hotspots 0-None,1-2D,2-3D,3-All"]]></Description>
 			<Fix/>
-			<Flags>
-				<ParFlg_Hidden/>
-			</Flags>
 			<Value>3</Value>
 		</Integer>
 		<Boolean Name="AC_show2DHotspotsIn3D">
@@ -54,7 +52,7 @@
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
-			<Value>1</Value>
+			<Value>0</Value>
 		</Boolean>
 		<Length Name="AC_Sill_To_Curr_Story">
 			<Description><![CDATA["Sill Height to Current Story"]]></Description>
@@ -301,13 +299,6 @@
 			</Flags>
 			<Value>0</Value>
 		</Length>
-		<String Name="ifc_optypestr">
-			<Description><![CDATA["IFC Operation"]]></Description>
-			<Flags>
-				<ParFlg_Hidden/>
-			</Flags>
-			<Value><![CDATA["Not Defined"]]></Value>
-		</String>
 		<Integer Name="ifc_optype">
 			<Description><![CDATA["IFC Operation"]]></Description>
 			<Fix/>
@@ -316,13 +307,23 @@
 			</Flags>
 			<Value>0</Value>
 		</Integer>
+		<Integer Name="gs_ui_current_page">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<String Name="ifc_optypestr">
+			<Description><![CDATA["IFC Operation"]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value><![CDATA["Not Defined"]]></Value>
+		</String>
 		<Length Name="sideOffset">
 			<Description><![CDATA["Side offset"]]></Description>
 			<Value>0.01</Value>
-		</Length>
-		<Length Name="bottomOffset">
-			<Description><![CDATA["Bottom offset"]]></Description>
-			<Value>0</Value>
 		</Length>
 		<Length Name="insideOffset">
 			<Description><![CDATA["Offset from Reveal"]]></Description>
@@ -359,6 +360,13 @@
 			</Flags>
 			<Value>33</Value>
 		</BuildingMaterial>
+		<Length Name="deltaFrontSideExt">
+			<Description><![CDATA["Front Bottom Side Extension"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
 		<Boolean Name="bRail">
 			<Description><![CDATA["Show Rail"]]></Description>
 			<Flags>
@@ -373,6 +381,13 @@
 			</Flags>
 			<Value>0.03</Value>
 		</Length>
+		<BuildingMaterial Name="railMat">
+			<Description><![CDATA["Rail Material"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>33</Value>
+		</BuildingMaterial>
 
 		<!-- bInsulation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
@@ -384,7 +399,7 @@
 			<Value>0</Value>
 		</Boolean>
 		<Length Name="insulationThickness">
-			<Description><![CDATA["Thickness"]]></Description>
+			<Description><![CDATA["Insulation Thickness"]]></Description>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -395,7 +410,7 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value>63</Value>
+			<Value>16</Value>
 		</BuildingMaterial>
 
 		<!-- slatsProperties: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
@@ -403,6 +418,20 @@
 		<Title Name="slatsProperties">
 			<Description><![CDATA["Slats"]]></Description>
 		</Title>
+		<Integer Name="slatsKind">
+			<Description><![CDATA["Slat Kind"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Integer>
+		<Profile Name="slatProfile">
+			<Description><![CDATA["Slat Profile"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>3</Value>
+		</Profile>
 		<Angle Name="slatAngle">
 			<Description><![CDATA["Angle"]]></Description>
 			<Flags>
@@ -441,13 +470,6 @@
 			</Flags>
 			<Value>1</Value>
 		</Boolean>
-		<PenColor Name="textPen">
-			<Description><![CDATA["Pen"]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-			</Flags>
-			<Value>66</Value>
-		</PenColor>
 		<String Name="textFont">
 			<Description><![CDATA["Text Font"]]></Description>
 			<Flags>
@@ -462,6 +484,13 @@
 			</Flags>
 			<Value>2</Value>
 		</RealNum>
+		<PenColor Name="textPen">
+			<Description><![CDATA["Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>66</Value>
+		</PenColor>
 		<String Name="textCaption">
 			<Description><![CDATA["Caption"]]></Description>
 			<Flags>

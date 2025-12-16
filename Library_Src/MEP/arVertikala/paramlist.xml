@@ -45,7 +45,7 @@
 		<Length Name="ac_toplevel">
 			<Description><![CDATA["Top Level"]]></Description>
 			<Fix/>
-			<Value>1.37460659341591</Value>
+			<Value>2.07492131868318</Value>
 		</Length>
 		<Integer Name="gs_ui_current_page">
 			<Description><![CDATA[""]]></Description>
@@ -56,7 +56,7 @@
 		</Integer>
 		<Integer Name="ui_segment_index">
 			<Description><![CDATA[""]]></Description>
-			<Value>1</Value>
+			<Value>3</Value>
 		</Integer>
 		<Length Name="ui_segment_length">
 			<Description><![CDATA[""]]></Description>
@@ -68,7 +68,7 @@
 		</Angle>
 		<Angle Name="ui_segment_angle">
 			<Description><![CDATA[""]]></Description>
-			<Value>45</Value>
+			<Value>90</Value>
 		</Angle>
 		<Boolean Name="showProjection">
 			<Description><![CDATA["Show entire projection"]]></Description>
@@ -96,14 +96,14 @@
 		</Length>
 		<Integer Name="nSegments">
 			<Description><![CDATA["Segment Count"]]></Description>
-			<Value>2</Value>
+			<Value>3</Value>
 		</Integer>
 		<Length Name="segments">
 			<Description><![CDATA["Segment Length"]]></Description>
 			<ArrayValues FirstDimension="50" SecondDimension="0">
 				<AVal Row="1">1</AVal>
-				<AVal Row="2">1</AVal>
-				<AVal Row="3">0</AVal>
+				<AVal Row="2">0.2</AVal>
+				<AVal Row="3">1</AVal>
 				<AVal Row="4">0</AVal>
 				<AVal Row="5">0</AVal>
 				<AVal Row="6">0</AVal>
@@ -213,7 +213,7 @@
 			<ArrayValues FirstDimension="50" SecondDimension="0">
 				<AVal Row="1">90</AVal>
 				<AVal Row="2">22</AVal>
-				<AVal Row="3">0</AVal>
+				<AVal Row="3">90</AVal>
 				<AVal Row="4">0</AVal>
 				<AVal Row="5">0</AVal>
 				<AVal Row="6">0</AVal>

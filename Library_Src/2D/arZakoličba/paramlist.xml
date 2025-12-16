@@ -161,7 +161,7 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value>-1</Value>
+			<Value>1</Value>
 		</Length>
 		<Length Name="coord_y">
 			<Description><![CDATA["Koordinata Y"]]></Description>
@@ -175,7 +175,7 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value>2.7</Value>
+			<Value>2</Value>
 		</Length>
 		<Length Name="base_x">
 			<Description><![CDATA["Base X"]]></Description>

@@ -1,1 +1,33 @@
-﻿_LEFT = 1_RIGHT = 2_TOP = 3_BOTTOM = 4length_insulation = 0if sides[_RIGHT] then	length_insulation = length_insulation + Aendifif sides[_LEFT] then	length_insulation = length_insulation + Aendifif sides[_TOP] then	length_insulation = length_insulation + Bendifif sides[_BOTTOM] then	length_insulation = length_insulation + Bendif
+﻿_LEFT = 1
+_RIGHT = 2
+_TOP = 3
+_BOTTOM = 4
+
+BOARD_KIND_DEFAULT = 1
+BOARD_KIND_PROFILE = 2
+
+length_insulation = 0
+
+if sides[_RIGHT] then
+	length_insulation = length_insulation + A
+endif
+
+if sides[_LEFT] then
+	length_insulation = length_insulation + A
+endif
+
+if sides[_TOP] then
+	length_insulation = length_insulation + B
+endif
+
+if sides[_BOTTOM] then
+	length_insulation = length_insulation + B
+endif
+
+if WALL_SKINS_NUMBER > 1 then
+	if int(WALL_SKINS_PARAMS[WALL_SKINS_NUMBER][15]) = 1 then 				! it is finish skin
+		if WALL_SKINS_PARAMS[WALL_SKINS_NUMBER][2] < 0.1 then 			! thickness < 0.1
+			!thk_plaster = WALL_SKINS_PARAMS[WALL_SKINS_NUMBER][2]
+		endif
+	endif
+endif

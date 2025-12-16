@@ -1,23 +1,46 @@
-﻿values "slatAngle" range [-88, 88]
+﻿hideparameter all
 
-values "loweredDistance" range [0, B-slatBottomOffset]
+values "slatAngle" range [-88, 88]
+
+values "loweredDistance" range [0, B - railBottomOffset]
+
+values "railBottomOffset" range [0, B]
+
+values "boxHeight" range [0.1,)
+values "boxWidth" range [0.07,)
+values "insulationThickness" range [0,)
+values "deltaFrontSideExt" range [0, WIDO_SILL - boxWidth]
 
 values{2} "bShowText" 	SHOWTEXT_ALWAYS, "Always",
 						SHOWTEXT_NEVER, "Never",
 						SHOWTEXT_MVO, "By MVO"
 
+values{2} "slatsKind" 	KIND_C, "C-type",
+						KIND_PROFILE, "Profile"
+
+
+if not(slatsKind = KIND_PROFILE) then
+	lock "slatProfile"
+else
+	lock "slatMat"
+endif
 
 if not(bInsulation) then
-	hideparameter "insulationMat"
-	hideparameter "insulationThickness"
+	lock "insulationMat"
+	lock "insulationThickness"
+endif
+
+if bShowText = SHOWTEXT_NEVER then
+	lock "textCaption"
 endif
 
 if bTextStyleByMVO then
-	hideparameter "textPen"
-	hideparameter "textFont"
-	hideparameter "textSize"
+	lock "textPen"
+	lock "textFont"
+	lock "textSize"
 endif
 
 if not(bRail) then
-	hideparameter "railBottomOffset"
+	lock "railBottomOffset"
+	lock "railMat"
 endif

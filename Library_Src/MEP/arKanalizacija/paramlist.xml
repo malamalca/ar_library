@@ -563,7 +563,7 @@
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
-			<Value>1</Value>
+			<Value>2</Value>
 		</Integer>
 		<Integer Name="ui_pipe_index">
 			<Description><![CDATA[""]]></Description>
@@ -584,7 +584,7 @@
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
-			<Value>1</Value>
+			<Value>2</Value>
 		</Integer>
 		<Length Name="ui_shaft_cover_dim1">
 			<Description><![CDATA[""]]></Description>
@@ -605,14 +605,14 @@
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
-			<Value>0</Value>
+			<Value>0.6</Value>
 		</Length>
 		<Length Name="ui_shaft_height">
 			<Description><![CDATA[""]]></Description>
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
-			<Value>0</Value>
+			<Value>0.6</Value>
 		</Length>
 
 		<!-- ttShaftOptions: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
@@ -902,7 +902,7 @@
 				<AVal Column="9" Row="1">0</AVal>
 				<AVal Column="10" Row="1">0</AVal>
 				<AVal Column="1" Row="2">0.6</AVal>
-				<AVal Column="2" Row="2">0</AVal>
+				<AVal Column="2" Row="2">0.6</AVal>
 				<AVal Column="3" Row="2">0</AVal>
 				<AVal Column="4" Row="2">0</AVal>
 				<AVal Column="5" Row="2">0</AVal>
@@ -1415,7 +1415,7 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value>0</Value>
+			<Value>1</Value>
 		</Boolean>
 		<PenColor Name="penShaftCover">
 			<Description><![CDATA["Shaft Cover Pen"]]></Description>

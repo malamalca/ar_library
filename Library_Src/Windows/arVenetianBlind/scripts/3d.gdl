@@ -10,10 +10,9 @@ if not(bInsulation) then
 	insuThk = 0
 endif
 
-
 window_sill = WIDO_SILL + insuThk
-!window_sill = 0.2
 
+addz insuThk
 wallniche 5, 1, 2,
 	0, 0, -1,
 	window_sill,
@@ -22,6 +21,8 @@ wallniche 5, 1, 2,
 	openingWidth/2, B, 15,
 	-openingWidth/2, B, 15,
 	-openingWidth/2, 0, -1
+
+del 1
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! WALL niche for blinds box
@@ -38,6 +39,22 @@ wallniche 5, 1, 2,
 del 1
 
 
+sideExt = WIDO_SILL - boxWidth - deltaFrontSideExt
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! WALL niche box flashing
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+addz -boxWidth
+wallniche 5, 1, 2,
+	0, 0, -1,
+	sideExt,									! depth of niche
+	-openingWidth/2, 	B, 				1+2+4+8+16,
+	openingWidth/2, 	B, 				1+2+4+8+16,
+	openingWidth/2, 	B + thk, 		1+2+4+8+16,
+	-openingWidth/2, 	B + thk,	 	1+2+4+8+16,
+	-openingWidth/2, 	B, 				-1
+del 1
+
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! BLINDS BOX
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -47,23 +64,13 @@ addx -openingWidth/2
 addy B
 roty 90
 
-! brez odkapnega profila
-!prism_ 8, openingWidth,
-!	0, 				0, 				15,
-!	0,				boxHeight,		15,
-!	boxWidth,		boxHeight,		15,
-!	boxWidth,		0,				15,
-!	boxWidth-thk, 	0,				15,
-!	boxWidth-thk, 	boxHeight-thk, 	15,
-!	thk,			boxHeight-thk,	15,
-!	thk,			0,				15
 
-sideExt = WIDO_SILL - boxWidth
 
 !innerExt = ac_revealToWallCore
 !if (innerExt > 0) then
-	innerExt = 0
+	innerExt = -insulationThickness
 !endif
+
 
 prism_ 13, openingWidth,
 	0, 				0, 				15,
@@ -85,10 +92,10 @@ if bInsulation then
 	set building_material insulationMat
 
 	prism_ 4, openingWidth,
-		-insuThk, 	0, 				15,
+		-insuThk, 	thk, 				15,
 		-insuThk,	boxHeight,		15,
 		0,			boxHeight,		15,
-		0,			0,				15
+		0,			thk,				15
 endif
 
 del top
@@ -150,10 +157,11 @@ del top
 railPWidth = 0.023
 railPHeight = 0.027
 railOffset = -railPWidth/2 + verticalOffset + insideOffset
-railHeight = B + 0.095 - railBottomOffset
+railHeight = B + boxHeight - 0.1 - railBottomOffset
 railCorrectionOffset = 0.002 					! this is offset of rail towards center of window; prevents footing from subtraction of lower part of rail
 
 if bRail then
+	set building_material railMat
 
 	addy railBottomOffset
 
@@ -179,6 +187,7 @@ del top
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! SLATS
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+slatSpacing = slatWidth
 slatCount = round_int((B-slatBottomOffset)/slatSpacing) + 1
 slatCountFolded = round_int((B-loweredDistance-slatBottomOffset)/slatSpacing) + 1
 
@@ -189,7 +198,12 @@ addx railOffset + railPWidth / 2
 
 ! first slatella
 addy B - loweredDistance - slatBottomOffset
-gosub "slat"
+if slatsKind = KIND_C then
+	gosub "slatC"
+else
+	gosub "initSlatProfile"
+	gosub "slatProfile"
+endif
 del 1
 
 for i = 2 to slatCount
@@ -206,22 +220,58 @@ for i = 2 to slatCount
 
 	addy curSlatPos
 	rotz curSlatAngle
-	gosub "slat"
+
+	if slatsKind = KIND_C then
+		gosub "slatC"
+	else
+		gosub "slatProfile"
+	endif
 
 	del 2
 next i
 del top
 
 
-
-hotspot 0,  B,  -verticalOffset - insideOffset, unId, loweredDistance, 1: unId = unId + 1
-hotspot 0,  B - loweredDistance,  -verticalOffset - insideOffset, unId, loweredDistance, 2: unId = unId + 1
-hotspot 0,  B+1,  -verticalOffset - insideOffset, unId, loweredDistance, 3: unId = unId + 1
+!!  KOLIKO SO LAMELE SPUŠČENE
+hotspot 0,  B,  					-verticalOffset - insideOffset, unId, loweredDistance, 1: unId = unId + 1
+hotspot 0,  B - loweredDistance,  	-verticalOffset - insideOffset, unId, loweredDistance, 2: unId = unId + 1
+hotspot 0,  B+1,  					-verticalOffset - insideOffset, unId, loweredDistance, 3: unId = unId + 1
 
 hotspot 0,  B - loweredDistance + (slatCountFolded) * slatFoldedSpacing,  -verticalOffset - insideOffset, unId: unId = unId + 1
 
+!! VIŠINA BOKSA
+hotspot 0,  B,  					-verticalOffset - insideOffset, unId, boxHeight, 1: unId = unId + 1
+hotspot 0,  B + boxHeight,  		-verticalOffset - insideOffset, unId, boxHeight, 2: unId = unId + 1
+hotspot 0,  B-1,  					-verticalOffset - insideOffset, unId, boxHeight, 3: unId = unId + 1
+
+!! ŠIRINA BOKSA
+hotspot 0,  B + boxHeight,  		0, 								unId, boxWidth, 1+128: unId = unId + 1
+hotspot 0,  B + boxHeight,  		-boxWidth, 						unId, boxWidth, 2: unId = unId + 1
+hotspot 0,  B + boxHeight, 			+1, 							unId, boxWidth, 3: unId = unId + 1
 
 
+! nekateri hotspoti so smiselni le v prerezih
+if GLOB_VIEW_TYPE = 4 then
+	!! ODMIK TRAČNICE LEVO/DESNO
+	hotspot A/2,  0,  					-verticalOffset - insideOffset, unId, railBottomOffset, 1+128: unId = unId + 1
+	hotspot A/2,  railBottomOffset,  	-verticalOffset - insideOffset, unId, railBottomOffset, 2: unId = unId + 1
+	hotspot A/2,  -1,  					-verticalOffset - insideOffset, unId, railBottomOffset, 3: unId = unId + 1
+
+	!! DEBELINA IZOLACIJE
+	hotspot 0,  B + boxHeight,  		0, 								unId, insulationThickness, 1+128: unId = unId + 1
+	hotspot 0,  B + boxHeight,  		insulationThickness, 			unId, insulationThickness, 2: unId = unId + 1
+	hotspot 0,  B + boxHeight, 			-1, 							unId, insulationThickness, 3: unId = unId + 1
+
+	!! OFFSET OD REVEALA DO OMARICE
+	hotspot 0,  B + boxHeight - 0.1,  	-boxWidth/2, 				unId, insideOffset, 1+128: unId = unId + 1
+	hotspot 0,  B + boxHeight - 0.1,  	-boxWidth/2-insideOffset, 	unId, insideOffset, 2: unId = unId + 1
+	hotspot 0,  B + boxHeight - 0.1, 	-boxWidth/2 + 1, 			unId, insideOffset, 3: unId = unId + 1
+
+	!! OFFSET PLEHA NAZAJ OD FASADE - da ni linije na fasadi
+	hotspot 0,  B+thk,  				-WIDO_SILL, 						unId, deltaFrontSideExt, 1+128: unId = unId + 1
+	hotspot 0,  B+thk,  				-WIDO_SILL + deltaFrontSideExt, 	unId, deltaFrontSideExt, 2: unId = unId + 1
+	hotspot 0,  B+thk, 					-WIDO_SILL - 1, 					unId, deltaFrontSideExt, 3: unId = unId + 1
+endif
 
 end
 
@@ -243,9 +293,9 @@ end
 	return
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!! SUB: Slat
+!! SUB: Slat C type
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-"slat":
+"slatC":
 	addx - slatWidth / 2
 
 	prism_ 11, openingWidth - 2 * slatSideOffset,
@@ -269,3 +319,72 @@ end
 
 	return
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! SUB: INIT Slat profile
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+"initSlatProfile":
+	_nComponents = 0
+	dim _componentTypes[]
+	n = REQUEST ("Profile_components", slatProfile, _nComponents, _componentTypes)
+
+	DIM _prismPointsX[][]
+	DIM _prismPointsY[][]
+	DIM _prismPointsStatus[][]
+
+
+	IF _nComponents > 0 THEN
+		DIM componentPointCounts[ ]
+		DIM componentPoints[ ]
+
+		n = REQUEST ("Profile_default_geometry", slatProfile, componentPointCounts)
+
+		_pointIndex = _nComponents
+
+		FOR _i = 1 TO _nComponents
+			FOR _j = 1 TO componentPointCounts[_i]
+				X = 				componentPointCounts[_pointIndex + 1]
+				Y = 				componentPointCounts[_pointIndex + 2]
+				edgeVisible = 		componentPointCounts[_pointIndex + 3]
+				vertEdgeVisible = 	componentPointCounts[_pointIndex + 4]
+				additionalStatus = 	componentPointCounts[_pointIndex + 5]
+
+				_pointIndex = _pointIndex + 5
+
+				prismStatus = additionalStatus
+				if additionalStatus >= 0 then ! not contour end
+					if edgeVisible then
+						prismStatus = prismStatus + 15 ! j1, j2, j3, j4
+					endif
+					if vertEdgeVisible = 0 then
+						prismStatus = prismStatus + 64 ! j7
+						! in tube, lateral edges starting from the node are used for showing the contour
+						tubeStatus = tubeStatus + 1
+					endif
+				endif
+
+				!PUT X, Y, prismStatus 
+				_prismPointsX[_i][_j] = X
+				_prismPointsY[_i][_j] = Y
+				_prismPointsStatus[_i][_j] = prismStatus
+			NEXT _j
+		NEXT _i
+	ENDIF
+return
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! SUB: Slat profile
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+"slatProfile":		
+	FOR _i = 1 TO _nComponents
+		_componentMaterial = 0
+		n = REQUEST{4} ("Profile_component_info", slatProfile, _i, "gs_profile_bmat", _componentMaterial)	
+		SET BUILDING_MATERIAL _componentMaterial
+		
+		FOR _j = 1 TO componentPointCounts[_i]
+			put _prismPointsX[_i][_j], _prismPointsY[_i][_j], _prismPointsStatus[_i][_j]
+		next _j
+
+		PRISM_ componentPointCounts[_i], openingWidth - 2 * slatSideOffset, get(componentPointCounts[_i] * 3)
+	next _i
+return

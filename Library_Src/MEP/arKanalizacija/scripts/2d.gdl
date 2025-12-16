@@ -39,7 +39,7 @@ define style "ProfileText" profileTextFont, profileTextSize, 2, profileTextStyle
 ret = request("Height_of_style", "ProfileText", profileTextStyleHeight)
 profileTextStyleHeight = profileTextStyleHeight / 1000 * GLOB_SCALE
 
-define style "ProfileSmallText" profileTextFont, profileTextStyleHeight, 2, profileTextStyle
+define style "ProfileSmallText" profileTextFont, profileTextSize / 2, 2, profileTextStyle
 ret = request("Height_of_style", "ProfileSmallText", profileSmallTextStyleHeight)
 profileSmallTextStyleHeight = profileSmallTextStyleHeight / 1000 * GLOB_SCALE
 

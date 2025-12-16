@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<MigrationTable>
-	<MigrationTableElement>
-		<MainGUID>FDF0C276-7BA3-4EF0-9C72-27C67E38E1FF</MainGUID>
-		<Version>22</Version>
-		<Name><![CDATA["arZrakOhišjeVentila 22"]]></Name>
-		<AutoMigration>true</AutoMigration>
-	</MigrationTableElement>
-</MigrationTable>

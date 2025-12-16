@@ -11,6 +11,7 @@ if showBasePoint then
 	define style "basePointStyle" basePointFont, basePointFontSize, 5, 0
 	set style "basePointStyle"
 	pen basePointPen
+	
 	text2 originOffsetX, originOffsetY, GLOB_ID
 	circle2 originOffsetX, originOffsetY, basePointDiameter
 endif

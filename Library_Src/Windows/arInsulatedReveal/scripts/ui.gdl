@@ -1,0 +1,160 @@
+﻿ui_dialog "ARHIM Insulated Reveal"
+UI_CURRENT_PAGE gs_ui_current_page
+
+xLeft = 20
+
+yTop = 5
+yLabel = 15
+yRow = 40
+
+iPageIDRoot 			= -1
+iPageIDInsulation		=  1
+iPageIDPlaster			=  2
+iPageIDBoard			=  3
+iPageIDCorner 			=  4
+
+
+! ==============================================================================
+!UI_PAGES
+! ==============================================================================
+
+	UI_PAGE iPageIDInsulation, iPageIDRoot, 'Insulation', 51
+		gosub "insulationPage"
+
+	UI_PAGE iPageIDPlaster, iPageIDRoot, 'Plaster', 54
+		gosub "plasterPage"
+
+	UI_PAGE iPageIDBoard, iPageIDRoot, 'Board', 54
+		gosub "boardPage"
+
+	UI_PAGE iPageIDCorner, iPageIDRoot, 'Corner', 55
+		gosub "cornerPage"
+END
+
+
+! ==============================================================================
+!SUBROUTINES
+! ==============================================================================
+
+! ------------------------------------------------------------------------------
+"insulationPage":
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Thickness:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "thk_insulation", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 24
+
+	xOffset = 120
+	ui_outfield "Material:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "mat_insulation", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 24
+
+	aRow = aRow + 1.5
+	xOffset = 0
+	ui_outfield "Insulation Sides:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 100, 14
+
+	ui_infield "ui_side_left", xLeft + xOffset + 5, 		yTop + (aRow - 1) * yRow + yLabel + 23, 14, 14
+	ui_infield "ui_side_right", xLeft + xOffset + 55, 		yTop + (aRow - 1) * yRow + yLabel + 23, 14, 14
+	ui_infield "ui_side_top", xLeft + xOffset + 30, 		yTop + (aRow - 1) * yRow + yLabel, 14, 14
+	ui_infield "ui_side_bottom", xLeft + xOffset + 30, 		yTop + (aRow - 1) * yRow + yLabel + 50, 14, 14
+	ui_separator xLeft + xOffset + 25, yTop + (aRow - 1) * yRow + yLabel + 20, xLeft + xOffset + 50, yTop + (aRow - 1) * yRow + yLabel + 45
+
+return
+
+! ------------------------------------------------------------------------------
+"plasterPage":
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Thickness:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "thk_plaster", xLeft + xOffset, 				yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 100
+	ui_outfield "Thickness on Sill:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 120, 14
+	ui_infield "thk_plaster_sill", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 200
+	ui_outfield "Material:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 120, 14
+	ui_infield "mat_plaster", xLeft + xOffset, 				yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 300
+	ui_outfield "Pen:", xLeft + xOffset, 					yTop + (aRow - 1) * yRow , 120, 14
+	ui_infield "pen_plaster", xLeft + xOffset, 				yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	aRow = aRow + 1.5
+	xOffset = 0
+	ui_outfield "Sill Plaster Sides:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+
+	ui_infield "ui_plaster_left", xLeft + xOffset + 5, 		yTop + (aRow - 1) * yRow + yLabel + 23, 14, 14
+	ui_infield "ui_plaster_right", xLeft + xOffset + 55, 	yTop + (aRow - 1) * yRow + yLabel + 23, 14, 14
+	ui_infield "ui_plaster_top", xLeft + xOffset + 30, 		yTop + (aRow - 1) * yRow + yLabel, 14, 14
+	ui_infield "ui_plaster_bottom", xLeft + xOffset + 30, 	yTop + (aRow - 1) * yRow + yLabel + 50, 14, 14
+	ui_separator xLeft + xOffset + 25, yTop + (aRow - 1) * yRow + yLabel + 20, xLeft + xOffset + 50, yTop + (aRow - 1) * yRow + yLabel + 45
+
+	xOffset = 100
+	ui_outfield "Offset from reveal:", xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 120, 14
+	ui_infield "offset_plaster", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+return
+
+! ------------------------------------------------------------------------------
+"boardPage":
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Show Board", xLeft + xOffset+  20, 	yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "showBoard", xLeft + xOffset, 			yTop + (aRow - 1) * yRow, 14, 14
+
+	aRow = aRow + 0.5
+	xOffset = 0
+	ui_outfield "Kind:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "boardKind", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 100
+	ui_outfield "Profile:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "boardProfile", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 200
+	ui_outfield "Hor. Offset:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "offset_board", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 300
+	ui_outfield "Vert. Offset:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "vertoffset_board", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Width:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "width_board", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 100
+	ui_outfield "Thickness:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "thk_board", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 200
+	ui_outfield "Pen:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "pen_board", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 40, 24
+
+	xOffset = 260
+	ui_outfield "Material:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "mat_board", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 120, 24
+
+return
+
+! ------------------------------------------------------------------------------
+"cornerPage":
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Left Corner:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "leftCorner", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 100
+	ui_outfield "Angle:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 120, 14
+	ui_infield "leftCornerAngle", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Right Corner:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "rightCorner", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 100
+	ui_outfield "Angle:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 120, 14
+	ui_infield "rightCornerAngle", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+return

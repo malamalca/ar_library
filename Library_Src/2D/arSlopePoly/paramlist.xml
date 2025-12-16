@@ -325,6 +325,10 @@
 			<Description><![CDATA["Show Slope Arrow"]]></Description>
 			<Value>1</Value>
 		</Boolean>
+		<RealNum Name="arrowScale">
+			<Description><![CDATA["Slope Arrow Scale"]]></Description>
+			<Value>1</Value>
+		</RealNum>
 		<Length Name="totalElevation">
 			<Description><![CDATA["Total Elevation"]]></Description>
 			<Value>0.15</Value>

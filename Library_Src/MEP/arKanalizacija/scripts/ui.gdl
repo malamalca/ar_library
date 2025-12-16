@@ -119,6 +119,8 @@ return
 	ui_infield "ui_shaft_index", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 50, 22
 	ui_separator xLeft + xOffset + 60, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 300, 		yTop + (aRow - 1) * yRow + 25
 
+	
+
 	aRow = aRow + 1
 	xOffset = 0
 	ui_outfield "Višina jaška:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
@@ -127,6 +129,10 @@ return
 	xOffset = xOffset + 110
 	ui_outfield "Premer:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
 	ui_infield "ui_shaft_dim1", xLeft + xOffset,			yTop + (aRow - 1) * yRow + yLabel, 100, 22
+
+	xOffset = xOffset + 200
+	ui_outfield "Show Last:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "showLastShaft", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 22
 
 	aRow = aRow + 1.2
 	xOffset = 0

@@ -4,6 +4,7 @@
 		<AutoHotspots>false</AutoHotspots>
 		<StatBits>
 			<STBit_FixSize/>
+			<STBit_UIUseHierarchicalPages/>
 		</StatBits>
 		<WDLeftFrame>0</WDLeftFrame>
 		<WDRightFrame>0</WDRightFrame>
@@ -316,10 +317,21 @@
 			</Flags>
 			<Value>0</Value>
 		</Integer>
+		<Integer Name="gs_ui_current_page">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Length Name="length_insulation">
+			<Description><![CDATA["Insulation Length"]]></Description>
+			<Value>5</Value>
+		</Length>
 
-		<!-- arInsulate_B: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+		<!-- lblInsulation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
-		<Title Name="arInsulate_B">
+		<Title Name="lblInsulation">
 			<Description><![CDATA["Insulation"]]></Description>
 		</Title>
 		<Length Name="thk_insulation">
@@ -346,16 +358,44 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value>63</Value>
+			<Value>16</Value>
 		</BuildingMaterial>
-		<Length Name="length_insulation">
-			<Description><![CDATA["Insulation Length"]]></Description>
-			<Value>5</Value>
-		</Length>
+		<Boolean Name="ui_side_top">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="ui_side_bottom">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="ui_side_left">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="ui_side_right">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
 
-		<!-- arInsulate_C: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+		<!-- lblPlaster: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
-		<Title Name="arInsulate_C">
+		<Title Name="lblPlaster">
 			<Description><![CDATA["Plaster"]]></Description>
 		</Title>
 		<Length Name="thk_plaster">
@@ -382,19 +422,6 @@
 				<AVal Row="2">1</AVal>
 				<AVal Row="3">1</AVal>
 				<AVal Row="4">1</AVal>
-			</ArrayValues>
-		</Boolean>
-		<Boolean Name="visibility_plaster">
-			<Description><![CDATA["Plaster Visibility"]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-				<ParFlg_Hidden/>
-			</Flags>
-			<ArrayValues FirstDimension="4" SecondDimension="0">
-				<AVal Row="1">1</AVal>
-				<AVal Row="2">1</AVal>
-				<AVal Row="3">1</AVal>
-				<AVal Row="4">0</AVal>
 			</ArrayValues>
 		</Boolean>
 		<BuildingMaterial Name="mat_plaster">
@@ -425,10 +452,42 @@
 			</Flags>
 			<Value>18</Value>
 		</Material>
+		<Boolean Name="ui_plaster_left">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="ui_plaster_right">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="ui_plaster_top">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="ui_plaster_bottom">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
 
-		<!-- arInsulate_A: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+		<!-- lblCorner: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
-		<Title Name="arInsulate_A">
+		<Title Name="lblCorner">
 			<Description><![CDATA["Corner Functions"]]></Description>
 		</Title>
 		<Boolean Name="leftCorner">
@@ -463,12 +522,26 @@
 		<!-- showBoard: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
 		<Boolean Name="showBoard">
-			<Description><![CDATA["BOARD"]]></Description>
+			<Description><![CDATA["Show Board"]]></Description>
 			<Flags>
 				<ParFlg_BoldName/>
 			</Flags>
-			<Value>0</Value>
+			<Value>1</Value>
 		</Boolean>
+		<Integer Name="boardKind">
+			<Description><![CDATA["Board Kind"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Profile Name="boardProfile">
+			<Description><![CDATA["Board Profile"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>4</Value>
+		</Profile>
 		<Length Name="thk_board">
 			<Description><![CDATA["Board Thickness"]]></Description>
 			<Flags>

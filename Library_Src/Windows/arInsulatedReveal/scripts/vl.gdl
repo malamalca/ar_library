@@ -1,1 +1,92 @@
-﻿lock "length_insulation"parameters length_insulation = length_insulation
+﻿hideparameter all
+lock "length_insulation"
+
+parameters length_insulation = length_insulation
+
+values{2} "boardKind" 	BOARD_KIND_DEFAULT, "Default",
+						BOARD_KIND_PROFILE, "Profile"
+
+if boardKind = BOARD_KIND_DEFAULT then
+	lock "boardProfile"
+else
+	lock "thk_board"
+	lock "mat_board"
+	lock "pen_board"
+	lock "width_board"
+endif
+
+if not(leftCorner) then
+	lock "leftCornerAngle"
+endif
+
+if not(rightCorner) then
+	lock "rightCornerAngle"
+endif
+
+if not(showBoard) then
+	lock "boardKind"
+	lock "boardProfile"
+	lock "thk_board"
+	lock "mat_board"
+	lock "pen_board"
+	lock "width_board"
+	lock "offset_board"
+	lock "vertoffset_board"
+endif
+
+if GLOB_MODPAR_NAME = "ui_side_left" then
+	sides[1] = ui_side_left
+	PARAMETERS sides = sides
+endif
+
+if GLOB_MODPAR_NAME = "ui_side_right" then
+	sides[2] = ui_side_right
+	PARAMETERS sides = sides
+endif
+
+if GLOB_MODPAR_NAME = "ui_side_top" then
+	sides[3] = ui_side_top
+	PARAMETERS sides = sides
+endif
+
+if GLOB_MODPAR_NAME = "ui_side_bottom" then
+	sides[4] = ui_side_bottom
+	PARAMETERS sides = sides
+endif
+
+if GLOB_MODPAR_NAME = "sides" then
+	ui_side_left = sides[1]: PARAMETERS ui_side_left = ui_side_left
+	ui_side_right = sides[2]: PARAMETERS ui_side_right = ui_side_right
+	ui_side_top = sides[3]: PARAMETERS ui_side_top = ui_side_top
+	ui_side_bottom = sides[4]: PARAMETERS ui_side_bottom = ui_side_bottom
+endif
+
+
+!! PLASTER
+
+if GLOB_MODPAR_NAME = "ui_plaster_left" then
+	plaster_sides[1] = ui_plaster_left
+	PARAMETERS plaster_sides = plaster_sides
+endif
+
+if GLOB_MODPAR_NAME = "ui_plaster_right" then
+	plaster_sides[2] = ui_plaster_right
+	PARAMETERS plaster_sides = plaster_sides
+endif
+
+if GLOB_MODPAR_NAME = "ui_plaster_top" then
+	plaster_sides[3] = ui_plaster_top
+	PARAMETERS plaster_sides = plaster_sides
+endif
+
+if GLOB_MODPAR_NAME = "ui_plaster_bottom" then
+	plaster_sides[4] = ui_plaster_bottom
+	PARAMETERS plaster_sides = plaster_sides
+endif
+
+if GLOB_MODPAR_NAME = "plaster_sides" then
+	ui_plaster_left = plaster_sides[1]: PARAMETERS ui_plaster_left = ui_plaster_left
+	ui_plaster_right = plaster_sides[2]: PARAMETERS ui_plaster_right = ui_plaster_right
+	ui_plaster_top = plaster_sides[3]: PARAMETERS ui_plaster_top = ui_plaster_top
+	ui_plaster_bottom = plaster_sides[4]: PARAMETERS ui_plaster_bottom = ui_plaster_bottom
+endif

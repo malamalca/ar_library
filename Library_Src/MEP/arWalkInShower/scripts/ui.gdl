@@ -1,8 +1,0 @@
-﻿UI_DIALOG `MEP Custom Settings`
-
-DIM ui_con_type[1]
-	ui_con_type[1] = 0
-
-CALL "MEP_m_ConnectionsACL_4" PARAMETERS ALL ui_con_type = ui_con_type,
-											ui_system_var_pos = 2,
-											bUIConnectionStatusCheckbox = 1

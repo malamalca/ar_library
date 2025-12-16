@@ -1,4 +1,6 @@
-﻿offset = (A - pipeDistance) / 2
+﻿set material surf
+
+offset = (A - pipeDistance) / 2
 
 hotspot 0, 0, 0
 hotspot pipeDistance, 0, 0
