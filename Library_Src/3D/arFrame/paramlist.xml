@@ -58,13 +58,29 @@
 			<Description><![CDATA["Frame Area [m2]"]]></Description>
 			<Value>5</Value>
 		</RealNum>
+		<Title Name="lblCutLeft">
+			<Description><![CDATA["Left Diagonal Cut"]]></Description>
+			<Fix/>
+		</Title>
 		<Length Name="cutHeight">
-			<Description><![CDATA["Cut Height"]]></Description>
+			<Description><![CDATA["Cut Height (Left)"]]></Description>
 			<Value>1</Value>
 		</Length>
 		<Angle Name="cutAngle">
-			<Description><![CDATA["Cut Angle"]]></Description>
+			<Description><![CDATA["Cut Angle (Left)"]]></Description>
 			<Value>-15</Value>
+		</Angle>
+		<Title Name="lblCutRight">
+			<Description><![CDATA["Right Diagonal Cut"]]></Description>
+			<Fix/>
+		</Title>
+		<Length Name="cutHeight2">
+			<Description><![CDATA["Cut Height (Right)"]]></Description>
+			<Value>0</Value>
+		</Length>
+		<Angle Name="cutAngle2">
+			<Description><![CDATA["Cut Angle (Right)"]]></Description>
+			<Value>0</Value>
 		</Angle>
 		<Integer Name="n">
 			<Description><![CDATA["Number of In-Between Studs"]]></Description>
