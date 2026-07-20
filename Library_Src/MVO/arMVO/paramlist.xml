@@ -68,8 +68,16 @@
 			<Description><![CDATA["Prikaz ventila za prezračevanje na njegovi domači etaži"]]></Description>
 			<Value>2</Value>
 		</Integer>
+		<Integer Name="arPrikazLuciHomeStory">
+			<Description><![CDATA["Prikaz luči na domači etaži"]]></Description>
+			<Value>1</Value>
+		</Integer>
 		<Integer Name="arPrikazVentilaOtherStory">
 			<Description><![CDATA["Prikaz ventila za prezračevanje na drugih etažah"]]></Description>
+			<Value>1</Value>
+		</Integer>
+		<Integer Name="arPrikazLuciOtherStory">
+			<Description><![CDATA["Prikaz luči na drugih etažah"]]></Description>
 			<Value>1</Value>
 		</Integer>
 	</Parameters>

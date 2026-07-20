@@ -13,7 +13,7 @@ endif
 set material _mat
 
 ! chop off for floorplans
-if GLOB_CONTEXT = 2 then
+if GLOB_CONTEXT = 2 and cutProjection then
 	addz GLOB_CSTORY_ELEV - GLOB_ELEVATION - GLOB_HSTORY_ELEV + cutOffsetBottom
 	rotx 180
 	cutplane
@@ -183,7 +183,7 @@ hotspot segment_edit_x, segment_edit_y, segment_edit_z, unId, segment_edit_z, 2,
 hotspot segment_edit_x, segment_edit_y, -1, unId, segment_edit_z, 3, segment_edit_index: unId = unId + 1
 
 
-if GLOB_CONTEXT = 2 then
+if GLOB_CONTEXT = 2 and cutProjection then
 	cutend 
 	cutend
 endif

@@ -399,14 +399,24 @@ if GLOB_ELEM_TYPE = ET_BEAM then
 	variables[ix][2] = str{2}("%*1.0cm", BEAM_THICKNESS)
 
 	ix = ix+1
-	variables[ix][1] = "bottomLevel"
+	variables[ix][1] = "bottomLevelAbs"
 	!variables[ix][2] = str{2}(linear_format, GLOB_HSTORY_ELEV + GLOB_ELEVATION)
 	variables[ix][2] = str{2}(linear_format, GLOB_HSTORY_ELEV + BEAM_ELEVATION_BOTTOM)
 
 	ix = ix+1
-	variables[ix][1] = "topLevel"
+	variables[ix][1] = "bottomLevel"
+	!variables[ix][2] = str{2}(linear_format, GLOB_HSTORY_ELEV + GLOB_ELEVATION)
+	variables[ix][2] = str{2}(linear_format, BEAM_ELEVATION_BOTTOM)
+
+	ix = ix+1
+	variables[ix][1] = "topLevelAbs"
 	!variables[ix][2] = str{2}(linear_format, GLOB_HSTORY_ELEV + GLOB_ELEVATION +  BEAM_HEIGHT)
 	variables[ix][2] = str{2}(linear_format, GLOB_HSTORY_ELEV + BEAM_ELEVATION_TOP)
+
+	ix = ix+1
+	variables[ix][1] = "topLevel"
+	!variables[ix][2] = str{2}(linear_format, GLOB_HSTORY_ELEV + GLOB_ELEVATION)
+	variables[ix][2] = str{2}(linear_format, BEAM_ELEVATION_TOP)
 
 	ix = ix+1
 	variables[ix][1] = "length"

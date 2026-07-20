@@ -1,0 +1,37 @@
+﻿values{2} "orientation" ORIENTATION_VERTICAL, "Vertical", ORIENTATION_HORIZONTAL, "Horizontal"
+
+if GLOB_MODPAR_NAME = 'A' then
+	studA = A / studCount
+	parameters studA = studA
+endif
+
+if GLOB_MODPAR_NAME = 'B' then
+	studB = B
+	parameters studB = studB
+endif
+
+if GLOB_MODPAR_NAME = 'studCount' then
+	studA = A / studCount
+	parameters studA = studA
+endif
+
+if GLOB_MODPAR_NAME = 'studA' then
+	A = studA
+	parameters A = A
+endif
+
+if GLOB_MODPAR_NAME = 'studB' and orientation = ORIENTATION_HORIZONTAL then
+	ZZYZX = studB
+	parameters ZZYZX = ZZYZX
+endif
+
+if GLOB_MODPAR_NAME = 'studB' and orientation = ORIENTATION_VERTICAL then
+	B = studB
+	parameters B = B
+endif
+
+if orientation = ORIENTATION_HORIZONTAL then
+	hideparameter "B"
+endif
+
+parameters lumberVol = lumberVol

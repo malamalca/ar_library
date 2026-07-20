@@ -272,8 +272,13 @@ end
 	EoT = 9.87 * sin(2 * b1) - 7.53 * cos(b1) - 1.5 * sin(b1)
 	TC = 4 * (longitude - LSTM) + EoT
 
-	sunrise = 12 - 1/15 * acs(-tan(declination)*tan(latitude)) - TC/60
-	sunset = 12 + 1/15 * acs(-tan(declination)*tan(latitude)) - TC/60
+    zenith = 90.833                                                                                                                                             
+    HA = acs((cos(zenith) - sin(declination)*sin(latitude)) / (cos(declination)*cos(latitude)))                                                                 
+    sunrise = 12 - HA/15 - TC/60                                                                                                                                
+    sunset  = 12 + HA/15 - TC/60
+
+	!sunrise = 12 - 1/15 * acs(-tan(declination)*tan(latitude)) - TC/60
+	!sunset = 12 + 1/15 * acs(-tan(declination)*tan(latitude)) - TC/60
 
 	! total solar duration in minutes
 	sunHours[pathId][1] = (sunset - sunrise) * 60

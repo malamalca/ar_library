@@ -1,0 +1,28 @@
+﻿!
+!   Name     : GarageDoorSegment.gsm
+!   Date     : Thursday, 6 April 2023
+!   Version  : 25.00
+!   Written by ARCHICAD 
+!
+
+bms_54 = 0
+r = REQUEST{2} ("Building_Material_info", "GENERIC - PREFABRICATED", "gs_bmat_surface", bms_54)
+bms_54 = ind(material, "Vrata - Garažna")
+
+deltaWidth = 0
+
+
+!model solid
+
+!pen     89
+!set building_material "GENERIC - PREFABRICATED", DEFAULT, DEFAULT
+!sect_attrs{2} 29, ind(LINE_TYPE,"Solid Line")
+
+cprism_{4} bms_54, bms_54, bms_54, 7,
+			 5,         0.022,
+				0-deltaWidth,            0,            0,     15, bms_54,
+				A+deltaWidth,            0,            0,     15, bms_54,
+				A+deltaWidth,            B,            0,     15, bms_54,
+				0-deltaWidth,            B,            0,     15, bms_54,
+				0-deltaWidth,            0,            0,     -1, bms_54
+

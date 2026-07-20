@@ -42,24 +42,38 @@ ui_outfield `Openings Settings:`, 0, _yCurr, 150, 15
 _yCurr = _yCurr + _dy
 ui_style 0, 0
 ui_outfield `Show Caption on Blinds:`, 10, _yCurr, 140, 15
-ui_infield "blindsShowCaptionMVO", 155, _yCurr-4, 19, 19
+ui_infield "blindsShowCaptionMVO", 145, _yCurr-4, 19, 19
 
 _yCurr = _yCurr + _dy
 ui_style 0, 0
 ui_outfield `Show Caption on MEP:`, 10, _yCurr, 140, 15
-ui_infield "mepShowCaptionMVO", 155, _yCurr-4, 19, 19
+ui_infield "mepShowCaptionMVO", 145, _yCurr-4, 19, 19
 
 
 _yCurr = _yCurr - 2 * _dy
 ui_style 0, 1
-ui_outfield `Prikaz elementov prezračevanja:`, 200, _yCurr, 200, 15
+ui_outfield `Prikaz elementov prezračevanja:`, 170, _yCurr, 200, 15
 
 _yCurr = _yCurr + _dy
 ui_style 0, 0
-ui_outfield `Display on home story:`, 200, _yCurr, 140, 15
-ui_infield "arPrikazVentilaHomeStory", 200+155, _yCurr-4, 60, 19
+ui_outfield `Display on home story:`, 180, _yCurr, 140, 15
+ui_infield "arPrikazVentilaHomeStory", 180+135, _yCurr-4, 60, 19
 
 _yCurr = _yCurr + _dy
 ui_style 0, 0
-ui_outfield `Display on other stories:`, 200, _yCurr, 140, 15
-ui_infield "arPrikazVentilaOtherStory", 200+155, _yCurr-4, 60, 19
+ui_outfield `Display on other stories:`, 180, _yCurr, 140, 15
+ui_infield "arPrikazVentilaOtherStory", 180+135, _yCurr-4, 60, 19
+
+_yCurr = _yCurr - 2 * _dy
+ui_style 0, 1
+ui_outfield `Prikaz Luči:`, 380, _yCurr, 200, 15
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Display on home story:`, 390, _yCurr, 140, 15
+ui_infield "arPrikazLuciHomeStory", 390+135, _yCurr-4, 60, 19
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Display on other stories:`, 390, _yCurr, 140, 15
+ui_infield "arPrikazLuciOtherStory", 390+135, _yCurr-4, 60, 19

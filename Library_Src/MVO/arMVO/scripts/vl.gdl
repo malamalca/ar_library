@@ -11,3 +11,11 @@ values{2} "arPrikazVentilaHomeStory" 	DISPLAY_SIMPLE, "Simple",
 values{2} "arPrikazVentilaOtherStory" 	DISPLAY_SIMPLE, "Simple",
 										DISPLAY_DETAILED, "Detailed",
 										DISPLAY_OFF, "None"
+
+values{2} "arPrikazLuciHomeStory" 	DISPLAY_SIMPLE, "Simple",
+										DISPLAY_DETAILED, "Detailed",
+										DISPLAY_OFF, "None"
+
+values{2} "arPrikazLuciOtherStory" 	DISPLAY_SIMPLE, "Simple",
+										DISPLAY_DETAILED, "Detailed",
+										DISPLAY_OFF, "None"

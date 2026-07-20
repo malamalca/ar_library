@@ -1,37 +1,83 @@
-﻿paramDrawBeamLength = A
+﻿model solid 
+studId = 1
+paramDrawBeamLength = A
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Bottom Element
-SET MATERIAL bottomElementMaterial
+!SET MATERIAL bottomElementMaterial
 paramDrawBeamWidth = bottomElementHeight
 
 ! show only if checked
 if lblBottomElement then
-	GOSUB "drawBeam3d"
+	if cutAngle < -NIX and cutHeight > NIX then
+		! dolžina podaljška za fillet zgornjega kota
+		deltaLen = tan(-cutAngle) * topElementHeight
+
+		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		! prvi del - poševnina
+		paramDrawBeamLength = cutHeight / sin(-cutAngle) + deltaLen
+		if paramDrawBeamLength > (A / cos(-cutAngle)  + deltaLen) then
+			paramDrawBeamLength = A / cos(-cutAngle) + deltaLen
+		endif
+
+		if paramDrawBeamLength > 0 then
+			! setup cutting planes
+			add 0, 0, ZZYZX - topElementHeight: rotz 90: cutplane 0: del 2
+			add 0, 0, 0: rotz -90 : cutplane{2} 90 : del 2
+			add cutHeight / tan(-cutAngle), 0, 0 : rotz 90: rotx 90 : cutplane{2} -cutAngle/2 : del 3
+			add A, 0, 0: rotz 90 : cutplane{2} 90 : del 2 ! tale je namenjena, če je naklon nižji, kot je višina
+
+			addz cutHeight
+			addx -deltaLen * cos(-cutAngle)
+			addz deltaLen * sin(-cutAngle)
+			roty -cutAngle 
+
+			GOSUB "drawBeam3d"
+
+			! release cutting planes
+			cutend
+			cutend
+			cutend
+			cutend
+
+			del 4
+		endif
+
+		! drugi del - raven (straight remainder)
+		paramDrawBeamLength = A - cutHeight / tan(-cutAngle)
+		if paramDrawBeamLength > 0 then
+			add cutHeight / tan(-cutAngle), 0, 0 : rotz -90: rotx 90 : cutplane{2} cutAngle/2 : del 3
+			addx cutHeight / tan(-cutAngle)
+			GOSUB "drawBeam3d"
+			cutend
+			del 1
+		endif
+
+
+		paramDrawBeamLength = A
+	else
+		GOSUB "drawBeam3d"
+	endif
 endif
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Top element
-SET MATERIAL topElementMaterial
 paramDrawBeamWidth = topElementHeight
-
 
 hotspot 0,0, 0, unID, cutHeight, 1 : unID = unID+1
 hotspot 0,0, cutHeight, unID, cutHeight, 2 : unID = unID+1
 hotspot 0,0, -1, unID, cutHeight, 3 : unID = unID+1
 
-if cutHeight > NIX and cutHeight < ZZYZX then
+if cutHeight > NIX and cutHeight < ZZYZX and cutAngle > 0 then
 	! višina poševnine (notranja in spodnja stran)
 	deltaHeight = (ZZYZX - topElementHeight) - (cutHeight - topElementHeight / cos(cutAngle))
 
 	! dolžina podaljška za fillet zgornjega kota
 	deltaLen = tan(cutAngle/2) * topElementHeight
 
-
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	! prvi del - poševnina
 	paramDrawBeamLength = deltaHeight / sin(cutAngle) + deltaLen
-
 	
 	! bottom and top cutting plane
 	bottomCuttingPlaneAngle = 90
@@ -76,11 +122,15 @@ if cutHeight > NIX and cutHeight < ZZYZX then
 
 	! reset na osnovno dolžino
 	paramDrawBeamLength = A
-
-
 else
 	ADDZ ZZYZX - topElementHeight
+	if cutAngle < 0 and cutHeight > ZZYZX then
+		addz topElementHeight: rotz 90: rotx 180: cutplane -cutAngle: del 3
+	endif
 	GOSUB "drawBeam3d"
+	if cutAngle < 0 and cutHeight > ZZYZX then
+		cutend
+	endif
 	DEL 1
 endif
 
@@ -94,25 +144,32 @@ HOTSPOT 0,0,ZZYZX-topElementHeight, unID : unID = unID+1
 HOTSPOT A,0,bottomElementHeight, unID : unID = unID+1
 HOTSPOT A,0,ZZYZX-topElementHeight, unID : unID = unID+1
 
-ADDZ bottomElementHeight
 
-
-
-paramDrawStudHeight = ZZYZX- topElementHeight -bottomElementHeight
-
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Adjust cutting plane
+if cutHeight > NIX then
+	if cutAngle < NIX then
+		! cutting plane below point
+		addz cutHeight + bottomElementHeight / cos(-cutAngle)
+		roty 180
+		rotz 90
+		cutplane{2} -cutAngle
+		del 3
+	else
+		addz cutHeight - topElementHeight / cos(cutAngle)
+		rotz -90
+		cutplane{2} cutAngle
+    	del 2
+	endif
+endif
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Draw In-Between Studs
-
-if cutHeight > NIX then
-	addz cutHeight - topElementHeight - topElementHeight / cos(cutAngle)
-	rotz -90
-	cutplane{2} cutAngle
-    del 2
-endif
+paramDrawStudHeight = ZZYZX- topElementHeight -bottomElementHeight
+addz bottomElementHeight
 
 FOR i = 1 TO n
-	SET MATERIAL defaultStudMaterial
+	!SET MATERIAL defaultStudMaterial
 	paramDrawStudWidth = defaultStudWidth
 
 	HOTSPOT 0, 0, 0, unID, X[i], 1+128   : unID = unID+1
@@ -124,11 +181,12 @@ FOR i = 1 TO n
 
 	for ii = 1 to 3
 		if abs(horizontals[i][ii]) > nix then
-			paramDrawBeamLength = X[i+1] - X[i] - paramDrawStudWidth
-			HOTSPOT X[i] + paramDrawStudWidth/2, 0, horizontals[i][ii] - bottomElementHeight, unID : unID = unID+1
-			HOTSPOT X[i+1] - paramDrawStudWidth/2, 0, horizontals[i][ii] - bottomElementHeight, unID : unID = unID+1
+			paramDrawBeamLength = tmpX[i+1] - tmpX[i] - paramDrawStudWidth
+		
+			HOTSPOT tmpX[i] + paramDrawStudWidth/2, 0, horizontals[i][ii] - bottomElementHeight, unID : unID = unID+1
+			HOTSPOT tmpX[i+1] - paramDrawStudWidth/2, 0, horizontals[i][ii] - bottomElementHeight, unID : unID = unID+1
 
-			addx X[i] + paramDrawStudWidth/2 
+			addx tmpX[i] + paramDrawStudWidth/2 
 			addz horizontals[i][ii] - 3 * bottomElementHeight / 2
 
 			GOSUB "drawBeam3d"
@@ -172,21 +230,34 @@ RETURN
 	ADDZ paramDrawBeamWidth
 	ROTY 90
 
+	groupname = "stud" + str(studId, 3, 0)
+	group groupname
+
+	set building_material studMat1
 	! levo
-	SECT_FILL fillSect1, pen_fill_bg, pen_fill, defaultStudPen
-	PRISM 3, paramDrawBeamLength,	0,0, paramDrawBeamWidth, 0, paramDrawBeamWidth/2, B/2
+	!SECT_FILL fillSect1, pen_fill_bg, pen_fill, defaultStudPen
+	PRISM 3, paramDrawBeamLength, paramDrawBeamWidth/2, B/2, paramDrawBeamWidth, 0, 0,0
 
 	! desno
-	SECT_FILL fillSect2, pen_fill_bg, pen_fill, defaultStudPen
-	PRISM 3, paramDrawBeamLength, paramDrawBeamWidth/2, B/2, paramDrawBeamWidth, B, 0, B
+	!SECT_FILL fillSect2, pen_fill_bg, pen_fill, defaultStudPen
+	PRISM 3, paramDrawBeamLength, 0, B, paramDrawBeamWidth, B, paramDrawBeamWidth/2, B/2
+	
 
+	set building_material studMat2
 	! zgoraj
-	SECT_FILL fillSect3, pen_fill_bg, pen_fill, defaultStudPen
+	!SECT_FILL fillSect3, pen_fill_bg, pen_fill, defaultStudPen
 	PRISM 3, paramDrawBeamLength, 0, 0, paramDrawBeamWidth/2, B/2, 0, B
 
 	! spodaj
-	SECT_FILL fillSect4, pen_fill_bg, pen_fill, defaultStudPen
+	!SECT_FILL fillSect4, pen_fill_bg, pen_fill, defaultStudPen
 	PRISM 3, paramDrawBeamLength, paramDrawBeamWidth, 0, paramDrawBeamWidth, B, paramDrawBeamWidth/2, B/2
+
+	endgroup
+
+	PLACEGROUP groupname
+	KILLGROUP groupname
+	studId = studId + 1
+
 
 	!brez sekcij (rezerva)
 	!PRISM 4, A, 0,0, paramDrawBeamWidth, 0, paramDrawBeamWidth, B, 0, B

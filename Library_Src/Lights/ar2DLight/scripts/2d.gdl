@@ -1,0 +1,49 @@
+﻿showIn2D = 1
+
+
+if representation2D = DISPLAY_MVO then
+	n = REQUEST ("Home_story", "", home_story_index, home_story_name)
+	n = REQUEST ("Story", "", current_story_index, current_story_name)
+
+	if home_story_index = current_story_index then
+		_bSuccess = libraryglobal("arMVO", "arPrikazLuciHomeStory", representationMVO)
+	else
+		_bSuccess = libraryglobal("arMVO", "arPrikazLuciOtherStory", representationMVO)
+	endif
+
+	
+	if _bSuccess then
+		if representationMVO = 3 then
+			showIn2D = 0
+		endif
+		if representationMVO = 1 then
+			representation2D = DISPLAY_SIMPLE
+		endif
+		if representationMVO = 2 then
+			representation2D = DISPLAY_DETAILED
+		endif
+	endif
+endif
+
+
+if showIn2D = 1 then
+	if shape = SHAPE_CIRCLE then
+		if builtIn = BUILTIN_WALL then
+			arc2 0, 0, A/2, 0, 180
+			line2 0, 0, 0, A * 0.75
+			add2 -(A * 1.5)/2, 0
+			line2 0, 0, A * 1.5, 0
+			del 1
+		else
+			circle2 0, 0, A/2
+			rot2 45
+			line2 -A/2, 0, A/2, 0
+			line2 0, -A/2, 0, A/2
+		endif
+	else
+		rect2 -A/2, -B/2, A/2, B/2
+	endif
+
+	hotspot2 0, 0
+
+endif

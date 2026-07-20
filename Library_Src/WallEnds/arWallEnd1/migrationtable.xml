@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MigrationTable>
+	<MigrationTableElement>
+		<MainGUID>47C249E3-E4B4-4977-8B89-BAB8E42CDBC2</MainGUID>
+		<Version>21</Version>
+		<Name><![CDATA[""]]></Name>
+		<AutoMigration>true</AutoMigration>
+	</MigrationTableElement>
+</MigrationTable>

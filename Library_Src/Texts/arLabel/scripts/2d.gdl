@@ -161,6 +161,107 @@ end
 			string_c = first_part + variables[ii][2] + second_part
 		endwhile
 	next ii
+	if GLOB_ELEM_TYPE = ET_OBJECT then
+		! check if the string contains a parameter name and replace it with the parameter value
+		! replacement string is in format <parameterName>
+		! it can also be with unit specifier like <paramName.mm>, <paramName.cm>, <paramName.m>, <paramName.inch>, <paramName.ft>
+		_tokenStart = strstr(string_c, "<")
+		while _tokenStart > 0 do
+			_sub      = strsub(string_c, _tokenStart, strlen(string_c) - _tokenStart + 1)
+			_tokenEnd = strstr(_sub, ">")
+			if _tokenEnd > 2 then
+				_token  = strsub(_sub, 2, _tokenEnd - 2)
+				_dotPos = strstr(_token, ".")
+				if _dotPos > 0 then
+					_paramName   = strsub(_token, 1, _dotPos - 1)
+					_unitAndPrec = strsub(_token, _dotPos + 1, strlen(_token) - _dotPos)
+					_dotPos2     = strstr(_unitAndPrec, ".")
+					if _dotPos2 > 0 then
+						_unitSpec = strsub(_unitAndPrec, 1, _dotPos2 - 1)
+						_precSpec = strsub(_unitAndPrec, _dotPos2 + 1, strlen(_unitAndPrec) - _dotPos2)
+					else
+						_unitSpec = _unitAndPrec
+						_precSpec = ""
+					endif
+				else
+					_paramName = _token
+					_unitSpec  = ""
+					_precSpec  = ""
+				endif
+
+				_paramIndex  = 0
+				_paramType   = 0
+				_paramFlags  = 0
+				_dim1        = 0
+				_dim2        = 0
+				_paramVal    = 0
+				! type codes: 1=bool, 2=int, 3=real, 4=string, 5=length, 6=angle,
+				!             7=line, 8=material, 9=fill, 10=pen, 11=lightswitch,
+				!             12=rgb, 13=lightintensity, 16=bmat, 17=profile
+				_bFound = request("ASSOCLP_PARVALUE", _paramName, _paramIndex, _paramType, _paramFlags, _dim1, _dim2, _paramVal)
+
+				if _bFound then
+					if _paramType = 4 then
+						! string parameter — re-request into a string variable
+						_paramStrVal = ""
+						_bFound = request("ASSOCLP_PARVALUE", _paramName, _paramIndex, _paramType, _paramFlags, _dim1, _dim2, _paramStrVal)
+						_replacement = _paramStrVal
+					else
+						_numVal = _paramVal
+						! index/attribute types: bool(1), line(7), material(8),
+						!                        fill(9), pen(10), lightswitch(11), bmat(16)
+						if _paramType = 1 or _paramType = 7 or _paramType = 8 or _paramType = 9 or _paramType = 10 or _paramType = 11 or _paramType = 16 then
+							_replacement = str{2}("%.0m", _numVal)
+						else
+							if _paramType = 5 then
+								! length — value stored in meters, let STR{2} handle unit conversion natively
+								_fmtUnit = "m"
+								if _unitSpec = "mm"   then _fmtUnit = "mm"
+								if _unitSpec = "cm"   then _fmtUnit = "cm"
+								if _unitSpec = "inch" then _fmtUnit = "di"
+								if _unitSpec = "ft"   then _fmtUnit = "df"
+								if _precSpec <> "" then
+									_fmtStr = "%." + _precSpec + _fmtUnit
+								else
+									if _fmtUnit = "mm" then
+										_fmtStr = "%.0mm"
+									else
+										if _fmtUnit = "cm" or _fmtUnit = "di" then
+											_fmtStr = "%.1" + _fmtUnit
+										else
+											_fmtStr = "%.2" + _fmtUnit
+										endif
+									endif
+								endif
+								_replacement = str{2}(_fmtStr, _paramVal)
+							else
+								! real(3), integer(2), angle(6), lightintensity(13), profile(17)
+								if _precSpec <> "" then
+									_fmtStr = "%." + _precSpec + "m"
+								else
+									if _paramType = 2 then
+										_fmtStr = "%.0m"
+									else
+										_fmtStr = "%.2m"
+									endif
+								endif
+								_replacement = str{2}(_fmtStr, _numVal)
+							endif
+						endif
+					endif
+				else
+					_replacement = ""
+				endif
+
+				first_part  = strsub(string_c, 1, _tokenStart - 1)
+				second_part = strsub(string_c, _tokenStart + _tokenEnd, strlen(string_c) - _tokenStart - _tokenEnd + 1)
+				string_c    = first_part + _replacement + second_part
+				_tokenStart = strstr(string_c, "<")
+			else
+				_tokenStart = 0
+			endif
+		endwhile
+	endif
 return
 
 "drawRoofSlopeSymbol":

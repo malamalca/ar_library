@@ -106,19 +106,24 @@ if GLOB_STRUCTURE_DISPLAY = 0 then
 		! nekateri hotspoti so smiselni le v prerezih
 		if GLOB_VIEW_TYPE = 4 then
 			!! ODMIK NOTRI/VEN
-			hotspot 0,  thk_insulation * sides[_BOTTOM],  	width_board + offset_board, unId, offset_board, 1+128: unId = unId + 1
-			hotspot 0,  thk_insulation * sides[_BOTTOM],  	width_board, unId, offset_board, 2: unId = unId + 1
-			hotspot 0,  thk_insulation * sides[_BOTTOM],  	width_board + offset_board + 1, unId, offset_board, 3: unId = unId + 1
+			hotspot 0,  thk_insulation * sides[_BOTTOM] + vertoffset_board,  	width_board + offset_board, unId, offset_board, 1+128: unId = unId + 1
+			hotspot 0,  thk_insulation * sides[_BOTTOM] + vertoffset_board,  	width_board, unId, offset_board, 2: unId = unId + 1
+			hotspot 0,  thk_insulation * sides[_BOTTOM] + vertoffset_board,  	width_board + offset_board + 1, unId, offset_board, 3: unId = unId + 1
 
 			!! GLOBINA POLICE
-			hotspot 0,  thk_insulation * sides[_BOTTOM],  	width_board, unId, width_board, 1+128: unId = unId + 1
-			hotspot 0,  thk_insulation * sides[_BOTTOM],  	0, unId, width_board, 2: unId = unId + 1
-			hotspot 0,  thk_insulation * sides[_BOTTOM],  	width_board+1, unId, width_board, 3: unId = unId + 1
+			hotspot 0,  thk_insulation * sides[_BOTTOM] + vertoffset_board,  	width_board, unId, width_board, 1+128: unId = unId + 1
+			hotspot 0,  thk_insulation * sides[_BOTTOM] + vertoffset_board,  	0, unId, width_board, 2: unId = unId + 1
+			hotspot 0,  thk_insulation * sides[_BOTTOM] + vertoffset_board,  	width_board+1, unId, width_board, 3: unId = unId + 1
 
 			!! DEBELINA POLICE
-			hotspot 0,  thk_insulation * sides[_BOTTOM],  	0, unId, thk_board, 1+128: unId = unId + 1
-			hotspot 0,  thk_insulation * sides[_BOTTOM] + thk_board,  	0, unId, thk_board, 2: unId = unId + 1
-			hotspot 0,  thk_insulation * sides[_BOTTOM] - 1,  	0, unId, thk_board, 3: unId = unId + 1
+			hotspot 0,  thk_insulation * sides[_BOTTOM] + vertoffset_board,  	0, unId, thk_board, 1+128: unId = unId + 1
+			hotspot 0,  thk_insulation * sides[_BOTTOM] + vertoffset_board + thk_board,  	0, unId, thk_board, 2: unId = unId + 1
+			hotspot 0,  thk_insulation * sides[_BOTTOM] + vertoffset_board - 1,  	0, unId, thk_board, 3: unId = unId + 1
+
+			!! VERT ODMIK
+			hotspot 0,  thk_insulation * sides[_BOTTOM],  						width_board/2, unId, vertoffset_board, 1+128: unId = unId + 1
+			hotspot 0,  thk_insulation * sides[_BOTTOM] + vertoffset_board,  	width_board/2, unId, vertoffset_board, 2: unId = unId + 1
+			hotspot 0,  thk_insulation * sides[_BOTTOM] - 1,  					width_board/2, unId, vertoffset_board, 3: unId = unId + 1
 		endif
 		
 		del 1

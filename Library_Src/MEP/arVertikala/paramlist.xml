@@ -45,7 +45,7 @@
 		<Length Name="ac_toplevel">
 			<Description><![CDATA["Top Level"]]></Description>
 			<Fix/>
-			<Value>2.07492131868318</Value>
+			<Value>2.14142135623731</Value>
 		</Length>
 		<Integer Name="gs_ui_current_page">
 			<Description><![CDATA[""]]></Description>
@@ -72,6 +72,10 @@
 		</Angle>
 		<Boolean Name="showProjection">
 			<Description><![CDATA["Show entire projection"]]></Description>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="cutProjection">
+			<Description><![CDATA["Cut projection to story and offset"]]></Description>
 			<Value>1</Value>
 		</Boolean>
 		<Integer Name="segment_edit_index">
@@ -153,11 +157,11 @@
 				<AVal Row="50">0</AVal>
 			</ArrayValues>
 		</Length>
-		<Integer Name="directions">
+		<Angle Name="directions">
 			<Description><![CDATA["Direction"]]></Description>
 			<ArrayValues FirstDimension="50" SecondDimension="0">
 				<AVal Row="1">0</AVal>
-				<AVal Row="2">90</AVal>
+				<AVal Row="2">45</AVal>
 				<AVal Row="3">0</AVal>
 				<AVal Row="4">0</AVal>
 				<AVal Row="5">0</AVal>
@@ -207,12 +211,12 @@
 				<AVal Row="49">0</AVal>
 				<AVal Row="50">0</AVal>
 			</ArrayValues>
-		</Integer>
-		<Integer Name="angles">
+		</Angle>
+		<Angle Name="angles">
 			<Description><![CDATA["Angles"]]></Description>
 			<ArrayValues FirstDimension="50" SecondDimension="0">
 				<AVal Row="1">90</AVal>
-				<AVal Row="2">22</AVal>
+				<AVal Row="2">45</AVal>
 				<AVal Row="3">90</AVal>
 				<AVal Row="4">0</AVal>
 				<AVal Row="5">0</AVal>
@@ -262,7 +266,7 @@
 				<AVal Row="49">0</AVal>
 				<AVal Row="50">0</AVal>
 			</ArrayValues>
-		</Integer>
+		</Angle>
 		<Length Name="wallThickness">
 			<Description><![CDATA["Wall Thickness"]]></Description>
 			<Value>0.01</Value>

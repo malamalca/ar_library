@@ -21,8 +21,13 @@ yRow = 35
 	ui_infield "nSegments", xLeft + xOffset,				yTop + (aRow - 1) * yRow + yLabel, 80, 22
 
 	xOffset = 280
+	aRow = 0.8
 	ui_outfield "Prikaži 2D kot projekcijo",	xLeft + xOffset + 20, 	yTop + (aRow - 1) * yRow + yLabel + 5, 200, 14
 	ui_infield "showProjection",				xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 15, 24
+
+	aRow = 1.4
+	ui_outfield "Izrez po višini etaže",		xLeft + xOffset + 20, 	yTop + (aRow - 1) * yRow + yLabel + 5, 200, 14
+	ui_infield "cutProjection", 				xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 15, 24
 
 	
 	aRow = 1.8

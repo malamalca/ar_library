@@ -1,0 +1,89 @@
+﻿
+call "FM_types" parameters all
+
+if not(bOverrideStructureSurface) then
+	hideparameter "matCap"
+endif
+
+if not(bOverrideCutFillPens) then
+	hideparameter "CutFillForegroundPen", "CutFillBackgroundPen"
+endif
+
+if GLOB_MODPAR_NAME <> "" then
+	if GLOB_MODPAR_NAME = "cutWidthAngle" then
+		PARAMETERS AC_CutWidth = cutWidthAngle * (r0 + WALL_THICKNESS/2) * PI / 180
+	else
+		if abs(r0 + WALL_THICKNESS/2) > EPS then
+			cutWidthAngle = (length / (r0 + WALL_THICKNESS/2)) / PI * 180
+		else	! div0
+			cutWidthAngle = 0
+		endif
+		PARAMETERS cutWidthAngle = cutWidthAngle 
+	endif
+	if GLOB_MODPAR_NAME = "thickCapAngle" then
+		thickCap = ((PI * (r0 + WALL_THICKNESS/2) * thickCapAngle) / 180)
+		parameters thickCap = thickCap
+	else
+		if abs(r0 + WALL_THICKNESS/2) > EPS then
+			thickCapAngle = (180 * thickCap) / (PI * (r0 + WALL_THICKNESS/2))
+		else	! div0
+			thickCapAngle = 0
+		endif
+		parameters thickCapAngle = thickCapAngle
+	endif
+
+	if GLOB_MODPAR_NAME = "customHeight" then
+		ZZYZX = customHeight
+		PARAMETERS ZZYZX = ZZYZX
+	endif
+endif
+
+if WIDO_ORIG_DIST < -EPS then
+	if not(SYMB_MIRRORED) then
+		values "thickRefSide" range [0, r0)
+	else
+		values "thickOtherSide" range [0, r0)
+	endif
+else
+	if not(SYMB_MIRRORED) then
+		values "thickRefSide" range [0, )
+	else
+		values "thickOtherSide" range [0, )
+	endif
+endif
+if WIDO_ORIG_DIST > EPS then
+	if not(SYMB_MIRRORED) then
+		values "thickOtherSide" range [0, r0)
+	else
+		values "thickRefSide" range [0, r0)
+	endif
+else
+	if not(SYMB_MIRRORED) then
+		values "thickOtherSide" range [0, )
+	else
+		values "thickRefSide" range [0, )
+	endif
+endif
+if isCurved then
+	values "thickCap" range [0, (r0 + WALL_THICKNESS/2) * 2 * PI - AC_CutWidth - EPS)
+	values "AC_CutWidth" range [0, (r0 + WALL_THICKNESS/2) * 2 * PI - thickCap - EPS)
+else
+	values "thickCap" range [0, )
+	values "AC_CutWidth" range [0, )
+endif
+
+for i = 1 to 255
+	put i
+next i
+values "gs_cont_pen" 		use(NSP)
+values "gs_fill_pen" 		use(NSP)
+values "gs_wallEndPen_3D" 	use(NSP)
+values "penSection"	 		get(NSP)
+
+maxSideThick = thickRefSide
+if thickOtherSide > maxSideThick then
+	maxSideThick = thickOtherSide
+endif
+
+PARAMETERS A = WALL_THICKNESS + 2 * maxSideThick
+PARAMETERS B = AC_CutWidth + thickCap
