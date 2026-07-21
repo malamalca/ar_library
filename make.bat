@@ -8,7 +8,7 @@ echo "ARCHICAD Library Builder"
 echo "-----------------------------------------"
 echo.
 
-set "hsf2gsmCommand=C:\Program Files\GRAPHISOFT\ARCHICAD 25\LP_XMLConverter.exe"
+set "hsf2gsmCommand=C:\Program Files\GRAPHISOFT\ARCHICAD 29\LP_XMLConverter.exe"
 
 set "passwd="
 rem set /p passwd="Enter password for GDL objects: "
