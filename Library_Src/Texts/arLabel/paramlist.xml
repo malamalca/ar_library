@@ -148,11 +148,11 @@
 		</Boolean>
 		<Boolean Name="showLine2">
 			<Description><![CDATA[""]]></Description>
-			<Value>1</Value>
+			<Value>0</Value>
 		</Boolean>
 		<Boolean Name="showLine3">
 			<Description><![CDATA[""]]></Description>
-			<Value>1</Value>
+			<Value>0</Value>
 		</Boolean>
 		<Integer Name="customBorder">
 			<Description><![CDATA["Custom Border"]]></Description>
@@ -170,6 +170,10 @@
 			<Description><![CDATA[""]]></Description>
 			<Value>0</Value>
 		</Integer>
+		<RealNum Name="slopeScaleFactor">
+			<Description><![CDATA["SlopeFactor"]]></Description>
+			<Value>1</Value>
+		</RealNum>
 		<Length Name="deltaX">
 			<Description><![CDATA["Delta X"]]></Description>
 			<Value>0</Value>
@@ -183,6 +187,36 @@
 			<Value>-3</Value>
 		</Length>
 		<Integer Name="gs_ui_current_page">
+			<Description><![CDATA[""]]></Description>
+			<Value>1</Value>
+		</Integer>
+		<Boolean Name="bTextStyleByMVO">
+			<Description><![CDATA["Text Style By MVO"]]></Description>
+			<Value>0</Value>
+		</Boolean>
+		<String Name="textOptionMVO">
+			<Description><![CDATA["MVO Text Style Option"]]></Description>
+			<Value><![CDATA["Default"]]></Value>
+		</String>
+		<Integer Name="anchor">
+			<Description><![CDATA["Anchor Node"]]></Description>
+			<Value>5</Value>
+		</Integer>
+		<Boolean Name="ui_anchor">
+			<Description><![CDATA[""]]></Description>
+			<ArrayValues FirstDimension="3" SecondDimension="3">
+				<AVal Column="1" Row="1">0</AVal>
+				<AVal Column="2" Row="1">0</AVal>
+				<AVal Column="3" Row="1">0</AVal>
+				<AVal Column="1" Row="2">0</AVal>
+				<AVal Column="2" Row="2">1</AVal>
+				<AVal Column="3" Row="2">0</AVal>
+				<AVal Column="1" Row="3">0</AVal>
+				<AVal Column="2" Row="3">0</AVal>
+				<AVal Column="3" Row="3">0</AVal>
+			</ArrayValues>
+		</Boolean>
+		<Integer Name="checkedCount">
 			<Description><![CDATA[""]]></Description>
 			<Value>1</Value>
 		</Integer>

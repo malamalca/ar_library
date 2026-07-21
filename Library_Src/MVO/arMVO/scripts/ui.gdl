@@ -1,1 +1,79 @@
-﻿! ------------------------------------------------------------! set basic variables! ------------------------------------------------------------_yCurr		= 5_dy		= 25		! generic line spacing		_totalWidth	= 600		! fixed value to match the exisiting panels_totalHeight	= 4* _dy	! calculate the height from line spacing_stDialogTitle	= `arLibrary Settings`! ------------------------------------------------------------! set title and height for the custom MVO panel! ------------------------------------------------------------ui_dialog _stDialogTitle, _totalWidth, _totalHeight! in UI script of the MVO objectui_style 0, 1ui_outfield `Openings Settings`, 0, _yCurr, 150, 15_yCurr = _yCurr + 20ui_style 0, 0ui_outfield `Show Caption on Blinds`, 10, _yCurr, 150, 15ui_infield "blindsShowCaptionMVO", 155, _yCurr-4, 19, 19
+﻿! ------------------------------------------------------------
+! set basic variables
+! ------------------------------------------------------------
+_yCurr		= 5
+_dy			= 23		! generic line spacing		
+
+_totalWidth	= 600		! fixed value to match the exisiting panels
+_totalHeight	= 6 * _dy	! calculate the height from line spacing
+_stDialogTitle	= `arLibrary Settings`
+
+! ------------------------------------------------------------
+! set title and height for the custom MVO panel
+! ------------------------------------------------------------
+ui_dialog _stDialogTitle, _totalWidth, _totalHeight
+
+! in UI script of the MVO object
+ui_style 0, 1
+ui_outfield `Objects Font settings`, 0, _yCurr, 150, 15
+
+ui_style 0, 0
+
+_yCurr = _yCurr + _dy
+ui_outfield `Default font:`, 10, _yCurr, 140, 15
+ui_infield "arFontDefaultMVO", 155, _yCurr-5, 150, 21
+ui_infield "arFontSizeDefaultMVO", 155 + 155, _yCurr-5, 40, 21
+ui_infield "arFontPenDefaultMVO", 155 + 155 + 45, _yCurr-5, 30, 21
+ui_textstyle_infield{2} "arFontStyleDefaultMVO", 1+2+4+0+0+0, 155 + 155 + 35 + 45, _yCurr-3, 19, 19, 2
+
+_yCurr = _yCurr + _dy
+ui_outfield `Small font:`, 10, _yCurr, 140, 15
+ui_infield "arFontSmallMVO", 155, _yCurr-5, 150, 21
+ui_infield "arFontSizeSmallMVO", 155 + 155, _yCurr-5, 40, 21
+ui_infield "arFontPenSmallMVO", 155 + 155 + 45, _yCurr-5, 30, 21
+ui_textstyle_infield{2} "arFontStyleSmallMVO", 1+2+4+0+0+0, 155 + 155 + 35 + 45, _yCurr-3, 19, 19, 2
+
+
+_yCurr = _yCurr * 1.5
+! in UI script of the MVO object
+ui_style 0, 1
+ui_outfield `Openings Settings:`, 0, _yCurr, 150, 15
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Show Caption on Blinds:`, 10, _yCurr, 140, 15
+ui_infield "blindsShowCaptionMVO", 145, _yCurr-4, 19, 19
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Show Caption on MEP:`, 10, _yCurr, 140, 15
+ui_infield "mepShowCaptionMVO", 145, _yCurr-4, 19, 19
+
+
+_yCurr = _yCurr - 2 * _dy
+ui_style 0, 1
+ui_outfield `Prikaz elementov prezračevanja:`, 170, _yCurr, 200, 15
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Display on home story:`, 180, _yCurr, 140, 15
+ui_infield "arPrikazVentilaHomeStory", 180+135, _yCurr-4, 60, 19
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Display on other stories:`, 180, _yCurr, 140, 15
+ui_infield "arPrikazVentilaOtherStory", 180+135, _yCurr-4, 60, 19
+
+_yCurr = _yCurr - 2 * _dy
+ui_style 0, 1
+ui_outfield `Prikaz Luči:`, 380, _yCurr, 200, 15
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Display on home story:`, 390, _yCurr, 140, 15
+ui_infield "arPrikazLuciHomeStory", 390+135, _yCurr-4, 60, 19
+
+_yCurr = _yCurr + _dy
+ui_style 0, 0
+ui_outfield `Display on other stories:`, 390, _yCurr, 140, 15
+ui_infield "arPrikazLuciOtherStory", 390+135, _yCurr-4, 60, 19

@@ -32,7 +32,7 @@
 		</Length>
 		<Integer Name="orientation">
 			<Description><![CDATA["Orientation"]]></Description>
-			<Value>0</Value>
+			<Value>1</Value>
 		</Integer>
 		<Integer Name="cut_kinds">
 			<Description><![CDATA["Cut Kinds"]]></Description>
@@ -51,7 +51,7 @@
 		</Integer>
 		<Integer Name="timber_size">
 			<Description><![CDATA["Timber Length"]]></Description>
-			<Value>2000</Value>
+			<Value>1000</Value>
 		</Integer>
 		<Boolean Name="AC_show2DHotspotsIn3D">
 			<Description><![CDATA["Show 2D Hotspots in 3D"]]></Description>
@@ -89,7 +89,7 @@
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
-			<Value>4</Value>
+			<Value>2.2</Value>
 		</Length>
 
 		<!-- gs_2D_representation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
@@ -303,10 +303,7 @@
 		</String>
 		<Integer Name="n">
 			<Description><![CDATA[""]]></Description>
-			<Flags>
-				<ParFlg_Hidden/>
-			</Flags>
-			<Value>2</Value>
+			<Value>0</Value>
 		</Integer>
 		<Length Name="hor_length">
 			<Description><![CDATA[""]]></Description>
@@ -321,12 +318,12 @@
 				<ParFlg_Hidden/>
 			</Flags>
 			<ArrayValues FirstDimension="10" SecondDimension="4">
-				<AVal Column="1" Row="1">0.2</AVal>
-				<AVal Column="2" Row="1">0.02</AVal>
+				<AVal Column="1" Row="1">-0.1</AVal>
+				<AVal Column="2" Row="1">0</AVal>
 				<AVal Column="3" Row="1">0</AVal>
 				<AVal Column="4" Row="1">0</AVal>
-				<AVal Column="1" Row="2">0.4</AVal>
-				<AVal Column="2" Row="2">0.02</AVal>
+				<AVal Column="1" Row="2">-0.1</AVal>
+				<AVal Column="2" Row="2">0</AVal>
 				<AVal Column="3" Row="2">0</AVal>
 				<AVal Column="4" Row="2">0</AVal>
 				<AVal Column="1" Row="3">-0.1</AVal>

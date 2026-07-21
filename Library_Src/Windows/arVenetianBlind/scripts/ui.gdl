@@ -1,1 +1,178 @@
-﻿x0 = 30y0 = 0ui_outfield "Box Material", x0, y0+40, 90, 15ui_infield "boxMat", x0+100, y0+40-6, 100, 25ui_outfield "Slats Material", x0, y0+65, 90, 15ui_infield "slatMat", x0+100, y0+65-5, 100, 25ui_outfield "Slats Angle", x0, y0+100, 90, 15ui_infield "slatAngle", x0+100, y0+100, 63, 15ui_outfield "Shaded Height", x0, y0+125, 90, 15ui_infield "loweredDistance", x0+100, y0+125, 63, 15ui_outfield "Box Width", x0, y0+150, 90, 15ui_infield "boxWidth", x0+100, y0+150, 45+18, 15ui_outfield "Box Height", x0, y0+175, 90, 15ui_infield "boxHeight", x0+100, y0+175, 45+18, 15
+﻿ui_dialog "ARHIM Blinds"
+UI_CURRENT_PAGE gs_ui_current_page
+
+xLeft = 20
+
+yTop = 5
+yLabel = 15
+yRow = 40
+
+iPageIDRoot 			= -1
+iPageIDBasics			=  1
+iPageID2DRepr			=  2
+iPageID3DRepr			=  3
+iPageIDDescript 		=  4
+
+
+! ==============================================================================
+!UI_PAGES
+! ==============================================================================
+
+	UI_PAGE iPageIDBasics, iPageIDRoot, 'Slats', 51
+		gosub "basicsPage"
+
+	UI_PAGE iPageID2DRepr, iPageIDRoot, 'Slats Box', 54
+		gosub "slatsBoxPage"
+
+	UI_PAGE iPageID3DRepr, iPageIDRoot, 'Description', 54
+		gosub "descriptPage"
+END
+
+
+! ==============================================================================
+!SUBROUTINES
+! ==============================================================================
+
+! ------------------------------------------------------------------------------
+"basicsPage":
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Slats Kind:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "slatsKind", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 24
+
+	xOffset = 120
+	ui_outfield "Profil:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "slatProfile", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 24
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Side offset:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "sideOffset", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 24
+
+	xOffset = 120
+	ui_outfield "Inside offset:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "insideOffset", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 24
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Lowered Distance:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "loweredDistance", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 24
+
+	xOffset = 120
+	ui_outfield "Slats Angle:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "slatAngle", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 24
+
+	xOffset = 240
+	ui_outfield "Slats Material:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "slatMat", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 24
+return
+
+! ------------------------------------------------------------------------------
+"slatsBoxPage":
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Show Box", xLeft + xOffset+  20, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "bBox", xLeft + xOffset, 			yTop + (aRow - 1) * yRow, 14, 14
+	ui_separator 3, yTop + (aRow - 1) * yRow + 5, xLeft - 3, yTop + (aRow - 1) * yRow + 5
+	ui_separator 100, yTop + (aRow - 1) * yRow + 5, 450, yTop + (aRow - 1) * yRow + 5
+	ui_separator 3, yTop + (aRow - 1) * yRow + 5, 3, yTop + (aRow + 0.5) * yRow + 5
+	ui_separator 450, yTop + (aRow - 1) * yRow + 5, 450, yTop + (aRow + 0.5) * yRow + 5
+	ui_separator 3, yTop + (aRow + 0.5) * yRow + 5, 450, yTop + (aRow + 0.5) * yRow + 5
+
+
+	aRow = 1.5
+	xOffset = 0
+	ui_outfield "Width:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "boxWidth", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 100
+	ui_outfield "Height:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "boxHeight", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 200
+	ui_outfield "Material:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "boxMat", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 300
+	ui_outfield "Front Offset:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "deltaFrontSideExt", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	aRow = aRow + 1.5
+	xOffset = 0
+	ui_outfield "Show Box Insulation", xLeft + xOffset+  20, 			yTop + (aRow - 1) * yRow , 120, 14
+	ui_infield "bInsulation", xLeft + xOffset, 			yTop + (aRow - 1) * yRow, 14, 14
+	ui_separator 3, yTop + (aRow - 1) * yRow + 5, xLeft - 3, yTop + (aRow - 1) * yRow + 5
+	ui_separator 150, yTop + (aRow - 1) * yRow + 5, 450, yTop + (aRow - 1) * yRow + 5
+	ui_separator 3, yTop + (aRow - 1) * yRow + 5, 3, yTop + (aRow + 0.5) * yRow + 5
+	ui_separator 450, yTop + (aRow - 1) * yRow + 5, 450, yTop + (aRow + 0.5) * yRow + 5
+	ui_separator 3, yTop + (aRow + 0.5) * yRow + 5, 450, yTop + (aRow + 0.5) * yRow + 5
+
+	aRow = aRow + 0.5
+	xOffset = 0
+	ui_outfield "Thickness:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "insulationThickness", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 100
+	ui_outfield "Material:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "insulationMat", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	aRow = aRow + 1.5
+	xOffset = 0
+	ui_outfield "Show Rail", xLeft + xOffset+  20, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "bRail", xLeft + xOffset, 			yTop + (aRow - 1) * yRow, 14, 14
+	ui_separator 3, yTop + (aRow - 1) * yRow + 5, xLeft - 3, yTop + (aRow - 1) * yRow + 5
+	ui_separator 95, yTop + (aRow - 1) * yRow + 5, 450, yTop + (aRow - 1) * yRow + 5
+	ui_separator 3, yTop + (aRow - 1) * yRow + 5, 3, yTop + (aRow + 0.5) * yRow + 5
+	ui_separator 450, yTop + (aRow - 1) * yRow + 5, 450, yTop + (aRow + 0.5) * yRow + 5
+	ui_separator 3, yTop + (aRow + 0.5) * yRow + 5, 450, yTop + (aRow + 0.5) * yRow + 5
+
+
+	aRow = aRow + 0.5
+	xOffset = 0
+	ui_outfield "Bottom Offset:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "railBottomOffset", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 100
+	ui_outfield "Material:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "railMat", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	!deltaFrontSideExt
+return
+
+! ------------------------------------------------------------------------------
+"descriptPage":
+
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Show Text on Floorplan:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 200, 14
+	ui_infield "bShowText", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 120, 24
+
+	xOffset = 150
+	ui_outfield "Caption:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 50, 14
+	ui_infield "textCaption", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 260, 24
+
+	aRow = aRow + 1.2
+	xOffset = 0
+	ui_outfield "Use MVO Text style", xLeft + xOffset+  20, 			yTop + (aRow - 1) * yRow , 150, 14
+	ui_infield "bTextStyleByMVO", xLeft + xOffset, 			yTop + (aRow - 1) * yRow, 14, 14
+	ui_separator 3, yTop + (aRow - 1) * yRow + 5, xLeft - 3, yTop + (aRow - 1) * yRow + 5
+	ui_separator 140, yTop + (aRow - 1) * yRow + 5, 450, yTop + (aRow - 1) * yRow + 5
+	ui_separator 3, yTop + (aRow - 1) * yRow + 5, 3, yTop + (aRow + 0.5) * yRow + 5
+	ui_separator 450, yTop + (aRow - 1) * yRow + 5, 450, yTop + (aRow + 0.5) * yRow + 5
+	ui_separator 3, yTop + (aRow + 0.5) * yRow + 5, 450, yTop + (aRow + 0.5) * yRow + 5
+
+	aRow = aRow + 0.5
+	xOffset = 0
+	ui_outfield "Font:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 50, 14
+	ui_infield "textFont", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 160, 24
+
+	xOffset = 180
+	ui_outfield "Size:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 50, 14
+	ui_infield "textSize", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 60, 24
+
+	xOffset = 250
+	ui_outfield "Pen:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 50, 14
+	ui_infield "textPen", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 40, 24
+
+
+return

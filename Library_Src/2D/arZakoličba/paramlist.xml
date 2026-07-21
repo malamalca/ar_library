@@ -175,7 +175,7 @@
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
-			<Value>0</Value>
+			<Value>2</Value>
 		</Length>
 		<Length Name="base_x">
 			<Description><![CDATA["Base X"]]></Description>

@@ -27,7 +27,7 @@ rem del Library\.gitkeep /s
 
 echo.
 echo Converting GSM to LCF...
-"C:\Program Files\GRAPHISOFT\ARCHICAD 25\LP_XMLConverter.exe" createcontainer "Library_LCF\ArLibrary.lcf" Library
+"C:\Program Files\GRAPHISOFT\ARCHICAD 29\LP_XMLConverter.exe" createcontainer "Library_LCF\ArLibrary.lcf" Library
 
 rem Create empty file back
 rem copy NUL Library\.gitkeep

@@ -1,1 +1,42 @@
-﻿parameters x = x, y = y, n = n, xea = xe, yea = ye, zea = zeif not(showaxis) then	hideparameter "axislinetype"	hideparameter "axispen"endifif not(showoffset) then	hideparameter "offsetlinetype"	hideparameter "offsetpen"endifparameters total_length = total_lengthlock "total_length"
+﻿hideparameter all
+parameters x = x, y = y, n = n, xea = xe, yea = ye
+
+if not(showaxis) then
+	lock "axislinetype", "axispen"
+endif
+
+if not(showoffset) then
+	lock "offsetlinetype", "offsetpen", "showseparatorlines"
+endif
+
+if not(usefill) then
+	lock "polyfillalign", "polyfill", "polyfillpen", "polyfillbgpen", "polyfillcategory"
+endif
+
+if not(distortfill) then
+	lock "fillorigindeltaX", "fillorigindeltaY", "fillscaleX", "fillscaleY"
+endif
+
+if offsetkind <> 0  then
+	lock "offset"
+endif
+
+values{2} "showseparatorlines" 1, "All", 2, "None", 3, "Startline Only", 4, "Endline Only", 5, "Start and Endline"
+values{2} "polyfillcategory" 0, "Draft", 1, "Cut", 2, "Cover"
+values{2} "offsetkind" OFS_KIND_CUSTOM, "Custom", OFS_KIND_CENTER, "Center", OFS_KIND_LEFT, "Left", OFS_KIND_RIGHT, "Right"
+
+parameters total_length = total_length
+lock "total_length"
+
+if glob_modpar_name = "offsetkind" then
+	if offsetKind = OFS_KIND_CENTER then
+		offset = 0
+	endif
+	if offsetKind = OFS_KIND_LEFT then
+		offset = -A/2
+	endif
+	if offsetKind = OFS_KIND_RIGHT then
+		offset = A/2
+	endif
+	parameters offset = offset
+endif

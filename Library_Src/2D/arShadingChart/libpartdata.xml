@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<LibpartData Owner="1196638531" Signature="1196644685" Version="43">
+<LibpartData Owner="1196638531" Signature="1196644685" Version="46">
 	<Identification>
 		<MainGUID>192C35BF-C3B8-4D09-B507-1A6614DB05BC</MainGUID>
 		<IsPlaceable>true</IsPlaceable>
@@ -17,4 +17,5 @@
 	<ParamSection SectVersion="27" SectionFlags="0" SubIdent="0"/>
 	<Copyright SectVersion="1" SectionFlags="0" SubIdent="0"/>
 	<Keywords SectVersion="1" SectionFlags="0" SubIdent="0"/>
+	<Picture MIME="image/png" Name="Picture_0.png" SectVersion="19" SectionFlags="0" SubIdent="0"/>
 </LibpartData>

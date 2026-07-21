@@ -25,8 +25,60 @@
 			<Value>1</Value>
 		</Length>
 		<Boolean Name="blindsShowCaptionMVO">
-			<Description><![CDATA["Show Blinds Caption"]]></Description>
+			<Description><![CDATA["Show Blinds Captions"]]></Description>
 			<Value>0</Value>
 		</Boolean>
+		<Boolean Name="mepShowCaptionMVO">
+			<Description><![CDATA["Show MEP Captions"]]></Description>
+			<Value>0</Value>
+		</Boolean>
+		<String Name="arFontDefaultMVO">
+			<Description><![CDATA["Default Font"]]></Description>
+			<Value><![CDATA["Arial"]]></Value>
+		</String>
+		<Length Name="arFontSizeDefaultMVO">
+			<Description><![CDATA["Default Font Size"]]></Description>
+			<Value>3</Value>
+		</Length>
+		<PenColor Name="arFontPenDefaultMVO">
+			<Description><![CDATA["Default Font Pen"]]></Description>
+			<Value>66</Value>
+		</PenColor>
+		<Integer Name="arFontStyleDefaultMVO">
+			<Description><![CDATA["Default Font Style"]]></Description>
+			<Value>0</Value>
+		</Integer>
+		<String Name="arFontSmallMVO">
+			<Description><![CDATA["Small Font"]]></Description>
+			<Value><![CDATA["Arial"]]></Value>
+		</String>
+		<Length Name="arFontSizeSmallMVO">
+			<Description><![CDATA["Small Font Size"]]></Description>
+			<Value>1.8</Value>
+		</Length>
+		<PenColor Name="arFontPenSmallMVO">
+			<Description><![CDATA["Small Font Pen"]]></Description>
+			<Value>86</Value>
+		</PenColor>
+		<Integer Name="arFontStyleSmallMVO">
+			<Description><![CDATA["Small Font Style"]]></Description>
+			<Value>2</Value>
+		</Integer>
+		<Integer Name="arPrikazVentilaHomeStory">
+			<Description><![CDATA["Prikaz ventila za prezračevanje na njegovi domači etaži"]]></Description>
+			<Value>2</Value>
+		</Integer>
+		<Integer Name="arPrikazLuciHomeStory">
+			<Description><![CDATA["Prikaz luči na domači etaži"]]></Description>
+			<Value>1</Value>
+		</Integer>
+		<Integer Name="arPrikazVentilaOtherStory">
+			<Description><![CDATA["Prikaz ventila za prezračevanje na drugih etažah"]]></Description>
+			<Value>1</Value>
+		</Integer>
+		<Integer Name="arPrikazLuciOtherStory">
+			<Description><![CDATA["Prikaz luči na drugih etažah"]]></Description>
+			<Value>1</Value>
+		</Integer>
 	</Parameters>
 </ParamSection>

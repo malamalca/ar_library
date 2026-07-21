@@ -1,1 +1,9 @@
-﻿VALUES "cKind" arKindsVALUES "cBuiltin" arBuiltinvalues "representation2D" "simple", "detailed"
+﻿VALUES "cKind" arKinds
+
+VALUES "cBuiltin" arBuiltin
+
+!values "representation2D" "Simple", "Detailed", "By MVO"
+
+values{2} "representation2D" 	DISPLAY_SIMPLE, "Simple",
+								DISPLAY_DETAILED, "Detailed",
+								DISPLAY_MVO, "By MVO"

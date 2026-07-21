@@ -1,1 +1,65 @@
-﻿if n < 2 then end! -------------------------hotspots--------------------------x0 = xyz[n][1]y0 = xyz[n][2]hotspot2 0, 0, unId: unId = unId + 1for i = 1 to n	! node hotspots	hotspot2 0,			xyz[i][2],	unId,	xyz[i][1],	129: 	unId = unId + 1	hotspot2 xyz[i][1],	xyz[i][2],	unId,	xyz[i][1],	2: 		unId = unId + 1	hotspot2 -1,		xyz[i][2],	unId,	xyz[i][1],	3: 		unId = unId + 1	hotspot2 xyz[i][1],	0,			unId,	xyz[i][2],	129: 	unId = unId + 1	hotspot2 xyz[i][1],	xyz[i][2],	unId,	xyz[i][2],	2: 		unId = unId + 1	hotspot2 xyz[i][1],	-1,			unId,	xyz[i][2],	3: 		unId = unId + 1	! add new node hotspots	if i > 1 and n < max_points then		xins = (x0 - xyz[i][1]) / 2		yins = (y0 - xyz[i][2]) / 2		hotspot2 0,					yins + xyz[i][2],	unId,	xyz_e[i][1],	129: 	unId = unId + 1		hotspot2 xins + xyz[i][1],	yins + xyz[i][2],	unId,	xyz_e[i][1],	2: 		unId = unId + 1		hotspot2 -1,				yins + xyz[i][2],	unId,	xyz_e[i][1],	3: 		unId = unId + 1		hotspot2 xins + xyz[i][1],	0,					unId,	xyz_e[i][2],	129: 	unId = unId + 1		hotspot2 xins + xyz[i][1],	yins + xyz[i][2],	unId,	xyz_e[i][2],	2: 		unId = unId + 1		hotspot2 xins + xyz[i][1],	-1,					unId,	xyz_e[i][2],	3: 		unId = unId + 1	endif	x0 = xyz[i][1]	y0 = xyz[i][2]next i! add new node at the endi = ndiagl = sqr((xyz[i-1][1] - xyz[i][1])^2 + (xyz[i-1][2] - xyz[i][2])^2)xins = -(xyz[i-1][1] - xyz[i][1]) / diagl * ADD_FIRSTLAST_NODE_OFFSETyins = -(xyz[i-1][2] - xyz[i][2]) / diagl * ADD_FIRSTLAST_NODE_OFFSEThotspot2 0,						yins + xyz[i+1][2],		unId,	xyz_e[i+1][1],	129: 	unId = unId + 1hotspot2 xins + xyz[i+1][1],	yins + xyz[i+1][2],		unId,	xyz_e[i+1][1],	2: 		unId = unId + 1hotspot2 -1,					yins + xyz[i+1][2],		unId,	xyz_e[i+1][1],	3: 		unId = unId + 1hotspot2 xins + xyz[i+1][1],	0,						unId,	xyz_e[i+1][2],	129: 	unId = unId + 1hotspot2 xins + xyz[i+1][1],	yins + xyz[i+1][2],		unId,	xyz_e[i+1][2],	2: 		unId = unId + 1hotspot2 xins + xyz[i+1][1],	-1,						unId,	xyz_e[i+1][2],	3: 		unId = unId + 1!-----------------------end hotspots-----------------------!-------------------------polygon--------------------------!for i = 2 to n!	line2 		xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]!	hotline2 	xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]!next i
+﻿if n < 2 then end
+
+
+! -------------------------hotspots--------------------------
+x0 = xyz[n][1]
+y0 = xyz[n][2]
+
+!hotspot2 0, 0, unId: unId = unId + 1
+
+for i = 1 to n
+
+	! node hotspots
+
+	hotspot2 0,			xyz[i][2],	unId,	xyz[i][1],	129: 	unId = unId + 1
+	hotspot2 xyz[i][1],	xyz[i][2],	unId,	xyz[i][1],	2: 		unId = unId + 1
+	hotspot2 -1,		xyz[i][2],	unId,	xyz[i][1],	3: 		unId = unId + 1
+
+	hotspot2 xyz[i][1],	0,			unId,	xyz[i][2],	129: 	unId = unId + 1
+	hotspot2 xyz[i][1],	xyz[i][2],	unId,	xyz[i][2],	2: 		unId = unId + 1
+	hotspot2 xyz[i][1],	-1,			unId,	xyz[i][2],	3: 		unId = unId + 1
+
+	! add new node hotspots
+
+	if i > 1 and n < max_points then
+		xins = (x0 - xyz[i][1]) / 2
+		yins = (y0 - xyz[i][2]) / 2
+
+		hotspot2 0,					yins + xyz[i][2],	unId,	xyz_e[i][1],	129: 	unId = unId + 1
+		hotspot2 xins + xyz[i][1],	yins + xyz[i][2],	unId,	xyz_e[i][1],	2: 		unId = unId + 1
+		hotspot2 -1,				yins + xyz[i][2],	unId,	xyz_e[i][1],	3: 		unId = unId + 1
+
+		hotspot2 xins + xyz[i][1],	0,					unId,	xyz_e[i][2],	129: 	unId = unId + 1
+		hotspot2 xins + xyz[i][1],	yins + xyz[i][2],	unId,	xyz_e[i][2],	2: 		unId = unId + 1
+		hotspot2 xins + xyz[i][1],	-1,					unId,	xyz_e[i][2],	3: 		unId = unId + 1
+	endif
+
+	x0 = xyz[i][1]
+	y0 = xyz[i][2]
+
+next i
+
+! add new node at the end
+
+i = n
+diagl = sqr((xyz[i-1][1] - xyz[i][1])^2 + (xyz[i-1][2] - xyz[i][2])^2)
+xins = -(xyz[i-1][1] - xyz[i][1]) / diagl * ADD_FIRSTLAST_NODE_OFFSET
+yins = -(xyz[i-1][2] - xyz[i][2]) / diagl * ADD_FIRSTLAST_NODE_OFFSET
+
+hotspot2 0,						yins + xyz[i+1][2],		unId,	xyz_e[i+1][1],	129: 	unId = unId + 1
+hotspot2 xins + xyz[i+1][1],	yins + xyz[i+1][2],		unId,	xyz_e[i+1][1],	2: 		unId = unId + 1
+hotspot2 -1,					yins + xyz[i+1][2],		unId,	xyz_e[i+1][1],	3: 		unId = unId + 1
+
+hotspot2 xins + xyz[i+1][1],	0,						unId,	xyz_e[i+1][2],	129: 	unId = unId + 1
+hotspot2 xins + xyz[i+1][1],	yins + xyz[i+1][2],		unId,	xyz_e[i+1][2],	2: 		unId = unId + 1
+hotspot2 xins + xyz[i+1][1],	-1,						unId,	xyz_e[i+1][2],	3: 		unId = unId + 1
+
+!-----------------------end hotspots-----------------------
+
+!-------------------------polygon--------------------------
+!for i = 2 to n
+!	line2 		xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]
+!	hotline2 	xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]
+!next i
+
+

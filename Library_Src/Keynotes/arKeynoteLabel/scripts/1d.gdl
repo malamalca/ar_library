@@ -1,1 +1,10 @@
-﻿DIM Variables[][]dim idSource_i[2]idSource_i[1] = 1idSource_i[2] = 2dim idSource_text[2]idSource_text[1] = "Objects GUID"idSource_text[2] = "Parameter"
+﻿DIM Variables[][]
+
+dim idSource_i[2]
+idSource_i[1] = 1
+idSource_i[2] = 2
+
+dim idSource_text[2]
+idSource_text[1] = "Object's ID"
+idSource_text[2] = "Keynote ID"
+

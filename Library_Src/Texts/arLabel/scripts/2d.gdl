@@ -1,1 +1,305 @@
-﻿	alignNode = 5	if LABEL_TEXT_ALIGN = 1 then  		! left		alignNode = 4	endif	if LABEL_TEXT_ALIGN = 3 then		! right		alignNode = 6	endif	if LABEL_TEXT_ALIGN = 2 then		! center		alignNode = 5	endif		define style "LabelMarker" LABEL_FONT_NAME, LABEL_TEXT_SIZE, alignNode, LABEL_FONT_STYLE	set style "LabelMarker"		ret = request("Height_of_style", "LabelMarker", textHeight)	textHeight = textHeight / 1000 * GLOB_SCALE	if LABEL_CUSTOM_ARROW then		add2 	LABEL_POSITION [2][1]	+	LABEL_POSITION [3][1],				LABEL_POSITION [2][2]	+	LABEL_POSITION [3][2]	endif		textRotation = 0	unId = 1		if GLOB_ELEM_TYPE = ET_ROOF and slopeMarker <> SLOPEMARKER_NONE then		textRotation = LABEL_ROTANGLE		markerSize = A					hotspot2 0, deltaY, unId, deltaX, 1+128: unId = unId + 1		hotspot2 -1, 0, unId, deltaX, 3: unId = unId + 1		hotspot2 deltaX, deltaY, unId, deltaX, 2: unId = unId + 1			hotspot2 deltaX, 0, unId, deltaY, 1+128: unId = unId + 1		hotspot2 0, -1, unId, deltaY, 3: unId = unId + 1		hotspot2 deltaX, deltaY, unId, deltaY, 2: unId = unId + 1			hotspot2 0, 0, unId: unId = unId + 1			add2 deltaX, deltaY			!center of angle		hotspot2 0, -markerSize, unId, rotAngle, 4+128: unId = unId + 1													! base		hotspot2 0 + markerSize * sin(rotAngle), 0 - markerSize * cos(rotAngle), unId, rotAngle, 5: unId = unId + 1		! moving		hotspot2 0, 0, unId, rotAngle, 6: unId = unId + 1					! draw marker		if slopeMarker = SLOPEMARKER_TRIANGLE then					rot2 rotAngle					fill "Solid Fill"				poly2_b 3, 7, 1, 1, 					-markerSize, 0, 1,					markerSize, 0, 1,					0, -markerSize, 1			del 1		endif		if slopeMarker = SLOPEMARKER_INCLINATION then			rot2 rotAngle				line2 0, 0, 0, -markerSize			line2 0, 0, -markerSize * sin(ROOF_ANGLE), -markerSize * cos(ROOF_ANGLE)			del 1		endif		del 1	endif		if LabelLine1 <> "" then		string_c = LabelLine1	else		string_c = defaultCaption	endif	gosub "formatString"		rot2 textRotation	text2 0, 0, string_c	width_1 = stw(string_c) / 1000 * GLOB_SCALE	width_2 = 0	if showLine2 then		if LabelLine2 <> "" then			string_c = LabelLine2		else			string_c = defaultCaption2		endif				if string_c <> "" then			gosub "formatString"			text2 0, -textHeight, string_c			width_2 = stw(string_c) / 1000 * GLOB_SCALE		endif	endif		width_3 = 0	if showLine3 then		if LabelLine3 <> "" then			string_c = LabelLine3		else			string_c = defaultCaption3		endif		if string_c <> "" then			gosub "formatString"			text2 0, -textHeight * 2, string_c			width_3 = stw(string_c) / 1000 * GLOB_SCALE		endif	endif	!LINE2 0,0, 0,0.05	width_max = max(width_1, width_2, width_3)	if LABEL_FRAME_ON then		boxHeight = textHeight		if width_2 > 0 then boxHeight = boxHeight + textHeight		if width_3 > 0 then boxHeight = boxHeight + textHeight		borderDelta = -width_max / 2		if LABEL_TEXT_ALIGN = 1 then  		! left			borderDelta = 0		endif		if LABEL_TEXT_ALIGN = 3 then		! right			borderDelta = -width_max		endif		borderOffset = LABEL_FRAME_OFFSET*GLOB_SCALE/1000		add2 borderDelta, 0		rect2 -borderOffset + 0, borderOffset + textHeight/2, +borderOffset + width_max, -borderOffset - boxHeight+textHeight/2		del 1		hotspot2 0, 0	endifend"formatString":	for i = 1 to vardim1(variables)		varName = variables[i][1]		varName = "<" + varName + ">"		while strstr(string_c, varName) > 0 do			first_part = strsub(string_c, 1, strstr(string_c, varName)-1)			second_part = strsub(string_c, strstr(string_c, varName)+strlen(varName), strlen(string_c)-strlen(first_part)-strlen(varName))			string_c = first_part + variables[i][2] + second_part		endwhile	next ireturn
+﻿	alignNode = 5
+	if LABEL_TEXT_ALIGN = 1 then  		! left
+		alignNode = 4
+	endif
+	if LABEL_TEXT_ALIGN = 3 then		! right
+		alignNode = 6
+	endif
+	if LABEL_TEXT_ALIGN = 2 then		! center
+		alignNode = 5
+	endif
+	
+
+	textStyle = LABEL_FONT_STYLE
+	textFont = LABEL_FONT_NAME
+	textSize = LABEL_TEXT_SIZE
+
+	if bTextStyleByMVO then
+		! textOption = "Default"
+		_bSuccess = libraryglobal("arMVO", "arFont" + textOptionMVO + "MVO", textFont)
+		_bSuccess = libraryglobal("arMVO", "arFontSize" + textOptionMVO + "MVO", textSize)
+		_bSuccess = libraryglobal("arMVO", "arFontPen" + textOptionMVO + "MVO", textPen)
+		_bSuccess = libraryglobal("arMVO", "arFontStyle" + textOptionMVO + "MVO", textStyle)
+	endif
+
+	define style "LabelMarker" textFont, textSize, alignNode, textStyle
+	set style "LabelMarker"
+	
+	ret = request("Height_of_style", "LabelMarker", textHeight)
+	textHeight = textHeight / 1000 * GLOB_SCALE
+
+	if LABEL_CUSTOM_ARROW then
+		add2 	LABEL_POSITION [2][1]	+	LABEL_POSITION [3][1],
+				LABEL_POSITION [2][2]	+	LABEL_POSITION [3][2]
+	endif
+	
+	textRotation = 0
+	unId = 1
+
+	borderOffset = LABEL_FRAME_OFFSET * GLOB_SCALE / 1000
+
+	!rotAngle = LABEL_ROTANGLE
+	!rot2 rotAngle
+	!rot2 LABEL_ASSOC_ELEM_ORIENTATION
+
+	if GLOB_ELEM_TYPE = ET_ROOF and slopeMarker <> SLOPEMARKER_NONE then
+		gosub "drawRoofSlopeSymbol"
+	endif
+	
+	! calculate widths and heights
+	labelHeight = 0
+	dim line_widths[3]: for i = 1 to 3: line_widths[i] = 0:	next i
+	dim line_texts[3]: for i = 1 to 3: line_texts[i] = "":	next i
+	dim line_templates[3]: for i = 1 to 3: line_templates[i] = "":	next i
+
+	if LabelLine1 <> "" then line_templates[1] = LabelLine1 else line_templates[1] = defaultCaption
+	if showLine2 then if LabelLine2 <> "" then line_templates[2] = LabelLine2 else line_templates[2] = defaultCaption2
+	if showLine3 then if LabelLine3 <> "" then line_templates[3] = LabelLine3 else line_templates[3] = defaultCaption3
+
+	! format line templates
+	for i = 1 to 3
+		if line_templates[i] <> "" then
+			string_c = line_templates[i]
+			gosub "formatString"
+			line_texts[i] = string_c
+			line_widths[i] = stw(string_c) / 1000 * GLOB_SCALE
+			labelHeight = labelHeight + textHeight
+		endif
+	next i
+
+	width_max = max(line_widths[1], line_widths[2], line_widths[3])
+	boxWidth = width_max + borderOffset * 2
+	boxHeight = labelHeight + borderOffset * 2
+
+
+	! adjust for rotangle
+	if LABEL_ROTANGLE > 90 and AC_bLabelAlwaysReadable then
+		!rot2 180
+		add2 boxWidth, -boxHeight
+	endif
+
+
+	! adjust position for text height and bounding box
+	add2 0 + borderOffset, -textHeight/2 - borderOffset
+
+	! adjust for anchor node position
+	add2 -int((anchor-1) % 3) * (boxWidth / 2), int((anchor-1) / 3) * (boxHeight / 2)
+
+
+	! bounding box hotspots
+	hotspot2 -borderOffset, textHeight/2 + borderOffset, unId: unId = unId+1
+	hotspot2 width_max + borderOffset, textHeight/2 + borderOffset, unId: unId = unId+1 
+
+	hotspot2 -borderOffset, textHeight/2 - borderOffset - labelHeight, unId: unId = unId+1
+	hotspot2 width_max + borderOffset, textHeight/2 - borderOffset - labelHeight, unId: unId = unId+1 
+
+
+	! adjust for alignment
+	if LABEL_TEXT_ALIGN = 2 or LABEL_TEXT_ALIGN = 4 then  		! center
+		add2 width_max / 2, 0
+	endif
+	if LABEL_TEXT_ALIGN = 3 then		! right
+		add2 width_max, 0
+	endif
+
+
+
+
+	! display texts
+	!rot2 LABEL_ROTANGLE
+	currentTextYPos = 0
+	for i = 1 to 3
+		if (line_texts[i] <> "") then
+			text2 0, currentTextYPos, line_texts[i]
+			currentTextYPos = currentTextYPos - textHeight
+		endif
+	next i
+	
+	!if line_texts[2] <> "" then text2 0, -textHeight, line_texts[2]
+	!if line_texts[3] <> "" then text2 0, -textHeight * 2, line_texts[3]
+	
+
+	if LABEL_FRAME_ON then
+		borderDelta = -width_max / 2
+		if LABEL_TEXT_ALIGN = 1 then  		! left
+			borderDelta = 0
+		endif
+		if LABEL_TEXT_ALIGN = 3 then		! right
+			borderDelta = -width_max
+		endif
+
+		add2 borderDelta, 0
+		if AC_bLabelOpaqueFill then
+			set fill "Background"
+
+			poly2_b 4, 1+2+4, AC_LabelTextBgrPen, AC_LabelTextBgrPen,
+				-borderOffset + 0, borderOffset + textHeight/2, 1,
+				+borderOffset + width_max, borderOffset + textHeight/2, 1,
+				+borderOffset + width_max, -borderOffset - labelHeight+textHeight/2, 1,
+				-borderOffset + 0, -borderOffset - labelHeight+textHeight/2, 1
+
+			hotspot2 -borderOffset + 0, borderOffset + textHeight/2
+			hotspot2 +borderOffset + width_max, borderOffset + textHeight/2
+			hotspot2 +borderOffset + width_max, -borderOffset - labelHeight+textHeight/2
+			hotspot2 -borderOffset + 0, -borderOffset - labelHeight+textHeight/2
+		else
+			rect2 -borderOffset + 0, borderOffset + textHeight/2, +borderOffset + width_max, -borderOffset - labelHeight+textHeight/2
+		endif
+
+		del 1
+		!hotspot2 0, 0
+	endif
+end
+
+"formatString":
+	for ii = 1 to vardim1(variables)
+		varName = variables[ii][1]
+		varName = "<" + varName + ">"
+		while strstr(string_c, varName) > 0 do
+			first_part = strsub(string_c, 1, strstr(string_c, varName)-1)
+			second_part = strsub(string_c, strstr(string_c, varName)+strlen(varName), strlen(string_c)-strlen(first_part)-strlen(varName))
+			string_c = first_part + variables[ii][2] + second_part
+		endwhile
+	next ii
+	if GLOB_ELEM_TYPE = ET_OBJECT then
+		! check if the string contains a parameter name and replace it with the parameter value
+		! replacement string is in format <parameterName>
+		! it can also be with unit specifier like <paramName.mm>, <paramName.cm>, <paramName.m>, <paramName.inch>, <paramName.ft>
+		_tokenStart = strstr(string_c, "<")
+		while _tokenStart > 0 do
+			_sub      = strsub(string_c, _tokenStart, strlen(string_c) - _tokenStart + 1)
+			_tokenEnd = strstr(_sub, ">")
+			if _tokenEnd > 2 then
+				_token  = strsub(_sub, 2, _tokenEnd - 2)
+				_dotPos = strstr(_token, ".")
+				if _dotPos > 0 then
+					_paramName   = strsub(_token, 1, _dotPos - 1)
+					_unitAndPrec = strsub(_token, _dotPos + 1, strlen(_token) - _dotPos)
+					_dotPos2     = strstr(_unitAndPrec, ".")
+					if _dotPos2 > 0 then
+						_unitSpec = strsub(_unitAndPrec, 1, _dotPos2 - 1)
+						_precSpec = strsub(_unitAndPrec, _dotPos2 + 1, strlen(_unitAndPrec) - _dotPos2)
+					else
+						_unitSpec = _unitAndPrec
+						_precSpec = ""
+					endif
+				else
+					_paramName = _token
+					_unitSpec  = ""
+					_precSpec  = ""
+				endif
+
+				_paramIndex  = 0
+				_paramType   = 0
+				_paramFlags  = 0
+				_dim1        = 0
+				_dim2        = 0
+				_paramVal    = 0
+				! type codes: 1=bool, 2=int, 3=real, 4=string, 5=length, 6=angle,
+				!             7=line, 8=material, 9=fill, 10=pen, 11=lightswitch,
+				!             12=rgb, 13=lightintensity, 16=bmat, 17=profile
+				_bFound = request("ASSOCLP_PARVALUE", _paramName, _paramIndex, _paramType, _paramFlags, _dim1, _dim2, _paramVal)
+
+				if _bFound then
+					if _paramType = 4 then
+						! string parameter — re-request into a string variable
+						_paramStrVal = ""
+						_bFound = request("ASSOCLP_PARVALUE", _paramName, _paramIndex, _paramType, _paramFlags, _dim1, _dim2, _paramStrVal)
+						_replacement = _paramStrVal
+					else
+						_numVal = _paramVal
+						! index/attribute types: bool(1), line(7), material(8),
+						!                        fill(9), pen(10), lightswitch(11), bmat(16)
+						if _paramType = 1 or _paramType = 7 or _paramType = 8 or _paramType = 9 or _paramType = 10 or _paramType = 11 or _paramType = 16 then
+							_replacement = str{2}("%.0m", _numVal)
+						else
+							if _paramType = 5 then
+								! length — value stored in meters, let STR{2} handle unit conversion natively
+								_fmtUnit = "m"
+								if _unitSpec = "mm"   then _fmtUnit = "mm"
+								if _unitSpec = "cm"   then _fmtUnit = "cm"
+								if _unitSpec = "inch" then _fmtUnit = "di"
+								if _unitSpec = "ft"   then _fmtUnit = "df"
+								if _precSpec <> "" then
+									_fmtStr = "%." + _precSpec + _fmtUnit
+								else
+									if _fmtUnit = "mm" then
+										_fmtStr = "%.0mm"
+									else
+										if _fmtUnit = "cm" or _fmtUnit = "di" then
+											_fmtStr = "%.1" + _fmtUnit
+										else
+											_fmtStr = "%.2" + _fmtUnit
+										endif
+									endif
+								endif
+								_replacement = str{2}(_fmtStr, _paramVal)
+							else
+								! real(3), integer(2), angle(6), lightintensity(13), profile(17)
+								if _precSpec <> "" then
+									_fmtStr = "%." + _precSpec + "m"
+								else
+									if _paramType = 2 then
+										_fmtStr = "%.0m"
+									else
+										_fmtStr = "%.2m"
+									endif
+								endif
+								_replacement = str{2}(_fmtStr, _numVal)
+							endif
+						endif
+					endif
+				else
+					_replacement = ""
+				endif
+
+				first_part  = strsub(string_c, 1, _tokenStart - 1)
+				second_part = strsub(string_c, _tokenStart + _tokenEnd, strlen(string_c) - _tokenStart - _tokenEnd + 1)
+				string_c    = first_part + _replacement + second_part
+				_tokenStart = strstr(string_c, "<")
+			else
+				_tokenStart = 0
+			endif
+		endwhile
+	endif
+return
+
+"drawRoofSlopeSymbol":
+	markerSize = A
+		
+	hotspot2 0, deltaY, unId, deltaX, 1+128: unId = unId + 1
+	hotspot2 -1, 0, unId, deltaX, 3: unId = unId + 1
+	hotspot2 deltaX, deltaY, unId, deltaX, 2: unId = unId + 1
+
+	hotspot2 deltaX, 0, unId, deltaY, 1+128: unId = unId + 1
+	hotspot2 0, -1, unId, deltaY, 3: unId = unId + 1
+	hotspot2 deltaX, deltaY, unId, deltaY, 2: unId = unId + 1
+
+	hotspot2 0, 0, unId: unId = unId + 1
+
+	add2 deltaX, deltaY
+
+	!center of angle
+	hotspot2 0, -markerSize, unId, rotAngle, 4+128: unId = unId + 1													! base
+	hotspot2 0 + markerSize * sin(rotAngle), 0 - markerSize * cos(rotAngle), unId, rotAngle, 5: unId = unId + 1		! moving
+	hotspot2 0, 0, unId, rotAngle, 6: unId = unId + 1		
+
+	! draw marker
+	if slopeMarker = SLOPEMARKER_TRIANGLE then		
+		rot2 rotAngle	
+			fill "Solid Fill"
+			poly2_b 3, 7, 1, 1, 
+				-markerSize, 0, 1,
+				markerSize, 0, 1,
+				0, -markerSize, 1
+		del 1
+	endif
+	if slopeMarker = SLOPEMARKER_INCLINATION then
+		rot2 rotAngle	
+		line2 0, 0, 0, -markerSize
+		line2 0, 0, -markerSize * sin(ROOF_ANGLE * slopeScaleFactor), -markerSize * cos(ROOF_ANGLE * slopeScaleFactor)
+
+		del 1
+	endif
+	del 1
+return

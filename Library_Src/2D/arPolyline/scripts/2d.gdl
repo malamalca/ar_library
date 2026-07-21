@@ -1,1 +1,234 @@
-﻿! **** POLYGONIA  **** !! ** A.Muttenthaler ** !! ** modified by GS ** !if n<2 then end! -------------------------hotspots--------------------------x00 = x[n-1]y00 = y[n-1]x0 = x[n]y0 = y[n]hotspot2 0   ,0for i = 1 to n	hotspot2 0   ,y[i],i*12  ,x[i],129	hotspot2 x[i],y[i],i*12+1,x[i],2	hotspot2 -1  ,y[i],i*12+2,x[i],3	hotspot2 x[i],0   ,i*12+3,y[i],129	hotspot2 x[i],y[i],i*12+4,y[i],2	hotspot2 x[i],-1  ,i*12+5,y[i],3	if showaddpoints and i>1 then		xins = (x0-x[i])/2		yins = (y0-y[i])/2		hotspot2 0          ,yins + y[i],i*12+6 ,xe[i],129		hotspot2 xins + x[i],yins + y[i],i*12+7 ,xe[i],2		hotspot2 -1         ,yins + y[i],i*12+8 ,xe[i],3		hotspot2 xins + x[i],0          ,i*12+9 ,ye[i],129		hotspot2 xins + x[i],yins + y[i],i*12+10 ,ye[i],2		hotspot2 xins + x[i],-1         ,i*12+11,ye[i],3	endif	x00 = x0	y00 = y0	x0 = x[i]	y0 = y[i]next iif showaddpoints then	i = n		diagl = sqr((x[i-1]-x[i])^2 +(y[i-1]-y[i])^2)		xins = -(x[i-1]-x[i])/diagl*marx		yins = -(y[i-1]-y[i])/diagl*marx		hotspot2 0          ,yins + y[i+1],(i+1)*12+5 ,xe[i+1],129	hotspot2 xins + x[i+1],yins + y[i+1],(i+1)*12+6 ,xe[i+1],2	hotspot2 -1         ,yins + y[i+1],(i+1)*12+7 ,xe[i+1],3		hotspot2 xins + x[i+1],0          ,(i+1)*12+8 ,ye[i+1],129	hotspot2 xins + x[i+1],yins + y[i+1],(i+1)*12+9 ,ye[i+1],2	hotspot2 xins + x[i+1],-1         ,(i+1)*12+10,ye[i+1],3endif!----------------------ende hotspots-----------------------!-------------------------polygon--------------------------set fill polyfillif numpolygon then	x0 = x[n]	y0 = y[n]	top_thk = A/2 + offset	bottom_thk = A/2 - offset	for i = 1 to n		if i > 1 then			!text2 x0, y0, str(w[i],5,2)			if showaxis then				pen polypen				set line_type polylinetype					line2 		x0, y0, x[i], y[i]				hotline2 	x0, y0, x[i], y[i]			endif						! calculate top offset intersection			if i = n then				mid_angle = 90			else				mid_angle = (180 - ((w[i+1]) - (w[i]))) / 2			endif			!text2 x0, y0, str(mid_angle,5,2)									! this is top segment separator line			offs_top_x = top_thk / tan(mid_angle)			offs_top_y = -top_thk			offs_bottom_x = -bottom_thk / tan(mid_angle)			offs_bottom_y = bottom_thk			! convert to global coordinate system			tran_angle = 180 - w[i]			tran_top_x = x[i] + offs_top_x * cos(tran_angle) + offs_top_y * sin(tran_angle)			tran_top_y = y[i] - offs_top_x * sin(tran_angle) + offs_top_y * cos(tran_angle)			tran_bottom_x = x[i] + offs_bottom_x * cos(tran_angle) + offs_bottom_y * sin(tran_angle)			tran_bottom_y = y[i] - offs_bottom_x * sin(tran_angle) + offs_bottom_y * cos(tran_angle)			! draw offset lines			if showoffset then				line2 prev_top_x, prev_top_y,  tran_top_x, tran_top_y				line2 prev_bottom_x, prev_bottom_y,  tran_bottom_x, tran_bottom_y				hotspot2 prev_top_x, prev_top_y				hotspot2 tran_top_x, tran_top_y				hotspot2 prev_bottom_x, prev_bottom_y				hotspot2 tran_bottom_x, tran_bottom_y			endif			! draw fill			if usefill and A > nix then				fill_status = 2+4				if polyfillalign then					fill_status = fill_status + 8				endif				poly2_b{2} 4, fill_status, 					polyfillpen, polyfillbgpen,					x[i], y[i], w[i] - 180,					prev_top_x, prev_top_y, 15,					tran_top_x, tran_top_y, 15,					tran_bottom_x, tran_bottom_y, 15,					prev_bottom_x, prev_bottom_y, 15			endif							! store for next step			prev_top_x = tran_top_x			prev_top_y = tran_top_y			prev_bottom_x = tran_bottom_x			prev_bottom_y = tran_bottom_y					else			! very first point			line_angle = 90			if abs(x[i+1] - x[i]) > nix then				line_k = (y[i+1] - y[i]) / (x[i+1] - x[i])				line_angle = atn(line_k)			endif			! fix for crossing lines with different offsets			initialDir = 1			if (x[i+1] < x[i]) or (abs(w[2]-270)<nix) then				initialDir = -1			endif			prev_top_x =  x[i] - sin(line_angle) * top_thk * initialDir			prev_top_y =  y[i] + cos(line_angle) * top_thk * initialDir			prev_bottom_x =  x[i] + sin(line_angle) * bottom_thk * initialDir			prev_bottom_y =  y[i] - cos(line_angle) * bottom_thk * initialDir				pen offsetpen			set line_type offsetlinetype			if showseparatorlines then				line2 prev_bottom_x, prev_bottom_y, prev_top_x, prev_top_y			endif		endif		x0 = x[i]		y0 = y[i]	next iendif!----------------------ende polygon-----------------------!-------------------------polygon length ------------------!text2 x[i], y[i], rgesend
+﻿if n<2 then end
+
+if abs(A) > nix then
+	marx = A * 3
+endif
+
+! -------------------------hotspots--------------------------
+unId = 1
+hotspot2 0, 0
+
+if iseditable then
+	for i = 1 to n
+		hotspot2 0,		y[i],	unId,	x[i],	129: unId = unId + 1
+		hotspot2 x[i],	y[i],	unId,	x[i],	2: unId = unId + 1
+		hotspot2 -1,	y[i],	unId,	x[i],	3: unId = unId + 1
+
+		hotspot2 x[i],	0,		unId,	y[i],	129: unId = unId + 1
+		hotspot2 x[i],	y[i],	unId,	y[i],	2: unId = unId + 1
+		hotspot2 x[i],	-1,		unId,	y[i],	3: unId = unId + 1
+
+		if showaddpoints and i > 1 and n < MAX_POINTS then
+			xins = (x[i-1] - x[i]) / 2
+			yins = (y[i-1] - y[i]) / 2
+
+			hotspot2 0,				yins + y[i],	unId,	xe[i],	129: unId = unId + 1
+			hotspot2 xins + x[i],	yins + y[i],	unId,	xe[i],	2: unId = unId + 1
+			hotspot2 -1,			yins + y[i],	unId,	xe[i],	3: unId = unId + 1
+
+			hotspot2 xins + x[i],	0,				unId,	ye[i],	129: unId = unId + 1
+			hotspot2 xins + x[i],	yins + y[i],	unId,	ye[i],	2: unId = unId + 1
+			hotspot2 xins + x[i],	-1,				unId,	ye[i],	3: unId = unId + 1
+		endif
+	next i
+
+	if showaddpoints and n < MAX_POINTS then
+		i = n
+		diagl = sqr((x[i-1] - x[i])^2 + (y[i-1] - y[i])^2)
+		xins = -(x[i-1] - x[i]) / diagl * marx
+		yins = -(y[i-1] - y[i]) / diagl * marx
+		
+		hotspot2 0,					yins + y[i+1],	unId,	xe[i+1],	129: unId = unId + 1
+		hotspot2 xins + x[i+1],		yins + y[i+1],	unId,	xe[i+1],	2: unId = unId + 1
+		hotspot2 -1,				yins + y[i+1],	unId,	xe[i+1],	3: unId = unId + 1
+		
+		hotspot2 xins + x[i+1],		0,				unId,	ye[i+1],	129: unId = unId + 1
+		hotspot2 xins + x[i+1],		yins + y[i+1],	unId,	ye[i+1],	2: unId = unId + 1
+		hotspot2 xins + x[i+1],		-1,				unId,	ye[i+1],	3: unId = unId + 1
+	endif
+endif
+
+!----------------------ende hotspots-----------------------
+! ==============================================================================
+! Main axis line
+if showaxis then
+	pen polypen
+	set line_type polylinetype
+	for i = 2 to n
+		line2 x[i-1], y[i-1], x[i], y[i]
+		hotline2 x[i-1], y[i-1], x[i], y[i]
+	next i
+endif
+
+if showoffset or usefill then
+	! ==============================================================================
+	! Initialize PolyOperations Add-On
+	! ==============================================================================
+	CHANNEL = initAddonScope("PolyOperations", "", "")
+
+	pen offsetpen
+	set line_type offsetlinetype
+
+	! ==============================================================================
+	! Creating polygon containers
+	prepareFunction CHANNEL, "CreateContainer", "mySourceContainer", ""
+	prepareFunction CHANNEL, "CreateContainer", "myDestinationContainer", ""
+
+	prepareFunction CHANNEL, "SetSourceContainer",		"mySourceContainer", ""
+	prepareFunction CHANNEL, "SetDestinationContainer",	"myDestinationContainer", ""
+
+	! ==============================================================================
+	! Store polyline
+	dim _vertices[][]
+	dim _ids[]
+
+	for i = 1 to n
+		_vertices[i][1] = x[i]
+		_vertices[i][2] = y[i]
+		_vertices[i][3] = 0
+		_ids[i] = unId: unId = unId + 1
+	next i
+
+	prepareFunction CHANNEL, "StorePolyline", "arPolyline", n, _vertices, 0, _ids
+
+	dim _resOffsetPolyline[]
+	dim _separatorLinesCoords[][4]
+
+
+	! ==============================================================================
+	! Offset 1
+	prepareFunction CHANNEL, "OffsetParams", "", 1, A/2-offset
+	numPolylinesAfterOffset = callFunction(CHANNEL, "OffsetPolyline", "arPolyline", _resOffsetPolyline)
+
+	dim resVertices[]
+	for i = 1 to numPolylinesAfterOffset
+		polylineID = _resOffsetPolyline[i]
+	
+		numVertices = callFunction(CHANNEL, "GetPolylineVertices", polylineID, resVertices)
+		numVertices = numVertices / 3
+
+		for j = 1 to numVertices-1
+			if showoffset and (abs(A/2-offset) > nix or not(showaxis)) then
+				line2 resVertices[(j-1)*3+1], resVertices[(j-1)*3+2], resVertices[j*3+1], resVertices[j*3+2]
+				hotline2 resVertices[(j-1)*3+1], resVertices[(j-1)*3+2], resVertices[j*3+1], resVertices[j*3+2]
+			endif
+			_separatorLinesCoords[j][1] = resVertices[(j-1)*3+1]
+			_separatorLinesCoords[j][2] = resVertices[(j-1)*3+2]
+		next j
+		_separatorLinesCoords[j][1] = resVertices[(numVertices-1)*3+1]
+		_separatorLinesCoords[j][2] = resVertices[(numVertices-1)*3+2]
+	next i
+
+	! ==============================================================================
+	! Offset 2
+	prepareFunction CHANNEL, "OffsetParams", "", 1, -A/2-offset
+	numPolylinesAfterOffset = callFunction(CHANNEL, "OffsetPolyline", "arPolyline", _resOffsetPolyline)
+
+	dim resVertices[]
+	for i = 1 to numPolylinesAfterOffset
+		polylineID = _resOffsetPolyline[i]
+	
+		numVertices = callFunction(CHANNEL, "GetPolylineVertices", polylineID, resVertices)
+		numVertices = numVertices / 3
+
+		for j = 1 to numVertices-1
+			if showoffset and (abs(-A/2-offset) > nix or not(showaxis)) then
+				line2 resVertices[(j-1)*3+1], resVertices[(j-1)*3+2], resVertices[j*3+1], resVertices[j*3+2]
+			endif
+
+			_separatorLinesCoords[j][3] = resVertices[(j-1)*3+1]
+			_separatorLinesCoords[j][4] = resVertices[(j-1)*3+2]
+		next j
+		_separatorLinesCoords[j][3] = resVertices[(numVertices-1)*3+1]
+		_separatorLinesCoords[j][4] = resVertices[(numVertices-1)*3+2]
+	next i
+
+	! ==============================================================================
+	! Separator lines
+	if showoffset and showseparatorlines <> 2 then
+		numSeparatorLines = vardim1(_separatorLinesCoords)
+		for i = 1 to numSeparatorLines
+			if showseparatorlines = 1 or (i = 1 and (showseparatorlines = 3 or showseparatorlines = 5)) or (i = numSeparatorLines and (showseparatorlines = 4  or showseparatorlines = 5)) then
+				line2 _separatorLinesCoords[i][1], _separatorLinesCoords[i][2], _separatorLinesCoords[i][3], _separatorLinesCoords[i][4]
+				
+			endif
+			hotspot2 _separatorLinesCoords[i][1], _separatorLinesCoords[i][2]: unId = unId + 1
+			hotspot2 _separatorLinesCoords[i][3], _separatorLinesCoords[i][4]: unId = unId + 1
+		next i
+	endif
+
+	! ==============================================================================
+	! Fills
+	if usefill and abs(A) > nix then
+		set fill polyfill
+		!fill_status = 2+4
+		!if polyfillalign then
+		!	fill_status = fill_status + 8
+		!endif
+
+		_filldX = 0
+		_filldY = 0
+		_fillScaleX = 1
+		_fillScaleY = 1
+		if distortfill then
+			_filldX = fillorigindeltaX
+			_filldY = fillorigindeltaY
+			_fillScaleX = fillscaleX
+			_fillScaleY = fillscaleY
+		endif
+
+		numSeparatorLines = vardim1(_separatorLinesCoords)
+		for i = 2 to numSeparatorLines
+			! Calculate direction vector
+			if polyfillalign then
+				_fillOriginX = _separatorLinesCoords[i-1][1]
+				_fillOriginY = _separatorLinesCoords[i-1][2]
+				dx = _separatorLinesCoords[i][1] - _separatorLinesCoords[i-1][1]
+				dy = _separatorLinesCoords[i][2] - _separatorLinesCoords[i-1][2]
+				rd = sqr( dx^2 + dy^2 )
+				cof = dy/rd: if abs(cof) > 1 then cof = 1  ! weird bugfix in rounding
+				wd = asn(cof)
+				if(dy >= 0) then
+					if dx < 0 then
+						wd = 180 - wd
+					endif
+				else
+					if dx < 0 then
+						wd = 180 - wd
+					else
+						wd = 360 + wd
+					endif
+				endif
+			else 
+				wd = 0
+				_fillOriginX = 0
+				_fillOriginY = 0
+			endif
+
+			poly2_b{5} 4, 2+4, polyfillcategory, 8,
+				polyfillpen, polyfillbgpen,
+				_fillOriginX + _filldX, _fillOriginY + _filldY,
+				_fillScaleX * cos(wd), _fillScaleX * sin(wd), _fillScaleY * cos(wd+90), _fillScaleY * sin(wd+90), 0,
+
+				_separatorLinesCoords[i-1][1], _separatorLinesCoords[i-1][2], 15,
+				_separatorLinesCoords[i][1], _separatorLinesCoords[i][2], 15,
+				_separatorLinesCoords[i][3], _separatorLinesCoords[i][4], 15,
+				_separatorLinesCoords[i-1][3], _separatorLinesCoords[i-1][4], 15
+
+			! poly2_b{2} 4, fill_status, 
+			! 	polyfillpen, polyfillbgpen,
+			! 	_separatorLinesCoords[i-1][1], _separatorLinesCoords[i-1][2], wd,
+			! 	_separatorLinesCoords[i-1][1], _separatorLinesCoords[i-1][2], 15,
+			! 	_separatorLinesCoords[i][1], _separatorLinesCoords[i][2], 15,
+			! 	_separatorLinesCoords[i][3], _separatorLinesCoords[i][4], 15,
+			! 	_separatorLinesCoords[i-1][3], _separatorLinesCoords[i-1][4], 15
+		next i
+
+	endif
+	
+endif
+
+
+!-------------------------polygon length ------------------
+!text2 x[i], y[i], total_length
+end

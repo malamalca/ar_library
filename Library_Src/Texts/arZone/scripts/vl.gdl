@@ -1,1 +1,1 @@
-﻿PARAMETERS roomNumberFull = masterID + " " + ROOM_NUMBERLOCK "roomNumberFull"if hideAll then	hideparameter "drawLineUnderTitle"	hideparameter "showArea"	hideparameter "showElevation"endif
+﻿PARAMETERS roomNumberFull = masterID + " " + ROOM_NUMBERLOCK "roomNumberFull"if hideAll then	hideparameter "drawLineUnderTitle"	hideparameter "showArea"	hideparameter "showElevation"	hideparameter "showDescription"endif
