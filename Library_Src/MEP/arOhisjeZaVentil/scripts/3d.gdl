@@ -1,0 +1,74 @@
+﻿unId = 0
+
+hotspot 0, 0, 0, unId: unId = unId + 1
+
+ventDiameter = 0.15
+ventThickenss = 0.02
+
+set material mat_vent
+
+if iBuiltin = BUILTIN_CEILING then
+	addz -ventThickenss
+else
+	!addz -0.06
+	rotz 90
+	addy -0.06-ventThickenss
+	
+	rotx -90
+	!roty -90
+endif
+
+
+if iKind = KIND_INTAKE then
+	!! zunanji rob
+	ventDiameterOffset = 0.02
+	prism_ 12, ventThickenss,
+		-ventDiameter / 2,	0,		13+64+2,
+		0,											0,		900,
+		0,											180,	4000+13+64+2,
+		0,											0,		900,
+		0,											180,	4000+13+64+2,
+		-ventDiameter / 2,		0,		-1,
+		-ventDiameter / 2  + ventDiameterOffset,							0,		13,
+		0,											0,		900,
+		0,											-180,	4000+13,
+		0,											0,		900,
+		0,											-180,	4000+13,
+		-ventDiameter / 2,		0,	-1
+
+	ventInnerDiameterOffset2 = 0.01
+	prism_ 6, ventThickenss,
+		-ventDiameter / 2  + ventDiameterOffset + ventInnerDiameterOffset2,		0,		13+66,
+		0,																		0,		900,
+		0,																		180,	4000+13+66,
+		0,																		0,		900,
+		0,																		180,	4000+13+66,
+		-ventDiameter / 2 + ventDiameterOffset + ventInnerDiameterOffset2,		0, 		-1
+else
+	addz ventThickenss / 2
+
+	ventDiameterOffset = 0.02
+	prism_ 12, ventThickenss / 2,
+		-ventDiameter / 2,	0,		13+64+2,
+		0,											0,		900,
+		0,											180,	4000+13+64+2,
+		0,											0,		900,
+		0,											180,	4000+13+64+2,
+		-ventDiameter / 2,		0,		-1,
+		-ventDiameter / 2  + ventDiameterOffset,							0,		13,
+		0,											0,		900,
+		0,											-180,	4000+13,
+		0,											0,		900,
+		0,											-180,	4000+13,
+		-ventDiameter / 2,		0,	-1
+	
+	addz -ventThickenss/2  
+
+	prism_ 6, ventThickenss / 2 - 0.005,
+		-ventDiameter / 2,		0,		13+66,
+		0,																		0,		900,
+		0,																		180,	4000+13+66,
+		0,																		0,		900,
+		0,																		180,	4000+13+66,
+		-ventDiameter / 2,		0, 		-1
+endif

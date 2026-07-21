@@ -1,0 +1,31 @@
+﻿pen penCover
+line_type lineCover
+fill fillCover
+
+if shaftDataOptions[OPT_COVER_TYPE] = COVER_TYPE_ROUND then
+	
+	shaftRadius = shaftDataDimensions[DIM_COVER_DIM1] / 2
+
+	! če ni določenega premera jaška, privzamem premer 60cm
+	if shaftDataDimensions[DIM_COVER_DIM1] < nix then
+		shaftRadius = 0.3
+	endif
+
+	poly2_b 2, 
+		FRAMEFILL_DRAWCONTOUR + FRAMEFILL_DRAWFILL + FRAMEFILL_LOCALFILLORIENTATION, 
+		penCoverFill, penCoverFillBg,
+		0, 0, 900,
+		shaftRadius, 360, 4001
+	
+endif
+
+
+if shaftDataOptions[OPT_SHOW_SHAFT] = 1 then
+	pen penUnderground
+	line_type lineUnderground
+
+	if shaftDataOptions[OPT_SHAFT_TYPE] = SHAFT_TYPE_ROUND then
+		circle2 0, 0, shaftDataDimensions[DIM_SHAFT_DIM1]
+	endif
+endif
+

@@ -1,0 +1,568 @@
+﻿
+ui_dialog `Tread Component Settings`
+
+dim tabTitles[5]
+	tabTitles[1] = `Nosing`
+	tabTitles[2] = `Raised Strip`
+	tabTitles[3] = `Milled Recess`
+	tabTitles[4] = `Non-Slip Accessory`
+	tabTitles[5] = `Representation`
+
+dim tabIcons[5]
+	tabIcons[1] = "uiTab_Nosing_hl(1)"
+	tabIcons[2] = "uiTab_RaisedStrip_hl(1)"
+	tabIcons[3] = "uiTab_StairMilledRecess_hl(1)"
+	tabIcons[4] = "uiTab_StairTread_Accessory_hl(1)"
+	tabIcons[5] = "uiTab_2DRepr_hl(1)"
+
+dim	uiListItemDesc[17]
+	uiListItemDesc[1]	= `Uncut Line Pen`
+	uiListItemDesc[2]	= `Cut Pen`
+	uiListItemDesc[3]	= `Material and Surfaces`
+	uiListItemDesc[4]	= `Building Material`
+	uiListItemDesc[5]	= `Override Surfaces`
+	uiListItemDesc[6]	= `Tread Surface`
+	uiListItemDesc[7]	= `Cut Surfaces`
+	uiListItemDesc[8]	= `Override Cut Fill Pens`
+	uiListItemDesc[9]	= `Cut Fill Foreground Pen`
+	uiListItemDesc[10]	= `Cut Fill Background Pen`
+
+	uiListItemDesc[11]	= `Tread Accessories Representation`
+	uiListItemDesc[12]	= ""	! unused
+
+	uiListItemDesc[13]	= `Line Pen on Visible Parts`
+	uiListItemDesc[14]	= `Line Type on Visible Parts`
+	uiListItemDesc[15]	= `Surface`
+	uiListItemDesc[16]	= `Line Pen on Hidden Parts`
+	uiListItemDesc[17]	= `Line Type on Hidden Parts`
+
+
+! Page IDs
+TABID_ROOT				= -1		: _idxTab = 1
+TABID_TREADSETTINGS		= _idxTab	: _idxTab = _idxTab + 1
+TABID_RAISEDSTRIP		= _idxTab	: _idxTab = _idxTab + 1
+TABID_MILLEDRECESS		= _idxTab	: _idxTab = _idxTab + 1
+TABID_ACCESSORY			= _idxTab	: _idxTab = _idxTab + 1
+TABID_REPRESENTATION	= _idxTab	: _idxTab = _idxTab + 1
+
+
+_penContPic	= "ui_list_contourPen_hl(1)"
+_penCutPic	= "ui_list_pencolor_hl(1)"
+_lineTypPic	= "ui_list_contLineType_hl(1)"
+_buiMatPic	= "ui_list_BuildingMaterial_hl(1)"
+_surfacePic	= "ui_list_surface_hl(1)"
+_surORidPic	= "ui_list_SurfaceOverride_hl(1)"
+_filORidPic	= "ui_list_OverrideCutFillPens_hl(1)"
+_fillFgPic	= "ui_list_fillPen_hl(1)"
+_fillBgPic	= "ui_list_fillBgPen_hl(1)"
+
+file_dependence "uiTab_Nosing_hl(1)"
+file_dependence "uiTab_RaisedStrip_hl(1)"
+file_dependence "uiTab_StairMilledRecess_hl(1)"
+file_dependence "uiTab_StairTread_Accessory_hl(1)"
+file_dependence "uiTab_2DRepr_hl(1)"
+
+file_dependence "ui_list_contourPen_hl(1)"
+file_dependence "ui_list_pencolor_hl(1)"
+file_dependence "ui_list_contLineType_hl(1)"
+file_dependence "ui_list_BuildingMaterial_hl(1)"
+file_dependence "ui_list_surface_hl(1)"
+file_dependence "ui_list_SurfaceOverride_hl(1)"
+file_dependence "ui_list_OverrideCutFillPens_hl(1)"
+file_dependence "ui_list_fillPen_hl(1)"
+file_dependence "ui_list_fillBgPen_hl(1)"
+file_dependence "ui_list_TreadAccessories_hl(1)"
+
+
+pageStartY = 1
+
+! Get Format String
+_stFormat	= "%m"		! default meter
+_reqUnit	= request("Model_length_unit", "", _stFormat)
+_stAngleFormat	= "%10.4dd"
+_reqAngleUnit	= request("Working_angle_unit", "", _stAngleFormat)
+
+! ==============================================================================
+! UI Pages
+! ==============================================================================
+
+ui_page TABID_TREADSETTINGS,	TABID_ROOT, tabTitles[1], tabIcons[1]
+	gosub "pageTreadSettings"
+
+ui_page TABID_RAISEDSTRIP,		TABID_ROOT, tabTitles[2], tabIcons[2]
+	gosub "pageRaisedStripSettings"
+
+ui_page TABID_MILLEDRECESS,		TABID_ROOT, tabTitles[3], tabIcons[3]
+	gosub "pageMilledRecessSettings"
+
+ui_page TABID_ACCESSORY,		TABID_ROOT, tabTitles[4], tabIcons[4]
+	gosub "pageAccessorySettings"
+
+ui_page TABID_REPRESENTATION,	TABID_ROOT, tabTitles[5], tabIcons[5]
+	gosub "pageRepresSettings"
+
+! ==============================================================================
+end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! en
+! ==============================================================================
+
+
+! ==============================================================================
+"pageTreadSettings":
+! ------------------------------------------------------------------------------
+	! Sizes and Positions
+	yCurr		= pageStartY
+	diffY		= 23
+
+	inFldWdt1 	= 180
+	inFldWdt	= 90
+	inFldHgt	= 19
+
+	outFldWdt	= 90
+	outFldHgt	= 15
+
+	picWdt1		= 154
+	picHgt1		= 69
+	picPosX1	= 32
+	picPosY1	= 160
+
+	picWdt2		= 74
+	picHgt2		= 76
+	picPosX2	= 324
+	picPosY2	= 160
+
+	xPos1		= 1
+	xPos2		= xPos1 + inFldWdt1 + 2
+
+	fullWidth	= 443
+
+! ------------------------------------------------------------------------------
+	_nosDimPic = 8						! Nosing_Chamfered_hl(1)
+
+	if iTreadNosingProfile = NOSINGPROFILE_CUSTOM_PROF then
+		_nosDimPic 	= 11				! Nosing_Custom_hl(1)
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_ROUNDED then
+		_nosDimPic 	= 15				! Nosing_Rounded_hl(1)
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_FILLET then
+		if _bNosingHasExtension then
+			_nosDimPic 	= 23				! NosingExtension_Fillet_hl(1)
+		else
+			_nosDimPic 	= 12				! Nosing_Fillet_hl(1)
+		endif
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_CHAMFER then
+		if _bNosingHasExtension then
+			_nosDimPic 	= 20				! NosingExtension_Chamfered_hl(1)
+		else
+			_nosDimPic 	= 8					! Nosing_Chamfered_hl(1)
+		endif
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_SLANTED_FILLET then
+		if _bNosingHasExtension then
+			if iDefSlantingAngleCustom = CUSTOMSLANTING_BYANGLE then
+				_nosDimPic 	= 24			! NosingExtensionFilletSlantedAngle
+			else
+				_nosDimPic 	= 25			! NosingExtension_Fillet_SlantedDim_hl(1)
+			endif
+		else
+			if iDefSlantingAngleCustom = CUSTOMSLANTING_BYANGLE then
+				_nosDimPic 	= 13			! Nosing_Fillet_SlantedAngle_hl(1)
+			else
+				_nosDimPic 	= 14			! Nosing_Fillet_SlantedDim_hl(1)
+			endif
+		endif
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_SLANTED_CHAMFER then
+		if _bNosingHasExtension then
+			if iDefSlantingAngleCustom = CUSTOMSLANTING_BYANGLE then
+				_nosDimPic 	= 21				! NosingExtensionChamferedSlantedAngle
+			else
+				_nosDimPic 	= 22			! NosingExtensionChamferedSlantedDim
+			endif
+		else
+			if iDefSlantingAngleCustom = CUSTOMSLANTING_BYANGLE then
+				_nosDimPic 	= 9				! Nosing_Chamfered_SlantedAngle_hl(1)
+			else
+				_nosDimPic 	= 10			! Nosing_Chamfered_SlantedDim_hl(1)
+			endif
+		endif
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_SLANTED_ONLY then
+		if _bNosingHasExtension then
+			if iDefSlantingAngleCustom = CUSTOMSLANTING_BYANGLE then
+				_nosDimPic 	= 26			! NosingExtension_SlantedOnlyAngle_hl(1)
+			else
+				_nosDimPic 	= 27			! NosingExtension_SlantedOnlyDim_hl(1)
+			endif
+		else
+			if iDefSlantingAngleCustom = CUSTOMSLANTING_BYANGLE then
+				_nosDimPic 	= 16			! Nosing_SlantedOnlyAngle_hl(1)
+			else
+				_nosDimPic 	= 17			! Nosing_SlantedOnlyDim_hl(1)
+			endif
+		endif
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_SLANTED_SQUARE then
+		if _bNosingHasExtension then
+			if iDefSlantingAngleCustom = CUSTOMSLANTING_BYANGLE then
+				_nosDimPic 	= 28			! NosingExtensionSquareSlantedAngle
+			else
+				_nosDimPic 	= 29			! NosingExtension_Square_SlantedDim_hl(1)
+			endif
+		else
+			if iDefSlantingAngleCustom = CUSTOMSLANTING_BYANGLE then
+				_nosDimPic 	= 18			! Nosing_Square_SlantedAngle_hl(1)
+			else
+				_nosDimPic 	= 19			! Nosing_Square_SlantedDim_hl(1)
+			endif
+		endif
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_CLASSICAL then
+		_nosDimPic 	= 31				! Nosing_Classic_hl(1)
+		picHgt2		= 95
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_SQUARE then
+		_nosDimPic 	= 30				! NosingExtension_Square_hl(1)			! temporary
+	endif
+
+! ------------------------------------------------------------------------------
+
+	ui_style 0, 1
+	ui_infield{3}	"bNosingProfile",		xPos1,	yCurr,	inFldWdt1,		inFldHgt,
+		7, "", 0, 0,
+		0, 0, 0, 0,
+		"", `Nosing`, 0,
+		"", `Nosing`, 1
+	ui_style 0, 0
+
+	ui_infield{3}	"iNosingMainType",		xPos2,	yCurr,	210,	inFldHgt,
+		8, "", 0, 0,
+		0, 0, 0, 0,
+		"", stNosingMainTypes[1], NOSING_MAIN_TYPE_NOEXT,
+		"", stNosingMainTypes[2], NOSING_MAIN_TYPE_EXT,
+		"", stNosingMainTypes[3], NOSING_MAIN_TYPE_CUSTOM_PROF
+
+	yCurr	= yCurr + diffY
+
+	ui_outfield		`Nosing Shape`,			xPos1,	yCurr + 4,		inFldWdt1,	outFldHgt,	4 * not(bNosingProfile)
+
+	if iNosingMainType = NOSING_MAIN_TYPE_CUSTOM_PROF then
+		ui_infield	"nosingProfileID",	xPos2,	yCurr,	210, 26
+
+		yCurr	= yCurr + diffY + 5
+
+		ui_infield{3}	"bProfileAttributes",	xPos1,	yCurr,	fullWidth - xPos1,		inFldHgt,
+			7, "", 0, 0,
+			0, 0, 0, 0,
+			"", `Use Profile Attributes for Nosing`, 0,
+			"", `Use Profile Attributes for Nosing`, 1
+	else
+		if _bNosingHasExtension then
+			ui_infield{3}	"iTreadNosingProfile",	xPos2,	yCurr,	30 * vardim1(_stNosingTypeValueList), 24,
+				4, 32, 7, 1,								! NosingType_with_Extension_hl(1)
+				30, 24, 30, 24,
+				1,	"",	NOSINGPROFILE_SQUARE,
+				2,	"",	NOSINGPROFILE_FILLET,
+				3,	"",	NOSINGPROFILE_CHAMFER,
+				4,	"",	NOSINGPROFILE_SLANTED_SQUARE,
+				5,	"",	NOSINGPROFILE_SLANTED_FILLET,
+				6,	"",	NOSINGPROFILE_SLANTED_CHAMFER,
+				7,	"",	NOSINGPROFILE_SLANTED_ONLY			ui_tooltip _stAllEnabledNosingTypes
+		else
+			ui_infield{3}	"iTreadNosingProfile",	xPos2,	yCurr,	30 * vardim1(_stNosingTypeValueList), 24,
+				4, 33, 7, 1,								! NosingType_without_Extension_hl(1)
+				30, 24, 30, 24,
+				1,	"",	NOSINGPROFILE_ROUNDED,
+				2,	"",	NOSINGPROFILE_FILLET,
+				3,	"",	NOSINGPROFILE_CHAMFER,
+				4,	"",	NOSINGPROFILE_SLANTED_SQUARE,
+				5,	"",	NOSINGPROFILE_SLANTED_FILLET,
+				6,	"",	NOSINGPROFILE_SLANTED_CHAMFER,
+				7,	"",	NOSINGPROFILE_SLANTED_ONLY			ui_tooltip _stAllEnabledNosingTypes
+		endif
+	endif
+
+	yCurr	= yCurr + diffY + 5
+
+	if _bSlantedNosing then
+		ui_infield{3}	"bUseSlantingAngleRiser",	xPos1,	yCurr,	inFldWdt1 + 60,		inFldHgt,
+			7, "", 0, 0,
+			0, 0, 0, 0,
+			"", `Cut with Riser Angle`, 0,
+			"", `Cut with Riser Angle`, 1
+
+		ui_infield{3}	"iDefSlantingAngleCustom",	xPos2 + 60 - 2,	yCurr,	60,	24,
+			4, 3, 2, 1,																! NosingSlanted_hl(1)
+			27, 24, 27, 24,
+			1,	"",	CUSTOMSLANTING_BYANGLE,
+			2,	"",	CUSTOMSLANTING_BYDISTANCE
+
+		if iDefSlantingAngleCustom = CUSTOMSLANTING_BYANGLE then
+			ui_infield	"slantingAngleCustom", xPos2 + 120,	yCurr,	inFldWdt,	inFldHgt		ui_tooltip `Custom Slanting Angle`
+		else
+			ui_infield	"slantingDistCustom", xPos2 + 120,	yCurr,	inFldWdt,	inFldHgt		ui_tooltip `Custom Slanting Distance`
+		endif
+	endif
+
+
+	yCurr	= pageStartY + 123
+
+	ui_separator 0, yCurr, 444, yCurr
+	yCurr	= yCurr + diffY - 4
+
+	if	iTreadNosingProfile = NOSINGPROFILE_ROUNDED |\
+		_bFilletNosing | _bChamferNosing then
+
+		if _bChamferNosing then
+			_stRadius	= `Chamfered`
+		else
+			_stRadius	= `Fillet`
+		endif
+
+		ui_infield{3}	"filletRadius",		picPosX2 - inFldWdt + 25,	yCurr - 5,	inFldWdt,	inFldHgt ui_tooltip _stRadius
+	endif
+
+	ui_outfield	str(_stFormat, TREAD_THICKNESS), picPosX2 - inFldWdt + picWdt2 + 42,	yCurr - 1,	outFldWdt,	outFldHgt, 2 + 4 * not(bNosingProfile)		ui_tooltip `Tread Thickness`
+
+	ui_pict	_nosDimPic,	picPosX2,	picPosY2,	picWdt2,	picHgt2, 1
+
+	if _bSlantedNosing then
+		if _bEnableSlantingStartPoint then
+			if _bManualSlantingStartPoint then
+				ui_infield	"slantingStartPoint", picPosX2 - inFldWdt - 2,	picPosY2 + 14,	outFldWdt,	outFldHgt						ui_tooltip `Custom Slanting Start Point`
+			else
+				ui_outfield	str(_stFormat, _slantingStartPoint), picPosX2 - outFldWdt - 2,	picPosY2 + 14,	outFldWdt,	outFldHgt, 1	ui_tooltip `Slanting Start Point`
+			endif
+		endif
+
+		if not(bUseSlantingAngleRiser) then
+			if iDefSlantingAngleCustom = CUSTOMSLANTING_BYANGLE then
+				ui_outfield	str(_stAngleFormat, slantingAngleCustom),	picPosX2 - inFldWdt - 2,	picPosY2 + 45,	outFldWdt,	outFldHgt, 1	ui_tooltip `Custom Slanting Angle`
+			else
+				ui_outfield	str(_stFormat, slantingDistCustom),			picPosX2 - inFldWdt - 2,	picPosY2 + 45,	outFldWdt,	outFldHgt, 1	ui_tooltip `Custom Slanting Distance`
+			endif
+		endif
+	endif
+
+	if	iTreadNosingProfile = NOSINGPROFILE_CUSTOM_PROF then
+		_result = REQUEST ("Profile_default_boundingbox",  nosingProfileID, _xMin, _yMin, _xMax, _yMax)
+
+		if _result then
+			_profileWidth	= abs(_xMax - _xMin)
+			_profileHeight	= abs(_yMax - _yMin)
+		else
+			_profileWidth	= 0
+			_profileHeight	= 0
+		endif
+
+		ui_outfield	str(_stFormat, _profileHeight),		picPosX2 - outFldWdt - 2,	picPosY2 + 45,	outFldWdt,	outFldHgt, 1	ui_tooltip `Profile Height`
+		ui_outfield	str(_stFormat, _profileWidth),		picPosX2 - outFldWdt + 20,	yCurr,			outFldWdt,	outFldHgt, 1	ui_tooltip `Profile Width`
+	endif
+
+	if _bNosingHasExtension then
+		ui_infield	"extensionWidth",	picPosX2 - inFldWdt + 20,			picPosY2 + picHgt2 + 4,	inFldWdt,	inFldHgt	ui_tooltip `Extension Width`
+		ui_infield	"extensionHeight",	picPosX2 - inFldWdt + picWdt2 + 40,	picPosY2 + picHgt2 + 4,	inFldWdt,	inFldHgt	ui_tooltip `Extension Height`
+	endif
+
+
+	yCurr	= yCurr + diffY + 4
+
+	ui_pict	2,	picPosX1,	picPosY1,	picWdt1,	picHgt1, 1						! NosingPlacement_hl(1)
+
+	picMrgnVert = 3 : 	picMrgnHor = 7
+	chckBxWdt = 13
+
+	ui_infield{3}	"bTreadNosingProfileOnBack",	picPosX1 + picWdt1 / 2 - chckBxWdt/2,		picPosY1 - picMrgnHor - chckBxWdt,		chckBxWdt,	chckBxWdt
+	ui_infield{3}	"bTreadNosingProfileOnLeft",	picPosX1 - picMrgnVert - chckBxWdt,			picPosY1 + picHgt1 / 2 - chckBxWdt/2,	chckBxWdt,	chckBxWdt
+	ui_infield{3}	"bTreadNosingProfileOnRight",	picPosX1 + picWdt1 + picMrgnVert,			picPosY1 + picHgt1 / 2 - chckBxWdt/2,	chckBxWdt,	chckBxWdt
+	ui_infield{3}	"bTreadNosingProfileOnFront",	picPosX1 + picWdt1 / 2 - chckBxWdt/2,		picPosY1 + picHgt1 + picMrgnHor,		chckBxWdt,	chckBxWdt
+
+return
+
+! ==============================================================================
+"pageRaisedStripSettings":
+! ------------------------------------------------------------------------------
+
+	call "treadAccessories_m" parameters all	iTabpageType = 2	! TABPAGE_RAISEDSTRIP
+
+return
+
+! ==============================================================================
+"pageAccessorySettings":
+! ------------------------------------------------------------------------------
+
+	call "treadAccessories_m" parameters all	iTabpageType = 1	! TABPAGE_NONSLIPBAND
+
+return
+
+! ==============================================================================
+"pageMilledRecessSettings":
+! ------------------------------------------------------------------------------
+	! Sizes and Positions
+	yCurr		= pageStartY
+	diffY		= 23
+
+	inFldWdt1 	= 213
+	inFldWdt2	= 240
+	inFldWdt	= 90
+	inFldHgt	= 19
+
+	outFldWdt	= 180
+	outFldHgt	= 15
+
+	picWdt1		= 154
+	picHgt1		= 69
+	picPosX1	= 32
+	picPosY1	= 160
+
+	picWdt2		= 74
+	picHgt2		= 64
+	picPosX2	= 324
+	picPosY2	= 160
+
+	xPos1		= 1
+	xPos2		= 231
+
+	fullWidth	= 443
+
+! ------------------------------------------------------------------------------
+
+	ui_style 0, 1
+	ui_infield{3}	"bMilledRecess",		xPos1,	yCurr,	fullWidth - xPos1,		inFldHgt,
+		7, "", 0, 0,
+		0, 0, 0, 0,
+		"", `Milled Recess`, 0,
+		"", `Milled Recess `, 1
+	ui_style 0, 0
+	yCurr	= yCurr + diffY
+
+	ui_outfield		`No. of Milled Recesses`,	xPos1,					yCurr + 4,	outFldWdt,	outFldHgt,	4 * not(bMilledRecess)
+	ui_infield		"iRecessNum",				xPos1 + outFldWdt + 2,	yCurr,		inFldWdt,	inFldHgt
+	yCurr	= yCurr + diffY
+
+	ui_outfield		`Multiply Method`,				xPos1,	yCurr + 4,	outFldWdt,	outFldHgt,	4 * not(bMilledRecess)
+
+	ui_radiobutton	"iRecessMultiply",	RECESS_DISTRIBUTE,	`Distribute`, 	xPos1 + outFldWdt + 2,	yCurr,	inFldWdt2,		inFldHgt
+	yCurr	= yCurr + diffY
+	ui_radiobutton	"iRecessMultiply",	RECESS_SPREAD,		`Spread`, 		xPos1 + outFldWdt + 2,	yCurr,	inFldWdt2,		inFldHgt
+	yCurr	= yCurr + diffY * 2 + 10
+
+	ui_separator 0, yCurr, 444, yCurr
+
+	picMrgHor = 3
+	ui_pict	6,	picPosX2,	picPosY2,	picWdt2,	picHgt2, 1		! MilledRecessDimensions_hl(1)
+
+	ui_infield	"recessWidth",		fullWidth - inFldWdt * 2 - 4,	picPosY2 - inFldHgt - picMrgHor,	inFldWdt,	inFldHgt	ui_tooltip `Width of Milled Recesses`
+	ui_infield	"recessDepth",		picPosX2 - inFldWdt - 2,		picPosY2  + 8,						inFldWdt,	inFldHgt	ui_tooltip `Depth of Milled Recesses`
+	ui_infield	"mrOffsetStart",	picPosX2 - 20,					picPosY1 + picHgt1 + 7,				inFldWdt,	inFldHgt 	ui_tooltip `Start Offset`
+
+	ui_pict	7,	picPosX1,	picPosY1,	picWdt1,	picHgt1, 1		! MilledRecessPlacement_hl(1)
+
+	if iRecessMultiply  = RECESS_DISTRIBUTE then
+		ui_infield	"cuttingWidth", 			picPosX1 + picWdt1 + 2,			picPosY1 + 48,						inFldWdt,	inFldHgt 					ui_tooltip `Distribution Area`
+		ui_outfield	str(_stFormat, dRecess),	fullWidth - inFldWdt,			picPosY2 - inFldHgt,	inFldWdt,	outFldHgt, 4 * 	not(bMilledRecess)	ui_tooltip `Spread Distance`
+	else
+		ui_infield	"dRecess",						fullWidth - inFldWdt - 1,	picPosY2 - inFldHgt - picMrgHor,	inFldWdt, 	inFldHgt					ui_tooltip `Spread Distance`
+		ui_outfield	str(_stFormat, cuttingWidth),	picPosX1 + picWdt1 + 2,		picPosY1 + 52,						inFldWdt,	outFldHgt, 4 * 	not(bMilledRecess)	ui_tooltip `Distribution Area`
+	endif
+
+	picMrgHor = 4
+
+	ui_infield	"mrOffsetLeft",		0,				picPosY1 + picHgt1 + picMrgHor,	inFldWdt,	inFldHgt ui_tooltip `Left Offset`
+	ui_infield	"mrOffsetRight",	xPos1 + 122,	picPosY1 + picHgt1 + picMrgHor,	inFldWdt,	inFldHgt ui_tooltip `Right Offset`
+
+return
+
+! ==============================================================================
+"pageRepresSettings":
+! ------------------------------------------------------------------------------
+	! Sizes and Positions
+	listFieldID	= TABID_REPRESENTATION
+
+	listFieldPosX	= 0
+	listFieldPosY	= 0
+
+	listFieldWidth	= 444 - listFieldPosX
+	listFieldHeight	= 266 - listFieldPosY
+! ------------------------------------------------------------------------------
+
+	ui_listfield listFieldID, listFieldPosX, listFieldPosY, listFieldWidth, listFieldHeight
+
+! ------------------------------------------------------------------------------
+
+	itemID		= 1
+
+	if bAccessory or bRaisedStrip then
+		ui_listitem itemID, listFieldID, "gs_2D_representation",	0,	""									: itemID = itemID + 1
+
+		ui_listitem itemID, listFieldID, "iAcc2DVisibility",			1, "ui_list_TreadAccessories_hl(1)",uiListItemDesc[11]	\
+			ui_tooltip `Not effective if Tread Accessories are displayed by Model View Options.`	: itemID = itemID + 1
+
+		ui_listitem itemID, listFieldID, "penAccVisible",				1, "ui_list_contourPen_hl(1)",		uiListItemDesc[13]	ui_tooltip uiListItemDesc[13]	: itemID = itemID + 1
+		ui_listitem itemID, listFieldID, "lineAccVisible",				1, "ui_list_contLineType_hl(1)",	uiListItemDesc[14]	ui_tooltip uiListItemDesc[14]	: itemID = itemID + 1
+
+		ui_listitem itemID, listFieldID, "penAccHidden",				1, "ui_list_contourPen_hl(1)",		uiListItemDesc[16]	ui_tooltip uiListItemDesc[16]	: itemID = itemID + 1
+		ui_listitem itemID, listFieldID, "lineAccHidden",				1, "ui_list_contLineType_hl(1)",	uiListItemDesc[17]	ui_tooltip uiListItemDesc[17]	: itemID = itemID + 1
+	else
+		itemID = itemID + 7
+	endif
+
+	ui_listitem itemID, listFieldID, "gs_3D_representation",		0,	""										: itemID = itemID + 1
+	ui_listitem itemID, listFieldID, "gs_cont_pen",						1,	"ui_list_3DPen_hl(1)"				: itemID = itemID + 1
+	ui_listitem itemID, listFieldID, "penSection",						1,	"ui_list_cutPen_hl(1)"				: itemID = itemID + 1
+	ui_listitem itemID, listFieldID, "gs_resol",						1,	"ui_list_resol_hl(1)"				: itemID = itemID + 1
+
+	ui_listitem itemID, listFieldID, "gs_material",					0,	""	 									: itemID = itemID + 1
+	ui_listitem itemID, listFieldID, "structureBMat",					1,	"ui_list_BuildingMaterial_hl(1)"	: itemID = itemID + 1
+
+	if bAccessory then
+		if iAccessory = ACC_NONSLIPBAND then
+			ui_listitem itemID, listFieldID, "bmatNonSlipBand",				1,	"ui_list_BuildingMaterial_hl(1)"	: itemID = itemID + 1
+		else
+			ui_listitem itemID, listFieldID, "bmatEdgeProtection",			1,	"ui_list_BuildingMaterial_hl(1)"	: itemID = itemID + 1
+		endif
+	else
+		itemID = itemID + 3
+	endif
+
+	ui_listitem itemID, listFieldID, "bOverrideStructureSurface",		1,	"ui_list_SurfaceOverride_hl(1)"		: itemID = itemID + 1
+
+	if bAccessory then
+		ui_listitem itemID, listFieldID, "bOverrideAccessorySurface",	1,	"ui_list_SurfaceOverride_hl(1)"		: itemID = itemID + 1
+	else
+		itemID = itemID + 1
+	endif
+
+	if bOverrideStructureSurface then
+		ui_listitem itemID, listFieldID, "treadSurface",				1,	"ui_list_surface_hl(1)"				: itemID = itemID + 1
+	else
+		itemID = itemID + 1
+	endif
+
+	if bAccessory then
+		if bOverrideAccessorySurface then
+			if iAccessory = ACC_NONSLIPBAND then
+				ui_listitem itemID, listFieldID, "matBand",				1,	"ui_list_surface_hl(1)"				: itemID = itemID + 1
+			else
+				ui_listitem itemID, listFieldID, "matEdgeProtection",	1,	"ui_list_surface_hl(1)"				: itemID = itemID + 1
+			endif
+		else
+			itemID = itemID + 1
+		endif
+	else
+		itemID = itemID + 1
+	endif
+
+	file_dependence	"ui_list_3DPen_hl(1)"
+	file_dependence	"ui_list_cutPen_hl(1)"
+	file_dependence	"ui_list_contourPen_hl(1)"
+	file_dependence	"ui_list_resol_hl(1)"
+	file_dependence	"ui_list_BuildingMaterial_hl(1)"
+	file_dependence	"ui_list_SurfaceOverride_hl(1)"
+	file_dependence	"ui_list_surface_hl(1)"
+	file_dependence	"ui_list_contLineType_hl(1)"
+
+return
+
+

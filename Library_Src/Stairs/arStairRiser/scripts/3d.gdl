@@ -1,0 +1,437 @@
+﻿if GLOB_STRUCTURE_DISPLAY >= 1 then
+	exit
+endif
+
+
+_riserSlantingAngle	= RISER_SLANT_ANGLE
+
+_toler = 0.001
+toler _toler
+
+! ===============================================================================
+! Check Riser Validity
+! ===============================================================================
+
+_bRiserExists		= 0
+_bDiffXCoordsNum	= 0
+_bDiffYCoordsNum	= 0
+for tt = 1 to vardim1(STAIR_RISER_GEOMETRY)
+	_currXCoord	= STAIR_RISER_GEOMETRY[tt][1]
+	_currYCoord	= STAIR_RISER_GEOMETRY[tt][2]
+	if tt > 1 then
+		if abs(_lastXCoord - _currXCoord) > eps then
+			_bDiffXCoordsNum = _bDiffXCoordsNum + 1
+		endif
+		if abs(_lastYCoord - _currYCoord) > eps then
+			_bDiffYCoordsNum = _bDiffYCoordsNum + 1
+		endif
+	endif
+	if _bDiffXCoordsNum + _bDiffYCoordsNum > eps then
+		_bRiserExists	= 1
+		tt = vardim1(STAIR_RISER_GEOMETRY)
+	endif
+	_lastXCoord = _currXCoord
+	_lastYCoord = _currYCoord
+next tt
+if _bRiserExists = 0 then end
+
+
+building_material structureBMat
+
+if bOverrideStructureSurface then
+	material riserSurface
+endif
+
+pen gs_cont_pen
+SECT_ATTRS{2} penSection
+
+! ==============================================================================
+! Draw Riser
+! ==============================================================================
+
+group "basicRiser"
+	call "basicStairRiser_m" parameters all
+endgroup
+
+! ==============================================================================
+! Draw Reveal
+! ==============================================================================
+
+group "riserReveal"
+	if _bEnableRiserReveal then
+		gosub "drawReveal"
+	endif
+endgroup
+
+
+if _bEnableRiserReveal then
+	placegroup subgroup("basicRiser", "riserReveal")
+else
+	placegroup "basicRiser"
+
+	killgroup "basicRiser"
+endif
+
+! ==============================================================================
+end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! en
+! ==============================================================================
+
+
+
+"drawReveal":
+
+	! ==========================================================================
+	! Collect Reveal Tube Data
+	! ==========================================================================
+
+	dim	_revealPathGeom[][]
+
+	gosub "collectRevealData"
+
+
+	! ==============================================================================
+	! Basic Calculations
+	! ==============================================================================
+	
+	_vertexNum				= vardim1(_revealPathGeom)				!!! Number of Vertexes
+	_vertexNumForSideOrder	= vardim1(_revealPathGeom) - 1			!!! Number of Vertexes W/O end Vertex
+	_edgeNum				= vardim1(_revealPathGeom)				!!! Number of Edges
+	
+	dim	_archedEdgeDatas[][]		!!! [][1] - Index of Arched Edge,	[][2] - Number of Segments in Arched Edge
+	dim	_segmentDatas[][]			!!! [][1] - X coord of Segment,		[][2] - Y coord of Segment
+	dim	_riserEdgeIndexes[]			!!! Indexes/Order of Edges on Riser
+	dim	_currEdgeIndexes[]			!!! Indexes/Order of Edges on Current Side
+	
+	for iii = 1 to _edgeNum
+		_riserEdgeIndexes[iii] = iii
+	next iii
+
+
+	! ==========================================================================
+	! Calculating Arched Edges
+	! ==========================================================================
+
+	gosub "archedSegmentsCalc"
+
+
+	! ==========================================================================
+	! Get Riser Path
+	! ==========================================================================
+
+	gosub "getRiserPath"
+
+
+	! ==========================================================================
+	! Draw Reveal
+	! ==========================================================================
+
+	material matReveal
+
+	tube 4, nsp / 4, 1 + 2 + 16 + 32,
+		-riserRevealWidthTop / tan(_riserSlantingAngle) - riserRevealDepth / sin(_riserSlantingAngle) + EPS,												-riserRevealWidthTop, 0,
+		-riserRevealWidthTop / tan(_riserSlantingAngle) + riserRevealDepth / sin(_riserSlantingAngle) - EPS,												-riserRevealWidthTop, 0,
+		-RISER_HEIGHT / tan(_riserSlantingAngle) + riserRevealWidthBottom / tan(_riserSlantingAngle) + riserRevealDepth / sin(_riserSlantingAngle) - EPS,	-RISER_HEIGHT + riserRevealWidthBottom, 0,
+		-RISER_HEIGHT / tan(_riserSlantingAngle) + riserRevealWidthBottom / tan(_riserSlantingAngle) - riserRevealDepth / sin(_riserSlantingAngle) + EPS,	-RISER_HEIGHT + riserRevealWidthBottom, 0,
+
+		get(nsp)
+
+return
+
+
+"collectRevealData":
+
+	! ==========================================================================
+	! Collect Reveal Tube Data
+	! ==========================================================================
+
+	_numRiserVertex	= vardim1(STAIR_RISER_GEOMETRY)
+
+	k = 1
+	for i = 1 to _numRiserVertex - 1
+		if i = 1 then
+			! Tube Start point
+			_revealPathGeom[k][1]	= STAIR_RISER_GEOMETRY[1][1]
+			_revealPathGeom[k][2]	= STAIR_RISER_GEOMETRY[1][2]
+			_revealPathGeom[k][3]	= 0
+			k = k + 1
+
+			_iInsertionToPoint	= 1
+			_iBenchmarkPoint	= 2
+			_currAngle			= 0
+
+			if abs(STAIR_RISER_GEOMETRY[1][3]) > eps then
+				_currAngle		= STAIR_RISER_GEOMETRY[1][3]
+			endif
+
+			dict _inserted
+			gosub "insertPoint"	! returns _inserted.point, _inserted.angle
+
+			_revealPathGeom[k][1]	= _inserted.point.x
+			_revealPathGeom[k][2]	= _inserted.point.y
+
+			! Modify first arc angle to inserted point
+			if abs(STAIR_RISER_GEOMETRY[1][3]) > eps then
+				_actArcAngle		= STAIR_RISER_GEOMETRY[1][3]
+				_edgeStartXCoord	= STAIR_RISER_GEOMETRY[1][1]
+				_edgeStartYCoord	= STAIR_RISER_GEOMETRY[1][2]
+
+				_edgeEndXCoord 		= STAIR_RISER_GEOMETRY[2][1]
+				_edgeEndYCoord 		= STAIR_RISER_GEOMETRY[2][2]
+
+				gosub "calculateEdgeAngleAndLength"
+
+				_actArcAngle = _actArcAngle - _inserted.angle
+
+				_revealPathGeom[k][3]	= _actArcAngle
+			else
+				_revealPathGeom[k][3]	= 0
+			endif
+			k = k + 1
+		else
+			_revealPathGeom[k][1]	= STAIR_RISER_GEOMETRY[i][1]
+			_revealPathGeom[k][2]	= STAIR_RISER_GEOMETRY[i][2]
+			_revealPathGeom[k][3]	= STAIR_RISER_GEOMETRY[i][3]
+			k = k + 1
+		endif
+		if i = _numRiserVertex - 1 then
+			_iInsertionToPoint	= _numRiserVertex
+			_iBenchmarkPoint	= _numRiserVertex-1
+			_currAngle			= 0
+
+			if abs(STAIR_RISER_GEOMETRY[_numRiserVertex-1][3]) > eps then
+				_currAngle		= -STAIR_RISER_GEOMETRY[_numRiserVertex-1][3]
+			endif
+
+			dict _inserted
+			gosub "insertPoint"	! returns _inserted.point, _inserted.angle
+
+			_revealPathGeom[k][1]	= _inserted.point.x
+			_revealPathGeom[k][2]	= _inserted.point.y
+
+			! Modify last arc angle to inserted point
+			if abs(STAIR_RISER_GEOMETRY[_numRiserVertex-1][3]) > eps then
+				if _numRiserVertex > 2 then
+					_actArcAngle	= STAIR_RISER_GEOMETRY[_numRiserVertex-1][3]
+				else
+					_actArcAngle	= _actArcAngle
+				endif
+				_edgeStartXCoord	= STAIR_RISER_GEOMETRY[_numRiserVertex-1][1]
+				_edgeStartYCoord	= STAIR_RISER_GEOMETRY[_numRiserVertex-1][2]
+
+				_edgeEndXCoord 		= STAIR_RISER_GEOMETRY[_numRiserVertex][1]
+				_edgeEndYCoord 		= STAIR_RISER_GEOMETRY[_numRiserVertex][2]
+
+				gosub "calculateEdgeAngleAndLength"
+
+				_actArcAngle = _actArcAngle + _inserted.angle
+
+				_revealPathGeom[k-1][3]	= _actArcAngle
+			else
+				_revealPathGeom[k-1][3]	= 0
+			endif
+			_revealPathGeom[k][3]	= 0
+			k = k + 1
+
+			! Tube End point
+			_revealPathGeom[k][1]	= STAIR_RISER_GEOMETRY[_numRiserVertex][1]
+			_revealPathGeom[k][2]	= STAIR_RISER_GEOMETRY[_numRiserVertex][2]
+			_revealPathGeom[k][3]	= 0
+		endif
+	next i
+
+return
+
+
+"getRiserPath":
+
+	! ==========================================================================
+	! Get Riser Path
+	! ==========================================================================
+
+	_currEdgesNum		= _edgeNum
+	_currEdgeIndexes	= _riserEdgeIndexes
+
+	put _revealPathGeom[1][1], _revealPathGeom[1][2], 0, 0
+
+	for zz = 2 to _vertexNum - 1
+		_actualVertexNum = _currEdgeIndexes[zz]
+		put _revealPathGeom[_actualVertexNum][1], _revealPathGeom[_actualVertexNum][2], 0, 0
+
+		_startSegmIdx = 1
+		for ttt = 1 to vardim1(_archedEdgeDatas)
+			if	_currEdgeIndexes[zz] = _archedEdgeDatas[ttt][1] &\
+				_archedEdgeDatas[ttt][2] > 0 then
+
+				for vvv = 1 to ttt - 1
+					_startSegmIdx = _startSegmIdx + _archedEdgeDatas[vvv][2]
+				next vvv
+
+				for kkk = _startSegmIdx to _startSegmIdx + _archedEdgeDatas[ttt][2] - 1
+					put _segmentDatas[kkk][1], _segmentDatas[kkk][2], 0, 0
+				next kkk
+				ttt = vardim1(_archedEdgeDatas)
+			endif
+		next ttt
+	next zz
+
+	put _revealPathGeom[_vertexNum][1], _revealPathGeom[_vertexNum][2], 0, 0
+return
+
+
+"archedSegmentsCalc":
+
+	! ==========================================================================
+	! Calculation for Arched Segments
+	! ==========================================================================
+
+	centerX			= 0
+	centerY			= 0
+	_actArchIdx		= 1
+	_actSegmentIdx	= 1
+
+	for ii = 2 to _vertexNum - 2						! Last Vertex point has no angle
+		if abs(_revealPathGeom[ii][3]) > eps then									
+
+			centerX = (_revealPathGeom[ii][1] + _revealPathGeom[ii + 1][1]) / 2
+			centerY = (_revealPathGeom[ii][2] + _revealPathGeom[ii + 1][2]) / 2
+
+			h = sqr ((_revealPathGeom[ii][1] - centerX)^2 + (_revealPathGeom[ii][2] - centerY)^2)
+			t = tan ( abs(_revealPathGeom[ii][3]) / 2.0)
+			if (abs (t) > eps) then
+				m = h / t
+			else
+				m = 0
+			endif
+
+			__archAngle = _revealPathGeom[ii][3]
+
+			dirX = _revealPathGeom[ii + 1][1] - centerX
+			dirY = _revealPathGeom[ii + 1][2] - centerY
+			len = sqr (dirX^2 + dirY^2)
+
+			normX = dirY * sgn(__archAngle)
+			normY = (-1) * dirX * sgn(__archAngle)
+
+			if abs(len) > eps then
+				normX = normX / len
+				normY = normY / len
+			endif
+
+			centerX = centerX - m * normX
+			centerY = centerY - m * normY
+
+			_edgeStartXCoord	= _revealPathGeom[ii][1]
+			_edgeStartYCoord	= _revealPathGeom[ii][2]
+			_edgeEndXCoord		= _revealPathGeom[ii + 1][1]
+			_edgeEndYCoord		= _revealPathGeom[ii + 1][2]
+			gosub "calculateEdgeAngleAndLength"
+
+			_radius	= _edgeLength / 2 / (sin(abs(__archAngle / 2)))
+
+			gosub "segmentPointCollector"
+
+			_archedEdgeDatas[_actArchIdx][1] = ii 
+			_archedEdgeDatas[_actArchIdx][2] = _numOfSegments - 1
+
+			_actArchIdx = _actArchIdx + 1
+		endif
+	next ii
+
+return
+
+
+"segmentPointCollector":
+
+	! ===============================================================================
+	! Collect Segmented Point coords
+	! ===============================================================================
+
+	_tubeResol		= ceil((360 / acs((_radius - _toler) / _radius)) / 2)
+	_numOfSegments	= abs(_tubeResol / 360 * (__archAngle))
+
+	if _numOfSegments - int(_numOfSegments) < 0.5 then
+		_numOfSegments = int(_numOfSegments)
+	else
+		_numOfSegments = int(_numOfSegments) + 1
+	endif
+	_numOfSegments = max(_numOfSegments, 1)
+
+	if _numOfSegments > 0 then
+		_edgeStartXCoord	= _revealPathGeom[ii][1]
+		_edgeStartYCoord	= _revealPathGeom[ii][2]
+		_edgeEndXCoord	= centerX
+		_edgeEndYCoord	= centerY
+		gosub "calculateEdgeAngleAndLength"
+
+		_segmentAngle = __archAngle / _numOfSegments
+		_actArchAngle = _edgeAngle + _segmentAngle
+
+		for ik = 1 to _numOfSegments - 1
+			_segmentDatas[_actSegmentIdx][1] = centerX - _radius * cos(_actArchAngle)
+			_segmentDatas[_actSegmentIdx][2] = centerY - _radius * sin(_actArchAngle)
+			_actArchAngle	= _actArchAngle + _segmentAngle
+			_actSegmentIdx	= _actSegmentIdx + 1
+		next ik
+	endif
+
+return
+
+
+"calculateEdgeAngleAndLength":
+
+	! ==========================================================================
+	! Calculate Current Edge Angle and Length
+	! ==========================================================================
+
+	_edgeLength		= sqr((_edgeStartYCoord - _edgeEndYCoord)**2 + (_edgeStartXCoord - _edgeEndXCoord)**2)
+
+	if abs(_edgeStartXCoord - _edgeEndXCoord) < eps then
+		if _edgeStartYCoord > _edgeEndYCoord then
+			_edgeAngle	= -90
+		else
+			_edgeAngle	= 90
+		endif
+	else
+		if abs(_edgeStartYCoord - _edgeEndYCoord) < eps then
+			if _edgeStartXCoord > _edgeEndXCoord then
+				_edgeAngle	= 180
+			else
+				_edgeAngle	= 0
+			endif
+		else
+			if _edgeStartXCoord > _edgeEndXCoord then
+				_edgeAngle	= 180 + atn((_edgeStartYCoord - _edgeEndYCoord) / (_edgeStartXCoord - _edgeEndXCoord))		!!! 4
+			else
+				if _edgeStartYCoord > _edgeEndYCoord then
+					_edgeAngle	= atn((_edgeEndYCoord - _edgeStartYCoord) / (_edgeEndXCoord - _edgeStartXCoord))			!!! 1
+				else
+					_edgeAngle	= atn((_edgeStartYCoord - _edgeEndYCoord) / (_edgeStartXCoord - _edgeEndXCoord))			!!! 2
+				endif
+			endif
+		endif
+	endif
+
+return
+
+
+"insertPoint":
+	dict _segment
+	_segment.begPoint.x		= STAIR_RISER_GEOMETRY[_iInsertionToPoint][1]	! Insert point after this point
+	_segment.begPoint.y		= STAIR_RISER_GEOMETRY[_iInsertionToPoint][2]
+	_segment.endPoint.x		= STAIR_RISER_GEOMETRY[_iBenchmarkPoint][1]		! Benchmark point to control direction of insertion
+	_segment.endPoint.y		= STAIR_RISER_GEOMETRY[_iBenchmarkPoint][2]
+	if abs(_currAngle) < EPS then
+		_segment.type		= EDGE_STRAIGHT
+	else
+		_segment.type		= EDGE_CURVED
+		_segment.arcAngle	= _currAngle									! Angle of arched segment
+	endif
+
+	dict _inserted
+	call "BasicGeometry"	parameters	iFunction		= 8,					! INSERT_POINT_TO_SEGMENT_2D
+										segment			= _segment,
+										insertionDist	= riserRevealWidthSide,		! Insertion Distance
+					returned_parameters	_inserted
+
+return
+

@@ -1,0 +1,36 @@
+﻿offset = (A - pipeDistance) / 2
+
+hotspot2 0, 0
+hotspot2 pipeDistance, 0
+hotspot2 -offset, 0
+hotspot2 -offset, B
+hotspot2 A - offset, 0
+hotspot2 A - offset, B
+
+pen penContour
+fill fillBg
+
+poly2_b 8, 
+	FRAMEFILL_DRAWCONTOUR + FRAMEFILL_DRAWFILL + FRAMEFILL_CLOSEOPENPOLYGON + FRAMEFILL_LOCALFILLORIENTATION, 
+	penFill, penFillBg,
+	-offset, 0, 1,
+	-offset, B, 1,
+
+	-pipeInternalDiameter / 2,	B, 1,
+	-pipeInternalDiameter / 2,	B + PIPE_EXTENSION_LENGTH, 1,
+	pipeInternalDiameter / 2,	B + PIPE_EXTENSION_LENGTH, 1,
+	pipeInternalDiameter / 2,	B, 1,
+
+	A - offset, B, 1,
+	A - offset, 0, 1
+
+curvatureHeight = CURVATURE_RADIUS - sqr((ZZYZX / 2)^2 + (CURVATURE_RADIUS)^2)
+
+! linija zaobljenosti
+line2 -offset, B + curvatureHeight, A - offset, B + curvatureHeight
+
+! lok linija cevi po ohišju (pribljižna)
+poly2_ 3, FRAMEFILL_DRAWCONTOUR,
+	-pipeInternalDiameter / 2, B, 1,
+	0, CURVATURE_RADIUS + B, 900,
+	0, 2 * atn(pipeInternalDiameter / 2 / CURVATURE_RADIUS), 4000 + 1

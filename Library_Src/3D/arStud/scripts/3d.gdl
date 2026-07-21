@@ -1,0 +1,63 @@
+﻿unId = 1
+if orientation = ORIENTATION_HORIZONTAL then
+	
+	! length editing hotspot
+	hotspot 0, 				0, 	studB/2, unId, studLength, 1: unId = unId + 1
+	hotspot studLength, 	0, 	studB/2, unId, studLength, 2: unId = unId + 1
+	hotspot -1, 			0, 	studB/2, unId, studLength, 3: unId = unId + 1
+
+	! corner hotspots
+	hotspot 0,				-studA/2, 	0, 		unId: unId = unId + 1
+	hotspot 0,				studA/2, 	0, 		unId: unId = unId + 1
+	hotspot 0,				-studA/2, 	studB, 	unId: unId = unId + 1
+	hotspot 0,				studA/2, 	studB, 	unId: unId = unId + 1
+
+	hotspot studLength,		-studA/2, 	0, 		unId: unId = unId + 1
+	hotspot studLength,		studA/2, 	0, 		unId: unId = unId + 1
+	hotspot studLength,		-studA/2, 	studB, 	unId: unId = unId + 1
+	hotspot studLength,		studA/2, 	studB, 	unId: unId = unId + 1
+
+	rotz 90
+	rotx 90
+	addy studB/2
+
+	gosub "drawStud"
+else
+	! height editing hotspot
+	hotspot 0, 0, 0, 			unId, studLength, 1: unId = unId + 1
+	hotspot 0, 0, studLength,	unId, studLength, 2: unId = unId + 1
+	hotspot 0, 0, -1, 			unId, studLength, 3: unId = unId + 1
+
+	! corner hotspots
+	hotspot studA/2, studB/2, 0, unId: unId = unId + 1
+	hotspot studA/2, -studB/2, 0, unId: unId = unId + 1
+	hotspot -studA/2, studB/2, 0, unId: unId = unId + 1
+	hotspot -studA/2, -studB/2, 0, unId: unId = unId + 1
+
+	hotspot studA/2, studB/2, studLength, unId: unId = unId + 1
+	hotspot studA/2, -studB/2, studLength, unId: unId = unId + 1
+	hotspot -studA/2, studB/2, studLength, unId: unId = unId + 1
+	hotspot -studA/2, -studB/2, studLength, unId: unId = unId + 1
+
+	totalWidth = studCount * studA
+	addx -totalWidth/2 + studA/2
+	for i = 1 to studCount
+		gosub "drawStud"
+		addx studA
+	next i
+	del top
+endif
+
+end
+
+
+"drawStud":
+
+	set building_material mat1
+	prism 3, studLength,	0, 0, -studA/2, -studB/2, studA/2, -studB/2		! bottom left
+	prism 3, studLength,	0, 0, -studA/2, studB/2, studA/2, studB/2		! top left
+	set building_material mat2
+	prism 3, studLength,	0, 0, -studA/2, studB/2, -studA/2, -studB/2		! left
+	prism 3, studLength,	0, 0, studA/2, studB/2, studA/2, -studB/2		! right
+
+	return

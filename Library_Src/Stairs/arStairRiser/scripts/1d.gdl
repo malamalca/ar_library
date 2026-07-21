@@ -1,0 +1,11 @@
+﻿
+
+eps = 0.0001
+
+RISER_ON_TREAD		= 0
+RISER_BEHIND_TREAD	= 1
+
+EDGE_STRAIGHT	= 0
+EDGE_CURVED		= 1
+
+_bEnableRiserReveal	= bRiserReveal & ((RISER_HEIGHT - riserRevealWidthTop - riserRevealWidthBottom) > eps)

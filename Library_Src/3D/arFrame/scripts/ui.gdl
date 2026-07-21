@@ -1,0 +1,233 @@
+ui_dialog "ARHIM Frame"
+UI_CURRENT_PAGE gs_ui_current_page
+
+xLeft = 20
+
+yTop = 5
+yLabel = 14
+yRow = 40
+
+iPageIDRoot 			= -1
+iPageIDGeometry			=  1
+iPageIDStuds			=  2
+iPageIDBlocking			=  3
+iPageID2DRepr			=  4
+iPageID3DRepr			=  5
+
+
+! ==============================================================================
+!UI_PAGES
+! ==============================================================================
+
+	UI_PAGE iPageIDGeometry, iPageIDRoot, 'Geometry', 51
+		gosub "geometryPage"
+
+	UI_PAGE iPageIDStuds, iPageIDRoot, 'Stud Dimensions', 55
+		gosub "studsPage"
+
+	UI_PAGE iPageIDBlocking, iPageIDRoot, 'Blocking', 55
+		gosub "blockingPage"
+
+	UI_PAGE iPageID2DRepr, iPageIDRoot, '2D Representation', 54
+		gosub "2DRepr"
+
+	UI_PAGE iPageID3DRepr, iPageIDRoot, '3D Representation', 54
+		gosub "3DRepr"
+END
+
+
+! ==============================================================================
+!SUBROUTINES
+! ==============================================================================
+
+! ------------------------------------------------------------------------------
+"geometryPage":
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Length:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "A", 		xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 90
+	ui_outfield "Depth:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "B", 		xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 180
+	ui_outfield "Height:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "ZZYZX", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	! ---- Left diagonal cut ----
+	aRow = aRow + 1.4
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
+	ui_outfield "Diagonal Cut (Left):", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel + 4, 130, 14
+	ui_separator xLeft + xOffset + 110, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Cut Height:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "cutHeight", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 90
+	ui_outfield "Cut Angle:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "cutAngle", 		xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	! ---- Right diagonal cut ----
+	aRow = aRow + 1.4
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
+	ui_outfield "Diagonal Cut (Right):", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel + 4, 130, 14
+	ui_separator xLeft + xOffset + 110, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Cut Height:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "cutHeight2", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 90
+	ui_outfield "Cut Angle:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "cutAngle2", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+return
+
+! ------------------------------------------------------------------------------
+"studsPage":
+	! ---- In-between studs ----
+	aRow = 1
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
+	ui_outfield "In-Between Studs:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel + 4, 120, 14
+	ui_separator xLeft + xOffset + 105, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Number of Studs:", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "n", 					xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 90
+	ui_outfield "Default Spacing:", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "defaultStudSpacing", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 180
+	ui_outfield "Stud Width:", 			xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "defaultStudWidth", 		xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	! ---- Bottom stud ----
+	aRow = aRow + 1.4
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
+	ui_infield "lblBottomElement", 		xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel - 1, 15, 24
+	ui_outfield "Bottom Stud", 			xLeft + xOffset + 20, yTop + (aRow - 1) * yRow + yLabel + 4, 110, 14
+	ui_separator xLeft + xOffset + 110, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Height:", 				xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "bottomElementHeight", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	! ---- Top stud ----
+	aRow = aRow + 1.4
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
+	ui_infield "lblTopElement", 		xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel - 1, 15, 24
+	ui_outfield "Top Stud", 			xLeft + xOffset + 20, yTop + (aRow - 1) * yRow + yLabel + 4, 110, 14
+	ui_separator xLeft + xOffset + 110, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Height:", 				xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "topElementHeight", 		xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+return
+
+! ------------------------------------------------------------------------------
+"blockingPage":
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Horizontal blocking (noggins) between studs. Pick a stud bay,", xLeft + xOffset, yTop + (aRow - 1) * yRow, 430, 14
+	ui_outfield "then enter up to three blocking heights (0 = none).", xLeft + xOffset, yTop + (aRow - 1) * yRow + 14, 430, 14
+
+	! ---- bay selector ----
+	aRow = aRow + 1
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
+	ui_outfield "Stud Bay:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel + 4, 70, 14
+	ui_infield "ui_hz_bay", xLeft + xOffset + 65, 		yTop + (aRow - 1) * yRow + yLabel, 50, 22
+	ui_separator xLeft + xOffset + 125, 				yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+
+	! ---- blocking heights for the selected bay ----
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Height 1:", 	xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "ui_hz_1", 		xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 90
+	ui_outfield "Height 2:", 	xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "ui_hz_2", 		xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 180
+	ui_outfield "Height 3:", 	xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "ui_hz_3", 		xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+return
+
+! ------------------------------------------------------------------------------
+"2DRepr":
+	aRow = 1
+	xOffset = 0
+	ui_infield "showStudsIn2d", 	xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel - 5, 15, 24
+	ui_outfield "Show Studs in 2D", xLeft + xOffset + 20, 	yTop + (aRow - 1) * yRow + yLabel, 160, 14
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Frame Fill:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "frameFill", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 160, 24
+
+	aRow = aRow + 1.2
+	xOffset = 0
+	ui_outfield "Fill Pen:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "pen_fill", 		xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 40, 24
+
+	xOffset = 90
+	ui_outfield "Fill Bg Pen:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "pen_fill_bg", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 40, 24
+
+	xOffset = 180
+	ui_outfield "Stud Outline Pen:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "defaultStudPen", 	xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 40, 24
+
+	! ---- Helper lines ----
+	aRow = aRow + 1.4
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
+	ui_infield "lblHelperLines", 	xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel - 1, 15, 24
+	ui_outfield "Helper Lines", xLeft + xOffset + 20, 		yTop + (aRow - 1) * yRow + yLabel + 4, 120, 14
+	ui_separator xLeft + xOffset + 110, 				yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Offset:", 			xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "helperLineOffset", 	xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 90
+	ui_outfield "Spacing:", 		xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "helperLineSpacing", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Line Type:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "helperLineType", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 160, 24
+
+	xOffset = 180
+	ui_outfield "Pen:", 		xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "helperLinePen", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 40, 24
+return
+
+! ------------------------------------------------------------------------------
+"3DRepr":
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Stud Material 1:", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 120, 14
+	ui_infield "studMat1", 				xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 200, 24
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Stud Material 2:", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 120, 14
+	ui_infield "studMat2", 				xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 200, 24
+return

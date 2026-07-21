@@ -1,0 +1,74 @@
+﻿hideparameter all
+
+dim ui_pipe_index_range[]
+for i = 1 to n-1: ui_pipe_index_range[i] = i: next i
+values "ui_pipe_index" ui_pipe_index_range
+
+if GLOB_MODPAR_NAME = "ui_pipe_index" then
+	ui_pipe_diameter = pipeDimensions[ui_pipe_index]
+	parameters ui_pipe_diameter = ui_pipe_diameter
+endif
+
+if GLOB_MODPAR_NAME = "ui_pipe_diameter" then
+	pipeDimensions[ui_pipe_index] = ui_pipe_diameter
+endif
+
+
+
+dim ui_shaft_index_range[]
+if showLastShaft then shafts_count = n else shafts_count = n-1
+for i = 1 to shafts_count: ui_shaft_index_range[i] = i: next i
+values "ui_shaft_index" ui_shaft_index_range
+
+if GLOB_MODPAR_NAME = "ui_shaft_index" then
+	ui_shaft_dim1 = shaftDataDimensions[ui_shaft_index][DIM_SHAFT_DIM1]: parameters ui_shaft_dim1 = ui_shaft_dim1
+	ui_shaft_height = shaftDataDimensions[ui_shaft_index][DIM_SHAFT_HEIGHT]: parameters ui_shaft_height = ui_shaft_height
+endif
+
+if GLOB_MODPAR_NAME = "ui_shaft_dim1" then shaftDataDimensions[ui_shaft_index][DIM_SHAFT_DIM1] = ui_shaft_dim1
+if GLOB_MODPAR_NAME = "ui_shaft_height" then shaftDataDimensions[ui_shaft_index][DIM_SHAFT_HEIGHT] = ui_shaft_height
+
+if GLOB_MODPAR_NAME = "shaftDataDimensions" then
+	for i = 1 to n
+		if shaftDataDimensions[i][DIM_SHAFT_DIM1] < nix then shaftDataDimensions[i][DIM_SHAFT_DIM1] = 0.0
+		if shaftDataDimensions[i][DIM_SHAFT_HEIGHT] < nix then shaftDataDimensions[i][DIM_SHAFT_HEIGHT] = 0.0
+	next i
+endif
+
+
+
+parameters xyz = xyz, n = n, xyz_ea = xyz_e
+parameters shaftDataDimensions = shaftDataDimensions, shaftDataOptions = shaftDataOptions, pipeDimensions = pipeDimensions
+parameters totalLength = totalLength
+
+lock "totalLength"
+
+
+dim font_names[]
+result = request("FONTNAMES_LIST", "", font_names)
+
+values "pipeCaptionTextFont" font_names
+values "shaftCaptionTextFont" font_names
+values "profileTextFont" font_names
+
+values{2} "showPipeCaption" 	SHOWTEXT_ALWAYS, "Always",
+	SHOWTEXT_NEVER, "Never",
+	SHOWTEXT_MVO, "By MVO"
+
+values{2} "showShaftCaption" 	SHOWTEXT_ALWAYS, "Always",
+	SHOWTEXT_NEVER, "Never",
+	SHOWTEXT_MVO, "By MVO"
+
+if pipeCaptionTextStyleByMVO then
+	lock "pipeCaptionTextPen"
+	lock "pipeCaptionTextFont"
+	lock "pipeCaptionTextSize"
+	lock "pipeCaptionTextStyle"
+endif
+
+if shaftCaptionTextStyleByMVO then
+	lock "shaftCaptionTextPen"
+	lock "shaftCaptionTextFont"
+	lock "shaftCaptionTextSize"
+	lock "shaftCaptionTextStyle"
+endif

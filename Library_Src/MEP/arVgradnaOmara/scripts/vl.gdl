@@ -1,0 +1,9 @@
+﻿values{2} "bShowText" 	SHOWTEXT_ALWAYS, "Always",
+						SHOWTEXT_NEVER, "Never",
+						SHOWTEXT_MVO, "By MVO"
+
+if bTextStyleByMVO then
+	hideparameter "textPen"
+	hideparameter "textFont"
+	hideparameter "textSize"
+endif

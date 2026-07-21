@@ -1,0 +1,9 @@
+﻿
+ui_dialog `Thickness`,444,266
+
+ui_outfield `At End (1):`, 5, 55, 140, 35
+ui_infield "thickCap", 150, 50, 75, 20
+
+
+ui_pict 1, 250, 5, 191, 136, 1
+

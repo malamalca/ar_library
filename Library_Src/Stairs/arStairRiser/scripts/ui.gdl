@@ -1,0 +1,148 @@
+﻿
+ui_dialog `Riser Component Settings`
+
+
+dim	uiListItemDesc[]
+	uiListItemDesc[1]	= `Uncut Line Pen`
+	uiListItemDesc[2]	= `Cut Line Pen`
+	uiListItemDesc[3]	= `Building Materials and Surfaces`
+	uiListItemDesc[4]	= `Building Material`
+	uiListItemDesc[5]	= `Override Surfaces`
+	uiListItemDesc[6]	= `Riser Surface`
+	uiListItemDesc[7]	= `Cut Surfaces`
+	uiListItemDesc[8]	= `Override Cut Fill Pens`
+	uiListItemDesc[9]	= `Cut Fill Foreground Pen`
+	uiListItemDesc[10]	= `Cut Fill Background Pen`
+	uiListItemDesc[11]	= `Reveal Surface`
+	uiListItemDesc[12]	= `3D Representation`
+
+_penContPic	= "ui_list_3DPen_hl(1)"
+_penCutPic	= "ui_list_cutPen_hl(1)"
+_buiMatPic	= "ui_list_BuildingMaterial_hl(1)"
+_surfacePic	= "ui_list_surface_hl(1)"
+_surORidPic	= "ui_list_SurfaceOverride_hl(1)"
+_filORidPic	= "ui_list_OverrideCutFillPens_hl(1)"
+_fillFgPic	= "ui_list_fillPen_hl(1)"
+_fillBgPic	= "ui_list_fillBgPen_hl(1)"
+
+file_dependence "uiTab_StairTread_hl(1)"
+
+file_dependence "ui_list_contourPen_hl(1)"
+file_dependence "ui_list_pencolor_hl(1)"
+file_dependence "ui_list_BuildingMaterial_hl(1)"
+file_dependence "ui_list_surface_hl(1)"
+file_dependence "ui_list_SurfaceOverride_hl(1)"
+file_dependence "ui_list_OverrideCutFillPens_hl(1)"
+file_dependence "ui_list_fillPen_hl(1)"
+file_dependence "ui_list_fillBgPen_hl(1)"
+
+
+! Get Format String
+sFormat = "%m"		! default meter
+reqUnit = request("Model_length_unit", "", sFormat)
+
+
+! ==============================================================================
+! UI Pages
+! ==============================================================================
+
+ui_page 1
+
+	! Sizes and Positions
+	yCurr	= 1
+	yGap	= 3
+
+	xGap	= 3
+
+	boolWdt		= 210
+	inFldWdt	= 90
+	inFldHgt	= 19
+
+	outFldHgt	= 15
+
+	picWdt1	= 81
+	picHgt1	= 53
+	picWdt2	= 148
+	picHgt2	= picHgt1
+
+	xPos1	= 3
+
+	picPosX1	= 39
+	picPosY1	= 46
+	picPosX2	= 265
+	picPosY2	= picPosY1
+! ------------------------------------------------------------------------------
+
+	ui_style 0, 1
+	ui_infield{3}	"bRiserReveal",		xPos1,	yCurr,	boolWdt,		inFldHgt,
+		2, "", 0, 0,
+		0, 0, 0, 0,
+		0, `Riser Reveal`, 0,
+		0, `Riser Reveal`, 1
+
+	ui_style 0, 0
+
+	if ac_RiserPosition = RISER_ON_TREAD then
+		if bRiserReveal then
+			_picIdx1	= 1		! uiRiserRevealSectOn_hl
+			_picIdx2	= 3		! uiRiserRevealFrontOn_hl
+		else
+			_picIdx1	= 2		! uiRiserRevealSectOff_hl
+			_picIdx2	= 4		! uiRiserRevealFrontOff_hl
+		endif
+	else
+		if bRiserReveal then
+			_picIdx1	= 5		! uiBehindTreadRiserRevealSectOn_hl
+			_picIdx2	= 7		! uiBehindTreadRiserRevealSectOff_hl
+		else
+			_picIdx1	= 6		! uiBehindTreadRiserRevealFrontOn_hl
+			_picIdx2	= 8		! uiBehindTreadRiserRevealFrontOff_hl
+		endif
+	endif
+
+	ui_pict	_picIdx1,	picPosX1,	picPosY1,	picWdt1,	picHgt1, 1
+
+	ui_infield{3}	"riserRevealDepth",			picPosX1 - inFldWdt / 3,	picPosY1 - inFldHgt - yGap,	inFldWdt,	inFldHgt		ui_tooltip `Riser Reveal Depth`
+
+
+	ui_pict	_picIdx2,	picPosX2,	picPosY2,	picWdt2,	picHgt2, 1
+
+	ui_infield{3}	"riserRevealWidthTop",		picPosX2 - inFldWdt - xGap,	picPosY2 + 14,				inFldWdt,	inFldHgt		ui_tooltip `Riser Reveal on Top`
+	ui_infield{3}	"riserRevealWidthBottom",	picPosX2 - inFldWdt - xGap,	picPosY2 + 38,				inFldWdt,	inFldHgt		ui_tooltip `Riser Reveal on Bottom`
+
+	ui_infield{3}	"riserRevealWidthSide",		picPosX2 - inFldWdt / 5,	picPosY2 - inFldHgt - yGap,	inFldWdt,	inFldHgt		ui_tooltip `Riser Reveal on Side`
+	ui_outfield	str(sFormat, riserRevealWidthSide),	picPosX2 + 92,			picPosY2 - outFldHgt - yGap,	70,		outFldHgt,	2 + 4*not(bRiserReveal)
+
+
+! ------------------------------------------------------------------------------
+	listFieldID	= 100
+	itemID		= 10
+
+	listFieldPosX	= 0
+	listFieldPosY	= 120
+
+	listFieldWidth	= 444 - listFieldPosX
+	listFieldHeight	= 266 - listFieldPosY
+! ------------------------------------------------------------------------------
+
+	ui_listfield listFieldID, listFieldPosX, listFieldPosY, listFieldWidth, listFieldHeight
+
+! ------------------------------------------------------------------------------
+
+	ui_listitem itemID, listFieldID, "",							0, "",			uiListItemDesc[12]	ui_tooltip uiListItemDesc[12]	: itemID = itemID + 1
+
+	ui_listitem itemID, listFieldID, "gs_cont_pen",					1, _penContPic,	uiListItemDesc[1]	ui_tooltip uiListItemDesc[1]	: itemID = itemID + 1
+	ui_listitem itemID, listFieldID, "penSection",					1, _penCutPic,	uiListItemDesc[2]	ui_tooltip uiListItemDesc[2]	: itemID = itemID + 1
+
+	! ------------------------------------------------------------------------------
+
+	ui_listitem itemID, listFieldID, "",							0, "",			uiListItemDesc[3]	ui_tooltip uiListItemDesc[3]	: itemID = itemID + 1
+	ui_listitem itemID, listFieldID, "structureBMat",				1, _buiMatPic,	uiListItemDesc[4]	ui_tooltip uiListItemDesc[4]	: itemID = itemID + 1
+	ui_listitem itemID, listFieldID, "bOverrideStructureSurface",	1, _surORidPic,	uiListItemDesc[5]	ui_tooltip uiListItemDesc[5]	: itemID = itemID + 1
+
+	if bOverrideStructureSurface then
+		ui_listitem itemID, listFieldID, "riserSurface",			1, _surfacePic,	uiListItemDesc[6]	ui_tooltip uiListItemDesc[6]
+	endif																																: itemID = itemID + 1
+
+	ui_listitem itemID, listFieldID, "matReveal",					1, _surfacePic, uiListItemDesc[11]	ui_tooltip uiListItemDesc[11]	: itemID = itemID + 1
+

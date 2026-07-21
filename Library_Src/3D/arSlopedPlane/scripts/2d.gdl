@@ -1,0 +1,124 @@
+﻿unId = n * 6 + (n-1) * 6 + 6 + 1
+
+if showDirectionArrow then
+	pen penDirectionVector
+	if mode = MODE_VECTOR then	
+		! slope lina main part
+		line2 slopeArrow1X, slopeArrow1Y, slopeArrow2X, slopeArrow2Y
+		! slope line araw arrow
+		_theta = 45
+		_len = 0.5
+		_mag = sqr((slopeArrow2X - slopeArrow1X)^2 + (slopeArrow2Y - slopeArrow1Y)^2)
+		_vvx = (slopeArrow2X - slopeArrow1X)/_mag
+		_vvy = (slopeArrow2Y - slopeArrow1Y)/_mag
+
+		_x3 = slopeArrow1X + _len * (_vvx * cos(_theta) - _vvy * sin(_theta))
+		_y3 = slopeArrow1Y + _len * (_vvx * sin(_theta) + _vvy * cos(_theta))
+		_x4 = slopeArrow1X + _len * (_vvx * cos(-_theta) - _vvy * sin(-_theta))
+		_y4 = slopeArrow1Y + _len * (_vvx * sin(-_theta) + _vvy * cos(-_theta))
+		line2 slopeArrow1X, slopeArrow1Y, _x3, _y3
+		line2 slopeArrow1X, slopeArrow1Y, _x4, _y4
+
+			
+		hotspot2 0, 			slopeArrow1Y, 	unId, 	slopeArrow1X, 129: 	unId = unId + 1
+		hotspot2 slopeArrow1X, 	slopeArrow1Y, 	unId, 	slopeArrow1X, 2: 	unId = unId + 1
+		hotspot2 -1, 			slopeArrow1Y, 	unId, 	slopeArrow1X, 3: 	unId = unId + 1
+
+		hotspot2 slopeArrow1X, 	0, 				unId, 	slopeArrow1Y, 129: 	unId = unId + 1
+		hotspot2 slopeArrow1X, 	slopeArrow1Y, 	unId, 	slopeArrow1Y, 2: 	unId = unId + 1
+		hotspot2 slopeArrow1X, 	-1, 			unId, 	slopeArrow1Y, 3: 	unId = unId + 1
+
+
+		hotspot2 0, 			slopeArrow2Y, 	unId, 	slopeArrow2X, 129: 	unId = unId + 1
+		hotspot2 slopeArrow2X, 	slopeArrow2Y, 	unId, 	slopeArrow2X, 2: 	unId = unId + 1
+		hotspot2 -1, 			slopeArrow2Y, 	unId, 	slopeArrow2X, 3: 	unId = unId + 1
+
+		hotspot2 slopeArrow2X, 	0, 				unId, 	slopeArrow2Y, 129: 	unId = unId + 1
+		hotspot2 slopeArrow2X, 	slopeArrow2Y, 	unId, 	slopeArrow2Y, 2: 	unId = unId + 1
+		hotspot2 slopeArrow2X, 	-1, 			unId, 	slopeArrow2Y, 3: 	unId = unId + 1
+	endif
+endif
+
+if abs(sqr(a^2 + b^2)) < NIX then
+	directionAngle = 0
+else
+	directionAngle = abs(90 - acs(b / sqr(a^2 + b^2)) + SYMB_ROTANGLE)
+endif
+
+if showFill then
+	fillName = "VERTS" + str(rnd(1) * 9000 + 1000, 4, 0)
+
+	define fill fillName 85, 85, 85, 85,
+		85, 85, 85, 85,
+		0.1, 0, 1,
+		1.0, directionAngle, 0.0, 0.0, 1,
+		1.0
+
+	set fill fillName
+endif
+
+ret = request("Level_dimension", "", dimensionFormat)
+
+if showNodeElevations then
+	define style "Internal" fontFace, fontSize / GLOB_SCALE * 100, 2, 0
+	set style "Internal"
+
+	ret = request("Height_of_style", "Internal", textHeight)
+endif
+
+coordBase = GLOB_PROJECT_ALTITUDE + SYMB_POS_Z
+!coordBase = 0
+
+pen penElevations
+!------------------------- base shape --------------------------
+for i = 1 to n
+	! put node coordinates
+	put xyz[i][1], xyz[i][2], 15
+
+	if showNodeElevations then
+		add2 xyz[i][1], xyz[i][2]
+		coordZ = -(a * xyz[i][1] + b * xyz[i][2] + d) / c
+
+		coordPrefix = ""
+		if (coordBase+coordZ) > 0 then coordPrefix = "+"
+		if round_int((coordBase+coordZ) * 10000) = 0 then coordPrefix = "±"
+
+		rot2 SYMB_ROTANGLE
+		text2 0, 0, coordPrefix + str(dimensionFormat, coordBase+coordZ)
+		del 2
+	endif
+next i
+
+
+pen penOutline
+poly2_b n, 1+2+4,
+	penFill, penFillBg,
+	get(n * 3)
+
+
+
+! test point for height
+if showTestPoint then
+	coordZ = -(a * testPointX + b * testPointY + d) / c
+	coordPrefix = ""
+	if (coordBase+coordZ) > 0 then coordPrefix = "+"
+	if round_int((coordBase+coordZ) * 10000) = 0 then coordPrefix = "±"
+
+	add2 testPointX, testPointY
+	rot2 SYMB_ROTANGLE
+	pen penTestPoint
+	set line_type lineTestPoint
+	text2 0, 0, coordPrefix + str(dimensionFormat, coordBase+coordZ)
+	circle2 0, 0, 0.2
+	del 2
+
+	hotspot2 0,			testPointY,	unId,	testPointX,	129: 	unId = unId + 1
+	hotspot2 testPointX,	testPointY,	unId,	testPointX,	2: 		unId = unId + 1
+	hotspot2 -1,		testPointY,	unId,	testPointX,	3: 		unId = unId + 1
+
+	hotspot2 testPointX,	0,			unId,	testPointY,	129: 	unId = unId + 1
+	hotspot2 testPointX,	testPointY,	unId,	testPointY,	2: 		unId = unId + 1
+	hotspot2 testPointX,	-1,			unId,	testPointY,	3: 		unId = unId + 1
+endif
+
+end

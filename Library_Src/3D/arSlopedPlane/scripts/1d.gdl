@@ -1,0 +1,52 @@
+﻿NIX = 0.00001
+MODE_VECTOR = 0		! ravnina je določena s kotom "inclination" in smernim vektorjem
+MODE_3P = 1			! ravnina je določena s prvimi tremi točkami poligona
+
+call "ar3DPolygon" parameters n = n, xyz = xyz, xyz_e = xyz_e, xyz_ea = xyz_ea, max_points = 20 returned_parameters unId
+
+if mode = MODE_VECTOR then
+	_angle = atn(slopeInclination / 100)
+
+	if startFromTop then
+		_x2 = slopeArrow1X
+		_y2 = slopeArrow1Y
+		_x1 = slopeArrow2X
+		_y1 = slopeArrow2Y
+		_z2 = 0
+		_z1 = sqr(((_x2 - _x1)^2 + (_y2 - _y1)^2) * tan(_angle)^2)
+	else
+		_x1 = slopeArrow1X
+		_y1 = slopeArrow1Y
+		_x2 = slopeArrow2X
+		_y2 = slopeArrow2Y
+		_z1 = 0
+		_z2 = sqr(((_x2 - _x1)^2 + (_y2 - _y1)^2) * tan(_angle)^2)
+	endif
+		
+	_vx = _x2 - _x1
+	_vy = _y2 - _y1
+	_vz = _z2 - _z1
+
+	a = -_vz * _vx
+	b = -_vz * _vy
+	c = _vx^2 + _vy^2
+	d = -(a * _x1 + b * _y1)
+endif
+
+if mode = MODE_3P then
+	_x1 = xyz[1][1]
+	_y1 = xyz[1][2]
+	_z1 = xyz[1][3]
+	_x2 = xyz[2][1]
+	_y2 = xyz[2][2]
+	_z2 = xyz[2][3]
+	_x3 = xyz[n][1]
+	_y3 = xyz[n][2]
+	_z3 = xyz[n][3]
+
+	a = (_y2 - _y1) * (_z3 - _z1) - (_z2 - _z1) * (_y3 - _y1)
+	b = (_z2 - _z1) * (_x3 - _x1) - (_x2 - _x1) * (_z3 - _z1)
+	c = (_x2 - _x1) * (_y3 - _y1) - (_y2 - _y1) * (_x3 - _x1)
+	d = -(a * _x1 + b * _y1 + c * _z1)
+endif
+

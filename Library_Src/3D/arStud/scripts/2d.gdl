@@ -1,0 +1,58 @@
+﻿unId = 1
+
+!PEN penLatch
+!LINE_TYPE lineLatch
+set fill fillType
+
+if orientation = ORIENTATION_VERTICAL then
+	totalWidth = studCount * studA
+	!rect2 -totalWidth/2, -studB/2, totalWidth/2, studB/2
+	poly2_b 4,
+		FRAMEFILL_DRAWCONTOUR + FRAMEFILL_DRAWFILL + FRAMEFILL_CLOSEOPENPOLYGON + FRAMEFILL_LOCALFILLORIENTATION, 
+		penFill, penFillBg,
+		-totalWidth/2, -studB/2, 1,
+		totalWidth/2, -studB/2, 1,
+		totalWidth/2, studB/2, 1,
+		-totalWidth/2, studB/2, 1
+
+	! crosses
+	add2 -totalWidth/2 + studA/2, 0
+	for i = 1 to studCount
+		line2 -studA/2, -studB/2, studA/2, studB/2
+		line2 -studA/2, studB/2, studA/2, -studB/2
+
+		! in between line
+		if i > 1 then
+			line2 -studA/2, -studB/2, -studA/2, studB/2
+		endif
+		add2 studA, 0
+	next i
+	del top
+
+	hotspot2 0, 0, unId: unId = unId + 1
+	hotspot2 -totalWidth/2, -studB/2, unId: unId = unId + 1
+	hotspot2 totalWidth/2, studB/2, unId: unId = unId + 1
+	hotspot2 -totalWidth/2, studB/2, unId: unId = unId + 1
+	hotspot2 totalWidth/2, -studB/2, unId: unId = unId + 1
+else
+	add2 0, -studA/2
+	rect2 0, 0, studLength, studA
+	del 1
+
+	hotspot2 0, 0, unId, studLength, 1: unId = unId + 1
+	hotspot2 studLength, 0, unId, studLength, 2: unId = unId + 1
+	hotspot2 -1, 0, unId, studLength, 3: unId = unId + 1
+
+	hotspot2 0, -studA/2, unId: unId = unId + 1
+	hotspot2 0, studA/2, unId: unId = unId + 1
+
+	hotspot2 studLength, -studA/2, unId: unId = unId + 1
+	hotspot2 studLength, studA/2, unId: unId = unId + 1
+
+	hotline2 0, -studA/2, studLength, -studA/2
+	hotline2 0, studA/2, studLength, studA/2
+
+	
+endif
+
+end

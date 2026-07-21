@@ -1,0 +1,141 @@
+﻿
+UI_DIALOG "arPolyline Settings"
+
+! =============================================================================
+! Tabpage Structure Definition
+! =============================================================================
+
+TABID_ROOT = -1
+_idxTab = 1
+
+TABID_General			= _idxTab  : _idxTab = _idxTab + 1
+
+! =============================================================================
+! Display actual tabpages
+! =============================================================================
+
+ui_current_page gs_ui_current_page
+
+ui_page TABID_General, TABID_ROOT, `General`, 1 						! uiTab_2DRepresentation.png
+	_listFieldID = TABID_General
+	gosub "GeneralPage"
+
+! ==============================================================================
+end
+! ==============================================================================
+
+
+! ------------------------------------------------------------------------------
+!Subroutines
+! ------------------------------------------------------------------------------
+
+! ------------------------------------------------------------------------------
+"GeneralPage":
+! ------------------------------------------------------------------------------
+	_pageStartY = 2
+	_yCurr = _pageStartY
+	_x1 = 5
+	_x4 = _x1+180
+	_labelHeight = 16
+
+	UI_STYLE 0,1
+	UI_OUTFIELD "Thickness:", _x1, _yCurr
+	UI_INFIELD "A",  _x1, _yCurr+_labelHeight, 56, 24
+
+	UI_OUTFIELD "Length:", _x1 + 65, _yCurr
+	UI_INFIELD "total_length",  _x1 + 65, _yCurr+_labelHeight, 56, 24
+
+	UI_STYLE 0,0
+	UI_OUTFIELD "Offset:", _x4, _yCurr
+	UI_INFIELD "offsetkind", _x4, _yCurr+_labelHeight, 70, 24
+
+	UI_OUTFIELD "Custom Offset:", _x4+80, _yCurr
+	UI_INFIELD "offset",  _x4+80, _yCurr+_labelHeight, 56, 24
+
+	_yCurr	= _yCurr+50
+
+	UI_STYLE 0,1
+	UI_INFIELD{3} showaxis, _x1, _yCurr, 100, 14,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Show Axis Line", 0,
+		  2, "Show Axis Line", 1
+	UI_INFIELD{3} showoffset, _x4, _yCurr, 120, 14,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Show Offset Lines", 0,
+		  2, "Show Offset Lines", 1
+	UI_OUTFIELD "Separator Lines:", _x4+160, _yCurr
+
+
+	_yCurr	= _yCurr+_labelHeight
+	UI_STYLE 0,0
+	UI_INFIELD "polylinetype", _x1, _yCurr, 110, 24
+	UI_INFIELD "polypen", _x1+114, _yCurr, 40, 24
+
+	UI_INFIELD "offsetlinetype", _x4, _yCurr, 110, 24
+	UI_INFIELD "offsetpen", _x4+114, _yCurr, 40, 24
+	
+	UI_INFIELD{3} "showseparatorlines", _x4+160, _yCurr, 120, 24
+
+
+	_yCurr	= _yCurr+40
+	UI_STYLE 0,1
+	UI_INFIELD{3} usefill, _x1, _yCurr, 70, 14,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Show Fill", 0,
+		  2, "Show Fill", 1
+
+	_yCurr	= _yCurr+_labelHeight
+	UI_STYLE 0,0
+	UI_INFIELD{3} polyfillalign, _x1, _yCurr, 110, 14,
+			7, "", 2, 2,
+			0, 0, 0, 0,
+			1, "Align to Direction", 0,
+			2, "Align to Direction", 1
+	UI_OUTFIELD "Fill pen:", _x4+8, _yCurr
+	UI_OUTFIELD "Fill BG pen:", _x4+60, _yCurr
+	UI_OUTFIELD "Fill Category:", _x4+125, _yCurr
+
+	_yCurr	= _yCurr+_labelHeight
+	UI_INFIELD "polyfill", _x1, _yCurr, 152, 24
+	UI_INFIELD "polyfillpen", _x4, _yCurr, 56, 24
+	UI_INFIELD "polyfillbgpen", _x4+60, _yCurr, 56, 24
+	UI_INFIELD{3} "polyfillcategory", _x4+125, _yCurr, 80, 24
+
+	_yCurr	= _yCurr+40
+	UI_INFIELD{3} distortfill, _x1, _yCurr, 110, 14,
+			7, "", 2, 2,
+			0, 0, 0, 0,
+			1, "Distort Fill", 0,
+			2, "Distort Fill", 1
+
+	UI_INFIELD{3} iseditable, _x1, _yCurr + 22, 70, 16,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Is Editable", 0,
+		  2, "Is Editable", 1
+
+	UI_INFIELD{3} showaddpoints, _x1, _yCurr + 22*2, 100, 16,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Can Add Points", 0,
+		  2, "Can Add Points", 1
+
+	UI_OUTFIELD "Delta X:", _x4, _yCurr
+	UI_OUTFIELD "Delta Y:", _x4 + 56, _yCurr
+	UI_OUTFIELD "Scale X:", _x4 + 2*56, _yCurr
+	UI_OUTFIELD "Scale Y:", _x4 + 3*56, _yCurr
+
+	_yCurr	= _yCurr+_labelHeight
+	UI_INFIELD "fillorigindeltaX", _x4, _yCurr, 56, 24
+	UI_INFIELD "fillorigindeltaY", _x4 + 56, _yCurr, 56, 24
+	UI_INFIELD "fillscaleX", _x4 + 2*56, _yCurr, 56, 24
+	UI_INFIELD "fillscaleY", _x4 + 3*56, _yCurr, 56, 24
+
+	
+
+		
+
+return

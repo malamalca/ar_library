@@ -1,0 +1,1256 @@
+﻿if GLOB_STRUCTURE_DISPLAY >= 1 then
+	exit
+endif
+
+resol gs_resol
+
+_toler = 0.001
+
+building_material structureBMat
+
+_treadSurface = treadSurface
+if bOverrideStructureSurface then
+	material treadSurface
+else
+	_result = request{2} ("Building_Material_info", structureBMat, "gs_bmat_surface", _treadSurface)
+endif
+
+pen gs_cont_pen
+SECT_ATTRS{2} penSection
+
+! ===============================================================================
+! Basic Calculations
+! ===============================================================================
+
+_vertexNum				= vardim1(STAIR_TREAD_GEOMETRY)				!!! Number of Vertexes
+_vertexNumForSideOrder	= vardim1(STAIR_TREAD_GEOMETRY) - 1			!!! Number of Vertexes W/O end Vertex
+_edgeNum				= vardim1(STAIR_TREAD_FLAGS) - 1			!!! Number of Edges
+_leadingEdgesNum		= 0											!!! Index of Leading Edge
+_trailingEdgesNum		= 0											!!! Index of Trailing Edge
+_leftEdgesNum			= 0											!!! Number of Edges on Left Side
+_rightEdgesNum			= 0											!!! Number of Edges on Right Side
+_currEdgesNum			= 0											!!! Number of Edges on Current Side
+
+
+! ===============================================================================
+! Check Tread Validity
+! ===============================================================================
+
+_bTreadExists		= 0
+_bDiffXCoordsNum	= 0
+_bDiffYCoordsNum	= 0
+for tt = 1 to vardim1(STAIR_TREAD_GEOMETRY)
+	_currXCoord	= STAIR_TREAD_GEOMETRY[tt][1]
+	_currYCoord	= STAIR_TREAD_GEOMETRY[tt][2]
+	if tt > 1 then
+		if abs(_lastXCoord - _currXCoord) > eps then
+			_bDiffXCoordsNum = _bDiffXCoordsNum + 1
+		endif
+		if abs(_lastYCoord - _currYCoord) > eps then
+			_bDiffYCoordsNum = _bDiffYCoordsNum + 1
+		endif
+	endif
+	if _bDiffXCoordsNum + _bDiffYCoordsNum > eps then
+		_bTreadExists	= 1
+		tt = vardim1(STAIR_TREAD_GEOMETRY)
+	endif
+	_lastXCoord = _currXCoord
+	_lastYCoord = _currYCoord
+next tt
+if _bTreadExists = 0 then end
+
+
+! ===============================================================================
+! Additional Calculations
+! ===============================================================================
+
+dim	_archedEdgeData[][]			!!! [][1] - Index of Arched Edge,	[][2] - Number of Segments in Arched Edge
+dim	_segmentData[][]				!!! [][1] - X coord of Segment,		[][2] - Y coord of Segment
+
+for iii = 1 to _edgeNum
+	if STAIR_TREAD_FLAGS[iii][1] = TREAD_LEADINGEDGE then	_leadingEdgesNum	= _leadingEdgesNum + 1
+	if STAIR_TREAD_FLAGS[iii][1] = TREAD_TRAILINGEDGE then	_trailingEdgesNum	= _trailingEdgesNum + 1
+	if STAIR_TREAD_FLAGS[iii][1] = TREAD_LEFTSIDEEDGE then	_leftEdgesNum		= _leftEdgesNum + 1
+	if STAIR_TREAD_FLAGS[iii][1] = TREAD_RIGHTSIDEEDGE then	_rightEdgesNum		= _rightEdgesNum + 1
+next iii
+
+_bLeadingEdgeExists		= (_leadingEdgesNum > 0)
+_bTrailingEdgeExists	= (_trailingEdgesNum > 0)
+_bLeftEdgeExists		= (_leftEdgesNum > 0)
+_bRightEdgeExists		= (_rightEdgesNum > 0)
+
+_bHasTreadNosingProfileOnFront	= _bEnableTreadNosingProfileOnFront		& _bLeadingEdgeExists
+_bHasTreadNosingProfileOnLeft	= _bEnableTreadNosingProfileOnLeft		& _bLeftEdgeExists
+_bHasTreadNosingProfileOnRight	= _bEnableTreadNosingProfileOnRight		& _bRightEdgeExists
+_bHasTreadNosingProfileOnBack	= _bEnableTreadNosingProfileOnBack		& _bTrailingEdgeExists
+
+
+! ===============================================================================
+! Calculating Arched Profile Edges
+! ===============================================================================
+
+gosub "archedSegmentsCalc"
+
+pen gs_cont_pen
+
+! ===============================================================================
+! Cut Milled Recess
+! ===============================================================================
+_bCutMilledRecess = 0
+
+if 	bMilledRecess 			&\
+	_bLeadingEdgeExists		then
+
+	_bCutMilledRecess = 1
+	gosub "cutMilledRecess"
+endif
+
+! ===============================================================================
+! Draw Tread Profiles
+! ===============================================================================
+
+group "treadEdgeCutting"
+	if bNosingProfile then
+		_bCollectPathForEdgeCutting		= 1
+		gosub "drawTubes"
+	endif
+endgroup
+
+group "treadProfiles"
+	if bNosingProfile then
+		_bCollectPathForEdgeCutting		= 0
+		gosub "drawTubes"
+		gosub "textureFitting"
+	endif
+endgroup
+
+
+! ===============================================================================
+! Draw Tread
+! ===============================================================================
+
+if iTreadNosingProfile = NOSINGPROFILE_CUSTOM_PROF then
+	_treadThkExtensionTop		= TREAD_THICKNESS
+	_treadThkExtensionBottom	= TREAD_THICKNESS
+else
+	_treadThkExtensionTop		= TREAD_THICKNESS
+	_treadThkExtensionBottom	= extensionHeight * _bNosingHasExtension
+endif
+
+group "basicTreadForProfiles"
+	call "basicStairTread_m" parameters all bCallForTreadProfiles	= 1,
+											treadThkExtensionTop	= _treadThkExtensionTop,
+											treadThkExtensionBottom	= _treadThkExtensionBottom
+endgroup
+
+group "basicTread"
+	call "basicStairTread_m" parameters all
+endgroup
+
+if	_bHasTreadNosingProfileOnFront |\
+	_bHasTreadNosingProfileOnBack |\
+	_bHasTreadNosingProfileOnLeft |\
+	_bHasTreadNosingProfileOnRight then
+
+	if iTreadNosingProfile = NOSINGPROFILE_CUSTOM_PROF then
+		placegroup subgroup("basicTread", "treadEdgeCutting")
+		placegroup isectgroup("treadProfiles", "basicTreadForProfiles")
+	else
+		_resultAfterEdgeCutting		= subgroup("basicTread", "treadEdgeCutting")
+		_resultAfterAddingProfiles	= addgroup(_resultAfterEdgeCutting, "treadProfiles")
+		placegroup isectgroup("basicTreadForProfiles", _resultAfterAddingProfiles)
+	endif
+else
+	placegroup "basicTread"
+endif
+
+killgroup "basicTread"
+
+if _bCutMilledRecess then
+	for ii = 1 to iRecessNum
+		cutend
+	next ii
+endif
+
+! ===============================================================================
+! Other Accessories - do not require cutform from Tread
+!	- Draw Non Slip Bands
+!	- Draw Raised Strip
+! ===============================================================================
+
+if bAccessory or bRaisedStrip then
+	call "treadAccessories_m" parameters all
+endif
+
+! =====================================================================================================================================
+end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end ! end
+! =====================================================================================================================================
+
+! ==============================================================================
+"archedSegmentsCalc":
+! ------------------------------------------------------------------------------
+
+	! ===============================================================================
+	! Calculation for Arched Segments
+	! ===============================================================================
+
+	centerX			= 0
+	centerY			= 0
+	_actArchIdx		= 1
+	_actSegmentIdx	= 1
+
+	for ii = 1 to _edgeNum						! Last Vertex point has no angle
+		if abs(STAIR_TREAD_GEOMETRY[ii][3]) > eps then
+
+			centerX = (STAIR_TREAD_GEOMETRY[ii][1] + STAIR_TREAD_GEOMETRY[ii + 1][1]) / 2
+			centerY = (STAIR_TREAD_GEOMETRY[ii][2] + STAIR_TREAD_GEOMETRY[ii + 1][2]) / 2
+
+			h = sqr ((STAIR_TREAD_GEOMETRY[ii][1] - centerX)^2 + (STAIR_TREAD_GEOMETRY[ii][2] - centerY)^2)
+			t = tan (abs(STAIR_TREAD_GEOMETRY[ii][3] / 2.0))
+			if (abs (t) > eps) then
+				m = h / t
+			else
+				m = 0
+			endif
+
+			dirX = STAIR_TREAD_GEOMETRY[ii + 1][1] - centerX
+			dirY = STAIR_TREAD_GEOMETRY[ii + 1][2] - centerY
+			len = sqr (dirX^2 + dirY^2)
+
+			__archAngle = STAIR_TREAD_GEOMETRY[ii][3]
+
+			normX = dirY * sgn(__archAngle)
+			normY = (-1) * dirX * sgn(__archAngle)
+
+			if abs(len) > eps then
+				normX = normX / len
+				normY = normY / len
+			endif
+
+			centerX = centerX - m * normX
+			centerY = centerY - m * normY
+
+			_edgeStartXCoord	= STAIR_TREAD_GEOMETRY[ii][1]
+			_edgeStartYCoord	= STAIR_TREAD_GEOMETRY[ii][2]
+			_edgeEndXCoord		= STAIR_TREAD_GEOMETRY[ii + 1][1]
+			_edgeEndYCoord		= STAIR_TREAD_GEOMETRY[ii + 1][2]
+			gosub "calculateEdgeAngleAndLength"
+
+			_radius	= _edgeLength / 2 / (sin(abs(__archAngle / 2)))
+
+			gosub "segmentPointCollector"
+
+			_archedEdgeData[_actArchIdx][1] = ii
+			_archedEdgeData[_actArchIdx][2] = _numOfSegments - 1
+
+			_actArchIdx = _actArchIdx + 1
+		endif
+	next ii
+
+return
+
+
+
+! ==============================================================================
+"segmentPointCollector":
+! ------------------------------------------------------------------------------
+
+	! ===============================================================================
+	! Collect Segmented Point coords for Tread Profiles
+	! ===============================================================================
+
+	_tubeResol		= ceil((360 / acs((_radius - _toler) / _radius)) / 2)
+	_numOfSegments	= abs(_tubeResol / 360 * (__archAngle))
+
+	if _numOfSegments - int(_numOfSegments) < 0.5 then
+		_numOfSegments = int(_numOfSegments)
+	else
+		_numOfSegments = int(_numOfSegments) + 1
+	endif
+	_numOfSegments = max(_numOfSegments, 1)
+
+	if _numOfSegments > 0 then
+		_edgeStartXCoord	= STAIR_TREAD_GEOMETRY[ii][1]
+		_edgeStartYCoord	= STAIR_TREAD_GEOMETRY[ii][2]
+		_edgeEndXCoord	= centerX
+		_edgeEndYCoord	= centerY
+		gosub "calculateEdgeAngleAndLength"
+
+		_segmentAngle = __archAngle / _numOfSegments
+		_actArchAngle = _edgeAngle + _segmentAngle
+
+		for ik = 1 to _numOfSegments - 1
+			_segmentData[_actSegmentIdx][1] = centerX - _radius * cos(_actArchAngle)
+			_segmentData[_actSegmentIdx][2] = centerY - _radius * sin(_actArchAngle)
+			_actArchAngle	= _actArchAngle + _segmentAngle
+			_actSegmentIdx	= _actSegmentIdx + 1
+		next ik
+	endif
+
+return
+
+
+! ==============================================================================
+"drawTubes":
+! ------------------------------------------------------------------------------
+
+	! ===============================================================================
+	! Draw Tubes for Profiles, Non Slip Bands
+	! ===============================================================================
+
+	_bGetCurrTreadEdge	= 0
+	_bGetPrevTreadEdge	= 0
+	_bGetNextTreadEdge	= 0
+
+	for iii = 1 to _edgeNum
+		__actEdge	= iii
+		gosub "getPrevNextEdgeInfo"
+		_bGetCurrTreadEdge	= __bGetActTreadEdge
+		_actualVertexNum	= __actEdge
+
+		if _bGetCurrTreadEdge then
+			if iii = 1 then
+				__actEdge	= _edgeNum
+			else
+				__actEdge	= iii - 1
+			endif
+			gosub "getPrevNextEdgeInfo"
+			_bGetPrevTreadEdge	= __bGetActTreadEdge
+			_prevVertexNum		= __actEdge
+
+			if iii = _edgeNum then
+				__actEdge	= 1
+			else
+				__actEdge	= iii + 1
+			endif
+			gosub "getPrevNextEdgeInfo"
+			_bGetNextTreadEdge	= __bGetActTreadEdge
+			_nextVertexNum		= __actEdge
+
+			gosub "treadEdgePointCollector"
+		endif
+
+		_bGetCurrTreadEdge	= 0
+		_bGetPrevTreadEdge	= 0
+		_bGetNextTreadEdge	= 0
+	next iii
+
+return
+
+
+! ==============================================================================
+"getPrevNextEdgeInfo":
+! ------------------------------------------------------------------------------
+
+	! ===============================================================================
+	! Profile exists on Previous and Next edge
+	! ===============================================================================
+
+	__bGetActTreadEdge	= 0
+
+	if	(STAIR_TREAD_FLAGS[__actEdge][1] = TREAD_LEADINGEDGE 	&	_bHasTreadNosingProfileOnFront) |\
+		(STAIR_TREAD_FLAGS[__actEdge][1] = TREAD_RIGHTSIDEEDGE	&	_bHasTreadNosingProfileOnRight) |\
+		(STAIR_TREAD_FLAGS[__actEdge][1] = TREAD_TRAILINGEDGE	&	_bHasTreadNosingProfileOnBack) |\
+		(STAIR_TREAD_FLAGS[__actEdge][1] = TREAD_LEFTSIDEEDGE	&	_bHasTreadNosingProfileOnLeft) then
+
+		__bGetActTreadEdge	= 1
+	endif
+
+return
+
+
+! ==============================================================================
+"treadEdgePointCollector":
+! ------------------------------------------------------------------------------
+
+	! ===============================================================================
+	! Collect Tread Edge Points for tube
+	! ===============================================================================
+
+	_isCurrEdgeArched		= 0
+	_isPrevEdgeArched		= 0
+	_isNextEdgeArched		= 0
+
+	if _bGetPrevTreadEdge then
+		_startSegmIdx	= 1
+		_endSegmIdx		= 1
+		for ttt = 1 to vardim1(_archedEdgeData)
+			if	_prevVertexNum = _archedEdgeData[ttt][1] &\
+				_archedEdgeData[ttt][2] > 0 then
+
+				for vvv = 1 to ttt - 1
+					_startSegmIdx = _startSegmIdx + _archedEdgeData[vvv][2]
+				next vvv
+
+				_endSegmIdx = _startSegmIdx + _archedEdgeData[ttt][2] - 1
+				put _segmentData[_endSegmIdx][1], _segmentData[_endSegmIdx][2], 0, 0
+				ttt = vardim1(_archedEdgeData)
+				_isPrevEdgeArched	= 1
+			endif
+		next ttt
+		if not(_isPrevEdgeArched) then
+			put STAIR_TREAD_GEOMETRY[_prevVertexNum][1], STAIR_TREAD_GEOMETRY[_prevVertexNum][2], 0, 0
+		endif
+	else
+		_startSegmIdx	= 1
+		_endSegmIdx		= 1
+		for ttt = 1 to vardim1(_archedEdgeData)
+			if	_prevVertexNum = _archedEdgeData[ttt][1] &\
+				_archedEdgeData[ttt][2] > 0 then
+
+				for vvv = 1 to ttt - 1
+					_startSegmIdx = _startSegmIdx + _archedEdgeData[vvv][2]
+				next vvv
+
+				_endSegmIdx = _startSegmIdx + _archedEdgeData[ttt][2] - 1
+				_nextVertX	= _segmentData[_endSegmIdx][1]
+				_nextVertY	= _segmentData[_endSegmIdx][2]
+
+				ttt = vardim1(_archedEdgeData)
+				_isPrevEdgeArched	= 1
+			endif
+		next ttt
+
+		_startSegmIdx	= 1
+		_endSegmIdx		= 1
+		for ttt = 1 to vardim1(_archedEdgeData)
+			if	_actualVertexNum = _archedEdgeData[ttt][1] &\
+				_archedEdgeData[ttt][2] > 0 then
+
+				for vvv = 1 to ttt - 1
+					_startSegmIdx = _startSegmIdx + _archedEdgeData[vvv][2]
+				next vvv
+
+				_startVertX	= _segmentData[_startSegmIdx][1]
+				_startVertY	= _segmentData[_startSegmIdx][2]
+
+				ttt = vardim1(_archedEdgeData)
+				_isCurrEdgeArched	= 1
+			endif
+		next ttt
+
+		_cutPos = CUTPOSITION_START
+		__startVertexNum = _nextVertexNum
+		gosub "calculateStartEndVertexes"
+		put _targetVertX, _targetVertY, 0, 0
+
+	endif
+
+	put STAIR_TREAD_GEOMETRY[_actualVertexNum][1], STAIR_TREAD_GEOMETRY[_actualVertexNum][2], 0, 0
+	_startSegmIdx = 1
+	for ttt = 1 to vardim1(_archedEdgeData)
+		if	_actualVertexNum = _archedEdgeData[ttt][1] &\
+			_archedEdgeData[ttt][2] > 0 then
+
+			for vvv = 1 to ttt - 1
+				_startSegmIdx = _startSegmIdx + _archedEdgeData[vvv][2]
+			next vvv
+
+			for kkk = _startSegmIdx to _startSegmIdx + _archedEdgeData[ttt][2] - 1
+				put _segmentData[kkk][1], _segmentData[kkk][2], 0, 0
+			next kkk
+			ttt = vardim1(_archedEdgeData)
+		endif
+	next ttt
+	put STAIR_TREAD_GEOMETRY[_nextVertexNum][1], STAIR_TREAD_GEOMETRY[_nextVertexNum][2], 0, 0
+
+	if _bGetNextTreadEdge then
+		_startSegmIdx = 1
+		for ttt = 1 to vardim1(_archedEdgeData)
+			if	_nextVertexNum = _archedEdgeData[ttt][1] &\
+				_archedEdgeData[ttt][2] > 0 then
+
+				for vvv = 1 to ttt - 1
+					_startSegmIdx = _startSegmIdx + _archedEdgeData[vvv][2]
+				next vvv
+
+				put _segmentData[_startSegmIdx][1], _segmentData[_startSegmIdx][2], 0, 0
+				ttt = vardim1(_archedEdgeData)
+				_isNextEdgeArched	= 1
+			endif
+		next ttt
+		if not(_isNextEdgeArched) then
+			if _nextVertexNum = _vertexNumForSideOrder then
+				_actualVertexNum = 1
+			else
+				_actualVertexNum = _nextVertexNum + 1
+			endif
+			put STAIR_TREAD_GEOMETRY[_actualVertexNum][1], STAIR_TREAD_GEOMETRY[_actualVertexNum][2], 0, 0
+		endif
+
+	else
+		_startSegmIdx	= 1
+		_endSegmIdx		= 1
+		for ttt = 1 to vardim1(_archedEdgeData)
+			if	_nextVertexNum = _archedEdgeData[ttt][1] &\
+				_archedEdgeData[ttt][2] > 0 then
+
+				for vvv = 1 to ttt - 1
+					_startSegmIdx = _startSegmIdx + _archedEdgeData[vvv][2]
+				next vvv
+
+				_nextVertX	= _segmentData[_startSegmIdx][1]
+				_nextVertY	= _segmentData[_startSegmIdx][2]
+
+				ttt = vardim1(_archedEdgeData)
+				_isNextEdgeArched	= 1
+			endif
+		next ttt
+
+		_startSegmIdx	= 1
+		_endSegmIdx		= 1
+		for ttt = 1 to vardim1(_archedEdgeData)
+			if	_actualVertexNum = _archedEdgeData[ttt][1] &\
+				_archedEdgeData[ttt][2] > 0 then
+
+				for vvv = 1 to ttt - 1
+					_startSegmIdx = _startSegmIdx + _archedEdgeData[vvv][2]
+				next vvv
+
+				_endSegmIdx = _startSegmIdx + _archedEdgeData[ttt][2] - 1
+				_startVertX	= _segmentData[_endSegmIdx][1]
+				_startVertY	= _segmentData[_endSegmIdx][2]
+
+				ttt = vardim1(_archedEdgeData)
+				_isCurrEdgeArched	= 1
+			endif
+		next ttt
+
+		_cutPos = CUTPOSITION_END
+		__startVertexNum = _actualVertexNum
+		gosub "calculateStartEndVertexes"
+		put _targetVertX, _targetVertY, 0, 0
+
+	endif
+
+	if _bCollectPathForEdgeCutting then
+		gosub "drawTreadEdgeCutting"
+	else
+		gosub "drawTreadProfiles"
+	endif
+
+return
+
+
+! ==============================================================================
+"calculateStartEndVertexes":
+! ------------------------------------------------------------------------------
+
+	! ===============================================================================
+	! Calculate Additional Start/End Vertexes for Tube/Profile
+	! ===============================================================================
+
+	if _cutPos = CUTPOSITION_START then
+		if	_isPrevEdgeArched |\
+			_isCurrEdgeArched then
+
+			if __startVertexNum = 1 then
+				__headVertexNum	= _vertexNumForSideOrder
+			else
+				__headVertexNum	= __startVertexNum - 1
+			endif
+			if __headVertexNum = 1 then
+				__nextVertexNum	= _vertexNumForSideOrder
+			else
+				__nextVertexNum	= __headVertexNum - 1
+			endif
+
+			_headVertX		= STAIR_TREAD_GEOMETRY[__headVertexNum][1]
+			_headVertY		= STAIR_TREAD_GEOMETRY[__headVertexNum][2]
+
+			if	not(_isPrevEdgeArched) |\
+				not(_isCurrEdgeArched) then
+
+				if _isPrevEdgeArched then
+					_startVertX		= STAIR_TREAD_GEOMETRY[__startVertexNum][1]
+					_startVertY		= STAIR_TREAD_GEOMETRY[__startVertexNum][2]
+				else
+					_nextVertX		= STAIR_TREAD_GEOMETRY[__nextVertexNum][1]
+					_nextVertY		= STAIR_TREAD_GEOMETRY[__nextVertexNum][2]
+				endif
+			endif
+		else
+			if __startVertexNum = 1 then
+				__headVertexNum	= _vertexNumForSideOrder
+			else
+				__headVertexNum	= __startVertexNum - 1
+			endif
+
+			if __headVertexNum = 1 then
+				__nextVertexNum	= _vertexNumForSideOrder
+			else
+				__nextVertexNum	= __headVertexNum - 1
+			endif
+
+			_startVertX		= STAIR_TREAD_GEOMETRY[__startVertexNum][1]
+			_startVertY		= STAIR_TREAD_GEOMETRY[__startVertexNum][2]
+			_headVertX		= STAIR_TREAD_GEOMETRY[__headVertexNum][1]
+			_headVertY		= STAIR_TREAD_GEOMETRY[__headVertexNum][2]
+			_nextVertX		= STAIR_TREAD_GEOMETRY[__nextVertexNum][1]
+			_nextVertY		= STAIR_TREAD_GEOMETRY[__nextVertexNum][2]
+		endif
+	else
+		if	_isNextEdgeArched |\
+			_isCurrEdgeArched then
+
+			if __startVertexNum = _vertexNumForSideOrder then
+				__headVertexNum	= 1
+			else
+				__headVertexNum	= __startVertexNum + 1
+			endif
+			if __headVertexNum = _vertexNumForSideOrder then
+				__nextVertexNum	= 1
+			else
+				__nextVertexNum	= __headVertexNum + 1
+			endif
+
+			_headVertX		= STAIR_TREAD_GEOMETRY[__headVertexNum][1]
+			_headVertY		= STAIR_TREAD_GEOMETRY[__headVertexNum][2]
+
+			if	not(_isNextEdgeArched) |\
+				not(_isCurrEdgeArched) then
+
+				if _isNextEdgeArched then
+					_startVertX		= STAIR_TREAD_GEOMETRY[__startVertexNum][1]
+					_startVertY		= STAIR_TREAD_GEOMETRY[__startVertexNum][2]
+				else
+					_nextVertX		= STAIR_TREAD_GEOMETRY[__nextVertexNum][1]
+					_nextVertY		= STAIR_TREAD_GEOMETRY[__nextVertexNum][2]
+				endif
+			endif
+		else
+			if __startVertexNum = _vertexNumForSideOrder then
+				__headVertexNum	= 1
+			else
+				__headVertexNum	= __startVertexNum + 1
+			endif
+			if __headVertexNum = _vertexNumForSideOrder then
+				__nextVertexNum	= 1
+			else
+				__nextVertexNum	= __headVertexNum + 1
+			endif
+
+			_startVertX		= STAIR_TREAD_GEOMETRY[__startVertexNum][1]
+			_startVertY		= STAIR_TREAD_GEOMETRY[__startVertexNum][2]
+			_headVertX		= STAIR_TREAD_GEOMETRY[__headVertexNum][1]
+			_headVertY		= STAIR_TREAD_GEOMETRY[__headVertexNum][2]
+			_nextVertX		= STAIR_TREAD_GEOMETRY[__nextVertexNum][1]
+			_nextVertY		= STAIR_TREAD_GEOMETRY[__nextVertexNum][2]
+		endif
+	endif
+
+	_edgeStartXCoord	= _startVertX
+	_edgeStartYCoord	= _startVertY
+	_edgeEndXCoord	= _headVertX
+	_edgeEndYCoord	= _headVertY
+	gosub "calculateEdgeAngleAndLength"
+	_alpha	= _edgeAngle
+
+	_edgeStartXCoord	= _headVertX
+	_edgeStartYCoord	= _headVertY
+	_edgeEndXCoord	= _nextVertX
+	_edgeEndYCoord	= _nextVertY
+	gosub "calculateEdgeAngleAndLength"
+	_beta	= _edgeAngle
+
+	_actEdgeLength	= sqr((_startVertY - _headVertY)**2 \
+						+ (_startVertX - _headVertX)**2)
+
+	_gamma	= _alpha - _beta
+	if abs(_alpha - _beta) < eps then _gamma = 90
+	if _gamma < 0 then _gamma = _gamma + 360
+	_delta	= -_gamma
+
+	if	(_headVertX > _startVertX) then
+		if	(_headVertY > _startVertY) then
+			_actEdgeDir = EDGEDIR_090
+		else
+			_actEdgeDir = EDGEDIR_270360
+		endif
+	else
+		if	(_headVertY > _startVertY) then
+			_actEdgeDir = EDGEDIR_90180
+		else
+			_actEdgeDir = EDGEDIR_180270
+		endif
+	endif
+	if	(_nextVertX > _headVertX) then
+		if	(_nextVertY > _headVertY) then
+			_nextEdgeDir = EDGEDIR_090
+		else
+			_nextEdgeDir = EDGEDIR_270360
+		endif
+	else
+		if	(_nextVertY > _headVertY) then
+			_nextEdgeDir = EDGEDIR_90180
+		else
+			_nextEdgeDir = EDGEDIR_180270
+		endif
+	endif
+
+	_modAngle = 0
+	if _actEdgeDir = _nextEdgeDir then
+		if _gamma > 0 and _gamma < 180 then _modAngle = 180
+	endif
+	if _actEdgeDir = EDGEDIR_090 then
+		if _nextEdgeDir = EDGEDIR_180270 and _gamma > 0 and _gamma < 180 then _modAngle = 180
+		if _nextEdgeDir = EDGEDIR_270360 then _modAngle = 180
+	endif
+	if _actEdgeDir = EDGEDIR_90180 then
+		if _nextEdgeDir = EDGEDIR_270360 and _gamma > 0 and _gamma < 180 then _modAngle = 180
+		if _nextEdgeDir = EDGEDIR_090 then _modAngle = 180
+	endif
+	if _actEdgeDir = EDGEDIR_180270 then
+		if _nextEdgeDir = EDGEDIR_090 and _gamma > 0 and _gamma < 180 then _modAngle = 180
+		if _nextEdgeDir = EDGEDIR_90180 then _modAngle = 180
+	endif
+	if _actEdgeDir = EDGEDIR_270360 then
+		if _nextEdgeDir = EDGEDIR_90180 and _gamma > 0 and _gamma < 180 then _modAngle = 180
+		if _nextEdgeDir = EDGEDIR_180270 then _modAngle = 180
+	endif
+
+	_zeta				= _alpha - (90 - _delta) - _modAngle
+	_normalVectorLength	= abs(_actEdgeLength * sin(_delta)) * 2
+	_xMod				= _normalVectorLength * cos(_zeta)
+	_yMod				= _normalVectorLength * sin(_zeta)
+
+	_targetVertX		= _startVertX + _xMod
+	_targetVertY		= _startVertY + _yMod
+
+	_isPrevEdgeArched	= 0
+	_isCurrEdgeArched	= 0
+	_isNextEdgeArched	= 0
+
+return
+
+
+! ==============================================================================
+"drawTreadEdgeCutting":
+! ------------------------------------------------------------------------------
+
+	_treadEdgeNosingLower	= 0
+	_treadEdgeNosingUpper	= 0
+
+	! ===============================================================================
+	! Draw Tread Cutting for Profiles
+	! ===============================================================================
+
+	if iTreadNosingProfile = NOSINGPROFILE_CUSTOM_PROF then
+		_result = REQUEST ("Profile_default_boundingbox",  nosingProfileID, _xMin, _yMin, _xMax, _yMax)
+		if _result then
+			_profileWidth	= abs(_xMax - _xMin)
+		else
+			_profileWidth	= 0
+		endif
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_CLASSICAL	then
+		_radiusUpper 	= 0.02
+		_heightUpper	= 0.03
+		_radiusLower	= 0.015
+		_heightLower	= 0.02
+		_widthNose		= 0.015
+	endif
+
+	if iTreadNosingProfile = NOSINGPROFILE_CUSTOM_PROF then
+		_treadEdgeNosingLower	= _profileWidth
+		_treadEdgeNosingUpper	= _profileWidth
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_CLASSICAL	then
+		_treadEdgeNosingLower	= _radiusUpper + _radiusLower + _widthNose
+		_treadEdgeNosingUpper	= _radiusUpper + _radiusLower + _widthNose
+	endif
+	if iTreadNosingProfile = NOSINGPROFILE_ROUNDED then
+		_treadEdgeNosingLower	= filletRadius
+		_treadEdgeNosingUpper	= filletRadius
+	endif
+	if	iTreadNosingProfile = NOSINGPROFILE_CHAMFER |\
+		iTreadNosingProfile = NOSINGPROFILE_FILLET then
+
+		_treadEdgeNosingLower	= 0
+		_treadEdgeNosingUpper	= filletRadius
+	endif
+	if _bSlantedNosing then
+		if not(bUseSlantingAngleRiser) & iDefSlantingAngleCustom = CUSTOMSLANTING_BYDISTANCE then
+			_slantingDist	= slantingDistCustom
+			_y2				= TREAD_THICKNESS - _slantingStartPoint * (iTreadNosingProfile <> NOSINGPROFILE_SLANTED_ONLY)
+			if abs(_slantingDist) > eps then
+				_slantingAngle	= atn(_y2 / _slantingDist)
+			else
+				_slantingAngle = 90
+			endif
+		else
+			if bUseSlantingAngleRiser then
+				_slantingAngle	= TREAD_LOWER_RISER_SLANT_ANGLE
+			else
+				_slantingAngle	= slantingAngleCustom
+			endif
+
+			_y2				= TREAD_THICKNESS - _slantingStartPoint * (iTreadNosingProfile <> NOSINGPROFILE_SLANTED_ONLY)
+			_slantingDist	= _y2 / tan(_slantingAngle)
+		endif
+
+		_treadEdgeNosingLower	= _slantingDist
+		_treadEdgeNosingUpper	= filletRadius * (_bFilletNosing | _bChamferNosing)
+	endif
+
+
+	if _bEnableNosingExtension & _bNosingHasExtension then _treadEdgeNosingLower = extensionWidth
+
+	if nsp > 0 then
+		tube 6, nsp / 4, 1 + 2 + 16 + 32,
+			-eps, 					eps, 					1,
+			_treadEdgeNosingUpper, 	eps, 					1,
+			_treadEdgeNosingUpper, 	0, 						1,
+			_treadEdgeNosingLower, 	-TREAD_THICKNESS,		1,
+			_treadEdgeNosingLower, 	-TREAD_THICKNESS - eps,	1,
+			-eps, 					-TREAD_THICKNESS - eps,	1,
+
+			get(nsp)
+	endif
+
+return
+
+
+! ==============================================================================
+"drawTreadProfiles":
+! ------------------------------------------------------------------------------
+
+	_cutOversize	= 0.005
+
+	dim _pathPolyCoords[][]
+	for _iPath = 1 to nsp / 4
+		_pathPolyCoords[_iPath][1]	= get(1)
+		_pathPolyCoords[_iPath][2]	= get(1)
+		_pathPolyCoords[_iPath][3]	= get(1)
+		_pathPolyCoords[_iPath][4]	= get(1)
+	next _iPath
+
+	dim	_profileSectionPoly[]
+
+
+	! ===============================================================================
+	! Draw Tread Profiles
+	! ===============================================================================
+
+	if iTreadNosingProfile = NOSINGPROFILE_CUSTOM_PROF then
+		treadEdgeNosing	= _profileWidth
+
+		! Data from User defined profile
+		_nComponents = 0
+		dim _componentTypes[]
+
+		n = REQUEST{2} ("Profile_components", nosingProfileID, _nComponents, _componentTypes)
+
+		if n then
+			dim _bShowPart[]
+			_needRequestDetails = 0
+
+			for _i = 1 to _nComponents
+				_bShowPart[_i] = 1
+				  if GLOB_STRUCTURE_DISPLAY = DISPLAY_COREONLY AND _componentTypes[_i] <> COMPTYPE_CORE then _bShowPart[_i] = 0
+				  if GLOB_STRUCTURE_DISPLAY = DISPLAY_NOFINISH AND _componentTypes[_i] = COMPTYPE_FINISH then _bShowPart[_i] = 0
+				  if _bShowPart[_i] then _needRequestDetails = 1
+			next _i
+
+			if _needRequestDetails then
+
+				dim _profileGeometryRawData[]
+				n = REQUEST ("Profile_default_geometry", nosingProfileID, _profileGeometryRawData)		! n1, n2, ..., nn, x11, y11,s11
+
+				dim _contStartPoints[]
+				dim _contEndPoints[]
+
+				_contStartPoints[1] = _nComponents + 1
+
+				for _i = 2 to _nComponents
+					_contStartPoints[_i] = _contStartPoints[_i - 1] + _profileGeometryRawData[_i - 1] * 5
+					_contEndPoints[_i-1] = _contStartPoints[_i] - 1
+				next _i
+
+				_contEndPoints[_nComponents] = vardim1(_profileGeometryRawData)
+
+				for _iComp = 1 to _nComponents
+
+					if _bShowPart[_iComp] then
+						dim _currSurfaces[]
+						n = REQUEST{3} ("Profile_component_info", nosingProfileID, _iComp, "gs_profile_comp_surfaces", _currSurfaces)
+
+						if not(bProfileAttributes) then
+							for _surf = 1 to vardim1(_currSurfaces)
+								_currSurfaces[_surf] = _treadSurface
+							next _surf
+						endif
+
+						_bmat = 1
+						_pen = 1
+						n = request{3} ("Profile_component_info", nosingProfileID, _iComp, "gs_profile_bmat", _bmat)
+						n = request{3} ("Profile_component_info", nosingProfileID, _iComp, "gs_profile_outlinepen", _pen)
+
+						if bProfileAttributes then
+							building_material _bmat
+							sect_attrs{2} _pen
+						endif
+
+						_surface = 1
+						if bProfileAttributes then
+							n = request{3} ("Profile_component_info", nosingProfileID, _iComp, "gs_profile_surface", _surface)
+						else
+							_surface = _treadSurface
+						endif
+
+						_surfIdx = 1
+
+						for _i = _contStartPoints[_iComp] to _contEndPoints[_iComp] step 5
+							if _profileGeometryRawData[_i + 4] # -1 then
+								_stat = _profileGeometryRawData[_i + 4] + 2
+							else
+								_stat = -1
+							endif
+
+							put _profileGeometryRawData[_i],
+								_profileGeometryRawData[_i + 1],
+								_stat,
+								_currSurfaces[_surfIdx]
+
+							_surfIdx = _surfIdx + 1
+						next _i
+
+
+						! reput profile path
+						for i = 1 to vardim1(_pathPolyCoords)
+							put	_pathPolyCoords[i][1],
+								_pathPolyCoords[i][2],
+								_pathPolyCoords[i][3],
+								_pathPolyCoords[i][4]
+						next i
+
+						tube{2} _surface, _surface, _surface,
+							(_contEndPoints[_iComp] - _contStartPoints[_iComp] + 1) / 5,
+							vardim1(_pathPolyCoords),
+							1 + 2 + 16 + 32 + 256 + 512 + 1024 + 2048,
+
+							get((_contEndPoints[_iComp] - _contStartPoints[_iComp] + 1) / 5 * 4),
+							get(vardim1(_pathPolyCoords) * 4)
+					endif
+
+				next _iComp
+			endif
+		endif
+	else
+		if iTreadNosingProfile = NOSINGPROFILE_CLASSICAL then
+			_num	= 0:		_profileSectionPoly[_num + COORD_X]	= _radiusUpper 								: _profileSectionPoly[_num + COORD_Y]	= 0 										: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= _radiusUpper								: _profileSectionPoly[_num + COORD_Y]	= -_radiusUpper								: _profileSectionPoly[_num + COORD_STATUS]	= 900
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= 0											: _profileSectionPoly[_num + COORD_Y]	= 180										: _profileSectionPoly[_num + COORD_STATUS]	= 4001
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= _radiusUpper								: _profileSectionPoly[_num + COORD_Y]	= -_radiusUpper * 2 - _heightUpper						: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= _radiusUpper 								: _profileSectionPoly[_num + COORD_Y]	= -_radiusUpper * 2 - _heightUpper - _radiusLower			: _profileSectionPoly[_num + COORD_STATUS]	= 900
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= 0											: _profileSectionPoly[_num + COORD_Y]	= -90										: _profileSectionPoly[_num + COORD_STATUS]	= 4001
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= _radiusUpper + _radiusLower				: _profileSectionPoly[_num + COORD_Y]	= -_radiusUpper * 2 - _heightUpper - _radiusLower - _heightLower	: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= _radiusUpper + _radiusLower + _widthNose	: _profileSectionPoly[_num + COORD_Y]	= -_radiusUpper * 2 - _heightUpper - _radiusLower - _heightLower	: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= _radiusUpper + _radiusLower + _widthNose	: _profileSectionPoly[_num + COORD_Y]	= 0 										: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= _radiusUpper 								: _profileSectionPoly[_num + COORD_Y]	= 0 										: _profileSectionPoly[_num + COORD_STATUS]	= -1
+		endif
+
+		if iTreadNosingProfile = NOSINGPROFILE_ROUNDED then
+			treadEdgeNosing	= filletRadius
+
+			hur		= sqr(treadEdgeNosing**2 + (TREAD_THICKNESS / 2)**2)
+			alpha	= atn((TREAD_THICKNESS / 2) / treadEdgeNosing)
+			rad		= (hur / 2) / cos(alpha)
+
+			if treadEdgeNosing > TREAD_THICKNESS / 2 then
+				_num	= 0:		_profileSectionPoly[_num + COORD_X]	= filletRadius							: _profileSectionPoly[_num + COORD_Y]	= 0						: _profileSectionPoly[_num + COORD_STATUS]	= 1
+				_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= filletRadius							: _profileSectionPoly[_num + COORD_Y]	= -treadEdgeNosing		: _profileSectionPoly[_num + COORD_STATUS]	= 901
+				_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= filletRadius - treadEdgeNosing		: _profileSectionPoly[_num + COORD_Y]	= -treadEdgeNosing		: _profileSectionPoly[_num + COORD_STATUS]	= 3001
+				_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= filletRadius							: _profileSectionPoly[_num + COORD_Y]	= -treadEdgeNosing * 2	: _profileSectionPoly[_num + COORD_STATUS]	= 3001
+			else
+				_num	= 0:		_profileSectionPoly[_num + COORD_X]	= filletRadius							: _profileSectionPoly[_num + COORD_Y]	= 0						: _profileSectionPoly[_num + COORD_STATUS]	= 1
+				_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= filletRadius - treadEdgeNosing + rad	: _profileSectionPoly[_num + COORD_Y]	= -TREAD_THICKNESS / 2	: _profileSectionPoly[_num + COORD_STATUS]	= 901
+				_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= filletRadius - treadEdgeNosing		: _profileSectionPoly[_num + COORD_Y]	= -TREAD_THICKNESS / 2	: _profileSectionPoly[_num + COORD_STATUS]	= 3001
+				_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= filletRadius							: _profileSectionPoly[_num + COORD_Y]	= -TREAD_THICKNESS		: _profileSectionPoly[_num + COORD_STATUS]	= 3001
+			endif
+		endif
+
+		if iTreadNosingProfile = NOSINGPROFILE_CHAMFER then
+			if _bEnableNosingExtension & _bNosingHasExtension | abs(TREAD_THICKNESS - filletRadius) > eps then
+				_num	= 0:		_profileSectionPoly[_num + COORD_X]	= filletRadius		: _profileSectionPoly[_num + COORD_Y]	= 0					: _profileSectionPoly[_num + COORD_STATUS]	= 1
+				_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= 0					: _profileSectionPoly[_num + COORD_Y]	= -filletRadius		: _profileSectionPoly[_num + COORD_STATUS]	= 1
+				_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= 0					: _profileSectionPoly[_num + COORD_Y]	= -TREAD_THICKNESS	: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			endif
+		endif
+
+		if iTreadNosingProfile = NOSINGPROFILE_FILLET then
+			_num	= 0:		_profileSectionPoly[_num + COORD_X]	= filletRadius		: _profileSectionPoly[_num + COORD_Y]	= 0						: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= -1				: _profileSectionPoly[_num + COORD_Y]	= 0						: _profileSectionPoly[_num + COORD_STATUS]	= 801
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= filletRadius		: _profileSectionPoly[_num + COORD_Y]	= 90					: _profileSectionPoly[_num + COORD_STATUS]	= 2001
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= 0					: _profileSectionPoly[_num + COORD_Y]	= -TREAD_THICKNESS		: _profileSectionPoly[_num + COORD_STATUS]	= 1
+		endif
+
+		if iTreadNosingProfile = NOSINGPROFILE_SLANTED_FILLET then
+			_num	= 0:		_profileSectionPoly[_num + COORD_X]	= filletRadius		: _profileSectionPoly[_num + COORD_Y]	= 0						: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= -1				: _profileSectionPoly[_num + COORD_Y]	= 0						: _profileSectionPoly[_num + COORD_STATUS]	= 801
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= filletRadius		: _profileSectionPoly[_num + COORD_Y]	= 90					: _profileSectionPoly[_num + COORD_STATUS]	= 2001
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= 0					: _profileSectionPoly[_num + COORD_Y]	= -_slantingStartPoint	: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= _slantingDist		: _profileSectionPoly[_num + COORD_Y]	= -TREAD_THICKNESS		: _profileSectionPoly[_num + COORD_STATUS]	= 1
+		endif
+
+		if iTreadNosingProfile = NOSINGPROFILE_SLANTED_CHAMFER then
+			_num	= 0:		_profileSectionPoly[_num + COORD_X]	= filletRadius		: _profileSectionPoly[_num + COORD_Y]	= 0						: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= 0					: _profileSectionPoly[_num + COORD_Y]	= -filletRadius			: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= 0					: _profileSectionPoly[_num + COORD_Y]	= -_slantingStartPoint	: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= _slantingDist		: _profileSectionPoly[_num + COORD_Y]	= -TREAD_THICKNESS		: _profileSectionPoly[_num + COORD_STATUS]	= 1
+		endif
+
+		if iTreadNosingProfile = NOSINGPROFILE_SLANTED_ONLY then
+		endif
+
+		if iTreadNosingProfile = NOSINGPROFILE_SLANTED_SQUARE then
+			_num	= 0:		_profileSectionPoly[_num + COORD_X]	= 0					: _profileSectionPoly[_num + COORD_Y]	= 0						: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= 0					: _profileSectionPoly[_num + COORD_Y]	= -_slantingStartPoint	: _profileSectionPoly[_num + COORD_STATUS]	= 1
+			_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= _slantingDist		: _profileSectionPoly[_num + COORD_Y]	= -TREAD_THICKNESS		: _profileSectionPoly[_num + COORD_STATUS]	= 1
+		endif
+
+		if _bEnableNosingExtension & _bNosingHasExtension then gosub "drawNosingExtension"
+
+		if vardim1(_profileSectionPoly) > 0 then
+			! put section poly
+			for i = 1 to vardim1(_profileSectionPoly) / 3
+				j = (i - 1) * 3
+
+				put _profileSectionPoly[j + 1], _profileSectionPoly[j + 2], _profileSectionPoly[j + 3]
+			next i
+
+			! reput profile path
+			for i = 1 to vardim1(_pathPolyCoords)
+				put	_pathPolyCoords[i][1],
+					_pathPolyCoords[i][2],
+					_pathPolyCoords[i][3],
+					_pathPolyCoords[i][4]
+			next i
+
+			tube vardim1(_profileSectionPoly) / 3,
+				vardim1(_pathPolyCoords),
+				1 + 2 + 16 + 32,
+
+				get(vardim1(_profileSectionPoly)),
+				get(vardim1(_pathPolyCoords) * 4)
+		endif
+	endif
+
+return
+
+
+! ==============================================================================
+"calculateEdgeAngleAndLength":
+! ------------------------------------------------------------------------------
+
+	! ===============================================================================
+	! Calculate Current Edge Angle and Length
+	! ===============================================================================
+
+	_edgeLength		= sqr((_edgeStartYCoord - _edgeEndYCoord)**2 + (_edgeStartXCoord - _edgeEndXCoord)**2)
+
+	if abs(_edgeStartXCoord - _edgeEndXCoord) < eps then
+		if _edgeStartYCoord > _edgeEndYCoord then
+			_edgeAngle	= -90
+		else
+			_edgeAngle	= 90
+		endif
+	else
+		if abs(_edgeStartYCoord - _edgeEndYCoord) < eps then
+			if _edgeStartXCoord > _edgeEndXCoord then
+				_edgeAngle	= 180
+			else
+				_edgeAngle	= 0
+			endif
+		else
+			if _edgeStartXCoord > _edgeEndXCoord then
+				_edgeAngle	= 180 + atn((_edgeStartYCoord - _edgeEndYCoord) / (_edgeStartXCoord - _edgeEndXCoord))
+			else
+				if _edgeStartYCoord > _edgeEndYCoord then
+					_edgeAngle	= atn((_edgeEndYCoord - _edgeStartYCoord) / (_edgeEndXCoord - _edgeStartXCoord))
+				else
+					_edgeAngle	= atn((_edgeStartYCoord - _edgeEndYCoord) / (_edgeStartXCoord - _edgeEndXCoord))
+				endif
+			endif
+		endif
+	endif
+
+return
+
+! ==============================================================================
+"cutMilledRecess":
+! ------------------------------------------------------------------------------
+	! Collect Leading end Points
+	gosub "collectLeadingEndPoints"
+
+	if _bLeadingEdgeExists = 0 then _bCutMilledRecess = 0
+
+	if _bCutMilledRecess then
+		! --------------------------------------------------------------------------
+		! Get the Simplified Leading Edge vector and Length
+		! --------------------------------------------------------------------------
+		dict _pointFrom, _pointTo
+		_pointFrom.x	= STAIR_TREAD_GEOMETRY[_startLeadIdx][1]
+		_pointFrom.y	= STAIR_TREAD_GEOMETRY[_startLeadIdx][2]
+		_pointFrom.z	= 0.0
+		_pointTo.x		= STAIR_TREAD_GEOMETRY[_endLeadIdx][1]
+		_pointTo.y		= STAIR_TREAD_GEOMETRY[_endLeadIdx][2]
+		_pointTo.z		= 0.0
+
+		dict _direction
+		gosub "GetDirection"	! returns _direction, _distance
+
+		! --------------------------------------------------------------------------
+		! Transform Coordinate System for the Cutting bodies
+		! --------------------------------------------------------------------------
+
+		XFORM	_direction.ux,	-_direction.uy,		0,		_pointFrom.x,
+				_direction.uy,	 _direction.ux,		0,		_pointFrom.y,
+				0,				 0,					1,		0
+
+		addy mrOffsetStart
+
+		! --------------------------------------------------------------------------
+		! Cutform for recesses
+		! --------------------------------------------------------------------------
+		for ii = 1 to iRecessNum
+			cutform 4, 1, 1+2+16,
+					0,	0, -1, recessDepth,
+					mrOffsetLeft, 				0, 				15,
+					_distance - mrOffsetRight, 	0,				15,
+					_distance - mrOffsetRight,	recessWidth,	15,
+					mrOffsetLeft,				recessWidth,	15
+
+			addy recessWidth + dRecess
+		next ii
+
+		del iRecessNum
+		del 2
+	endif
+return
+
+
+! ==============================================================================
+"GetDirection":
+! ------------------------------------------------------------------------------
+! Input:
+!	_pointFrom		Coordinates of the first point
+!	_pointTo		Coordinates of the second point
+! Output:
+!	_direction		Unit vector in direction of points
+!	_distance:		Distance between the points
+! ==============================================================================
+
+	dict _direction
+	call "BasicGeometry" parameters	iFunction	= 1,		! DIRECTION_POINTS_3D
+									pointFrom	= _pointFrom,
+									pointTo		= _pointTo,
+				returned_parameters	_direction,
+									_distance
+
+return
+
+! ==============================================================================
+"collectLeadingEndPoints":
+! ------------------------------------------------------------------------------
+	_bLeadingEdgeExists = 1
+	_startLeadIdx 		= 0
+	_endLeadIdx			= 0
+
+	for iii = 1 to _edgeNum
+		if STAIR_TREAD_FLAGS[iii][1] = TREAD_LEADINGEDGE then
+			for j = iii + 1 to iii + _edgeNum	! find leading end
+				if j > _edgeNum then
+					__actEdge = j - _edgeNum
+				else
+					__actEdge = j
+				endif
+				if STAIR_TREAD_FLAGS[__actEdge][1] <> TREAD_LEADINGEDGE then	! end of continous leading edge
+					_endLeadIdx = __actEdge
+					j = iii + _edgeNum			! break loop
+				endif
+			next j
+
+			if iii = 1 then						! find leading start
+				for k = _edgeNum to 1 step -1
+					if STAIR_TREAD_FLAGS[k][1] <> TREAD_LEADINGEDGE then		! start of continous leading edge
+						_startLeadIdx = k + 1
+						k = 1					! break loop
+					endif
+				next k
+			else
+				_startLeadIdx = iii
+			endif
+
+			iii = _edgeNum						! break loop
+		endif
+	next iii
+
+	if _startLeadIdx = 0 | _endLeadIdx = 0 then
+		_bLeadingEdgeExists = 0
+	endif
+return
+
+! ==========================================================================
+"textureFitting":
+	! Fit texture to leading edge first and last point
+! --------------------------------------------------------------------------
+	! Collect Leading end Points
+	gosub "collectLeadingEndPoints"
+
+	if _bLeadingEdgeExists then
+		! --------------------------------------------------------------------------
+		! Get the Simplified Leading Edge vector and Length
+		! --------------------------------------------------------------------------
+		Point1x		= STAIR_TREAD_GEOMETRY[_endLeadIdx][1]
+		Point1y		= STAIR_TREAD_GEOMETRY[_endLeadIdx][2]
+		Point1z		= 0
+		Point2x		= STAIR_TREAD_GEOMETRY[_startLeadIdx][1]
+		Point2y		= STAIR_TREAD_GEOMETRY[_startLeadIdx][2]
+		Point2z		= 0
+
+		! Calculate distance
+		Distance = Sqr((Point1x - Point2x)^2 + (Point1y - Point2y)^2 + (Point1z - Point2z)^2)
+
+		! direction vector from Point2 to Point1
+		if Distance > EPS then
+			DirectionVx = (Point1x - Point2x)/Distance
+			DirectionVy = (Point1y - Point2y)/Distance
+			DirectionVz = (Point1z - Point2z)/Distance
+		else
+			DirectionVx = 0
+			DirectionVy = 0
+			DirectionVz = 0
+		endif
+		
+		! --------------------------------------------------------------------------
+		! Texture Fitting
+		! --------------------------------------------------------------------------
+		add STAIR_TREAD_GEOMETRY[_startLeadIdx][1], STAIR_TREAD_GEOMETRY[_startLeadIdx][2], 0
+		coor{3} 2,
+				4,
+				0, 				0, 					0,	! origo
+				DirectionVx, 	DirectionVy, 		0,	! x
+				-DirectionVy, 	DirectionVx, 		0,	! y
+				0,				0,					1	! z
+		del 1
+		body 1
+	endif
+
+return
+
+! ==============================================================================
+"drawNosingExtension":
+! ------------------------------------------------------------------------------
+
+	_extensionXStart	= 0
+	if _bSlantedNosing then
+		_extensionXStart	= _slantingDist + extensionHeight / tan(_slantingAngle)
+	endif
+
+	_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= _extensionXStart	: _profileSectionPoly[_num + COORD_Y]	= -TREAD_THICKNESS - extensionHeight	: _profileSectionPoly[_num + COORD_STATUS]	= 1
+	_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= extensionWidth	: _profileSectionPoly[_num + COORD_Y]	= -TREAD_THICKNESS - extensionHeight	: _profileSectionPoly[_num + COORD_STATUS]	= 1
+	_num	= _num + 3:	_profileSectionPoly[_num + COORD_X]	= extensionWidth	: _profileSectionPoly[_num + COORD_Y]	= -TREAD_THICKNESS						: _profileSectionPoly[_num + COORD_STATUS]	= 1
+
+return
+

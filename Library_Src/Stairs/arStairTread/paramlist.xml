@@ -1,0 +1,944 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ParamSection>
+	<ParamSectHeader>
+		<AutoHotspots>false</AutoHotspots>
+		<StatBits>
+			<STBit_UIDefault/>
+			<STBit_FixSize/>
+			<STBit_UIUseHierarchicalPages/>
+		</StatBits>
+		<WDLeftFrame>0</WDLeftFrame>
+		<WDRightFrame>0</WDRightFrame>
+		<WDTopFrame>0</WDTopFrame>
+		<WDBotFrame>0</WDBotFrame>
+		<LayFlags>65535</LayFlags>
+		<WDMirrorThickness>0</WDMirrorThickness>
+		<WDWallInset>0</WDWallInset>
+	</ParamSectHeader>
+	<Parameters SectVersion="27" SectionFlags="0" SubIdent="0">
+		<Length Name="A">
+			<Description><![CDATA["Dimension 1"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</Length>
+		<Length Name="B">
+			<Description><![CDATA["Dimension 2"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</Length>
+		<Length Name="ZZYZX">
+			<Description><![CDATA["Height"]]></Description>
+			<Fix/>
+			<Value>1</Value>
+		</Length>
+		<Boolean Name="AC_show2DHotspotsIn3D">
+			<Description><![CDATA["Show 2D Hotspots in 3D"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Length Name="ac_bottomlevel">
+			<Description><![CDATA["Bottom Level"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Length>
+		<Length Name="ac_toplevel">
+			<Description><![CDATA["Top Level"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+
+		<!-- gs_2D_representation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="gs_2D_representation">
+			<Description><![CDATA["2D Representation"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+		</Title>
+		<FillPattern Name="gs_fill_type">
+			<Description><![CDATA["Fill Type"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>65</Value>
+		</FillPattern>
+		<PenColor Name="gs_fill_pen">
+			<Description><![CDATA["Fill Pen"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>19</Value>
+		</PenColor>
+		<PenColor Name="gs_back_pen">
+			<Description><![CDATA["Fill Background Pen"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>19</Value>
+		</PenColor>
+
+		<!-- gs_3D_representation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="gs_3D_representation">
+			<Description><![CDATA["3D Representation"]]></Description>
+		</Title>
+		<PenColor Name="penSection">
+			<Description><![CDATA["Cut Line Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>51</Value>
+		</PenColor>
+		<PenColor Name="gs_cont_pen">
+			<Description><![CDATA["Uncut Line Pen"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>11</Value>
+		</PenColor>
+		<Integer Name="gs_resol">
+			<Description><![CDATA["Cross-section Resolution"]]></Description>
+			<Value>36</Value>
+		</Integer>
+
+		<!-- gs_material: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="gs_material">
+			<Description><![CDATA["Building Materials and Surfaces"]]></Description>
+		</Title>
+		<BuildingMaterial Name="structureBMat">
+			<Description><![CDATA["Tread"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>24</Value>
+		</BuildingMaterial>
+		<BuildingMaterial Name="bmatNonSlipBand">
+			<Description><![CDATA["Non-Slip Band"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>41</Value>
+		</BuildingMaterial>
+		<BuildingMaterial Name="bmatEdgeProtection">
+			<Description><![CDATA["Edge protection"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>33</Value>
+		</BuildingMaterial>
+		<Boolean Name="bOverrideStructureSurface">
+			<Description><![CDATA["Override Surfaces"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Material Name="treadSurface">
+			<Description><![CDATA["Tread Surface"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>16</Value>
+		</Material>
+		<Boolean Name="bOverrideAccessorySurface">
+			<Description><![CDATA["Override Accessory Surfaces"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Material Name="matBand">
+			<Description><![CDATA["Non-Slip Band Surface"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>78</Value>
+		</Material>
+		<Material Name="matEdgeProtection">
+			<Description><![CDATA["Edge Protection Surface"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>47</Value>
+		</Material>
+
+		<!-- MyStairTre_sp1: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="MyStairTre_sp1">
+			<Description><![CDATA["Tread Profile"]]></Description>
+		</Title>
+		<Boolean Name="bNosingProfile">
+			<Description><![CDATA["Nosing"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Integer Name="iNosingMainType">
+			<Description><![CDATA["Nosing Main Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Integer Name="iTreadNosingProfile">
+			<Description><![CDATA["Tread Profile Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>3</Value>
+		</Integer>
+		<Profile Name="nosingProfileID">
+			<Description><![CDATA["Tread Nosing Profile"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>24</Value>
+		</Profile>
+		<Boolean Name="bProfileAttributes">
+			<Description><![CDATA["Use Profile Attributes for Nosing"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Boolean Name="bUseSlantingAngleRiser">
+			<Description><![CDATA["Cut With Riser Angle"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Integer Name="iDefSlantingAngleCustom">
+			<Description><![CDATA["Define Custom Slanting Angle"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>2</Value>
+		</Integer>
+		<Angle Name="slantingAngleCustom">
+			<Description><![CDATA["Custom Slanting Angle"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>90</Value>
+		</Angle>
+		<Length Name="slantingDistCustom">
+			<Description><![CDATA["Custom Slanting Distance"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="slantingStartPoint">
+			<Description><![CDATA["Slanting Start Point"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.014</Value>
+		</Length>
+		<Length Name="filletRadius">
+			<Description><![CDATA["Fillet Radius"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.0125</Value>
+		</Length>
+		<Length Name="extensionHeight">
+			<Description><![CDATA["Extension Height"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.01</Value>
+		</Length>
+		<Length Name="extensionWidth">
+			<Description><![CDATA["Extension Width"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.04</Value>
+		</Length>
+		<Boolean Name="bTreadNosingProfileOnFront">
+			<Description><![CDATA["Tread Profile on Front"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="bTreadNosingProfileOnBack">
+			<Description><![CDATA["Tread Profile on Back"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Boolean Name="bTreadNosingProfileOnLeft">
+			<Description><![CDATA["Tread Profile on Left"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Boolean Name="bTreadNosingProfileOnRight">
+			<Description><![CDATA["Tread Profile on Right"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+
+		<!-- bAccessory: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Boolean Name="bAccessory">
+			<Description><![CDATA["Accessory"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Integer Name="iAccessory">
+			<Description><![CDATA["Accessory Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Integer Name="iAcc2DVisibility">
+			<Description><![CDATA["Tread Accessories Representation"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>3</Value>
+		</Integer>
+		<Length Name="accThk">
+			<Description><![CDATA["Accessory Thickness"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.003</Value>
+		</Length>
+		<Boolean Name="bAccBack">
+			<Description><![CDATA["Accessory on Back"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Boolean Name="bAccRight">
+			<Description><![CDATA["Accessory on Right"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Boolean Name="bAccLeft">
+			<Description><![CDATA["Accessory on Left"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Length Name="accOffsetFront">
+			<Description><![CDATA["Accessory Offset on Front"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.02</Value>
+		</Length>
+		<Length Name="accOffsetBack">
+			<Description><![CDATA["Accessory Offset on Back"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.05</Value>
+		</Length>
+		<Length Name="accOffsetRight">
+			<Description><![CDATA["Accessory Offset on Right Side"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.1</Value>
+		</Length>
+		<Length Name="accOffsetLeft">
+			<Description><![CDATA["Accessory Offset on Left Side"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.1</Value>
+		</Length>
+		<PenColor Name="penAccVisible">
+			<Description><![CDATA["Line Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>71</Value>
+		</PenColor>
+		<LineType Name="lineAccVisible">
+			<Description><![CDATA["Line Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</LineType>
+		<PenColor Name="penAccHidden">
+			<Description><![CDATA["Line Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>71</Value>
+		</PenColor>
+		<LineType Name="lineAccHidden">
+			<Description><![CDATA["Line Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>25</Value>
+		</LineType>
+
+		<!-- nonslipBands: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="nonslipBands">
+			<Description><![CDATA["Non-Slip Bands"]]></Description>
+		</Title>
+		<Integer Name="iTreadNonSlipBandNum">
+			<Description><![CDATA["Number of Bands"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>3</Value>
+		</Integer>
+		<Length Name="treadNonSlipBandWidth">
+			<Description><![CDATA["Band Width"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.01</Value>
+		</Length>
+		<Length Name="treadNonSlipBandDist">
+			<Description><![CDATA["Band Distance"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.015</Value>
+		</Length>
+
+		<!-- edgeProtection: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="edgeProtection">
+			<Description><![CDATA["Edge Protection"]]></Description>
+		</Title>
+		<Integer Name="iEdgeProtectionShape">
+			<Description><![CDATA["Edge Protection Shape"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Profile Name="accProfileID">
+			<Description><![CDATA["Edge Protection Profile"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>28</Value>
+		</Profile>
+		<Length Name="edgeProtectionWidth">
+			<Description><![CDATA["Edge Protection Width"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.05</Value>
+		</Length>
+		<Length Name="edgeProtectionHeight">
+			<Description><![CDATA["Edge Protection Height"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.02</Value>
+		</Length>
+		<Integer Name="iDefProtectionSlanting">
+			<Description><![CDATA["Define Edge Protection Slanting Angle"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>2</Value>
+		</Integer>
+		<Length Name="protectionSlantingDist">
+			<Description><![CDATA["Edge Protection Slanting Distance"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.02</Value>
+		</Length>
+		<RealNum Name="protectionSlantingAngle">
+			<Description><![CDATA["Edge Protection Slanting Angle"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>70</Value>
+		</RealNum>
+		<Length Name="protectionFilletRadius">
+			<Description><![CDATA["Edge Protection Fillet Radius"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.01</Value>
+		</Length>
+
+		<!-- bMilledRecess: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Boolean Name="bMilledRecess">
+			<Description><![CDATA["Milled Recess"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Integer Name="iRecessMultiply">
+			<Description><![CDATA["Multiply Method"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>2</Value>
+		</Integer>
+		<Integer Name="iRecessNum">
+			<Description><![CDATA["Number of Milled Recesses"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>4</Value>
+		</Integer>
+		<Length Name="dRecess">
+			<Description><![CDATA["Distance of Milled Recesses"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.01</Value>
+		</Length>
+		<Length Name="recessWidth">
+			<Description><![CDATA["Width of Milled Recesses"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.015</Value>
+		</Length>
+		<Length Name="recessDepth">
+			<Description><![CDATA["Depth of Milled Recesses"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.01</Value>
+		</Length>
+		<Length Name="mrOffsetStart">
+			<Description><![CDATA["Start Offset"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="mrOffsetLeft">
+			<Description><![CDATA["Left Offset"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="mrOffsetRight">
+			<Description><![CDATA["Right Offset"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="cuttingWidth">
+			<Description><![CDATA["Cutting Width"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.06</Value>
+		</Length>
+
+		<!-- bRaisedStrip: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Boolean Name="bRaisedStrip">
+			<Description><![CDATA["Raised Strip"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<Boolean Name="bShowStripRight">
+			<Description><![CDATA["Raised Strip on Right Side"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="bShowStripLeft">
+			<Description><![CDATA["Raised Strip on Left Side"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Integer Name="iTypeRaisedStrip">
+			<Description><![CDATA["Raised Strip Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>2</Value>
+		</Integer>
+		<Length Name="radiusRounded">
+			<Description><![CDATA["Rounded Radius"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.003</Value>
+		</Length>
+		<Length Name="widthRaisedStrip">
+			<Description><![CDATA["Raised Strip Width"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.02</Value>
+		</Length>
+		<Length Name="heightRaisedStrip">
+			<Description><![CDATA["Raised Strip Height"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.005</Value>
+		</Length>
+		<Length Name="posRaisedStrip">
+			<Description><![CDATA["Position Y"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.01</Value>
+		</Length>
+		<Length Name="offsetFrontRaisedStrip">
+			<Description><![CDATA["Offset Front"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.02</Value>
+		</Length>
+		<Length Name="offsetBackRaisedStrip">
+			<Description><![CDATA["Offset Back"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.01</Value>
+		</Length>
+
+		<!-- gs_list: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="gs_list">
+			<Description><![CDATA["Description"]]></Description>
+			<Fix/>
+		</Title>
+		<RealNum Name="gs_list_cost">
+			<Description><![CDATA["Cost"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</RealNum>
+		<String Name="gs_list_manufacturer">
+			<Description><![CDATA["Manufacturer"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="gs_list_note">
+			<Description><![CDATA["Note/Remarks"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="gs_list_location">
+			<Description><![CDATA["Location"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="gs_list_accessories">
+			<Description><![CDATA["Accessories"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="gs_list_soundinsul">
+			<Description><![CDATA["Sound Insulation"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="FM_Type">
+			<Description><![CDATA["Group Type"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA["Others"]]></Value>
+		</String>
+		<Integer Name="iFMType">
+			<Description><![CDATA["Group Type"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>25</Value>
+		</Integer>
+		<String Name="FM_InventoryNumber">
+			<Description><![CDATA["Inventory Number"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="FM_SerialNumber">
+			<Description><![CDATA["Serial Number"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="FM_ProductionYear">
+			<Description><![CDATA["Production Year"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<RealNum Name="FM_ObjectWeight">
+			<Description><![CDATA["Object Weight"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</RealNum>
+		<String Name="FM_ObjectWeightUnit">
+			<Description><![CDATA["Object Weight Unit"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA["kg"]]></Value>
+		</String>
+		<RealNum Name="FM_Stories">
+			<Description><![CDATA["Number of Stories"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="FM_HalfLandings">
+			<Description><![CDATA["Number of Half-Landings"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="FM_LevelHeight">
+			<Description><![CDATA["Height of Levels"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</RealNum>
+		<RealNum Name="FM_HeadRoom">
+			<Description><![CDATA["Headroom"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</RealNum>
+		<String Name="FM_BearingStructure">
+			<Description><![CDATA["Bearing Structure"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<RealNum Name="FM_BearingCapacity">
+			<Description><![CDATA["Bearing Capacity"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</RealNum>
+		<Boolean Name="FM_SmokeFree">
+			<Description><![CDATA["Smoke-free Staircase"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
+		<RealNum Name="FM_StepsLength">
+			<Description><![CDATA["Length of Steps"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</RealNum>
+		<String Name="FM_MaterialFootstep">
+			<Description><![CDATA["Material of Footstep"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="FM_MaterialStairRailing">
+			<Description><![CDATA["Material of Stair Railing"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="FM_MaterialHandhold">
+			<Description><![CDATA["Material of Handhold"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="gs_list_custom1">
+			<Description><![CDATA["User Defined 1"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="gs_list_custom2">
+			<Description><![CDATA["User Defined 2"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="gs_list_custom3">
+			<Description><![CDATA["User Defined 3"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="gs_list_custom4">
+			<Description><![CDATA["User Defined 4"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+		<String Name="gs_list_custom5">
+			<Description><![CDATA["User Defined 5"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value><![CDATA[""]]></Value>
+		</String>
+
+		<!-- ifc_Title: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="ifc_Title">
+			<Description><![CDATA["IFC2x3 Property Set for Stairs"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+		</Title>
+		<Integer Name="ifc_StairType">
+			<Description><![CDATA["Stair Type"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Unique/>
+			</Flags>
+			<Value>0</Value>
+		</Integer>
+		<Integer Name="ifc_NumberOfRiser">
+			<Description><![CDATA["Number of Riser"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Unique/>
+			</Flags>
+			<Value>0</Value>
+		</Integer>
+		<Integer Name="ifc_NumberOfTreads">
+			<Description><![CDATA["Number of Tread"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Unique/>
+			</Flags>
+			<Value>0</Value>
+		</Integer>
+		<Length Name="ifc_RiserHeight">
+			<Description><![CDATA["Riser Height"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Unique/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<Length Name="ifc_TreadLength">
+			<Description><![CDATA["Tread Length"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Child/>
+				<ParFlg_Unique/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+	</Parameters>
+</ParamSection>

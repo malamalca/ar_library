@@ -1,0 +1,19 @@
+﻿wallWidth = 0.05
+
+
+!if kind = KIND_GENERIC_ROUND or kind = KIND_GENERIC_STANDARD then
+	prism_ 12, shaftDataDimensions[DIM_SHAFT_HEIGHT],
+		-shaftDataDimensions[DIM_SHAFT_DIM1] / 2, 0, 13+66,
+		0,0,900,
+		0, 180, 4000+13+66,
+		0,0,900,
+		0, 180, 4000+13+66,
+	
+		-shaftDataDimensions[DIM_SHAFT_DIM1] / 2, 0, -1,
+		shaftDataDimensions[DIM_SHAFT_DIM1] / 2-wallWidth, 0, 13,
+		0,0,900,
+		0, -180, 4013,
+		0,0,900,
+		0,-180, 4013,
+		shaftDataDimensions[DIM_SHAFT_DIM1] / 2-wallWidth,0,-1
+!endif

@@ -1,0 +1,121 @@
+﻿building_material mat
+plateThickness = 0.003
+
+!	Sketch
+!
+!	---|   |---
+!	|         |
+!	|         |
+!	-----------
+
+
+! bottom plane
+
+PRISM_ 4, plateThickness,
+	-A/2, -B/2 + plateThickness, 8,
+	A/2, -B/2 + plateThickness, 1+8,
+	A/2, B/2 - plateThickness, 8,
+	-A/2, B/2 - plateThickness, 1+8
+
+addz plateThickness
+! side plates
+PRISM_ 4, ZZYZX - 2 * plateThickness,
+	-A/2, -B/2 + plateThickness, 8,
+	-A/2 + plateThickness, -B/2 + plateThickness, 8,
+	-A/2 + plateThickness, B/2 - plateThickness, 8,
+	-A/2, B/2 - plateThickness, 8
+
+PRISM_ 4, ZZYZX - 2 * plateThickness,
+	A/2, -B/2 + plateThickness, 8,
+	A/2 - plateThickness, -B/2 + plateThickness, 8,
+	A/2 - plateThickness, B/2 - plateThickness, 8,
+	A/2, B/2 - plateThickness, 8
+
+! PRISM_ 4, ZZYZX - 2 * plateThickness,
+! 	-A/2, -B/2, 10,
+! 	-A/2 + plateThickness, -B/2 + plateThickness, 10,
+! 	A/2 - plateThickness, -B/2 + plateThickness, 10,
+! 	A/2, -B/2, 10
+
+! PRISM_ 4, ZZYZX - 2 * plateThickness,
+! 	-A/2, B/2, 10,
+! 	-A/2 + plateThickness, B/2 - plateThickness, 10,
+! 	A/2 - plateThickness, B/2 - plateThickness, 10,
+! 	A/2, B/2, 10
+
+addz ZZYZX - 2 * plateThickness
+
+! top plate
+PRISM_ 4, plateThickness,
+	-A/2, -B/2 + plateThickness, 8,
+	A/2, -B/2 + plateThickness, 4+8,
+	A/2, B/2 - plateThickness, 8,
+	-A/2, B/2 - plateThickness, 4+8
+
+del top
+
+addy B/2
+addz ZZYZX/2
+rotx -90
+
+addz -plateThickness
+
+! plate with intake
+prism_ 7, plateThickness,
+	-A/2, -ZZYZX/2, 2+4+8,
+	A/2, -ZZYZX/2, 2+4+8,
+	A/2, ZZYZX/2, 2+4+8,
+	-A/2, ZZYZX/2, 2+4+8+64,
+	0, 0, -1,
+	0, 0, 900,
+	intakeDiameter/2, 360, 4000
+
+! intake
+prism_	3, 0.05,
+	0,									0,		900+1+2+4+8+64,
+	intakeDiameter/2, 					360, 	4000+1+2+4+8+64,
+	intakeDiameter/2 - plateThickness, 	360, 	4000
+
+addz -B + plateThickness
+
+! plate with multiple exhausts
+exhaustDiameter = 0.075
+exhaustSpacing = 0.02
+dx = -2 * (exhaustDiameter) - 2 * exhaustSpacing
+dy = -exhaustDiameter/2 - exhaustSpacing/2
+
+addz -0.05
+addx dx
+addy dy
+
+for j = 1 to 2
+	for i = 1 to 5
+		prism_	3, 0.05 + plateThickness,
+			0,									0,		900+1+2+4+8+64,
+			exhaustDiameter/2, 					360, 	4000+1+2+4+8+64,
+			exhaustDiameter/2 - plateThickness, 	360, 	4000
+
+		hotspot 0, 0, 0, unId: unId = unId + 1
+
+		addx exhaustDiameter + exhaustSpacing
+
+		put dx + (i-1)*(exhaustDiameter + exhaustSpacing), dy + (j-1)*(exhaustDiameter + exhaustSpacing), 900
+		put exhaustDiameter/2, 360, 4000+4+8
+	next i
+	del 5
+	addy exhaustDiameter + exhaustSpacing
+next j
+del 5
+
+prism_ 25, plateThickness,
+	-A/2, -ZZYZX/2, 1+2+8,
+	A/2, -ZZYZX/2, 1+2+8,
+	A/2, ZZYZX/2, 1+2+8,
+	-A/2, ZZYZX/2, 1+2+8,
+	0, 0, -1,
+	get(60)
+
+del 2
+
+hotspot 0, 0, 0.025
+hotspot 0, 0, 0.05

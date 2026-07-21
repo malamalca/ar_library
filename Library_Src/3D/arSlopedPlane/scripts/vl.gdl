@@ -1,0 +1,11 @@
+﻿dim fontNames[]
+res = request("FONTNAMES_LIST", "", fontNames)
+values "fontFace", fontNames, CUSTOM
+
+VALUES{2} "mode" 0, "Naklonski vektor", 1, "Prve 3 točke"
+
+if mode = MODE_3P and (GLOB_MODPAR_NAME = "xyz" or GLOB_MODPAR_NAME = "xyz_e")  then
+	!slopeInclination = sqr((a*a + b*b)/abs(c)) * 100
+	slopeInclination = tan(acs(c/sqr(a*a+b*b+c*c))) * 100
+	parameters slopeInclination = slopeInclination
+endif
