@@ -10,10 +10,13 @@ IF GLOB_MODPAR_NAME = "A" THEN
 		endif
 	next i
 
-	IF A > maxStudX+defaultStudSpacing AND n < MAX_STUD_COUNT THEN
+	IF defaultStudSpacing > NIX AND A > maxStudX+defaultStudSpacing AND n < MAX_STUD_COUNT THEN
 		addCount = INT((A-maxStudX) / defaultStudSpacing)
+		! never write past the fixed-size X[] array
+		IF n + addCount > MAX_STUD_COUNT THEN addCount = MAX_STUD_COUNT - n
+		! anchor new studs off the true rightmost stud (X[] is not sorted here)
 		FOR i = 1 TO addCount
-			X[n+i] = X[n + i - 1] + defaultStudSpacing
+			X[n+i] = maxStudX + i * defaultStudSpacing
 		NEXT i
 		n = n + addCount
 	ENDIF
@@ -25,7 +28,51 @@ PARAMETERS X = X
 
 
 
-parameters lumberVol = lumberVol 
+parameters lumberVol = lumberVol
 !lock "LumberSize"
 
 parameters frameArea = frameArea
+
+
+! ============================================================
+! Blocking (horizontals) editor
+! Maps the UI proxy fields <-> the horizontals[bay][1..3] array,
+! mirroring the ui_segment_index pattern used in arVertikala.
+! horizontals[i][ii] holds the absolute Z height of blocking
+! piece ii in the bay to the right of stud i (0 = none).
+! ============================================================
+hideparameter "ui_hz_bay", "ui_hz_1", "ui_hz_2", "ui_hz_3"
+
+values "ui_hz_bay" range[1, n]
+
+! keep the selected bay in range if the stud count shrinks
+if ui_hz_bay > n then
+	ui_hz_bay = n
+	parameters ui_hz_bay = ui_hz_bay
+endif
+if ui_hz_bay < 1 then
+	ui_hz_bay = 1
+	parameters ui_hz_bay = ui_hz_bay
+endif
+
+! selecting a bay loads its three blocking heights into the edit fields
+if GLOB_MODPAR_NAME = "ui_hz_bay" then
+	ui_hz_1 = horizontals[ui_hz_bay][1]
+	ui_hz_2 = horizontals[ui_hz_bay][2]
+	ui_hz_3 = horizontals[ui_hz_bay][3]
+	parameters ui_hz_1 = ui_hz_1, ui_hz_2 = ui_hz_2, ui_hz_3 = ui_hz_3
+endif
+
+! editing a height field writes it back into the array
+if GLOB_MODPAR_NAME = "ui_hz_1" then
+	horizontals[ui_hz_bay][1] = ui_hz_1
+	parameters horizontals = horizontals
+endif
+if GLOB_MODPAR_NAME = "ui_hz_2" then
+	horizontals[ui_hz_bay][2] = ui_hz_2
+	parameters horizontals = horizontals
+endif
+if GLOB_MODPAR_NAME = "ui_hz_3" then
+	horizontals[ui_hz_bay][3] = ui_hz_3
+	parameters horizontals = horizontals
+endif

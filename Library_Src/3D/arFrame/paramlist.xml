@@ -4,6 +4,7 @@
 		<AutoHotspots>false</AutoHotspots>
 		<StatBits>
 			<STBit_FixSize/>
+			<STBit_UIUseHierarchicalPages/>
 		</StatBits>
 		<WDLeftFrame>0</WDLeftFrame>
 		<WDRightFrame>0</WDRightFrame>
@@ -50,6 +51,13 @@
 			</Flags>
 			<Value>0</Value>
 		</Length>
+		<Integer Name="gs_ui_current_page">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
 		<RealNum Name="lumberVol">
 			<Description><![CDATA["Lumber Vol [m3]"]]></Description>
 			<Value>0.2272</Value>
@@ -58,13 +66,35 @@
 			<Description><![CDATA["Frame Area [m2]"]]></Description>
 			<Value>5</Value>
 		</RealNum>
+
+		<!-- lblCutLeft: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="lblCutLeft">
+			<Description><![CDATA["Left Diagonal Cut"]]></Description>
+			<Fix/>
+		</Title>
 		<Length Name="cutHeight">
-			<Description><![CDATA["Cut Height"]]></Description>
+			<Description><![CDATA["Cut Height (Left)"]]></Description>
 			<Value>1</Value>
 		</Length>
 		<Angle Name="cutAngle">
-			<Description><![CDATA["Cut Angle"]]></Description>
+			<Description><![CDATA["Cut Angle (Left)"]]></Description>
 			<Value>-15</Value>
+		</Angle>
+
+		<!-- lblCutRight: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Title Name="lblCutRight">
+			<Description><![CDATA["Right Diagonal Cut"]]></Description>
+			<Fix/>
+		</Title>
+		<Length Name="cutHeight2">
+			<Description><![CDATA["Cut Height (Right)"]]></Description>
+			<Value>0</Value>
+		</Length>
+		<Angle Name="cutAngle2">
+			<Description><![CDATA["Cut Angle (Right)"]]></Description>
+			<Value>0</Value>
 		</Angle>
 		<Integer Name="n">
 			<Description><![CDATA["Number of In-Between Studs"]]></Description>
@@ -480,6 +510,22 @@
 				<AVal Column="3" Row="100">0</AVal>
 			</ArrayValues>
 		</Length>
+		<Integer Name="ui_hz_bay">
+			<Description><![CDATA["Stud Bay"]]></Description>
+			<Value>1</Value>
+		</Integer>
+		<Length Name="ui_hz_1">
+			<Description><![CDATA["Blocking Height 1"]]></Description>
+			<Value>0</Value>
+		</Length>
+		<Length Name="ui_hz_2">
+			<Description><![CDATA["Blocking Height 2"]]></Description>
+			<Value>0</Value>
+		</Length>
+		<Length Name="ui_hz_3">
+			<Description><![CDATA["Blocking Height 3"]]></Description>
+			<Value>0</Value>
+		</Length>
 
 		<!-- lblBottomElement: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
@@ -497,14 +543,6 @@
 			</Flags>
 			<Value>0.08</Value>
 		</Length>
-		<Material Name="bottomElementMaterial">
-			<Description><![CDATA["Material"]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-				<ParFlg_Hidden/>
-			</Flags>
-			<Value>0</Value>
-		</Material>
 
 		<!-- lblTopElement: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
@@ -522,14 +560,6 @@
 			</Flags>
 			<Value>0.08</Value>
 		</Length>
-		<Material Name="topElementMaterial">
-			<Description><![CDATA[""]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-				<ParFlg_Hidden/>
-			</Flags>
-			<Value>0</Value>
-		</Material>
 
 		<!-- lblStud: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
@@ -554,14 +584,6 @@
 			</Flags>
 			<Value>0.08</Value>
 		</Length>
-		<Material Name="defaultStudMaterial">
-			<Description><![CDATA["Default Stud Material"]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-				<ParFlg_Hidden/>
-			</Flags>
-			<Value>1</Value>
-		</Material>
 		<BuildingMaterial Name="studMat1">
 			<Description><![CDATA["Stud material 1"]]></Description>
 			<Flags>
@@ -570,7 +592,7 @@
 			<Value>59</Value>
 		</BuildingMaterial>
 		<BuildingMaterial Name="studMat2">
-			<Description><![CDATA["Stud material 1"]]></Description>
+			<Description><![CDATA["Stud material 2"]]></Description>
 			<Flags>
 				<ParFlg_Child/>
 			</Flags>
@@ -636,44 +658,6 @@
 			<Value>2</Value>
 		</PenColor>
 
-		<!-- lbl3d: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
-
-		<String Name="lbl3d">
-			<Description><![CDATA["3D Propertis"]]></Description>
-			<Flags>
-				<ParFlg_BoldName/>
-			</Flags>
-			<Value><![CDATA[""]]></Value>
-		</String>
-		<FillPattern Name="fillSect1">
-			<Description><![CDATA["Section Fill 1"]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-			</Flags>
-			<Value>65</Value>
-		</FillPattern>
-		<FillPattern Name="fillSect2">
-			<Description><![CDATA["Section Fill 2"]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-			</Flags>
-			<Value>65</Value>
-		</FillPattern>
-		<FillPattern Name="fillSect3">
-			<Description><![CDATA["Section Fill 3"]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-			</Flags>
-			<Value>65</Value>
-		</FillPattern>
-		<FillPattern Name="fillSect4">
-			<Description><![CDATA["Section Fill 4"]]></Description>
-			<Flags>
-				<ParFlg_Child/>
-			</Flags>
-			<Value>65</Value>
-		</FillPattern>
-
 		<!-- gs_2D_representation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 
 		<Title Name="gs_2D_representation">
@@ -694,38 +678,6 @@
 			</Flags>
 			<Value>1</Value>
 		</FillPattern>
-		<PenColor Name="gs_cont_pen">
-			<Description><![CDATA["Contour Pen"]]></Description>
-			<Fix/>
-			<Flags>
-				<ParFlg_Child/>
-			</Flags>
-			<Value>2</Value>
-		</PenColor>
-		<FillPattern Name="gs_fill_type">
-			<Description><![CDATA["Fill Type"]]></Description>
-			<Fix/>
-			<Flags>
-				<ParFlg_Child/>
-			</Flags>
-			<Value>65</Value>
-		</FillPattern>
-		<PenColor Name="gs_fill_pen">
-			<Description><![CDATA["Fill Pen"]]></Description>
-			<Fix/>
-			<Flags>
-				<ParFlg_Child/>
-			</Flags>
-			<Value>19</Value>
-		</PenColor>
-		<PenColor Name="gs_back_pen">
-			<Description><![CDATA["Fill Background Pen"]]></Description>
-			<Fix/>
-			<Flags>
-				<ParFlg_Child/>
-			</Flags>
-			<Value>19</Value>
-		</PenColor>
 
 		<!-- gs_list: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
 

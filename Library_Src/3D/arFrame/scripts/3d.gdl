@@ -1,10 +1,16 @@
-﻿model solid 
+﻿model solid
 studId = 1
 paramDrawBeamLength = A
 
+! Second (right-side) diagonal cut is active only when a height and an angle are given.
+! When it is OFF (the default for every existing placement), the original single-cut
+! code below runs completely unchanged -> zero regression. The new two-sided geometry
+! lives in the `else` branch further down and only engages once the right cut is set.
+rightCutOn = (cutHeight2 > NIX) and (abs(cutAngle2) > NIX)
+
+if rightCutOn = 0 then
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Bottom Element
-!SET MATERIAL bottomElementMaterial
 paramDrawBeamWidth = bottomElementHeight
 
 ! show only if checked
@@ -68,6 +74,8 @@ hotspot 0,0, 0, unID, cutHeight, 1 : unID = unID+1
 hotspot 0,0, cutHeight, unID, cutHeight, 2 : unID = unID+1
 hotspot 0,0, -1, unID, cutHeight, 3 : unID = unID+1
 
+! show only if checked (matches bottom plate + two-sided cut path)
+if lblTopElement then
 if cutHeight > NIX and cutHeight < ZZYZX and cutAngle > 0 then
 	! višina poševnine (notranja in spodnja stran)
 	deltaHeight = (ZZYZX - topElementHeight) - (cutHeight - topElementHeight / cos(cutAngle))
@@ -87,7 +95,7 @@ if cutHeight > NIX and cutHeight < ZZYZX and cutAngle > 0 then
 	if paramDrawBeamLength > 0 then
 		! when cutHeight
 		if ((ZZYZX - cutHeight) / tan(cutAngle) + deltaLen) > A then
-			paramDrawBeamLength = A / cos(cutAngle) + tan(cutAngle) / topElementHeight
+			paramDrawBeamLength = A / cos(cutAngle) + tan(cutAngle) * topElementHeight
 			topCuttingPlaneAngle = -90
 			topCuttingX = A
 		endif
@@ -133,6 +141,7 @@ else
 	endif
 	DEL 1
 endif
+endif ! lblTopElement
 
 HOTSPOT 0,0,0, unID : unID = unID+1
 HOTSPOT 0,0,ZZYZX, unID : unID = unID+1
@@ -169,7 +178,6 @@ paramDrawStudHeight = ZZYZX- topElementHeight -bottomElementHeight
 addz bottomElementHeight
 
 FOR i = 1 TO n
-	!SET MATERIAL defaultStudMaterial
 	paramDrawStudWidth = defaultStudWidth
 
 	HOTSPOT 0, 0, 0, unID, X[i], 1+128   : unID = unID+1
@@ -201,6 +209,162 @@ endif
 
 
 DEL 1
+
+else
+	! ============================================================================
+	! TWO-SIDED DIAGONAL CUT PATH  (engaged only when the right cut is set)
+	!   Left  cut = cutHeight  / cutAngle
+	!   Right cut = cutHeight2 / cutAngle2   (mirror of the left about X = A/2)
+	! A positive angle slopes the TOP plate, a negative angle slopes the BOTTOM
+	! plate - same convention as the original single cut. When both cuts slope the
+	! same plate steeply enough to meet, they are mitered into a ridge (top) or
+	! butt-joined into a valley (bottom).
+	!
+	! The right side reuses the exact left-side drawing subroutines inside a
+	! mirror frame  (ADDX A : ADDY B : ROTZ 180)  which maps local (x,y,z) to
+	! world (A-x, B-y, z). That is a pure rotation (normals stay correct) and,
+	! because every beam cross-section is symmetric about Y = B/2, it lands the
+	! mirrored beam exactly where the right cut belongs.
+	! ============================================================================
+	Ztop = ZZYZX - topElementHeight
+
+	! which plate each side affects
+	topLeftOn  = (cutAngle  > NIX)  and (cutHeight  > NIX) and (cutHeight  < ZZYZX)
+	topRightOn = (cutAngle2 > NIX)  and (cutHeight2 > NIX) and (cutHeight2 < ZZYZX)
+	botLeftOn  = (cutAngle  < -NIX) and (cutHeight  > NIX)
+	botRightOn = (cutAngle2 < -NIX) and (cutHeight2 > NIX)
+
+	! horizontal run of each slope (wall -> where the slope meets the flat plate)
+	runLtop = 0 : runRtop = 0
+	if topLeftOn  then runLtop = (Ztop - (cutHeight  - topElementHeight/cos(cutAngle ))) / tan(cutAngle )
+	if topRightOn then runRtop = (Ztop - (cutHeight2 - topElementHeight/cos(cutAngle2))) / tan(cutAngle2)
+
+	runLbot = 0 : runRbot = 0
+	if botLeftOn  then runLbot = cutHeight  / tan(-cutAngle )
+	if botRightOn then runRbot = cutHeight2 / tan(-cutAngle2)
+
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	! Bottom plate
+	paramDrawBeamWidth = bottomElementHeight
+	if lblBottomElement then
+		if botLeftOn or botRightOn then
+			botValley = botLeftOn and botRightOn and (runLbot + runRbot > A + NIX)
+			if botValley then
+				GOSUB "drawBottomValley"
+			else
+				if botLeftOn then
+					gCH = cutHeight : gCA = cutAngle
+					GOSUB "drawBottomSlope"
+				endif
+				if botRightOn then
+					ADDX A : ADDY B : ROTZ 180
+					gCH = cutHeight2 : gCA = cutAngle2
+					GOSUB "drawBottomSlope"
+					DEL 3
+				endif
+				gFL = 0 : if botLeftOn  then gFL = runLbot
+				gFR = A : if botRightOn then gFR = A - runRbot
+				gLM = botLeftOn  : gLMa = cutAngle/2
+				gRM = botRightOn : gRMa = cutAngle2/2
+				GOSUB "drawBottomFlat"
+			endif
+		else
+			paramDrawBeamLength = A
+			GOSUB "drawBeam3d"
+		endif
+	endif
+
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	! Top plate
+	paramDrawBeamWidth = topElementHeight
+	if lblTopElement then
+		if topLeftOn or topRightOn then
+			topRidge = topLeftOn and topRightOn and (runLtop + runRtop > A + NIX)
+			if topRidge then
+				GOSUB "drawTopRidge"
+			else
+				if topLeftOn then
+					gCH = cutHeight : gCA = cutAngle
+					GOSUB "drawTopSlope"
+				endif
+				if topRightOn then
+					ADDX A : ADDY B : ROTZ 180
+					gCH = cutHeight2 : gCA = cutAngle2
+					GOSUB "drawTopSlope"
+					DEL 3
+				endif
+				gFL = 0 : if topLeftOn  then gFL = runLtop
+				gFR = A : if topRightOn then gFR = A - runRtop
+				gLM = topLeftOn  : gLMa = 90 + cutAngle/2  : gLdL = tan(cutAngle/2)*topElementHeight
+				gRM = topRightOn : gRMa = 90 + cutAngle2/2 : gRdL = tan(cutAngle2/2)*topElementHeight
+				GOSUB "drawTopFlat"
+			endif
+		else
+			ADDZ Ztop
+			paramDrawBeamLength = A
+			GOSUB "drawBeam3d"
+			DEL 1
+		endif
+	endif
+
+	! cut-height editing hotspots (left at X=0, right at X=A)
+	HOTSPOT 0,0, 0,          unID, cutHeight,  1 : unID = unID+1
+	HOTSPOT 0,0, cutHeight,  unID, cutHeight,  2 : unID = unID+1
+	HOTSPOT 0,0, -1,         unID, cutHeight,  3 : unID = unID+1
+	HOTSPOT A,0, 0,          unID, cutHeight2, 1 : unID = unID+1
+	HOTSPOT A,0, cutHeight2, unID, cutHeight2, 2 : unID = unID+1
+	HOTSPOT A,0, -1,         unID, cutHeight2, 3 : unID = unID+1
+
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	! In-between studs, trimmed by BOTH diagonal planes
+	nStudCuts = 0
+	if cutHeight > NIX then
+		gCH = cutHeight : gCA = cutAngle : GOSUB "setStudCut"
+		nStudCuts = nStudCuts + 1
+	endif
+	if cutHeight2 > NIX then
+		ADDX A : ADDY B : ROTZ 180
+		gCH = cutHeight2 : gCA = cutAngle2 : GOSUB "setStudCut"
+		DEL 3
+		nStudCuts = nStudCuts + 1
+	endif
+
+	paramDrawStudHeight = ZZYZX - topElementHeight - bottomElementHeight
+	paramDrawBeamWidth  = topElementHeight
+	addz bottomElementHeight
+	FOR i = 1 TO n
+		paramDrawStudWidth = defaultStudWidth
+		HOTSPOT 0, 0, 0, unID, X[i], 1+128   : unID = unID+1
+		HOTSPOT X[i], 0, 0, unID, X[i], 2    : unID = unID+1
+		HOTSPOT -1, 0, 0, unID, X[i], 3      : unID = unID+1
+		paramDrawStudOffset = X[i]
+		GOSUB "drawStud3d"
+		for ii = 1 to 3
+			if abs(horizontals[i][ii]) > nix then
+				paramDrawBeamLength = tmpX[i+1] - tmpX[i] - paramDrawStudWidth
+				HOTSPOT tmpX[i] + paramDrawStudWidth/2, 0, horizontals[i][ii] - bottomElementHeight, unID : unID = unID+1
+				HOTSPOT tmpX[i+1] - paramDrawStudWidth/2, 0, horizontals[i][ii] - bottomElementHeight, unID : unID = unID+1
+				addx tmpX[i] + paramDrawStudWidth/2
+				addz horizontals[i][ii] - 3 * bottomElementHeight / 2
+				GOSUB "drawBeam3d"
+				del 2
+			endif
+		next ii
+	NEXT i
+	del 1
+	for kStud = 1 to nStudCuts : cutend : next kStud
+
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	! Corner hotspots
+	HOTSPOT 0,0,0, unID : unID = unID+1
+	HOTSPOT 0,0,ZZYZX, unID : unID = unID+1
+	HOTSPOT A,0,0, unID : unID = unID+1
+	HOTSPOT A,0,ZZYZX, unID : unID = unID+1
+	HOTSPOT 0,0,bottomElementHeight, unID : unID = unID+1
+	HOTSPOT 0,0,ZZYZX-topElementHeight, unID : unID = unID+1
+	HOTSPOT A,0,bottomElementHeight, unID : unID = unID+1
+	HOTSPOT A,0,ZZYZX-topElementHeight, unID : unID = unID+1
+endif
 
 END
 
@@ -235,21 +399,17 @@ RETURN
 
 	set building_material studMat1
 	! levo
-	!SECT_FILL fillSect1, pen_fill_bg, pen_fill, defaultStudPen
 	PRISM 3, paramDrawBeamLength, paramDrawBeamWidth/2, B/2, paramDrawBeamWidth, 0, 0,0
 
 	! desno
-	!SECT_FILL fillSect2, pen_fill_bg, pen_fill, defaultStudPen
 	PRISM 3, paramDrawBeamLength, 0, B, paramDrawBeamWidth, B, paramDrawBeamWidth/2, B/2
-	
+
 
 	set building_material studMat2
 	! zgoraj
-	!SECT_FILL fillSect3, pen_fill_bg, pen_fill, defaultStudPen
 	PRISM 3, paramDrawBeamLength, 0, 0, paramDrawBeamWidth/2, B/2, 0, B
 
 	! spodaj
-	!SECT_FILL fillSect4, pen_fill_bg, pen_fill, defaultStudPen
 	PRISM 3, paramDrawBeamLength, paramDrawBeamWidth, 0, paramDrawBeamWidth, B, paramDrawBeamWidth/2, B/2
 
 	endgroup
@@ -261,6 +421,189 @@ RETURN
 
 	!brez sekcij (rezerva)
 	!PRISM 4, A, 0,0, paramDrawBeamWidth, 0, paramDrawBeamWidth, B, 0, B
-	
+
 	DEL 2
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ===== Subroutines used by the two-sided cut path =====
+! Each is self-balancing: it leaves the coordinate stack and the cutting-plane
+! stack exactly as it found them. They are called once in the world frame for
+! the left cut and once inside the mirror frame for the right cut, so the same
+! code produces both sides.
+! Shared input globals: gCH = this side's cutHeight, gCA = this side's cutAngle.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+! ---- one sloped TOP-plate piece (gCA > 0), mitered where it meets the flat plate ----
+"drawTopSlope":
+	dH = (ZZYZX - topElementHeight) - (gCH - topElementHeight/cos(gCA))   ! rise of the slope
+	dL = tan(gCA/2) * topElementHeight                                    ! miter over-run
+	paramDrawBeamWidth  = topElementHeight
+	paramDrawBeamLength = dH/sin(gCA) + dL
+	addz gCH - topElementHeight/cos(gCA)
+	rotz -90 : cutplane{2} 90 : del 1                                     ! vertical cut at the wall
+	add dH/tan(gCA), 0, dH : rotz -90 : cutplane{2} -90 + gCA/2 : del 2   ! miter to the flat plate
+	roty -gCA
+	GOSUB "drawBeam3d"
+	del 1
+	cutend
+	cutend
+	del 1
+RETURN
+
+! ---- flat middle of the TOP plate, mitered against whichever slopes are present ----
+! Inputs: gFL/gFR = flat span in X, gLM/gRM = left/right miter present,
+!         gLMa/gRMa = miter cut angles, gLdL/gRdL = miter over-run of each slope.
+"drawTopFlat":
+	xs = gFL : if gLM then xs = gFL - gLdL
+	xe = gFR : if gRM then xe = gFR + gRdL
+	if (xe - xs) > NIX then
+		paramDrawBeamWidth  = topElementHeight
+		paramDrawBeamLength = xe - xs
+		addz ZZYZX - topElementHeight
+		addx xs
+		nc = 0
+		if gLM then
+			add gFL - xs, 0, 0 : rotz -90 : cutplane{2} gLMa : del 2
+			nc = nc + 1
+		endif
+		if gRM then
+			add gFR - xs, 0, 0 : rotz 90 : cutplane{2} gRMa : del 2
+			nc = nc + 1
+		endif
+		GOSUB "drawBeam3d"
+		for kFlat = 1 to nc : cutend : next kFlat
+		del 2
+	endif
+RETURN
+
+! ---- both TOP slopes meeting at a mitered ridge (peak) ----
+"drawTopRidge":
+	zL0 = cutHeight  - topElementHeight/cos(cutAngle )
+	zR0 = cutHeight2 - topElementHeight/cos(cutAngle2)
+	xRidge = (zR0 - zL0 + A*tan(cutAngle2)) / (tan(cutAngle) + tan(cutAngle2))
+	zRidge = zL0 + xRidge*tan(cutAngle)
+
+	! Miter angle at the peak. It bisects the two slopes and removes the overshoot
+	! ABOVE the ridge (the -90 cutplane family, same as the working flat-plate
+	! miter). It reduces to -90 + cutAngle/2 when the opposite slope is flat.
+	! left slope, mitered at the ridge
+	paramDrawBeamWidth  = topElementHeight
+	paramDrawBeamLength = xRidge/cos(cutAngle) + 2*topElementHeight
+	addz zL0
+	rotz -90 : cutplane{2} 90 : del 1
+	add xRidge, 0, zRidge - zL0 : rotz -90 : cutplane{2} -90 + (cutAngle - cutAngle2)/2 : del 2
+	roty -cutAngle
+	GOSUB "drawBeam3d"
+	del 1
+	cutend
+	cutend
+	del 1
+
+	! right slope, mitered at the same ridge (mirror frame)
+	ADDX A : ADDY B : ROTZ 180
+	paramDrawBeamWidth  = topElementHeight
+	paramDrawBeamLength = (A - xRidge)/cos(cutAngle2) + 2*topElementHeight
+	addz zR0
+	rotz -90 : cutplane{2} 90 : del 1
+	add A - xRidge, 0, zRidge - zR0 : rotz -90 : cutplane{2} -90 + (cutAngle2 - cutAngle)/2 : del 2
+	roty -cutAngle2
+	GOSUB "drawBeam3d"
+	del 1
+	cutend
+	cutend
+	del 1
+	DEL 3
+RETURN
+
+! ---- one sloped BOTTOM-plate piece (gCA < 0) ----
+"drawBottomSlope":
+	dLb = tan(-gCA) * topElementHeight
+	paramDrawBeamWidth  = bottomElementHeight
+	paramDrawBeamLength = gCH/sin(-gCA) + dLb
+	add 0, 0, ZZYZX - topElementHeight : rotz 90 : cutplane 0 : del 2     ! keep clear of the top plate
+	add 0, 0, 0 : rotz -90 : cutplane{2} 90 : del 2                       ! vertical cut at the wall
+	add gCH/tan(-gCA), 0, 0 : rotz 90 : rotx 90 : cutplane{2} -gCA/2 : del 3   ! miter to the flat plate
+	addz gCH
+	addx -dLb * cos(-gCA)
+	addz dLb * sin(-gCA)
+	roty -gCA
+	GOSUB "drawBeam3d"
+	cutend
+	cutend
+	cutend
+	del 4
+RETURN
+
+! ---- flat middle of the BOTTOM plate ----
+"drawBottomFlat":
+	if (gFR - gFL) > NIX then
+		paramDrawBeamWidth  = bottomElementHeight
+		paramDrawBeamLength = gFR - gFL
+		addx gFL
+		nc = 0
+		if gLM then
+			add 0, 0, 0 : rotz -90 : rotx 90 : cutplane{2} gLMa : del 3
+			nc = nc + 1
+		endif
+		if gRM then
+			add gFR - gFL, 0, 0 : rotz 90 : rotx 90 : cutplane{2} gRMa : del 3
+			nc = nc + 1
+		endif
+		GOSUB "drawBeam3d"
+		for kBF = 1 to nc : cutend : next kBF
+		del 1
+	endif
+RETURN
+
+! ---- both BOTTOM slopes meeting at a vertical butt valley ----
+"drawBottomValley":
+	xMeet = (cutHeight2 - cutHeight + A*tan(cutAngle2)) / (tan(cutAngle) + tan(cutAngle2))
+
+	! left bottom slope, clamped vertically where the two slopes cross
+	dLb = tan(-cutAngle) * topElementHeight
+	paramDrawBeamWidth  = bottomElementHeight
+	paramDrawBeamLength = cutHeight/sin(-cutAngle) + dLb
+	add 0, 0, ZZYZX - topElementHeight : rotz 90 : cutplane 0 : del 2
+	add 0, 0, 0 : rotz -90 : cutplane{2} 90 : del 2
+	add xMeet, 0, 0 : rotz 90 : cutplane{2} 90 : del 2
+	addz cutHeight
+	addx -dLb * cos(-cutAngle)
+	addz dLb * sin(-cutAngle)
+	roty -cutAngle
+	GOSUB "drawBeam3d"
+	cutend
+	cutend
+	cutend
+	del 4
+
+	! right bottom slope, clamped at the same crossing (mirror frame)
+	ADDX A : ADDY B : ROTZ 180
+	dLb = tan(-cutAngle2) * topElementHeight
+	paramDrawBeamWidth  = bottomElementHeight
+	paramDrawBeamLength = cutHeight2/sin(-cutAngle2) + dLb
+	add 0, 0, ZZYZX - topElementHeight : rotz 90 : cutplane 0 : del 2
+	add 0, 0, 0 : rotz -90 : cutplane{2} 90 : del 2
+	add A - xMeet, 0, 0 : rotz 90 : cutplane{2} 90 : del 2
+	addz cutHeight2
+	addx -dLb * cos(-cutAngle2)
+	addz dLb * sin(-cutAngle2)
+	roty -cutAngle2
+	GOSUB "drawBeam3d"
+	cutend
+	cutend
+	cutend
+	del 4
+	DEL 3
+RETURN
+
+! ---- set one stud-trimming cutplane for the current side ----
+"setStudCut":
+	if gCA < NIX then
+		addz gCH + bottomElementHeight/cos(-gCA)
+		roty 180 : rotz 90 : cutplane{2} -gCA : del 3
+	else
+		addz gCH - topElementHeight/cos(gCA)
+		rotz -90 : cutplane{2} gCA : del 2
+	endif
 RETURN

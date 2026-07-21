@@ -1,4 +1,4 @@
-ui_dialog "ARHIM Frame"
+﻿ui_dialog "ARHIM Frame"
 UI_CURRENT_PAGE gs_ui_current_page
 
 xLeft = 20
