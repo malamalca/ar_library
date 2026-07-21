@@ -35,12 +35,12 @@ set "GSM_DIR=Library_GSM\%CATEGORY%"
 set "CONVERTER=C:\Program Files\GRAPHISOFT\ARCHICAD 29\LP_XMLConverter.exe"
 
 if not exist "%CONVERTER%" set "CONVERTER=C:\Program Files\GRAPHISOFT\ARCHICAD 25\LP_XMLConverter.exe"
-if not exist "%CONVERTER%" (echo Error: LP_XMLConverter.exe not found! & pause & exit /b 1)
+if not exist "%CONVERTER%" (echo Error: LP_XMLConverter.exe not found! & exit /b 1)
 
 set "passwd="
 if "%passwd%" NEQ "" (set "PASS_OPT=-password %passwd%") else (set "PASS_OPT=")
 
-if not exist "%SRC_DIR%" (echo Error: Source folder not found: %SRC_DIR% & pause & exit /b 1)
+if not exist "%SRC_DIR%" (echo Error: Source folder not found: %SRC_DIR% & exit /b 1)
 
 echo ARCHICAD Single-Object Builder
 echo -----------------------------------------
@@ -88,7 +88,6 @@ if "%HAS_GDL_ERRORS%"=="1" (
     rmdir /s /q "%STAGING%" >nul
     rmdir /s /q "%CHECK_OUT%" >nul
     del "%FULLOUT%" "%ERRALL%" >nul 2>&1
-    pause
     exit /b 1
 )
 
@@ -103,7 +102,6 @@ echo [2/2] Compiling GSM ...
 if errorlevel 1 (
     echo Error during GSM compilation!
     rmdir /s /q "%STAGING%" >nul
-    pause
     exit /b 1
 )
 
@@ -111,7 +109,6 @@ set "GSM_FILE=%GSM_DIR%\%OBJECT%.gsm"
 if not exist "%GSM_FILE%" (
     echo Error: Expected GSM file not found: %GSM_FILE%
     rmdir /s /q "%STAGING%" >nul
-    pause
     exit /b 1
 )
 
@@ -119,7 +116,6 @@ rmdir /s /q "%STAGING%" >nul
 
 echo.
 echo Done! GSM created: %GSM_FILE%
-pause
 exit /b 0
 
 goto :eof
@@ -130,7 +126,6 @@ echo Example: make_object.bat 3D/arFrame
 echo.
 echo Converts a single object folder from Library_Src to GSM
 echo and moves it into Library_GSM under the matching subfolder.
-pause
 exit /b 1
 
 goto :eof
