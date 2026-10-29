@@ -1,5 +1,6 @@
 ﻿openingWidth = A
 nicheDepth = WALL_THICKNESS - WIDO_SILL
+thkPlasterOuter = thk_plaster * plaster_outer		! plaster plate on the outer end of insulation
 
 !set material mat_reveal
 
@@ -29,44 +30,52 @@ endif
 if GLOB_STRUCTURE_DISPLAY = 0 OR GLOB_STRUCTURE_DISPLAY = 2 then
 	! left
 	GROUP "insuLeft"
+	addz thkPlasterOuter
 	if sides[_LEFT] then
-		prism_ 5, nicheDepth - thk_plaster,
+		prism_ 5, nicheDepth - thk_plaster - thkPlasterOuter,
 			-openingWidth/2, 	0, 		15,
 			-openingWidth/2 + thk_insulation,		0,		15,
 			-openingWidth/2 + thk_insulation,		B,		15,
 			-openingWidth/2, 	B,		15,
 			-openingWidth/2, 	0,		-1
 	endif
+	del 1
 	ENDGROUP
 	GROUP "insuRight"
+	addz thkPlasterOuter
 	if sides[_RIGHT] then
-		prism_ 5, nicheDepth - thk_plaster,
+		prism_ 5, nicheDepth - thk_plaster - thkPlasterOuter,
 			openingWidth/2, 	0, 		15,
 			openingWidth/2 - thk_insulation,		0,		15,
 			openingWidth/2 - thk_insulation,		B,		15,
 			openingWidth/2, 	B,		15,
 			openingWidth/2, 	0,		-1
 	endif
+	del 1
 	ENDGROUP
 	GROUP "insuTop"
+	addz thkPlasterOuter
 	if sides[_TOP] then
-		prism_ 5, nicheDepth - thk_plaster,
+		prism_ 5, nicheDepth - thk_plaster - thkPlasterOuter,
 			-openingWidth/2, 	B, 		15,
 			openingWidth/2,		B,		15,
 			openingWidth/2,		B - thk_insulation,		15,
 			-openingWidth/2, 	B - thk_insulation,		15,
 			-openingWidth/2, 	B,		-1
 	endif
+	del 1
 	ENDGROUP
 	GROUP "insuBottom"
+	addz thkPlasterOuter
 	if sides[_BOTTOM] then
-		prism_ 5, nicheDepth - thk_plaster,
+		prism_ 5, nicheDepth - thk_plaster - thkPlasterOuter,
 			-openingWidth/2, 	0, 		15,
 			openingWidth/2,		0,		15,
 			openingWidth/2,		0 + thk_insulation,		15,
 			-openingWidth/2, 	0 + thk_insulation,		15,
 			-openingWidth/2, 	0,		-1
 	endif
+	del 1
 	ENDGROUP
 	
 	result = ADDGROUP("insuLeft", "insuRight")
@@ -139,31 +148,41 @@ if GLOB_STRUCTURE_DISPLAY = 0 then
 	v = sides
 
 	!! OFFSET
-	hotspot 0,  B - thk_insulation * sides[_TOP],  	0, unId, offset_plaster, 1+128: unId = unId + 1
-	hotspot 0,  B - thk_insulation * sides[_TOP],  	offset_plaster, unId, offset_plaster, 2: unId = unId + 1
-	hotspot 0,  B - thk_insulation * sides[_TOP],  	-1, unId, offset_plaster, 3: unId = unId + 1
+	if not(plaster_outer) then
+		hotspot 0,  B - thk_insulation * sides[_TOP],  	0, unId, offset_plaster, 1+128: unId = unId + 1
+		hotspot 0,  B - thk_insulation * sides[_TOP],  	offset_plaster, unId, offset_plaster, 2: unId = unId + 1
+		hotspot 0,  B - thk_insulation * sides[_TOP],  	-1, unId, offset_plaster, 3: unId = unId + 1
 
-	hotspot 0,  0 + thk_insulation * sides[_BOTTOM],  	0, unId, offset_plaster, 1+128: unId = unId + 1
-	hotspot 0,  0 + thk_insulation * sides[_BOTTOM],  	offset_plaster, unId, offset_plaster, 2: unId = unId + 1
-	hotspot 0,  0 + thk_insulation * sides[_BOTTOM],  	-1, unId, offset_plaster, 3: unId = unId + 1
+		hotspot 0,  0 + thk_insulation * sides[_BOTTOM],  	0, unId, offset_plaster, 1+128: unId = unId + 1
+		hotspot 0,  0 + thk_insulation * sides[_BOTTOM],  	offset_plaster, unId, offset_plaster, 2: unId = unId + 1
+		hotspot 0,  0 + thk_insulation * sides[_BOTTOM],  	-1, unId, offset_plaster, 3: unId = unId + 1
+	endif
 
 
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	! plaster on top of insulation
-	addz nicheDepth - thk_plaster
+	zPlasterInner = nicheDepth - thk_plaster		! plaster plate on the inner end of insulation
+	zRevealStart = offset_plaster
+	if plaster_outer then zRevealStart = thk_plaster	! with outer plaster, reveal plaster runs between the two plates
+	thkReveal = nicheDepth - thk_plaster - zRevealStart
+	addz zPlasterInner
 	
 	GROUP "plasterLeft"
 	!if v[_LEFT] then
 		! on top of insulation
-		prism_ 4, thk_plaster,
-			-openingWidth/2, 	0, 		7,
-			-openingWidth/2 + thk_insulation * v[_LEFT]  + thk_plaster_sill * plaster_sides[_LEFT],		0,		15,
-			-openingWidth/2 + thk_insulation * v[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT],		B,		15,
-			-openingWidth/2, 	B,		15
+		for _plate = 1 to 1 + plaster_outer
+			if _plate = 2 then addz -zPlasterInner
+			prism_ 4, thk_plaster,
+				-openingWidth/2, 	0, 		7,
+				-openingWidth/2 + thk_insulation * v[_LEFT]  + thk_plaster_sill * plaster_sides[_LEFT],		0,		15,
+				-openingWidth/2 + thk_insulation * v[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT],		B,		15,
+				-openingWidth/2, 	B,		15
+			if _plate = 2 then del 1
+		next _plate
 		! reveal side of insulation
 		if plaster_sides[_LEFT] then
-			addz -nicheDepth + offset_plaster + thk_plaster
-			prism_ 4, nicheDepth - offset_plaster - thk_plaster,
+			addz -zPlasterInner + zRevealStart
+			prism_ 4, thkReveal,
 				-openingWidth/2 + thk_insulation * v[_LEFT], 						0 + thk_insulation * sides[_BOTTOM], 	15,
 				-openingWidth/2 + thk_insulation * v[_LEFT] + thk_plaster_sill,		0 + thk_insulation * sides[_BOTTOM],		15,
 				-openingWidth/2 + thk_insulation * v[_LEFT] + thk_plaster_sill,		B - thk_insulation * sides[_TOP],		15,
@@ -174,16 +193,20 @@ if GLOB_STRUCTURE_DISPLAY = 0 then
 	ENDGROUP
 	GROUP "plasterRight"
 	!if v[_RIGHT] then
-		prism_ 4, thk_plaster,
-			openingWidth/2, 	0, 		7,
-			openingWidth/2 - thk_insulation * v[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],		0,		15,
-			openingWidth/2 - thk_insulation * v[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],		B,		15,
-			openingWidth/2, 	B,		15
+		for _plate = 1 to 1 + plaster_outer
+			if _plate = 2 then addz -zPlasterInner
+			prism_ 4, thk_plaster,
+				openingWidth/2, 	0, 		7,
+				openingWidth/2 - thk_insulation * v[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],		0,		15,
+				openingWidth/2 - thk_insulation * v[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],		B,		15,
+				openingWidth/2, 	B,		15
+			if _plate = 2 then del 1
+		next _plate
 	
 		! reveal side of insulation
 		if plaster_sides[_RIGHT] then
-			addz -nicheDepth + offset_plaster + thk_plaster
-			prism_ 4, nicheDepth - offset_plaster - thk_plaster,
+			addz -zPlasterInner + zRevealStart
+			prism_ 4, thkReveal,
 				openingWidth/2 - thk_insulation, 						0 + thk_insulation * v[_RIGHT] * sides[_BOTTOM], 	15,
 				openingWidth/2 - thk_insulation - thk_plaster_sill,		0 + thk_insulation * v[_RIGHT] * sides[_BOTTOM],		15,
 				openingWidth/2 - thk_insulation - thk_plaster_sill,		B - thk_insulation * v[_RIGHT] * sides[_TOP],		15,
@@ -194,16 +217,20 @@ if GLOB_STRUCTURE_DISPLAY = 0 then
 	ENDGROUP
 	GROUP "plasterTop"
 	!if v[_TOP] then
-		prism_ 4, thk_plaster,
-			-openingWidth/2 + thk_insulation * sides[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 	B, 		15,
-			openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],	B,		15,
-			openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],	B - thk_insulation * v[_TOP] - thk_plaster_sill * plaster_sides[_TOP],		15,
-			-openingWidth/2 + thk_insulation * sides[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 	B - thk_insulation * v[_TOP] - thk_plaster_sill * plaster_sides[_TOP],		15
+		for _plate = 1 to 1 + plaster_outer
+			if _plate = 2 then addz -zPlasterInner
+			prism_ 4, thk_plaster,
+				-openingWidth/2 + thk_insulation * sides[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 	B, 		15,
+				openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],	B,		15,
+				openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],	B - thk_insulation * v[_TOP] - thk_plaster_sill * plaster_sides[_TOP],		15,
+				-openingWidth/2 + thk_insulation * sides[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 	B - thk_insulation * v[_TOP] - thk_plaster_sill * plaster_sides[_TOP],		15
+			if _plate = 2 then del 1
+		next _plate
 	
 		! reveal side of insulation
 		if plaster_sides[_TOP] then
-			addz -nicheDepth + offset_plaster + thk_plaster
-			prism_ 4, nicheDepth - offset_plaster - thk_plaster,
+			addz -zPlasterInner + zRevealStart
+			prism_ 4, thkReveal,
 				-openingWidth/2 + thk_insulation * sides[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 		B - thk_insulation * v[_TOP] - thk_plaster_sill, 		15,
 				openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],		B - thk_insulation * v[_TOP] - thk_plaster_sill,		15,
 				openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],		B - thk_insulation * v[_TOP],		15,
@@ -214,16 +241,20 @@ if GLOB_STRUCTURE_DISPLAY = 0 then
 	ENDGROUP
 	GROUP "plasterBottom"
 	!if v[_BOTTOM] then
-		prism_ 4, thk_plaster,
-			-openingWidth/2 + thk_insulation * sides[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 	0, 		15,
-			openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],	0,		15,
-			openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],	0 + thk_insulation * v[_BOTTOM] + thk_plaster_sill * plaster_sides[_BOTTOM],		15,
-			-openingWidth/2 + thk_insulation * sides[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 	0 + thk_insulation * v[_BOTTOM] + thk_plaster_sill * plaster_sides[_BOTTOM],		15
+		for _plate = 1 to 1 + plaster_outer
+			if _plate = 2 then addz -zPlasterInner
+			prism_ 4, thk_plaster,
+				-openingWidth/2 + thk_insulation * sides[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 	0, 		15,
+				openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],	0,		15,
+				openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],	0 + thk_insulation * v[_BOTTOM] + thk_plaster_sill * plaster_sides[_BOTTOM],		15,
+				-openingWidth/2 + thk_insulation * sides[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 	0 + thk_insulation * v[_BOTTOM] + thk_plaster_sill * plaster_sides[_BOTTOM],		15
+			if _plate = 2 then del 1
+		next _plate
 	
 		! reveal side of insulation
 		if plaster_sides[_BOTTOM] then
-			addz -nicheDepth + offset_plaster + thk_plaster
-			prism_ 4, nicheDepth - offset_plaster - thk_plaster,
+			addz -zPlasterInner + zRevealStart
+			prism_ 4, thkReveal,
 				-openingWidth/2 + thk_insulation * sides[_LEFT] + thk_plaster_sill * plaster_sides[_LEFT], 		thk_insulation * v[_BOTTOM], 		15,
 				openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],		thk_insulation * v[_BOTTOM],		15,
 				openingWidth/2 - thk_insulation * sides[_RIGHT] - thk_plaster_sill * plaster_sides[_RIGHT],		thk_insulation * v[_BOTTOM] + thk_plaster_sill,		15,

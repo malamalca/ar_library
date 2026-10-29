@@ -70,6 +70,10 @@
 			<Description><![CDATA[""]]></Description>
 			<Value>90</Value>
 		</Angle>
+		<Length Name="total_length">
+			<Description><![CDATA["Total Length"]]></Description>
+			<Value>2.2</Value>
+		</Length>
 		<Boolean Name="showProjection">
 			<Description><![CDATA["Show entire projection"]]></Description>
 			<Value>1</Value>

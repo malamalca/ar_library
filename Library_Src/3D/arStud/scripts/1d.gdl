@@ -9,3 +9,5 @@ FRAMEFILL_FILLISCUTFILL = 16
 FRAMEFILL_FILLISCOVERFILL = 32
 
 lumberVol = studLength * studA * studB
+LumberSize = studLength
+h = studB

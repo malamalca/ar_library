@@ -1,0 +1,86 @@
+﻿hideparameter all
+
+! dragging the end direction fixes it
+if glob_modpar_name = "endangle" then
+	fixend = 1
+	parameters fixend = fixend
+endif
+
+! the path stays as it is when the end direction is fixed or released: fixing takes
+! over the present end direction, releasing keeps the side offset which reached it
+! (thEndFree and endB come from the master script)
+if glob_modpar_name = "fixend" and n >= 2 then
+	if fixend then
+		endangle = thEndFree
+		parameters endangle = endangle
+	else
+		midside[n-1] = endB
+	endif
+endif
+
+parameters x = x, y = y, n = n, xea = xe, yea = ye
+parameters midalong = midalong, midside = midside, dirchange = dirchange
+
+values{2} "vehicletype" VEH_CUSTOM, "Custom", VEH_CAR, "Passenger car"
+
+values "veh_width" range[0.5, 4]
+values "veh_wheelbase" range[0.5, 20]
+values "veh_fo" range[0, 6]
+values "veh_ro" range[0, 6]
+values "veh_track" range[0.4, 3.5]
+values "veh_tyrelen" range[0.2, 1.5]
+values "veh_tyrewid" range[0.05, 0.6]
+values "veh_maxsteer" range[1, 60]
+values "samplestep" range[0.05, 2]
+values "nodesize" range[0.02, 1]
+
+! vehicle presets (generic single-track dimensions)
+if glob_modpar_name = "vehicletype" and vehicletype = VEH_CAR then
+	veh_width = 1.8
+	veh_wheelbase = 2.7
+	veh_fo = 0.9
+	veh_ro = 1.1
+	veh_track = 1.55
+	veh_maxsteer = 32
+	veh_tyrelen = 0.65
+	veh_tyrewid = 0.22
+	parameters veh_width = veh_width, veh_wheelbase = veh_wheelbase, veh_fo = veh_fo, veh_ro = veh_ro, veh_track = veh_track, veh_maxsteer = veh_maxsteer
+	parameters veh_tyrelen = veh_tyrelen, veh_tyrewid = veh_tyrewid
+endif
+
+if vehicletype <> VEH_CUSTOM then
+	lock "veh_width", "veh_wheelbase", "veh_fo", "veh_ro", "veh_track", "veh_maxsteer", "veh_tyrelen", "veh_tyrewid"
+endif
+
+! smallest turning radius of the rear axle centre; the steering angle is the one of
+! the inner front wheel, the rear axle centre turns half a track further out
+_steer = veh_maxsteer
+if _steer < 1 then _steer = 1
+if _steer > 89 then _steer = 89
+minradius = veh_wheelbase / tan(_steer) + veh_track / 2
+parameters minradius = minradius
+lock "minradius"
+
+if not(showaxis) then
+	lock "axislinetype", "axispen", "warnpen", "nodesize"
+endif
+
+if not(showtyres) then
+	lock "tyrefrontlinetype", "tyrefrontpen", "tyrerearlinetype", "tyrerearpen"
+endif
+
+if not(showenvelope) then
+	lock "envlinetype", "envpen", "envexact"
+endif
+
+if not(showoutlines) then
+	lock "outlinestep", "outlinelinetype", "outlinepen"
+endif
+
+if not(fixend) then
+	lock "endangle"
+endif
+
+if not(showcar) then
+	lock "carlinetype", "carpen", "carwheelpen"
+endif

@@ -1,4 +1,6 @@
-﻿if iKind = KIND_EXHAUST then
+﻿unId = 1
+
+if iKind = KIND_EXHAUST then
 	pen penExhaust
 else
 	pen penIntake
@@ -40,13 +42,45 @@ if showIn2D = 1 then
 			IF iBuiltin = BUILTIN_CEILING THEN
 				FRAGMENT2 2, 1
 			ELSE
-				FRAGMENT2 4, 1
+				!FRAGMENT2 4, 1
+				circle2 0, 0, A/2
+				line2 0, A/2, wallOffset, A/2
+				line2 0, -A/2, wallOffset, -A/2
+				rect2 wallOffset, ventDiameter/2, wallOffset + ventThickenss, -ventDiameter/2
+
+				add2 wallOffset, 0
+				put 0.05: put KIND_INTAKE
+				gosub "drawArrow"
+				rot2 45: gosub "drawArrow": del 1
+				rot2 -45: gosub "drawArrow": del 1
+				tmp = get(1): tmp = get(1)
+				del 1
+
+				HOTSPOT2 0, 0, unId, wallOffset, 1+128: unId = unId + 1
+				HOTSPOT2 wallOffset, 0, unId, wallOffset, 2: unId = unId + 1
+				HOTSPOT2 -1, 0, unId, wallOffset, 3: unId = unId + 1
 			ENDIF
 		ELSE
 			IF iBuiltin = BUILTIN_CEILING THEN
 				FRAGMENT2 1, 1
 			ELSE
-				FRAGMENT2 3, 1
+				!FRAGMENT2 3, 1
+				circle2 0, 0, A/2
+				line2 0, A/2, wallOffset, A/2
+				line2 0, -A/2, wallOffset, -A/2
+				rect2 wallOffset, ventDiameter/2, wallOffset + ventThickenss, -ventDiameter/2
+
+				add2 wallOffset, 0
+				put 0.05: put KIND_EXHAUST
+				gosub "drawArrow"
+				rot2 45: gosub "drawArrow": del 1
+				rot2 -45: gosub "drawArrow": del 1
+				tmp = get(1): tmp = get(1)
+				del 1
+
+				HOTSPOT2 0, 0, unId, wallOffset, 1+128: unId = unId + 1
+				HOTSPOT2 wallOffset, 0, unId, wallOffset, 2: unId = unId + 1
+				HOTSPOT2 -1, 0, unId, wallOffset, 3: unId = unId + 1
 			ENDIF
 		ENDIF
 	endif
@@ -73,19 +107,44 @@ if showIn2D = 1 then
 
 
 		! text hotspots
-		HOTSPOT2 text_pos_x, 0, 3, text_pos_y, 1+128
-		HOTSPOT2 text_pos_x, -1, 4, text_pos_y, 3
-		HOTSPOT2 text_pos_x, text_pos_y, 5, text_pos_y, 2
+		HOTSPOT2 text_pos_x, 0, unId, text_pos_y, 1+128: unId = unId + 1
+		HOTSPOT2 text_pos_x, -1, unId, text_pos_y, 3: unId = unId + 1
+		HOTSPOT2 text_pos_x, text_pos_y, unId, text_pos_y, 2: unId = unId + 1
 		
-		HOTSPOT2 0, text_pos_y, 6, text_pos_x, 1+128
-		HOTSPOT2 -1, text_pos_y, 7, text_pos_x, 3
-		HOTSPOT2 text_pos_x, text_pos_y, 8, text_pos_x, 2
+		HOTSPOT2 0, text_pos_y, unId, text_pos_x, 1+128: unId = unId + 1
+		HOTSPOT2 -1, text_pos_y, unId, text_pos_x, 3: unId = unId + 1
+		HOTSPOT2 text_pos_x, text_pos_y, unId, text_pos_x, 2: unId = unId + 1
 		
 		! angle hotspots
-		HOTSPOT2 text_pos_x + (string_w/2),						text_pos_y, 									9,	text_angle, 4+128
-		HOTSPOT2 text_pos_x + (string_w/2) * COS(text_angle),	text_pos_y - (string_w/2) * SIN(text_angle),	10,	text_angle, 5
-		HOTSPOT2 text_pos_x, 									text_pos_y,										11,	text_angle, 6 + 512
-		HOTSPOT2 text_pos_x + (string_w/2),						0,												12, text_angle, 7
+		HOTSPOT2 text_pos_x + (string_w/2),						text_pos_y, 									unId,	text_angle, 4+128: unId = unId + 1
+		HOTSPOT2 text_pos_x + (string_w/2) * COS(text_angle),	text_pos_y - (string_w/2) * SIN(text_angle),	unId,	text_angle, 5: unId = unId + 1
+		HOTSPOT2 text_pos_x, 									text_pos_y,										unId,	text_angle, 6 + 512: unId = unId + 1
+		HOTSPOT2 text_pos_x + (string_w/2),						0,												unId, text_angle, 7: unId = unId + 1
 
 	ENDIF
 endif
+
+end
+
+
+"drawArrow":
+	distFromCenter = use(1)
+	exhaustKind = use(1)
+	
+	addx distFromCenter
+
+	arrowLength =  0.1
+	arrowOffset = 0.02
+
+	line2 distFromCenter, 0, distFromCenter + arrowLength, 0
+
+	if exhaustKind = KIND_INTAKE then
+		line2 distFromCenter + arrowLength, 0, distFromCenter + arrowLength - arrowOffset, arrowOffset
+		line2 distFromCenter + arrowLength, 0, distFromCenter + arrowLength - arrowOffset, -arrowOffset		
+	else
+		line2 distFromCenter, 0, distFromCenter + arrowOffset, arrowOffset
+		line2 distFromCenter, 0, distFromCenter + arrowOffset, -arrowOffset
+	endif
+
+
+return

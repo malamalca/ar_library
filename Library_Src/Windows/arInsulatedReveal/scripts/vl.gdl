@@ -15,6 +15,11 @@ else
 	lock "width_board"
 endif
 
+! reveal plaster runs between the plaster plates, so the offset does not apply
+if plaster_outer then
+	lock "offset_plaster"
+endif
+
 if not(leftCorner) then
 	lock "leftCornerAngle"
 endif

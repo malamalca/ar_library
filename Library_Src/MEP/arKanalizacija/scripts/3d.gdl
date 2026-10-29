@@ -8,6 +8,7 @@ endif
 
 
 if n < 2 then end
+if not(show3D) then end
 
 unId = 1
 
@@ -67,16 +68,106 @@ for i = 1 to n
 next i
 
 for i = 1 to n
-	addx xyz[i][1]
-	addy xyz[i][2]
-	addz xyz[i][3]
-	call "arKanalizacijaJašek" parameters penCover = penShaftCover,
-		lineCover = lineShaftCover, lineUnderground = lineShaftUnderground,
-		shaftDataDimensions = shaftDataDimensions[i],
-		shaftDataOptions = shaftDataOptions[i] 
+	if (i < n) or showLastShaft then			! zadnji jašek samo, če je vklopljen (kot v tlorisu in profilu)
+		addx xyz[i][1]
+		addy xyz[i][2]
+		addz xyz[i][3]
+		call "arKanalizacijaJašek" parameters penCover = penShaftCover,
+			lineCover = lineShaftCover, lineUnderground = lineShaftUnderground,
+			shaftDataDimensions = shaftDataDimensions[i],
+			shaftDataOptions = shaftDataOptions[i],
+			matShaft = surface_mat, matCover = coverMat
 
-	del 3
+		del 3
+	endif
+next i
+
+
+! -------------------------cevi--------------------------
+material pipeMat
+! cev poteka od stene jaška i-1 (iztok) do stene jaška i (dotok); višini sta dno cevi
+for i = 2 to n
+	_dn = pipeDimensions[i-1]
+	_len2D = segmentData[i-1][SEGMENT_LENGTH_2D]
+	if _dn > nix and _len2D > nix then
+		_ux = (xyz[i][1] - xyz[i-1][1]) / _len2D
+		_uy = (xyz[i][2] - xyz[i-1][2]) / _len2D
+
+		_drawShaft = (i < n) or showLastShaft
+		_r1 = shaftDataDimensions[i-1][DIM_SHAFT_DIM1] / 2
+		if _drawShaft then _r2 = shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2 else _r2 = 0
+
+		if _r1 + _r2 < _len2D then
+			_x1 = xyz[i-1][1] + _ux * _r1
+			_y1 = xyz[i-1][2] + _uy * _r1
+			_z1 = xyz[i-1][3] + shaftDataDimensions[i-1][DIM_OUTLET_HEIGHT] + _dn / 2
+			_x2 = xyz[i][1] - _ux * _r2
+			_y2 = xyz[i][2] - _uy * _r2
+			_z2 = xyz[i][3] + shaftDataDimensions[i][DIM_INLET_HEIGHT] + _dn / 2
+
+			fnPipeX1 = _x1: fnPipeY1 = _y1: fnPipeZ1 = _z1
+			fnPipeX2 = _x2: fnPipeY2 = _y2: fnPipeZ2 = _z2
+			fnPipeR = _dn / 2
+			gosub "fnPipe3D"
+
+			! kaskada: navpična cev CASCADE_GAP pred steno jaška, do dna, koleno 90° v jašek
+			if _drawShaft and shaftDataOptions[i][OPT_CASCADE] then
+				_dc = _r2 + CASCADE_GAP + _dn / 2				! vodoravna razdalja osi kaskade od osi jaška
+				_zBot = xyz[i][3] + _dn / 2						! os kolena na dnu jaška
+				if _dc < _len2D - _r1 then
+					_xc = xyz[i][1] - _ux * _dc
+					_yc = xyz[i][2] - _uy * _dc
+					_zc = _z2 + (_z1 - _z2) * (_dc - _r2) / (_len2D - _r1 - _r2)	! os dotoka nad kaskado
+					if _zc - _zBot > nix then
+						fnPipeX1 = _xc: fnPipeY1 = _yc: fnPipeZ1 = _zc
+						fnPipeX2 = _xc: fnPipeY2 = _yc: fnPipeZ2 = _zBot
+						gosub "fnPipe3D"
+
+						fnPipeX1 = _xc: fnPipeY1 = _yc: fnPipeZ1 = _zBot
+						fnPipeX2 = _x2: fnPipeY2 = _y2: fnPipeZ2 = _zBot
+						gosub "fnPipe3D"
+
+						! koleno in priključek na dotok
+						add _xc, _yc, _zBot: sphere _dn / 2: del 1
+						add _xc, _yc, _zc: sphere _dn / 2: del 1
+					endif
+				endif
+			endif
+		endif
+	endif
 next i
 
 
 end
+
+
+
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!
+! Cev (valj polmera fnPipeR) od točke (fnPipeX1, fnPipeY1, fnPipeZ1) do točke (fnPipeX2, fnPipeY2, fnPipeZ2)
+!
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+"fnPipe3D":
+	_pdx = fnPipeX2 - fnPipeX1
+	_pdy = fnPipeY2 - fnPipeY1
+	_pdz = fnPipeZ2 - fnPipeZ1
+	_pHor = sqr(_pdx^2 + _pdy^2)
+	_pLen = sqr(_pdx^2 + _pdy^2 + _pdz^2)
+	if _pLen > nix then
+		! azimut (atan2)
+		if _pHor > nix then
+			_pAz = acs(_pdx / _pHor)
+			if _pdy < 0 then _pAz = -_pAz
+		else
+			_pAz = 0
+		endif
+		! naklon od navpičnice: 0 = navzgor, 90 = vodoravno, 180 = navzdol
+		_pTilt = acs(_pdz / _pLen)
+
+		add fnPipeX1, fnPipeY1, fnPipeZ1
+		rotz _pAz
+		roty _pTilt
+		cylind _pLen, fnPipeR
+		del 3
+	endif
+return

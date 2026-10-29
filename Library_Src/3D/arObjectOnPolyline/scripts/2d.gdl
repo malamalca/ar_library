@@ -7,6 +7,9 @@
 
 hotspot2 0, 0
 
+hotspot2 0, B/2
+hotspot2 0, -B/2
+
 
 !-------------------------polygon--------------------------
 for i = 2 to n

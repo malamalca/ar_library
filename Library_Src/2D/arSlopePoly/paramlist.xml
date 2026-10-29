@@ -4,6 +4,7 @@
 		<AutoHotspots>false</AutoHotspots>
 		<StatBits>
 			<STBit_FixSize/>
+			<STBit_UIUseHierarchicalPages/>
 		</StatBits>
 		<WDLeftFrame>0</WDLeftFrame>
 		<WDRightFrame>0</WDRightFrame>
@@ -365,5 +366,47 @@
 			<Description><![CDATA["Font Size"]]></Description>
 			<Value>3</Value>
 		</RealNum>
+		<Integer Name="gs_ui_current_page">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Integer Name="ui_node_index">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Length Name="ui_node_x">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Length>
+		<Length Name="ui_node_y">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Length>
+		<RealNum Name="ui_segment_slope">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>15</Value>
+		</RealNum>
+		<Integer Name="ui_segment_index">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
 	</Parameters>
 </ParamSection>

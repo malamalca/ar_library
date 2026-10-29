@@ -4,6 +4,67 @@ nix = 0.001
 dim tmpX[]
 studCount = n
 
+! ============================================================
+! Frame types
+! The part "arFrameTypes" returns the table as two arrays of FIXED size (20 types, 7 sizes each):
+!   frameTypeNames[i]   name of the type; the first empty name ends the list
+!   frameTypeDims[i][]  1 frame width B, 2 bottom plate, 3 top plate, 4 stud
+!                       width, 5 first stud, 6 last stud, 7 support post width
+! The part is NOT in this library: every project adds its own copy to its embedded
+! library (example in Examples/arFrameTypes), so each project has its own list of
+! types. Without it there is simply no Frame Type pop-up.
+!
+! Calling a part that is missing freezes ArchiCAD, so LIBRARYGLOBAL is asked first:
+! it returns 0 when there is no such Library Global part, and the part carries the
+! marker parameter "isFrameTypesTable" = 1.
+!
+! This lives in the master script on purpose: it runs before the parameter script
+! AND before the user interface script, so both see the same table in the same
+! cycle.
+! ============================================================
+FRAMETYPE_CUSTOM = "Po meri"
+
+dim frameTypeNames[20]
+dim frameTypeDims[20][7]
+for i = 1 to 20
+	frameTypeNames[i] = ""
+	for j = 1 to 7
+		frameTypeDims[i][j] = 0
+	next j
+next i
+
+frameTypesMarker = 0
+frameTypesRet = LIBRARYGLOBAL("arFrameTypes", "isFrameTypesTable", frameTypesMarker)
+if frameTypesRet > 0 and frameTypesMarker = 1 then
+	CALL "arFrameTypes" PARAMETERS ALL RETURNED_PARAMETERS frameTypeNames, frameTypeDims
+endif
+
+nFrameTypes = 0
+for i = 1 to 20
+	if nFrameTypes = i - 1 and STRLEN(frameTypeNames[i]) > 0 then nFrameTypes = i
+next i
+
+! index of the selected type, 0 = custom (or a type that no longer exists)
+frameTypeIndex = 0
+for i = 1 to nFrameTypes
+	if frameTypeNames[i] = frameType then
+		frameTypeIndex = i
+	endif
+next i
+
+! the selected type takes over its sizes here as well, so 2D, 3D and the interface
+! are right even if the table could not be read in the parameter script
+! (LIBRARYGLOBAL is meant for 2D/3D); the parameter script stores them too
+if frameTypeIndex > 0 then
+	B                   = frameTypeDims[frameTypeIndex][1]
+	bottomElementHeight = frameTypeDims[frameTypeIndex][2]
+	topElementHeight    = frameTypeDims[frameTypeIndex][3]
+	defaultStudWidth    = frameTypeDims[frameTypeIndex][4]
+	firstStudWidth      = frameTypeDims[frameTypeIndex][5]
+	lastStudWidth       = frameTypeDims[frameTypeIndex][6]
+	supportPostWidth    = frameTypeDims[frameTypeIndex][7]
+endif
+
 IF GLOB_MODPAR_NAME = "X" THEN
 	studCount = 0
 
@@ -46,6 +107,199 @@ for i = 2 to studCount
 	tmpX[j+1] = tmpVal
 next i
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Width of every stud. The outermost studs can be thicker than the rest, so
+! "first" and "last" are taken by position, not by index: X[] is not sorted.
+!   studWidths[] follows X[]    - used wherever the scripts loop over X[i]
+!   tmpW[]       follows tmpX[] - used for the blocking bays, which are measured
+!                                 between neighbouring studs in sorted order
+dim studWidths[], tmpW[]
+
+for i = 1 to studCount
+	studWidths[i] = defaultStudWidth
+	tmpW[i] = defaultStudWidth
+next i
+
+if studCount > 0 then
+	firstIdx = 1
+	lastIdx = 1
+	for i = 1 to studCount
+		if X[i] < X[firstIdx] then firstIdx = i
+		if X[i] > X[lastIdx] then lastIdx = i
+	next i
+
+	! a single stud is the first one
+	studWidths[lastIdx] = lastStudWidth
+	studWidths[firstIdx] = firstStudWidth
+
+	tmpW[studCount] = lastStudWidth
+	tmpW[1] = firstStudWidth
+endif
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Bays without a plate. A bay lies between two neighbouring studs (measured edge to
+! edge of the sorted studs), so n studs make n - 1 bays; bay i is to the right of stud i.
+! can leave out its bottom and/or top plate, only across the width of the bay.
+!   winB[1..nWinB]     window boundaries along the frame, 0 ... A
+!   winBot[k], winTop[k]  1 when window k has its bottom / top plate
+!   bot/top/planSegA[], SegB[], n...Seg   the stretches that DO have the plate
+!                                         (plan = at least one of the plates)
+! anyPlateOmit = 0 -> a single window 0 ... A with both plates, nothing changes.
+dim bayStart[], bayEnd[]
+for i = 1 to studCount
+	bayStart[i] = tmpX[i] + tmpW[i]/2
+	if i < studCount then
+		bayEnd[i] = tmpX[i+1] - tmpW[i+1]/2
+	else
+		bayEnd[i] = A
+	endif
+next i
+
+dim winX[]
+nWinX = 2
+winX[1] = 0
+winX[2] = A
+anyPlateOmit = 0
+for i = 1 to studCount - 1
+	if (bayNoBottomPlate[i] <> 0 or bayNoTopPlate[i] <> 0) and bayEnd[i] - bayStart[i] > nix then
+		anyPlateOmit = 1
+		winX[nWinX+1] = MIN(MAX(bayStart[i], 0), A)
+		winX[nWinX+2] = MIN(MAX(bayEnd[i], 0), A)
+		nWinX = nWinX + 2
+	endif
+next i
+
+! sort the boundaries, then drop the duplicates
+for pPass = 1 to nWinX - 1
+	for pk = 1 to nWinX - pPass
+		if winX[pk] > winX[pk+1] then
+			pTmp = winX[pk]
+			winX[pk] = winX[pk+1]
+			winX[pk+1] = pTmp
+		endif
+	next pk
+next pPass
+
+dim winB[], winBot[], winTop[]
+nWinB = 1
+winB[1] = 0
+for pk = 2 to nWinX
+	if winX[pk] - winB[nWinB] > nix then
+		nWinB = nWinB + 1
+		winB[nWinB] = winX[pk]
+	endif
+next pk
+if nWinB < 2 then nWinB = 2
+winB[nWinB] = A
+
+for pk = 1 to nWinB - 1
+	winBot[pk] = 1
+	winTop[pk] = 1
+	pMid = (winB[pk] + winB[pk+1]) / 2
+	for i = 1 to studCount - 1
+		if pMid > bayStart[i] and pMid < bayEnd[i] then
+			if bayNoBottomPlate[i] <> 0 then winBot[pk] = 0
+			if bayNoTopPlate[i] <> 0 then winTop[pk] = 0
+		endif
+	next i
+next pk
+
+! stretches that have the plate: neighbouring windows with the plate are joined
+dim botSegA[], botSegB[], topSegA[], topSegB[], planSegA[], planSegB[]
+nBotSeg = 0 : nTopSeg = 0 : nPlanSeg = 0
+inBot = 0 : inTop = 0 : inPlan = 0
+for pk = 1 to nWinB - 1
+	if winBot[pk] then
+		if inBot = 0 then
+			nBotSeg = nBotSeg + 1
+			botSegA[nBotSeg] = winB[pk]
+			inBot = 1
+		endif
+		botSegB[nBotSeg] = winB[pk+1]
+	else
+		inBot = 0
+	endif
+
+	if winTop[pk] then
+		if inTop = 0 then
+			nTopSeg = nTopSeg + 1
+			topSegA[nTopSeg] = winB[pk]
+			inTop = 1
+		endif
+		topSegB[nTopSeg] = winB[pk+1]
+	else
+		inTop = 0
+	endif
+
+	if winBot[pk] or winTop[pk] then
+		if inPlan = 0 then
+			nPlanSeg = nPlanSeg + 1
+			planSegA[nPlanSeg] = winB[pk]
+			inPlan = 1
+		endif
+		planSegB[nPlanSeg] = winB[pk+1]
+	else
+		inPlan = 0
+	endif
+next pk
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Support posts of the bays (left / right, against the side studs). A post stands on
+! the bottom of the bay (on the bottom plate, or on the frame bottom when this bay
+! leaves the bottom plate out) and carries the HIGHEST blocking bar: it ends at the
+! lower face of that bar. The lower bars of the bay then only run between the posts.
+!   postOk[i]            1 when bay i has posts that fit
+!   postNear/Far[i]      the edges of the bay
+!   postZ0/Z1[i]         absolute bottom / top of the posts
+!   barNear/Far[i][k]    the stretch of blocking bar k of bay i (shortened by the posts)
+dim postOk[], postNear[], postFar[], postZ0[], postZ1[]
+dim barNear[][], barFar[][]
+for i = 1 to studCount
+	postOk[i] = 0
+	postNear[i] = bayStart[i]
+	postFar[i] = bayEnd[i]
+	postZ0[i] = 0
+	postZ1[i] = 0
+
+	if i < studCount and (bayVertLeft[i] <> 0 or bayVertRight[i] <> 0) then
+		pCnt = 0 : pHiZ = 0 : pHiBot = 0
+		for pk = 1 to 3
+			pH = horizontals[i][pk]
+			if abs(pH) > nix then
+				if pCnt = 0 or pH > pHiZ then
+					pHiZ = pH
+					pHiBot = pH
+				endif
+				pCnt = pCnt + 1
+			endif
+		next pk
+
+		pBars = 0
+		if bayVertLeft[i] <> 0 then pBars = pBars + 1
+		if bayVertRight[i] <> 0 then pBars = pBars + 1
+
+		pBase = 0
+		if lblBottomElement and bayNoBottomPlate[i] = 0 then pBase = bottomElementHeight
+
+		if pCnt >= 1 and pHiBot - pBase > nix and (bayEnd[i] - bayStart[i]) > pBars * supportPostWidth - nix then
+			postOk[i] = 1
+			postZ0[i] = pBase
+			postZ1[i] = pHiBot
+		endif
+	endif
+
+	for pk = 1 to 3
+		barNear[i][pk] = bayStart[i]
+		barFar[i][pk] = bayEnd[i]
+		if postOk[i] and horizontals[i][pk] < postZ1[i] - nix then
+			if bayVertLeft[i] <> 0 then barNear[i][pk] = bayStart[i] + supportPostWidth
+			if bayVertRight[i] <> 0 then barFar[i][pk] = bayEnd[i] - supportPostWidth
+		endif
+	next pk
+next i
+
 
 ! calculate lumber size (volumen)
 lumberVol = 0
@@ -59,7 +313,11 @@ if lblTopElement then
 	lumberVol = lumberVol + topElementHeight * A * B
 	stud_h = stud_h - topElementHeight 
 endif
-lumberVol = lumberVol + n * stud_h * B * defaultStudWidth
+studWidthSum = 0
+for i = 1 to studCount
+	studWidthSum = studWidthSum + studWidths[i]
+next i
+lumberVol = lumberVol + stud_h * B * studWidthSum
 
 ! calculate frame area
 frameArea = A * ZZYZX

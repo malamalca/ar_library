@@ -35,13 +35,21 @@ if _showShaftCaption then
 	ShaftCaptionStyleHeight = ShaftCaptionStyleHeight / 1000 * GLOB_SCALE
 endif
 
+! Vse velikosti pisav so v mm na papirju (npr. 2.4)
 define style "ProfileText" profileTextFont, profileTextSize, 2, profileTextStyle
 ret = request("Height_of_style", "ProfileText", profileTextStyleHeight)
 profileTextStyleHeight = profileTextStyleHeight / 1000 * GLOB_SCALE
 
-define style "ProfileSmallText" profileTextFont, profileTextSize / 2, 2, profileTextStyle
+define style "ProfileSmallText" profileTextFont, profileTextSize * PROFILE_SMALL_TEXT_FACTOR, 2, profileTextStyle
 ret = request("Height_of_style", "ProfileSmallText", profileSmallTextStyleHeight)
 profileSmallTextStyleHeight = profileSmallTextStyleHeight / 1000 * GLOB_SCALE
+
+! napis nad jaškom v profilu - ločena pisava od napisa na jašku v tlorisu, centriran nad osjo jaška (anchor 2)
+define style "ProfileShaftCaptionText" profileShaftCaptionTextFont, profileShaftCaptionTextSize, 2, profileShaftCaptionTextStyle
+ret = request("Height_of_style", "ProfileShaftCaptionText", profileShaftCaptionStyleHeight)
+profileShaftCaptionStyleHeight = profileShaftCaptionStyleHeight / 1000 * GLOB_SCALE
+
+fnFormatStringResult = "" ! tole je potrebno, da prepozna tip variable kot string
 
 
 gosub "fnDrawHotspots"
@@ -58,6 +66,30 @@ for i = 2 to n
 		hotline2 	xyz[i-1][1], xyz[i-1][2], xyz[i][1], xyz[i][2]
 	endif
 
+	! offset linije - debelina cevi, obrezane na obod jaška
+	if showPipeOffsetLines and pipeDimensions[i-1] > nix and segmentData[i-1][SEGMENT_LENGTH_2D] > nix then
+		pen penPipeOffset
+		set line_type linePipeOffset
+
+		_ux = (xyz[i][1] - xyz[i-1][1]) / segmentData[i-1][SEGMENT_LENGTH_2D]
+		_uy = (xyz[i][2] - xyz[i-1][2]) / segmentData[i-1][SEGMENT_LENGTH_2D]
+		_d = pipeDimensions[i-1] / 2
+
+		fnShaftTrimParamI = i-1: gosub "fnShaftTrim": _t1 = fnShaftTrimResult
+		if (i < n) or showLastShaft then
+			fnShaftTrimParamI = i: gosub "fnShaftTrim": _t2 = fnShaftTrimResult
+		else
+			_t2 = 0
+		endif
+
+		if _t1 + _t2 < segmentData[i-1][SEGMENT_LENGTH_2D] then
+			for _side = -1 to 1 step 2
+				line2 	xyz[i-1][1] + _ux * _t1 - _uy * _d * _side,	xyz[i-1][2] + _uy * _t1 + _ux * _d * _side,
+						xyz[i][1] - _ux * _t2 - _uy * _d * _side,		xyz[i][2] - _uy * _t2 + _ux * _d * _side
+			next _side
+		endif
+	endif
+
 	if _showPipeCaption then
 		set style "PipeCaptionText"
 		pen pipeCaptionTextPen
@@ -69,7 +101,11 @@ for i = 2 to n
 		fnFormatStringParam = pipeCaption: fnFormatStringVariableCount = 3: gosub "fnFormatString"
 
 		add2 (xyz[i-1][1] + xyz[i][1]) / 2,  (xyz[i-1][2] + xyz[i][2]) / 2
-		rot2 atn((xyz[i-1][2] - xyz[i][2]) / (xyz[i-1][1] - xyz[i][1]))
+		if abs(xyz[i-1][1] - xyz[i][1]) < nix then
+			rot2 90
+		else
+			rot2 atn((xyz[i-1][2] - xyz[i][2]) / (xyz[i-1][1] - xyz[i][1]))
+		endif
 		text2 0, 0, fnFormatStringResult
 		del 2
 	endif
@@ -79,10 +115,18 @@ next i
 for i = 1 to n
 	if showLastShaft or (i < n) then
 		add2 xyz[i][1], xyz[i][2]
+		! prikaz dejanske velikosti jaška (obod) - globalna nastavitev
+		dim _shaftOptions[]
+		_shaftOptions = shaftDataOptions[i]
+		if showShaftSize then _shaftOptions[OPT_SHOW_SHAFT] = 1
 		call "arKanalizacijaJašek" parameters penCover = penShaftCover,
 			lineCover = lineShaftCover, lineUnderground = lineShaftUnderground,
+			penUnderground = penShaftUnderground,
 			shaftDataDimensions = shaftDataDimensions[i],
-			shaftDataOptions = shaftDataOptions[i] 
+			shaftDataOptions = _shaftOptions
+
+			fnPortShaftI = i
+			gosub "fnDrawShaftPorts"
 
 		if _showShaftCaption then
 			set style "ShaftCaptionText"
@@ -90,6 +134,7 @@ for i = 1 to n
 
 			add2 shaftDataDimensions[i][DIM_MARKER_POSX], shaftDataDimensions[i][DIM_MARKER_POSY]
 			fnShowShaftMarkerParamI = i
+			fnShowShaftMarkerParamLineHeight = ShaftCaptionStyleHeight
 			gosub "fnShowShaftMarker"
 			del 1
 		endif
@@ -125,7 +170,7 @@ end
 "fnShowShaftMarker":
 	dim fnFormatStringVariables[][]
 
-	fnFormatStringVariableCount = 6
+	fnFormatStringVariableCount = 8
 	fnFormatStringVariables[1][1] = "diameter"
 		fnFormatStringVariables[1][2] = str{2}("%*1.0cm", shaftDataDimensions[fnShowShaftMarkerParamI][DIM_SHAFT_DIM1])
 	fnFormatStringVariables[2][1] = "bottomLevel"
@@ -138,47 +183,112 @@ end
 		fnFormatStringVariables[5][2] = str{2}("%*1.0m", fnShowShaftMarkerParamI)
 	fnFormatStringVariables[6][1] = "prefix"
 		fnFormatStringVariables[6][2] = prefix
+	fnFormatStringVariables[7][1] = "bottomLevelRelative"		! kota dna glede na projektno ±0,00
+		fnFormatStringVariables[7][2] = str{2}(linear_format, GLOB_HSTORY_ELEV + GLOB_ELEVATION + xyz[fnShowShaftMarkerParamI][3])
+	fnFormatStringVariables[8][1] = "topLevelRelative"			! kota pokrova glede na projektno ±0,00
+		fnFormatStringVariables[8][2] = str{2}(linear_format, GLOB_HSTORY_ELEV + GLOB_ELEVATION + xyz[fnShowShaftMarkerParamI][3] + shaftDataDimensions[fnShowShaftMarkerParamI][DIM_SHAFT_HEIGHT])
 	
 	dim shaftCaptionLines[4]
 	shaftCaptionLinesCount = 0
 	shaftMarkerWidth = 0
 	fnFormatStringResult = "" ! tole je potrebno, da prepozna tip variable kot string
 	
-	fnFormatStringParam = shaftCaptionLine1: gosub "fnFormatString"
-	if fnFormatStringLen > 0 then
-		shaftCaptionLinesCount = shaftCaptionLinesCount + 1
-		shaftCaptionLines[shaftCaptionLinesCount] = fnFormatStringResult
-		if (stw(fnFormatStringResult) > shaftMarkerWidth) then shaftMarkerWidth = stw(fnFormatStringResult)
-	endif
-	
-	fnFormatStringParam = shaftCaptionLine2: gosub "fnFormatString"
-	if fnFormatStringLen > 0 then
-		shaftCaptionLinesCount = shaftCaptionLinesCount + 1
-		shaftCaptionLines[shaftCaptionLinesCount] = fnFormatStringResult
-		if (stw(fnFormatStringResult) > shaftMarkerWidth) then shaftMarkerWidth = stw(fnFormatStringResult)
-	endif
+	dim shaftCaptionTemplates[4]
+	shaftCaptionTemplates[1] = shaftCaptionLine1
+	shaftCaptionTemplates[2] = shaftCaptionLine2
+	shaftCaptionTemplates[3] = shaftCaptionLine3
+	shaftCaptionTemplates[4] = shaftCaptionLine4
 
-	fnFormatStringParam = shaftCaptionLine3: gosub "fnFormatString"
-	if fnFormatStringLen > 0 then
-		shaftCaptionLinesCount = shaftCaptionLinesCount + 1
-		shaftCaptionLines[shaftCaptionLinesCount] = fnFormatStringResult
-		if stw(fnFormatStringResult) > shaftMarkerWidth then shaftMarkerWidth = stw(fnFormatStringResult)
-	endif
+	! vrstica se izpiše, če je vklopljena pri tem jašku in ni prazna
+	! (števec ne sme biti ii, ker ga uporablja fnFormatString)
+	for captionLineIdx = 1 to 4
+		if shaftCaptionLinesShow[fnShowShaftMarkerParamI][captionLineIdx] then
+			fnFormatStringParam = shaftCaptionTemplates[captionLineIdx]: gosub "fnFormatString"
+			if fnFormatStringLen > 0 then
+				shaftCaptionLinesCount = shaftCaptionLinesCount + 1
+				shaftCaptionLines[shaftCaptionLinesCount] = fnFormatStringResult
+				if stw(fnFormatStringResult) > shaftMarkerWidth then shaftMarkerWidth = stw(fnFormatStringResult)
+			endif
+		endif
+	next captionLineIdx
 
-	fnFormatStringParam = shaftCaptionLine4: gosub "fnFormatString"
-	if fnFormatStringLen > 0 then
-		shaftCaptionLinesCount = shaftCaptionLinesCount + 1
-		shaftCaptionLines[shaftCaptionLinesCount] = fnFormatStringResult
-		if stw(fnFormatStringResult) > shaftMarkerWidth then shaftMarkerWidth = stw(fnFormatStringResult)
-	endif
-
-	shaftMarkerHeight = profileTextStyleHeight * shaftCaptionLinesCount
+	! pisavo (set style) in pero nastavi klicatelj, višino vrstice poda v fnShowShaftMarkerParamLineHeight
+	shaftMarkerHeight = fnShowShaftMarkerParamLineHeight * shaftCaptionLinesCount
 
 	currentTextYPos = shaftMarkerHeight
 	for ii = 1 to shaftCaptionLinesCount
 		text2 0, currentTextYPos, shaftCaptionLines[ii]						!! lahko bi bilo tudi -shaftMarkerWidth/2  / 1000 * GLOB_SCALE
-		currentTextYPos = currentTextYPos - shaftCaptionStyleHeight
+		currentTextYPos = currentTextYPos - fnShowShaftMarkerParamLineHeight
 	next ii
+
+	! besedilo jaška (npr. "ponikovalnica") nad vrsticami napisa
+	if strlen(shaftProfileTexts[fnShowShaftMarkerParamI]) > 0 then
+		text2 0, shaftMarkerHeight + fnShowShaftMarkerParamLineHeight, shaftProfileTexts[fnShowShaftMarkerParamI]
+	endif
+return
+
+
+
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!
+! Dodatni vtoki/iztoki jaška v tlorisu: puščica navznoter (vtok) ali navzven (iztok) v smeri kota.
+! Klicati znotraj add2 na os jaška; vhod: fnPortShaftI
+!
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+"fnDrawShaftPorts":
+	_pR = shaftDataDimensions[fnPortShaftI][DIM_SHAFT_DIM1] / 2
+	if _pR < nix then _pR = 0.3
+
+	pen penPipeAxis
+	set line_type linePipeAxis
+	_hs = PORT_ARROW_LENGTH / 4			! velikost glave puščice
+
+	for _k = 1 to MAX_SHAFT_PORTS
+		_pi = (fnPortShaftI - 1) * MAX_SHAFT_PORTS + _k
+		if shaftPortTypes[_pi] <> PORT_NONE then
+			! azimut (sever = 0°, v smeri urinega kazalca) -> smerni vektor v tlorisu
+			_ca = sin(shaftPortAngles[_pi])
+			_sa = cos(shaftPortAngles[_pi])
+
+			if shaftPortTypes[_pi] = PORT_INLET then
+				_rTail = _pR + PORT_ARROW_LENGTH: _rHead = _pR: _sgn = -1
+			else
+				_rTail = _pR: _rHead = _pR + PORT_ARROW_LENGTH: _sgn = 1
+			endif
+
+			! smer puščice _sgn * (_ca, _sa), konica v _rHead
+			_hx = _rHead * _ca: _hy = _rHead * _sa
+			line2 _rTail * _ca, _rTail * _sa, _hx, _hy
+			line2 _hx, _hy, _hx - _sgn * _hs * _ca + _hs / 2 * _sa, _hy - _sgn * _hs * _sa - _hs / 2 * _ca
+			line2 _hx, _hy, _hx - _sgn * _hs * _ca - _hs / 2 * _sa, _hy - _sgn * _hs * _sa + _hs / 2 * _ca
+		endif
+	next _k
+return
+
+
+
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!
+!
+!
+! Razdalja od osi jaška do presečišča offset linije cevi (odmik _d) z obodom jaška (krog premera DIM_SHAFT_DIM1).
+! Če premer jaška ni podan, se uporabi okrogel pokrov.
+!
+!
+!
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+"fnShaftTrim":
+	fnShaftTrimResult = 0
+	if shaftDataDimensions[fnShaftTrimParamI][DIM_SHAFT_DIM1] > nix then
+		_r = shaftDataDimensions[fnShaftTrimParamI][DIM_SHAFT_DIM1] / 2
+		if _r > _d then fnShaftTrimResult = sqr(_r^2 - _d^2)
+	else
+		if shaftDataOptions[fnShaftTrimParamI][OPT_COVER_TYPE] = COVER_TYPE_ROUND then
+			_r = shaftDataDimensions[fnShaftTrimParamI][DIM_COVER_DIM1] / 2
+			if shaftDataDimensions[fnShaftTrimParamI][DIM_COVER_DIM1] < nix then _r = 0.3	! enako kot v makroju arKanalizacijaJašek
+			if _r > _d then fnShaftTrimResult = sqr(_r^2 - _d^2)
+		endif
+	endif
 return
 
 
@@ -245,7 +355,32 @@ return
 	legendPadding = 0.1
 	legendRowHeight = profileTextStyleHeight
 
-	profilePadding = 1
+	! vrstica tabele z dodatnimi vtoki/iztoki - samo, če ima kakšen prikazan jašek vtok/iztok; ostala tabela se pomakne navzgor
+	! višina vrstice = največ vtokov/iztokov na enem jašku (vsak v svoji vodoravni vrstici besedila), najmanj višina vrstice tabele
+	portsLineH = profileSmallTextStyleHeight * 1.3
+	portsMaxCnt = 0
+	for i = 1 to n
+		if (i < n) or showLastShaft then
+			_pCnt = 0
+			for _k = 1 to MAX_SHAFT_PORTS
+				if shaftPortTypes[(i - 1) * MAX_SHAFT_PORTS + _k] <> PORT_NONE then _pCnt = _pCnt + 1
+			next _k
+			if _pCnt > portsMaxCnt then portsMaxCnt = _pCnt
+		endif
+	next i
+	portsRowH = 0
+	if portsMaxCnt > 0 then portsRowH = max(legendRowHeight, portsMaxCnt * portsLineH)
+	if portsRowH > nix then
+		line2 0, portsRowH, profileWidth, portsRowH
+		add2 0, portsRowH
+	endif
+
+	! razmik med robom mreže in prvim/zadnjim jaškom: polovica najširšega jaška + razmik v mm na papirju
+	maxShaftHalfWidth = 0
+	for i = 1 to n
+		if ((i < n) or showLastShaft) and (shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2 > maxShaftHalfWidth) then maxShaftHalfWidth = shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2
+	next i
+	profilePadding = maxShaftHalfWidth + PROFILE_CANVAS_PADDING / 1000 * GLOB_SCALE
 	canvasPaddingY = 0.5
 
 	dim legendText[8]
@@ -259,12 +394,21 @@ return
 	legendText[8] = "Padec dna kanala"
 
 	! legend text lines
+	pen profileTextPen
 	for i = 1 to 8:	text2 legendPadding + stw(legendText[i]) / 2 / 1000 * GLOB_SCALE, legendRowHeight * (9 - i), legendText[i]: next i
+
+	portsLegendText = "Dodatni vtoki/iztoki"
+	if portsRowH > nix then
+		text2 legendPadding + stw(portsLegendText) / 2 / 1000 * GLOB_SCALE, 0, portsLegendText
+	endif
 
 	legendTextMaxWidth = max(stw(legendText[1]), stw(legendText[2]), stw(legendText[3]), stw(legendText[4]), stw(legendText[5]), stw(legendText[6]), stw(legendText[7]), stw(legendText[8])) / 1000 * GLOB_SCALE
 
+	if portsRowH > nix then legendTextMaxWidth = max(legendTextMaxWidth, stw(portsLegendText) / 1000 * GLOB_SCALE)
+
+	pen profileGridPen
 	! vertical line	
-	line2 legendPadding*2 + legendTextMaxWidth, 0, legendPadding*2 + legendTextMaxWidth, profileHeight
+	line2 legendPadding*2 + legendTextMaxWidth, -portsRowH, legendPadding*2 + legendTextMaxWidth, profileHeight - portsRowH
 	! horizontal lines
 	for i = 1 to 7:	line2 0, legendRowHeight * (8 - i), profileWidth, legendRowHeight * (8 - i): next i
 
@@ -280,6 +424,8 @@ return
 
 	for i = 1 to n
 		! tick
+		pen profileGridPen
+		line_type profileGridLine
 		line2 canvasPosX, legendRowHeight * 7, canvasPosX, legendRowHeight * 7 + legendRowHeight / 2
 
 		_drawShaft = (i < n) or showLastShaft
@@ -293,14 +439,33 @@ return
 
 		! jašek
 		if _drawShaft and (shaftDataDimensions[i][DIM_SHAFT_HEIGHT] > 0) then
+			! telo jaška + povišek do pokrova (širina pokrova, privzeto 60cm)
+			_raise = min(max(shaftDataDimensions[i][DIM_RAISE_HEIGHT], 0), shaftDataDimensions[i][DIM_SHAFT_HEIGHT])
 			rect2 	canvasPosX - shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,
 					canvasPosY - minZValue + xyz[i][3],
 					canvasPosX + shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2,
-					canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT]
+					canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT] - _raise
+			if _raise > nix then
+				_raiseWidth = shaftDataDimensions[i][DIM_COVER_DIM1]
+				if _raiseWidth < nix then _raiseWidth = 0.6
+				if shaftDataDimensions[i][DIM_SHAFT_DIM1] > nix then _raiseWidth = min(_raiseWidth, shaftDataDimensions[i][DIM_SHAFT_DIM1])
+				rect2 	canvasPosX - _raiseWidth / 2,
+						canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT] - _raise,
+						canvasPosX + _raiseWidth / 2,
+						canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT]
+			endif
+
+			fnPortShaftI = i
+			gosub "fnDrawProfilePorts"
 
 			add2 canvasPosX, canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT] + 0.5
+			set style "ProfileShaftCaptionText"
+			pen profileShaftCaptionTextPen
 			fnShowShaftMarkerParamI = i
+			fnShowShaftMarkerParamLineHeight = profileShaftCaptionStyleHeight
 			gosub "fnShowShaftMarker"
+			set style "ProfileText"
+			pen profileGridPen
 			del 1
 
 			if i > 1 then
@@ -346,6 +511,29 @@ return
 				canvasPosY - minZValue + xyz[i-1][3] + shaftDataDimensions[i-1][DIM_OUTLET_HEIGHT] + pipeDimensions[i-1],
 				canvasPosX - _dX,
 				canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_INLET_HEIGHT] + pipeDimensions[i-1]
+
+			! kaskada: navpična cev CASCADE_GAP levo od stene jaška, od spodnje linije dotoka do dna, koleno 90° v jašek
+			if _drawShaft and shaftDataOptions[i][OPT_CASCADE] then
+				_xS = canvasPosX - segmentData[i-1][SEGMENT_LENGTH_2D] * aspectRatioX + shaftDataDimensions[i-1][DIM_SHAFT_DIM1] / 2
+				_yS = canvasPosY - minZValue + xyz[i-1][3] + shaftDataDimensions[i-1][DIM_OUTLET_HEIGHT]
+				_xE = canvasPosX - _dX
+				_yE = canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_INLET_HEIGHT]
+				_yBot = canvasPosY - minZValue + xyz[i][3]
+				_dn = pipeDimensions[i-1]
+				_xR = _xE - CASCADE_GAP
+				_xL = _xR - _dn
+
+				if _xL > _xS + nix and abs(_xE - _xS) > nix then
+					_yL = _yS + (_yE - _yS) * (_xL - _xS) / (_xE - _xS)		! spodnja linija dotoka pri _xL
+					_yR = _yS + (_yE - _yS) * (_xR - _xS) / (_xE - _xS)		! spodnja linija dotoka pri _xR
+					if _yR > _yBot + _dn + nix then
+						line2 _xL, _yL, _xL, _yBot
+						line2 _xR, _yR, _xR, _yBot + _dn
+						line2 _xL, _yBot, _xE, _yBot
+						line2 _xR, _yBot + _dn, _xE, _yBot + _dn
+					endif
+				endif
+			endif
 		endif
 
 		! teren
@@ -359,8 +547,7 @@ return
 				canvasPosY - minZValue + xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT]
 		endif
 
-		pen profileGridPen
-		line_type profileGridLine
+		pen profileTextPen
 
 		! stacionaža
 		text2 canvasPosX, legendRowHeight * 7, str{2}("%.2m", segmentPosX)
@@ -389,12 +576,14 @@ return
 		endif
 		text2 -legendRowHeight / 2,
 			profileSmallTextStyleHeight / 2 - deltaTextPos,
-			str{2}("%.2m", GLOB_PROJECT_ALTITUDE + GLOB_HSTORY_ELEV + GLOB_ELEVATION + xyz[i][3] - shaftDataDimensions[i][DIM_OUTLET_HEIGHT])
+			str{2}("%.2m", GLOB_PROJECT_ALTITUDE + GLOB_HSTORY_ELEV + GLOB_ELEVATION + xyz[i][3] + shaftDataDimensions[i][DIM_OUTLET_HEIGHT])	! iztok: dno + višina iztoka (enako kot izris cevi)
 		set style "ProfileText" 
 		del 2
 
-		! globina izkopa
-		text2 canvasPosX, legendRowHeight * 3, str{2}("%.2m", shaftDataDimensions[i][DIM_SHAFT_HEIGHT] + shaftAdditionalDepth)
+		! globina izkopa = kota terena (vrh jaška) - kota dna jaška + dodatna globina izkopa
+		_terrainLevel = xyz[i][3] + shaftDataDimensions[i][DIM_SHAFT_HEIGHT]
+		_bottomLevel = xyz[i][3]
+		text2 canvasPosX, legendRowHeight * 3, str{2}("%.2m", _terrainLevel - _bottomLevel + shaftAdditionalDepth)
 
 		! cev
 		if i > 1 then
@@ -425,24 +614,33 @@ return
 		tickSpacing = ceil((maxShaftElevation - minShaftElevation) / tickCount * 100) / 100
 	endif
 
-	! draw project +-0,00 line
+	! črta projektne kote 0,00 na osi (kota 0,00 = z jaška -(GLOB_HSTORY_ELEV + GLOB_ELEVATION)), z napisom
+	zeroLineY = canvasPosY - minShaftElevation - GLOB_HSTORY_ELEV - GLOB_ELEVATION
+	pen profileGridPen
+	line_type profileGridLine
 	line2 0,
-		canvasPosY - minShaftElevation - GLOB_ELEVATION,
+		zeroLineY,
 		legendPadding*2 + legendTextMaxWidth,
-		canvasPosY - minShaftElevation - GLOB_ELEVATION
+		zeroLineY
 	hotline2 0,
-		canvasPosY - minShaftElevation - GLOB_ELEVATION,
+		zeroLineY,
 		legendPadding*2 + legendTextMaxWidth,
-		canvasPosY - minShaftElevation - GLOB_ELEVATION
+		zeroLineY
+
+	set style "ProfileSmallText"
+	pen profileTextPen
+	text2 legendPadding + stw("±0,00") / 2 / 1000 * GLOB_SCALE, zeroLineY + profileSmallTextStyleHeight * 1.1, "±0,00"
 
 	set style "ProfileSmallText" 
 
 	for i = 0 to tickCount
+		pen profileGridPen
 		line2 -tickOffset + legendPadding*2 + legendTextMaxWidth,
 			canvasPosY + tickSpacing * i,
 			+tickOffset + legendPadding*2 + legendTextMaxWidth,
 			canvasPosY + tickSpacing * i
 
+		pen profileTextPen
 		tickString = str(GLOB_PROJECT_ALTITUDE + GLOB_HSTORY_ELEV + GLOB_ELEVATION + minShaftElevation + tickSpacing * i, 5, 2)
 		text2 legendPadding*2 + legendTextMaxWidth - stw(tickString) / 1000 * GLOB_SCALE,
 			canvasPosY + profileSmallTextStyleHeight / 2 + tickSpacing * i,
@@ -451,6 +649,74 @@ return
 
 	del top
 return
+
+
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+!
+! Dodatni vtoki/iztoki jaška v profilu: luknje v steni jaška + vrstica v tabeli.
+! Pogled na desno stran cevovoda (v smeri toka): luknja v smeri kota ang je pod kotom rel = ang - smer cevovoda.
+! Vodoravni položaj luknje = R * cos(rel), širina elipse (projekcija) = d * |sin(rel)|; luknje na odmaknjeni strani so črtkane.
+! Klicati znotraj fnDrawProfile pri izrisu jaška; vhod: fnPortShaftI
+!
+!-------------------------------------------------------------------------------------------------------------------------------------------------------------
+"fnDrawProfilePorts":
+	_pR = shaftDataDimensions[fnPortShaftI][DIM_SHAFT_DIM1] / 2
+	_pCnt = 0
+	for _k = 1 to MAX_SHAFT_PORTS
+		_pi = (fnPortShaftI - 1) * MAX_SHAFT_PORTS + _k
+		if shaftPortTypes[_pi] <> PORT_NONE then
+			_pCnt = _pCnt + 1
+			_pRel = 90 - shaftPortAngles[_pi] - shaftDirAngle[fnPortShaftI]		! azimut -> matematični kot, relativno na smer cevovoda
+			_pSin = sin(_pRel)
+			_pD = shaftPortDiameters[_pi]
+
+			! hotspot za urejanje višine vtoka/iztoka (spodnji rob cevi od dna jaška)
+			_pHx = canvasPosX + _pR * cos(_pRel)
+			_pHy = canvasPosY - minZValue + xyz[fnPortShaftI][3]
+			hotspot2 _pHx,	_pHy,								unId,	shaftPortHeights[_pi],	129: 	unId = unId + 1
+			hotspot2 _pHx,	_pHy + shaftPortHeights[_pi],		unId,	shaftPortHeights[_pi],	2: 		unId = unId + 1
+			hotspot2 _pHx,	_pHy - 1,							unId,	shaftPortHeights[_pi],	3: 		unId = unId + 1
+
+			if _pR > nix and _pD > nix then
+				pen profilePipePen
+				if _pSin <= 0 then line_type profilePipeLine else line_type 2
+				add2 canvasPosX + _pR * cos(_pRel),
+					canvasPosY - minZValue + xyz[fnPortShaftI][3] + shaftPortHeights[_pi] + _pD / 2
+				mul2 max(abs(_pSin), 0.02), 1
+				circle2 0, 0, _pD / 2
+				del 2
+
+				! kota dna vtoka/iztoka glede na 0,00 pod luknjo (manjša pisava)
+				pen profileTextPen
+				set style "ProfileSmallText"
+				text2 _pHx, _pHy + shaftPortHeights[_pi] - profileSmallTextStyleHeight * 0.2,
+					str{2}("%.2m", GLOB_HSTORY_ELEV + GLOB_ELEVATION + xyz[fnPortShaftI][3] + shaftPortHeights[_pi])
+				set style "ProfileText"
+			endif
+		endif
+	next _k
+
+	! vrstica v tabeli: po ena vodoravna vrstica besedila za vsak vtok/iztok, centrirana na osi jaška
+	if portsRowH > nix and _pCnt > 0 then
+		pen profileTextPen
+		set style "ProfileSmallText"
+		add2 canvasPosX, 0
+		_pM = 0
+		for _k = 1 to MAX_SHAFT_PORTS
+			_pi = (fnPortShaftI - 1) * MAX_SHAFT_PORTS + _k
+			if shaftPortTypes[_pi] <> PORT_NONE then
+				_pM = _pM + 1
+				if shaftPortTypes[_pi] = PORT_INLET then _pStr = "Vtok " else _pStr = "Iztok "
+				_pStr = _pStr + "DN" + str{2}("%*1.0mm", shaftPortDiameters[_pi]) + " h=" + str{2}("%.2m", shaftPortHeights[_pi]) + " " + str{2}("%.0", shaftPortAngles[_pi]) + "°"
+				text2 0, -(_pM - 1) * portsLineH - (portsLineH - profileSmallTextStyleHeight) / 2, _pStr
+			endif
+		next _k
+		del 1
+		set style "ProfileText"
+	endif
+	pen profileGridPen
+return
+
 
 
 !-------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -487,6 +753,23 @@ return
 		hotspot2 xyz[i][1]+markerDX,	xyz[i][2],			unId,	shaftDataDimensions[i][DIM_MARKER_POSY],	129: 	unId = unId + 1
 		hotspot2 xyz[i][1]+markerDX,	xyz[i][2]+markerDY,	unId,	shaftDataDimensions[i][DIM_MARKER_POSY],	2: 		unId = unId + 1
 		hotspot2 xyz[i][1]+markerDX,	xyz[i][2]-1,		unId,	shaftDataDimensions[i][DIM_MARKER_POSY],	3: 		unId = unId + 1
+
+		! kot dodatnih vtokov/iztokov jaška
+		if showLastShaft or (i < n) then
+			_pR = shaftDataDimensions[i][DIM_SHAFT_DIM1] / 2
+			if _pR < nix then _pR = 0.3
+			_pRm = _pR + PORT_ARROW_LENGTH
+			for _k = 1 to MAX_SHAFT_PORTS
+				_pi = (i - 1) * MAX_SHAFT_PORTS + _k
+				if shaftPortTypes[_pi] <> PORT_NONE then
+					! azimut: ničta smer je sever (navzgor), kot raste v smeri urinega kazalca (6 + 512 = kot v smeri urinega kazalca)
+					hotspot2 xyz[i][1],										xyz[i][2] + _pRm,								unId,	shaftPortAngles[_pi],	4+128: 	unId = unId + 1
+					hotspot2 xyz[i][1] + _pRm * sin(shaftPortAngles[_pi]),	xyz[i][2] + _pRm * cos(shaftPortAngles[_pi]),	unId,	shaftPortAngles[_pi],	5: 		unId = unId + 1
+					hotspot2 xyz[i][1],										xyz[i][2],										unId,	shaftPortAngles[_pi],	6 + 512: 		unId = unId + 1
+					hotspot2 xyz[i][1] + 1,									xyz[i][2] + _pRm,								unId,	shaftPortAngles[_pi],	7: 		unId = unId + 1
+				endif
+			next _k
+		endif
 
 		! add new node hotspots
 		if i > 1 and n < max_points then

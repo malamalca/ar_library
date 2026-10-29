@@ -24,8 +24,10 @@ if shaftDataOptions[OPT_SHOW_SHAFT] = 1 then
 	pen penUnderground
 	line_type lineUnderground
 
-	if shaftDataOptions[OPT_SHAFT_TYPE] = SHAFT_TYPE_ROUND then
-		circle2 0, 0, shaftDataDimensions[DIM_SHAFT_DIM1]
+	if shaftDataOptions[OPT_SHAFT_TYPE] = SHAFT_TYPE_ROUND and shaftDataDimensions[DIM_SHAFT_DIM1] > nix then
+		! obod ne rišem, če sovpada z okroglim pokrovom
+		_sameAsCover = shaftDataOptions[OPT_COVER_TYPE] = COVER_TYPE_ROUND and abs(shaftDataDimensions[DIM_SHAFT_DIM1] / 2 - shaftRadius) < nix
+		if not(_sameAsCover) then circle2 0, 0, shaftDataDimensions[DIM_SHAFT_DIM1] / 2
 	endif
 endif
 

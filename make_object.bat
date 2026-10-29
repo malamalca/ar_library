@@ -63,6 +63,10 @@ if exist "Library_Src\IDEntryList.dbe" (
     copy /Y "Library_Src\IDEntryList.dbe" "%STAGING%\%CATEGORY%\" >nul
 )
 
+rem arFrame calls the project's arFrameTypes part, which is not in the library:
+rem the interpreter needs it, so the example goes in for the check only
+if /I "%OBJ_PATH%"=="3D\arFrame" if exist "Examples\arFrameTypes" xcopy "Examples\arFrameTypes\*" "%STAGING%\%CATEGORY%\arFrameTypes\" /E /I /H /Y /Q >nul
+
 rem === STEP 1: GDL error check ===
 echo [1/2] Checking GDL scripts ...
 "%CONVERTER%" finalizelibrary %PASS_OPT% -interpret -reportlevel 1 -format HSF "%STAGING%\%CATEGORY%" "%CHECK_OUT%\%CATEGORY%" > "%FULLOUT%" 2>&1
@@ -94,6 +98,9 @@ if "%HAS_GDL_ERRORS%"=="1" (
 rmdir /s /q "%CHECK_OUT%" >nul
 del "%FULLOUT%" "%ERRALL%" >nul 2>&1
 echo     OK - no GDL errors.
+
+rem the example part must not end up in the library
+if exist "%STAGING%\%CATEGORY%\arFrameTypes" rmdir /s /q "%STAGING%\%CATEGORY%\arFrameTypes" >nul
 
 rem === STEP 2: Compile to .gsm ===
 echo [2/2] Compiling GSM ...
@@ -134,6 +141,8 @@ goto :eof
 set "IS_GDL_ERROR=0"
 set "CHK=%~1"
 set "CHK=!CHK:Missing ancestor=!"
+set "CHK=!CHK:Missing macro=!"
+set "CHK=!CHK:Missing called macro=!"
 if /I not "!CHK!"=="%~1" goto :eof
 set "IS_GDL_ERROR=1"
 goto :eof

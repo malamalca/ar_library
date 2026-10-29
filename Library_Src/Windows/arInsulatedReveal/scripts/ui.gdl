@@ -91,6 +91,10 @@ return
 	xOffset = 100
 	ui_outfield "Offset from reveal:", xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 120, 14
 	ui_infield "offset_plaster", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 230
+	ui_infield "plaster_outer", xLeft + xOffset, 			yTop + (aRow - 1) * yRow, 14, 14
+	ui_outfield "Plaster on Outer Side", xLeft + xOffset + 20, yTop + (aRow - 1) * yRow, 140, 14
 return
 
 ! ------------------------------------------------------------------------------

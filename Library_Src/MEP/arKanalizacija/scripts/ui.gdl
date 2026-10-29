@@ -10,6 +10,7 @@ yRow = 40
 iPageIDRoot 			= -1
 iPageIDBasics			=  1
 iPageShaft				=  2
+iPageShaftData			=  8
 iPagePipe				=  3
 iPageProfile			=  4
 iPageID2DRepr			=  5
@@ -26,6 +27,9 @@ iPageIDDescript 		=  7
 
 	UI_PAGE iPageShaft, iPageIDRoot, 'Jaški', 55
 		gosub "shaftPage"
+
+	UI_PAGE iPageShaftData, iPageIDRoot, 'Podatki jaška', 55
+		gosub "shaftDataPage"
 
 	UI_PAGE iPagePipe, iPageIDRoot, 'Cevi', 55
 		gosub "pipePage"
@@ -56,6 +60,11 @@ END
 	xOffset = 0
 	ui_outfield "Dolžina odseka:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
 	ui_infield "totalLength", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 24
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Nadmorska višina kote 0,00:", xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 200, 14
+	ui_infield "elevZeroAbs", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 24
 return
 
 ! ------------------------------------------------------------------------------
@@ -69,13 +78,21 @@ return
 	ui_outfield "Barva:", xLeft + xOffset, 					yTop + (aRow - 1) * yRow, 100, 14
 	ui_infield "penShaftCover", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 35, 24
 
-	xOffset = xOffset + 80
+	xOffset = xOffset + 50
+	ui_outfield "Obod:", xLeft + xOffset, 					yTop + (aRow - 1) * yRow , 40, 14
+	ui_infield "showShaftSize", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 20, 24
+
+	xOffset = xOffset + 40
 	ui_outfield "Črta oboda:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
 	ui_infield "lineShaftUnderground", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 100, 24
 
 	xOffset = xOffset + 100
 	ui_outfield "Barva:", xLeft + xOffset, 					yTop + (aRow - 1) * yRow, 100, 14
 	ui_infield "penShaftUnderground", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 35, 24
+
+	xOffset = xOffset + 50
+	ui_outfield "Zadnji jašek:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
+	ui_infield "showLastShaft", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 20, 24
 
 	aRow = aRow + 1
 
@@ -101,7 +118,7 @@ return
 	ui_infield "shaftCaptionTextFont", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 200, 24
 
 	xOffset = xOffset + 210
-	ui_outfield "Velikost:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
+	ui_outfield "Velikost [mm]:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
 	ui_infield "shaftCaptionTextSize", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
 
 	xOffset = xOffset + 90
@@ -112,33 +129,105 @@ return
 	ui_outfield "Slog:", xLeft + xOffset + 350, 			yTop + (aRow - 1) * yRow, 100, 14
 	ui_textstyle_infield{2} "shaftCaptionTextStyle", 1+2+4,  xLeft + xOffset + 350, yTop + (aRow - 1) * yRow + yLabel, 24, 24 
 
-	aRow = 5.3
+return
+
+! ------------------------------------------------------------------------------
+"shaftDataPage":
+	colW = 110
+	xCol1 = 60
+	xCol2 = xCol1 + colW + 10
+
+	! --- izbira jaška ---
+	aRow = 1
 	xOffset = 0
-	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
-	ui_outfield "ID Jaška:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 50, 14
+	ui_outfield "ID jaška:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 60, 14
 	ui_infield "ui_shaft_index", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 50, 22
-	ui_separator xLeft + xOffset + 60, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 300, 		yTop + (aRow - 1) * yRow + 25
 
-	
+	xOffset = xOffset + 70
+	ui_outfield "Besedilo jaška:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 150, 14
+	ui_infield "ui_shaft_profile_text", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 250, 22
 
-	aRow = aRow + 1
+	xOffset = xOffset + 260
+	ui_outfield "Kaskada:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 55, 14
+	ui_infield "ui_shaft_cascade", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 20, 22
+
+	xOffset = xOffset + 60
+	ui_outfield "Vrstice napisa 1-4:", xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 110, 14
+	ui_infield "ui_shaft_line1", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 20, 22
+	ui_infield "ui_shaft_line2", xLeft + xOffset + 20, 		yTop + (aRow - 1) * yRow + yLabel, 20, 22
+	ui_infield "ui_shaft_line3", xLeft + xOffset + 40, 		yTop + (aRow - 1) * yRow + yLabel, 20, 22
+	ui_infield "ui_shaft_line4", xLeft + xOffset + 60, 		yTop + (aRow - 1) * yRow + yLabel, 20, 22
+
+	! --- dimenzije ---
+	aRow = aRow + 1.3
 	xOffset = 0
-	ui_outfield "Višina jaška:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_separator xLeft - 10, 								yTop + (aRow - 1) * yRow - 5, 		xLeft + 535, 	yTop + (aRow - 1) * yRow - 5
+	ui_style 0, 1
+	ui_outfield "Dimenzije", xLeft + xOffset, 				yTop + (aRow - 1) * yRow, 200, 14
+	ui_style 0, 0
+
+	aRow = aRow + 0.5
+	xOffset = 0
+	ui_outfield "Višina:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
 	ui_infield "ui_shaft_height", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 22
 
 	xOffset = xOffset + 110
 	ui_outfield "Premer:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
 	ui_infield "ui_shaft_dim1", xLeft + xOffset,			yTop + (aRow - 1) * yRow + yLabel, 100, 22
 
-	xOffset = xOffset + 200
-	ui_outfield "Show Last:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
-	ui_infield "showLastShaft", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 22
+	xOffset = xOffset + 110
+	ui_outfield "Povišek:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "ui_shaft_raise", xLeft + xOffset,			yTop + (aRow - 1) * yRow + yLabel, 100, 22
 
-	aRow = aRow + 1.2
+	! --- kote ---
+	aRow = aRow + 1.3
+	ui_separator xLeft - 10, 								yTop + (aRow - 1) * yRow - 5, 		xLeft + 535, 	yTop + (aRow - 1) * yRow - 5
+	ui_style 0, 1
+	ui_outfield "Kote", xLeft, 								yTop + (aRow - 1) * yRow, 200, 14
+	ui_style 0, 0
+
+	aRow = aRow + 0.6
+	ui_outfield "Od 0,00", xLeft + xCol1, 					yTop + (aRow - 1) * yRow , colW, 14
+	ui_outfield "Absolutna (n.m.v.)", xLeft + xCol2, 		yTop + (aRow - 1) * yRow , colW, 14
+
+	aRow = aRow + 0.4
+	ui_outfield "Pokrov:", xLeft, 							yTop + (aRow - 1) * yRow + 4, 50, 14
+	ui_infield "ui_shaft_cover_prj", xLeft + xCol1, 		yTop + (aRow - 1) * yRow, colW, 22
+	ui_infield "ui_shaft_cover_abs", xLeft + xCol2, 		yTop + (aRow - 1) * yRow, colW, 22
+
+	aRow = aRow + 0.6
+	ui_outfield "Dno:", xLeft, 								yTop + (aRow - 1) * yRow + 4, 50, 14
+	ui_infield "ui_shaft_bottom_prj", xLeft + xCol1, 		yTop + (aRow - 1) * yRow, colW, 22
+	ui_infield "ui_shaft_bottom_abs", xLeft + xCol2, 		yTop + (aRow - 1) * yRow, colW, 22
+
+
+	! --- dodatni vtoki/iztoki ---
+	aRow = aRow + 1.3
+	ui_separator xLeft - 10, 								yTop + (aRow - 1) * yRow - 5, 		xLeft + 535, 	yTop + (aRow - 1) * yRow - 5
+	ui_style 0, 1
+	ui_outfield "Dodatni vtoki/iztoki", xLeft, 				yTop + (aRow - 1) * yRow, 200, 14
+	ui_style 0, 0
+
+	aRow = aRow + 0.5
 	xOffset = 0
-	ui_separator xLeft + xOffset - 10, 				yTop + (aRow - 1) * yRow, 			xLeft + xOffset + 300,	 	yTop + (aRow - 1) * yRow
-	ui_separator xLeft + xOffset - 10, 				yTop + (aRow - 2.6) * yRow, 		xLeft + xOffset - 10,	 	yTop + (aRow - 1) * yRow
-	ui_separator xLeft + xOffset + 300, 			yTop + (aRow - 2.6) * yRow, 		xLeft + xOffset + 300,	 	yTop + (aRow - 1) * yRow
+	ui_outfield "Št.:", xLeft + xOffset, 					yTop + (aRow - 1) * yRow , 50, 14
+	ui_infield "ui_port_index", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 50, 22
+
+	xOffset = xOffset + 60
+	ui_outfield "Tip:", xLeft + xOffset, 					yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "ui_port_type", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 22
+
+	xOffset = xOffset + 110
+	ui_outfield "Smer (azimut):", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "ui_port_angle", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 22
+
+	xOffset = xOffset + 110
+	ui_outfield "Višina od dna:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "ui_port_height", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 22
+
+	xOffset = xOffset + 110
+	ui_outfield "Premer cevi:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "ui_port_diameter", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 100, 22
 return
 
 ! ------------------------------------------------------------------------------
@@ -152,6 +241,18 @@ return
 	xOffset = xOffset + 100
 	ui_outfield "Barva:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow, 100, 14
 	ui_infield "penPipeAxis", xLeft + xOffset , 		yTop + (aRow - 1) * yRow + yLabel, 35, 24
+
+	xOffset = xOffset + 60
+	ui_outfield "Debelina cevi:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "showPipeOffsetLines", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 20, 24
+
+	xOffset = xOffset + 90
+	ui_outfield "Črta:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "linePipeOffset", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 100, 24
+
+	xOffset = xOffset + 100
+	ui_outfield "Barva:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow, 100, 14
+	ui_infield "penPipeOffset", xLeft + xOffset , 		yTop + (aRow - 1) * yRow + yLabel, 35, 24
 
 	aRow = aRow + 1
 
@@ -174,7 +275,7 @@ return
 	ui_infield "pipeCaptionTextFont", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 200, 24
 
 	xOffset = xOffset + 210
-	ui_outfield "Velikost:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_outfield "Velikost [mm]:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
 	ui_infield "pipeCaptionTextSize", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
 
 	xOffset = xOffset + 90
@@ -243,7 +344,7 @@ return
 	ui_infield "profileTextFont", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 200, 24
 
 	xOffset = xOffset + 210
-	ui_outfield "Velikost:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_outfield "Velikost [mm]:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
 	ui_infield "profileTextSize", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
 
 	xOffset = xOffset + 90
@@ -254,14 +355,113 @@ return
 	ui_outfield "Slog:", xLeft + xOffset + 350, 		yTop + (aRow - 1) * yRow, 100, 14
 	ui_textstyle_infield{2} "profileTextStyle", 1+2+4,  xLeft + xOffset + 350, yTop + (aRow - 1) * yRow + yLabel, 24, 24 
 
+	aRow = aRow + 1
+
+	xOffset = 0
+	ui_outfield "Pisava napisa jaška:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 150, 14
+	ui_infield "profileShaftCaptionTextFont", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 200, 24
+
+	xOffset = xOffset + 210
+	ui_outfield "Velikost [mm]:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "profileShaftCaptionTextSize", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = xOffset + 90
+	ui_outfield "Barva:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow, 100, 14
+	ui_infield "profileShaftCaptionTextPen", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 35, 24
+
+	xOffset = xOffset + 50
+	ui_outfield "Slog:", xLeft + xOffset + 350, 		yTop + (aRow - 1) * yRow, 100, 14
+	ui_textstyle_infield{2} "profileShaftCaptionTextStyle", 1+2+4,  xLeft + xOffset + 350, yTop + (aRow - 1) * yRow + yLabel, 24, 24 
+
 return
 
 ! ------------------------------------------------------------------------------
 "2DRepr":
+	! --- tloris ---
+	aRow = 1
+	xOffset = 0
+	ui_style 0, 1
+	ui_outfield "Tloris", xLeft + xOffset, 					yTop + (aRow - 1) * yRow, 200, 14
+	ui_style 0, 0
 
+	aRow = aRow + 0.5
+	xOffset = 0
+	ui_outfield "Os cevi:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 90, 14
+	ui_infield "showAxis", xLeft + xOffset, 				yTop + (aRow - 1) * yRow + yLabel, 20, 22
+
+	xOffset = xOffset + 90
+	ui_outfield "Debelina cevi:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 90, 14
+	ui_infield "showPipeOffsetLines", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 20, 22
+
+	xOffset = xOffset + 90
+	ui_outfield "Obod jaška:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 90, 14
+	ui_infield "showShaftSize", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 20, 22
+
+	xOffset = xOffset + 90
+	ui_outfield "Zadnji jašek:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 90, 14
+	ui_infield "showLastShaft", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 20, 22
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Napis cevi:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "showPipeCaption", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 22
+
+	xOffset = xOffset + 90
+	ui_outfield "Napis jaška:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "showShaftCaption", xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 22
+
+	! --- profil ---
+	aRow = aRow + 1.2
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow - 5, 		xLeft + xOffset + 440, 		yTop + (aRow - 1) * yRow - 5
+	ui_style 0, 1
+	ui_outfield "Profil", xLeft + xOffset, 					yTop + (aRow - 1) * yRow, 200, 14
+	ui_style 0, 0
+
+	aRow = aRow + 0.5
+	xOffset = 0
+	ui_outfield "Širina:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "profileWidth", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 22
+
+	xOffset = xOffset + 110
+	ui_outfield "Višina:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "profileHeight", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 100, 22
+
+	xOffset = xOffset + 110
+	ui_outfield "Položaj X:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "profilePosX", xLeft + xOffset, 				yTop + (aRow - 1) * yRow + yLabel, 100, 22
+
+	xOffset = xOffset + 110
+	ui_outfield "Položaj Y:", xLeft + xOffset, 				yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "profilePosY", xLeft + xOffset, 				yTop + (aRow - 1) * yRow + yLabel, 100, 22
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Dodatna globina izkopa:", xLeft + xOffset, yTop + (aRow - 1) * yRow , 150, 14
+	ui_infield "shaftAdditionalDepth", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 100, 22
 return
 
 ! ------------------------------------------------------------------------------
 "3DRepr":
+	aRow = 1
+	xOffset = 0
+	ui_outfield "Prikaži 3D:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "show3D", xLeft + xOffset, 					yTop + (aRow - 1) * yRow + yLabel, 20, 22
 
+	xOffset = xOffset + 100
+	ui_outfield "Meče senco:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "cast_shadow", xLeft + xOffset, 				yTop + (aRow - 1) * yRow + yLabel, 20, 22
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Material jaška:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 150, 14
+	ui_infield "surface_mat", xLeft + xOffset, 				yTop + (aRow - 1) * yRow + yLabel, 200, 24
+
+	aRow = aRow + 1
+	ui_outfield "Material pokrova:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 150, 14
+	ui_infield "coverMat", xLeft + xOffset, 				yTop + (aRow - 1) * yRow + yLabel, 200, 24
+
+	aRow = aRow + 1
+	ui_outfield "Material cevi:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 150, 14
+	ui_infield "pipeMat", xLeft + xOffset, 					yTop + (aRow - 1) * yRow + yLabel, 200, 24
 return

@@ -3,11 +3,16 @@
 !TEXT2 0,0, n
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! Draw main frame
+! Draw main frame - in the floor plan this rectangle is the plate (pasnica)
 IF (bottomElementHeight > 0) OR (topElementHeight > 0) THEN
-	RECT2 0,0, A, B
-	HOTLINE2 0,0, A, 0
-	HOTLINE2 0, B, A, B
+	LINE_TYPE plateLineType
+	! one rectangle per stretch that has a plate (a single one, 0 ... A, when no bay leaves one out)
+	FOR pSeg = 1 TO nPlanSeg
+		RECT2 planSegA[pSeg], 0, planSegB[pSeg], B
+		HOTLINE2 planSegA[pSeg], 0, planSegB[pSeg], 0
+		HOTLINE2 planSegA[pSeg], B, planSegB[pSeg], B
+	NEXT pSeg
+	LINE_TYPE 1
 ENDIF
 
 
@@ -21,11 +26,12 @@ HOTSPOT2 A, B/2, unID : unID = unID+1
 FOR i = 1 TO n
 	PEN defaultStudPen
 
-	paramDrawStudWidth = defaultStudWidth
+	paramDrawStudWidth = studWidths[i]
 	paramDrawStudOffset = X[i]
 
 	if showStudsIn2d then
 		gosub "drawStud"
+		gosub "drawBayVerticals2d"
 	endif
 
 	!debug
@@ -57,8 +63,8 @@ IF lblHelperLines THEN
 	!HOTLINE2 defaultStudWidth/2, -B, defaultStudWidth/2, B 
 	!LINE2 A-defaultStudWidth/2, -B, A-defaultStudWidth/2, B 
 	!HOTLINE2 A-defaultStudWidth/2, -B, A-defaultStudWidth/2, B 
-	hotspot2  defaultStudWidth/2, 0: unID = unID+1
-	hotspot2  A-defaultStudWidth/2, 0: unID = unID+1
+	hotspot2  firstStudWidth/2, 0: unID = unID+1
+	hotspot2  A-lastStudWidth/2, 0: unID = unID+1
 
 	! helper line offset hotspots
 	HOTSPOT2 0, B/2, unID, helperLineOffset, 1+128   : unID = unID+1
@@ -67,7 +73,7 @@ IF lblHelperLines THEN
 
 
 	helperTmpOffset = helperLineOffset
-	WHILE helperTmpOffset < A-(defaultStudWidth/2) DO
+	WHILE helperTmpOffset < A-(lastStudWidth/2) DO
 		!LINE2 helperTmpOffset, -B, helperTmpOffset , B 
 		!HOTLINE2 helperTmpOffset, -B, helperTmpOffset , B 
 		hotspot2 helperTmpOffset, 0: unID = unID+1
@@ -76,7 +82,31 @@ IF lblHelperLines THEN
 	DEL 1
 ENDIF
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Frame elevation view (line drawing of the frame, seen from the front)
+IF lblFrameView THEN
+	GOSUB "frameView"
+ENDIF
+
 END
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Vertical bars of bay i (see the 3D script): cross sections along the studs
+"drawBayVerticals2d":
+	IF postOk[i] THEN
+		paramDrawStudWidth = supportPostWidth
+		IF bayVertLeft[i] <> 0 THEN
+			paramDrawStudOffset = postNear[i] + supportPostWidth/2
+			GOSUB "drawStud"
+		ENDIF
+		IF bayVertRight[i] <> 0 THEN
+			paramDrawStudOffset = postFar[i] - supportPostWidth/2
+			GOSUB "drawStud"
+		ENDIF
+		paramDrawStudWidth = studWidths[i]
+		paramDrawStudOffset = X[i]
+	ENDIF
+RETURN
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Draw stud subrutine
@@ -103,4 +133,476 @@ END
 	HOTLINE2 0,0, 0,B
 
 	DEL 1
+RETURN
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! FRAME ELEVATION VIEW
+! Draws the frame as seen from the front: local x = frame length, local y = height.
+! The view sits at frameViewOffsetX / frameViewOffsetY from the frame origin.
+!
+! Every part is built as a rectangle that is then clipped by the half-planes of the
+! diagonal cuts (outer contour) and, for the inner parts, of the bottom/top plates,
+! so the drawing follows exactly the same geometry rules as the 3D script:
+!	left  cut line:  y = cutHeight  + x * TAN(cutAngle)
+!	right cut line:  y = cutHeight2 + (A - x) * TAN(cutAngle2)
+! A positive angle slopes the TOP plate (material is kept below the line),
+! a negative angle slopes the BOTTOM plate (material is kept above the line).
+"frameView":
+	DIM fvCpX[], fvCpY[], fvClipX[], fvClipY[], fvDimP[]
+
+	fvEps = 0.000001
+	fvDoHot = 0
+	fvSkipEnds = 0
+	fvSkipX1 = 0 : fvSkipX2 = A
+	DIM fvSkA[], fvSkB[], fvSkC[]
+	fvRecord = 0 : fvSkipN = 0 : fvUseSkip = 0
+
+	! active cuts - same condition as rightCutOn / cutHeight in the 3D script
+	fvLeftOn  = (cutHeight  > NIX) AND (ABS(cutAngle)  > NIX)
+	fvRightOn = (cutHeight2 > NIX) AND (ABS(cutAngle2) > NIX)
+
+	! a hidden plate must not shorten the studs (same rule as in 3D)
+	fvBotH = 0 : IF lblBottomElement THEN fvBotH = bottomElementHeight
+	fvTopH = 0 : IF lblTopElement    THEN fvTopH = topElementHeight
+
+	! text height in model units and the size of the dimension ticks
+	fvTxtH = frameViewTextSize / 1000 * GLOB_SCALE
+	fvTick = fvTxtH * 0.8
+
+	! frameViewMirror flips the whole view through its x axis (y -> -y).
+	! Text is flipped back inside "fvText" so the dimension values stay readable.
+	fvMirr = 1 : IF frameViewMirror THEN fvMirr = -1
+
+	ADD2 frameViewOffsetX, frameViewOffsetY
+	MUL2 1, fvMirr
+
+	PEN frameViewPen
+	LINE_TYPE frameViewLineType
+
+	! ---------------------------------------------------------------
+	! Outer contour
+	fvRx1 = 0 : fvRy1 = 0 : fvRx2 = A : fvRy2 = ZZYZX
+	GOSUB "fvSetRect"
+	GOSUB "fvClipCuts"
+
+	fvBase = 0
+	IF fvCpN > 2 THEN
+		fvBase = fvCpY[1]
+		FOR fvI = 1 TO fvCpN
+			fvBase = MIN(fvBase, fvCpY[fvI])
+		NEXT fvI
+
+		! corner hotspots + snappable contour; when a bay leaves a plate out, the contour
+		! is drawn window by window below instead
+		IF anyPlateOmit = 0 THEN
+			fvDoHot = 1
+			GOSUB "fvDrawPoly"
+			fvDoHot = 0
+		ENDIF
+	ENDIF
+
+	! ---------------------------------------------------------------
+	! Inner contour = inner faces of the bottom and top plate (pasnica).
+	! Its end edges lie on the outer contour, so they are left to the contour
+	! and only the plate lines themselves are drawn with plateLineType.
+	IF anyPlateOmit = 0 THEN
+		fvRx1 = 0 : fvRy1 = 0 : fvRx2 = A : fvRy2 = ZZYZX
+		GOSUB "fvSetRect"
+		GOSUB "fvClipCore"
+
+		LINE_TYPE plateLineType
+		fvSkipEnds = 1
+		GOSUB "fvDrawPoly"
+		fvSkipEnds = 0
+		LINE_TYPE frameViewLineType
+	ELSE
+		! Some bay leaves a plate out: the frame is drawn in windows (winB[]), each with
+		! its own plates. A window without a plate has no plate material there, so its
+		! contour follows the inner face of that plate. The window edges lie on stud
+		! edges, so they only repeat lines that are drawn anyway.
+		FOR fvW = 1 TO nWinB - 1
+			fvRx1 = winB[fvW] : fvRy1 = 0 : fvRx2 = winB[fvW+1] : fvRy2 = ZZYZX
+			GOSUB "fvSetRect"
+			GOSUB "fvClipCuts"
+			! a plate that is left out leaves no line: the lines of its inner face are
+			! remembered here and not drawn
+			fvSkipN = 0 : fvRecord = 1
+			IF winBot[fvW] = 0 THEN GOSUB "fvClipBotCore"
+			IF winTop[fvW] = 0 THEN GOSUB "fvClipTopCore"
+			fvRecord = 0
+			fvUseSkip = 1
+			fvDoHot = 1
+			GOSUB "fvDrawPoly"
+			fvDoHot = 0
+
+			GOSUB "fvSetRect"
+			GOSUB "fvClipCore"
+			LINE_TYPE plateLineType
+			fvSkipEnds = 1
+			fvSkipX1 = winB[fvW] : fvSkipX2 = winB[fvW+1]
+			GOSUB "fvDrawPoly"
+			fvSkipEnds = 0
+			fvUseSkip = 0
+			fvSkipX1 = 0 : fvSkipX2 = A
+			LINE_TYPE frameViewLineType
+		NEXT fvW
+	ENDIF
+
+	! ---------------------------------------------------------------
+	! In-between studs and the blocking of their bays
+	FOR fvI = 1 TO n
+		fvRx1 = X[fvI] - studWidths[fvI]/2 : fvRy1 = 0
+		fvRx2 = X[fvI] + studWidths[fvI]/2 : fvRy2 = ZZYZX
+		GOSUB "fvSetRect"
+		GOSUB "fvClipCore"
+		GOSUB "fvDrawPoly"
+
+		! hotspots on the stud axis
+		fvEvalX = X[fvI]
+		GOSUB "fvEvalZ"
+		IF fvEvalTop - fvEvalBot > fvEps THEN
+			HOTSPOT2 X[fvI], fvEvalBot, unID : unID = unID+1
+			HOTSPOT2 X[fvI], fvEvalTop, unID : unID = unID+1
+		ENDIF
+
+		! blocking in the bay to the right of this stud (bottom edge above the frame bottom)
+		FOR fvII = 1 TO 3
+			IF ABS(horizontals[fvI][fvII]) > NIX AND fvI < n THEN
+				fvBayNear = tmpX[fvI] + tmpW[fvI]/2
+				IF fvI < n THEN
+					fvBayFar = tmpX[fvI+1] - tmpW[fvI+1]/2
+				ELSE
+					fvBayFar = A
+				ENDIF
+
+				! between the support posts of the bay, if it has any
+				fvBayNear = barNear[fvI][fvII]
+				fvBayFar = barFar[fvI][fvII]
+
+				IF fvBayFar - fvBayNear > NIX THEN
+					fvBarH = horizontalsDim[fvI][(fvII-1)*3+2]
+					IF fvBarH < NIX THEN fvBarH = defaultStudWidth
+					fvRx1 = fvBayNear : fvRy1 = horizontals[fvI][fvII]
+					fvRx2 = fvBayFar  : fvRy2 = horizontals[fvI][fvII] + fvBarH
+					GOSUB "fvSetRect"
+					GOSUB "fvClipBay"
+					GOSUB "fvDrawPoly"
+
+					! hotspots that move the bar up / down: its bottom edge, measured from the
+					! frame bottom (in the view's own frame, so a mirrored view still works)
+					fvHx = (fvBayNear + fvBayFar) / 2
+					HOTSPOT2 fvHx, 0, unID, horizontals[fvI][fvII], 1+128 : unID = unID+1
+					HOTSPOT2 fvHx, horizontals[fvI][fvII], unID, horizontals[fvI][fvII], 2 : unID = unID+1
+					HOTSPOT2 fvHx, -1, unID, horizontals[fvI][fvII], 3 : unID = unID+1
+				ENDIF
+			ENDIF
+		NEXT fvII
+
+		! support posts of the bay, between its lowest and highest blocking bar
+		IF postOk[fvI] THEN
+			! a post stands on the bottom plate, or reaches the frame bottom where the bay
+			! has none; it ends at the lower face of the highest blocking bar
+			fvRy1 = postZ0[fvI] : fvRy2 = postZ1[fvI]
+			IF bayVertLeft[fvI] <> 0 THEN
+				fvRx1 = postNear[fvI] : fvRx2 = postNear[fvI] + supportPostWidth
+				GOSUB "fvSetRect"
+				GOSUB "fvClipBay"
+				GOSUB "fvDrawPoly"
+			ENDIF
+			IF bayVertRight[fvI] <> 0 THEN
+				fvRx1 = postFar[fvI] - supportPostWidth : fvRx2 = postFar[fvI]
+				GOSUB "fvSetRect"
+				GOSUB "fvClipBay"
+				GOSUB "fvDrawPoly"
+			ENDIF
+		ENDIF
+	NEXT fvI
+
+	! ---------------------------------------------------------------
+	! Dimension lines below the view
+	IF lblFrameViewDims THEN
+		GOSUB "fvDimensions"
+	ENDIF
+
+	DEL 2
+
+	! ---------------------------------------------------------------
+	! Hotspots that move the whole view away from the frame origin
+	HOTSPOT2 0, frameViewOffsetY, unID, frameViewOffsetX, 1+128				: unID = unID+1
+	HOTSPOT2 frameViewOffsetX, frameViewOffsetY, unID, frameViewOffsetX, 2	: unID = unID+1
+	HOTSPOT2 -1, frameViewOffsetY, unID, frameViewOffsetX, 3				: unID = unID+1
+
+	HOTSPOT2 frameViewOffsetX, 0, unID, frameViewOffsetY, 1+128				: unID = unID+1
+	HOTSPOT2 frameViewOffsetX, frameViewOffsetY, unID, frameViewOffsetY, 2	: unID = unID+1
+	HOTSPOT2 frameViewOffsetX, -1, unID, frameViewOffsetY, 3				: unID = unID+1
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Dimension lines below the elevation view
+! Upper line:  frame start -> every stud axis -> frame end (axis spacings)
+! Lower line:  total frame length
+"fvDimensions":
+	PEN frameViewDimPen
+	LINE_TYPE 1
+
+	fvDimRet = REQUEST("Linear_dimension", "", fvDimFormat)
+	DEFINE STYLE "arFrameDim" frameViewFont, frameViewTextSize, 5, 0
+	SET STYLE "arFrameDim"
+
+	! collect the dimension points (tmpX is the sorted stud list from the master script)
+	fvDimN = 1 : fvDimP[1] = 0
+	FOR fvI = 1 TO n
+		IF (tmpX[fvI] > fvEps) AND (tmpX[fvI] < A - fvEps) THEN
+			IF tmpX[fvI] - fvDimP[fvDimN] > fvEps THEN
+				fvDimN = fvDimN + 1 : fvDimP[fvDimN] = tmpX[fvI]
+			ENDIF
+		ENDIF
+	NEXT fvI
+	IF A - fvDimP[fvDimN] > fvEps THEN
+		fvDimN = fvDimN + 1 : fvDimP[fvDimN] = A
+	ENDIF
+
+	fvDimY1 = fvBase - frameViewDimDist
+	fvDimY2 = fvDimY1 - frameViewDimGap
+
+	! ---- upper dimension line: stud axes ----
+	IF fvDimN > 1 THEN
+		LINE2 fvDimP[1], fvDimY1, fvDimP[fvDimN], fvDimY1
+
+		FOR fvI = 1 TO fvDimN
+			fvEvalX = fvDimP[fvI]
+			GOSUB "fvEvalZ"
+
+			! witness line from the view down past the dimension line
+			LINE2 fvDimP[fvI], fvEvalBot, fvDimP[fvI], fvDimY1 - fvTick
+			! architectural tick
+			LINE2 fvDimP[fvI] - fvTick/2, fvDimY1 - fvTick/2, fvDimP[fvI] + fvTick/2, fvDimY1 + fvTick/2
+
+			HOTSPOT2 fvDimP[fvI], fvDimY1, unID : unID = unID+1
+		NEXT fvI
+
+		FOR fvI = 1 TO fvDimN - 1
+			fvTxX = (fvDimP[fvI] + fvDimP[fvI+1])/2
+			fvTxY = fvDimY1 + fvMirr * fvTxtH*0.35
+			fvTxS = STR(fvDimFormat, fvDimP[fvI+1] - fvDimP[fvI])
+			GOSUB "fvText"
+		NEXT fvI
+	ENDIF
+
+	! ---- lower dimension line: total length ----
+	LINE2 0, fvDimY2, A, fvDimY2
+	LINE2 -fvTick/2, fvDimY2 - fvTick/2, fvTick/2, fvDimY2 + fvTick/2
+	LINE2 A - fvTick/2, fvDimY2 - fvTick/2, A + fvTick/2, fvDimY2 + fvTick/2
+	LINE2 0, fvDimY1 - fvTick, 0, fvDimY2 - fvTick
+	LINE2 A, fvDimY1 - fvTick, A, fvDimY2 - fvTick
+
+	fvTxX = A/2
+	fvTxY = fvDimY2 + fvMirr * fvTxtH*0.35
+	fvTxS = STR(fvDimFormat, A)
+	GOSUB "fvText"
+
+	HOTSPOT2 0, fvDimY2, unID : unID = unID+1
+	HOTSPOT2 A, fvDimY2, unID : unID = unID+1
+
+	PEN frameViewPen
+	LINE_TYPE frameViewLineType
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Dimension text at fvTxX / fvTxY. In a mirrored view the local frame is flipped
+! back first, so the value reads normally and still sits above its dimension line.
+"fvText":
+	ADD2 fvTxX, fvTxY
+	MUL2 1, fvMirr
+	TEXT2 0, 0, fvTxS
+	DEL 2
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Bottom and top edge of the frame at x = fvEvalX (outer contour)
+"fvEvalZ":
+	fvEvalBot = 0
+	fvEvalTop = ZZYZX
+
+	IF fvLeftOn THEN
+		fvLineZ = cutHeight + fvEvalX * TAN(cutAngle)
+		IF cutAngle > 0 THEN
+			fvEvalTop = MIN(fvEvalTop, fvLineZ)
+		ELSE
+			fvEvalBot = MAX(fvEvalBot, fvLineZ)
+		ENDIF
+	ENDIF
+
+	IF fvRightOn THEN
+		fvLineZ = cutHeight2 + (A - fvEvalX) * TAN(cutAngle2)
+		IF cutAngle2 > 0 THEN
+			fvEvalTop = MIN(fvEvalTop, fvLineZ)
+		ELSE
+			fvEvalBot = MAX(fvEvalBot, fvLineZ)
+		ENDIF
+	ENDIF
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Current polygon := rectangle fvRx1,fvRy1 - fvRx2,fvRy2
+"fvSetRect":
+	fvCpN = 4
+	fvCpX[1] = fvRx1 : fvCpY[1] = fvRy1
+	fvCpX[2] = fvRx2 : fvCpY[2] = fvRy1
+	fvCpX[3] = fvRx2 : fvCpY[3] = fvRy2
+	fvCpX[4] = fvRx1 : fvCpY[4] = fvRy2
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Clip the current polygon by the diagonal cuts (outer contour)
+"fvClipCuts":
+	IF fvLeftOn THEN
+		IF cutAngle > 0 THEN
+			! top cut: keep the material below the sloping line
+			fvA = -TAN(cutAngle) : fvB = 1 : fvC = cutHeight
+		ELSE
+			! bottom cut: keep the material above the sloping line
+			fvA = TAN(cutAngle) : fvB = -1 : fvC = -cutHeight
+		ENDIF
+		GOSUB "fvClip"
+	ENDIF
+
+	IF fvRightOn THEN
+		IF cutAngle2 > 0 THEN
+			fvA = TAN(cutAngle2) : fvB = 1 : fvC = cutHeight2 + A * TAN(cutAngle2)
+		ELSE
+			fvA = -TAN(cutAngle2) : fvB = -1 : fvC = -(cutHeight2 + A * TAN(cutAngle2))
+		ENDIF
+		GOSUB "fvClip"
+	ENDIF
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Clip the current polygon to the core of the frame:
+! the diagonal cuts plus the inner faces of the bottom and top plate.
+! A sloping plate is thicker measured vertically: t / COS(angle) - the same
+! correction the 3D script uses (ADDZ cutHeight - topElementHeight / COS(cutAngle)).
+"fvClipCore":
+	GOSUB "fvClipCuts"
+	GOSUB "fvClipBotCore"
+	GOSUB "fvClipTopCore"
+RETURN
+
+! Clip for the parts that belong to a bay (blocking bars, support posts): the cuts of
+! the frame and only the plates this bay really has - where a plate is left out, the
+! part may go over it
+"fvClipBay":
+	GOSUB "fvClipCuts"
+	IF bayNoBottomPlate[fvI] = 0 THEN GOSUB "fvClipBotCore"
+	IF bayNoTopPlate[fvI] = 0 THEN GOSUB "fvClipTopCore"
+RETURN
+
+! the inner face of the bottom plate
+"fvClipBotCore":
+	IF lblBottomElement THEN
+		fvA = 0 : fvB = -1 : fvC = -fvBotH
+		GOSUB "fvClip"
+
+		IF fvLeftOn AND (cutAngle < 0) THEN
+			fvA = TAN(cutAngle) : fvB = -1 : fvC = -(cutHeight + fvBotH / COS(cutAngle))
+			GOSUB "fvClip"
+		ENDIF
+		IF fvRightOn AND (cutAngle2 < 0) THEN
+			fvA = -TAN(cutAngle2) : fvB = -1
+			fvC = -(cutHeight2 + A * TAN(cutAngle2) + fvBotH / COS(cutAngle2))
+			GOSUB "fvClip"
+		ENDIF
+	ENDIF
+RETURN
+
+! the inner face of the top plate
+"fvClipTopCore":
+	IF lblTopElement THEN
+		fvA = 0 : fvB = 1 : fvC = ZZYZX - fvTopH
+		GOSUB "fvClip"
+
+		IF fvLeftOn AND (cutAngle > 0) THEN
+			fvA = -TAN(cutAngle) : fvB = 1 : fvC = cutHeight - fvTopH / COS(cutAngle)
+			GOSUB "fvClip"
+		ENDIF
+		IF fvRightOn AND (cutAngle2 > 0) THEN
+			fvA = TAN(cutAngle2) : fvB = 1
+			fvC = cutHeight2 + A * TAN(cutAngle2) - fvTopH / COS(cutAngle2)
+			GOSUB "fvClip"
+		ENDIF
+	ENDIF
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Sutherland-Hodgman clip of the current convex polygon by the half-plane
+!	fvA * x + fvB * y <= fvC
+"fvClip":
+	! remember the lines of the plates that are left out (see "fvDrawPoly")
+	IF fvRecord THEN
+		fvSkipN = fvSkipN + 1
+		fvSkA[fvSkipN] = fvA : fvSkB[fvSkipN] = fvB : fvSkC[fvSkipN] = fvC
+	ENDIF
+
+	fvOutN = 0
+	FOR fvK = 1 TO fvCpN
+		fvK2 = fvK + 1 : IF fvK2 > fvCpN THEN fvK2 = 1
+
+		fvD1 = fvA * fvCpX[fvK]  + fvB * fvCpY[fvK]  - fvC
+		fvD2 = fvA * fvCpX[fvK2] + fvB * fvCpY[fvK2] - fvC
+
+		IF fvD1 <= fvEps THEN
+			fvOutN = fvOutN + 1
+			fvClipX[fvOutN] = fvCpX[fvK] : fvClipY[fvOutN] = fvCpY[fvK]
+		ENDIF
+
+		IF ((fvD1 > fvEps) AND (fvD2 < -fvEps)) OR ((fvD1 < -fvEps) AND (fvD2 > fvEps)) THEN
+			fvT = fvD1 / (fvD1 - fvD2)
+			fvOutN = fvOutN + 1
+			fvClipX[fvOutN] = fvCpX[fvK] + fvT * (fvCpX[fvK2] - fvCpX[fvK])
+			fvClipY[fvOutN] = fvCpY[fvK] + fvT * (fvCpY[fvK2] - fvCpY[fvK])
+		ENDIF
+	NEXT fvK
+
+	fvCpN = fvOutN
+	FOR fvK = 1 TO fvOutN
+		fvCpX[fvK] = fvClipX[fvK] : fvCpY[fvK] = fvClipY[fvK]
+	NEXT fvK
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Draw the current polygon; fvDoHot = 1 also places corner hotspots and hotlines
+"fvDrawPoly":
+	IF fvCpN > 2 THEN
+		FOR fvJ = 1 TO fvCpN
+			fvJ2 = fvJ + 1 : IF fvJ2 > fvCpN THEN fvJ2 = 1
+
+			! fvSkipEnds drops the edges that run along the ends of the frame,
+			! where the polygon coincides with the outer contour
+			fvSkip = 0
+			IF fvSkipEnds THEN
+				IF (ABS(fvCpX[fvJ] - fvSkipX1) < fvEps) AND (ABS(fvCpX[fvJ2] - fvSkipX1) < fvEps) THEN fvSkip = 1
+				IF (ABS(fvCpX[fvJ] - fvSkipX2) < fvEps) AND (ABS(fvCpX[fvJ2] - fvSkipX2) < fvEps) THEN fvSkip = 1
+			ENDIF
+
+			! edges on the inner face of a plate that is left out in this window
+			IF fvUseSkip THEN
+				FOR fvQ = 1 TO fvSkipN
+					fvNorm = SQR(fvSkA[fvQ] * fvSkA[fvQ] + fvSkB[fvQ] * fvSkB[fvQ])
+					fvDq1 = ABS(fvSkA[fvQ] * fvCpX[fvJ]  + fvSkB[fvQ] * fvCpY[fvJ]  - fvSkC[fvQ]) / fvNorm
+					fvDq2 = ABS(fvSkA[fvQ] * fvCpX[fvJ2] + fvSkB[fvQ] * fvCpY[fvJ2] - fvSkC[fvQ]) / fvNorm
+					IF fvDq1 < 0.00001 AND fvDq2 < 0.00001 THEN fvSkip = 1
+				NEXT fvQ
+			ENDIF
+
+			IF (ABS(fvCpX[fvJ2] - fvCpX[fvJ]) + ABS(fvCpY[fvJ2] - fvCpY[fvJ]) > fvEps) AND (fvSkip = 0) THEN
+				LINE2 fvCpX[fvJ], fvCpY[fvJ], fvCpX[fvJ2], fvCpY[fvJ2]
+				IF fvDoHot THEN
+					HOTLINE2 fvCpX[fvJ], fvCpY[fvJ], fvCpX[fvJ2], fvCpY[fvJ2]
+				ENDIF
+			ENDIF
+
+			IF fvDoHot THEN
+				HOTSPOT2 fvCpX[fvJ], fvCpY[fvJ], unID : unID = unID+1
+			ENDIF
+		NEXT fvJ
+	ENDIF
 RETURN

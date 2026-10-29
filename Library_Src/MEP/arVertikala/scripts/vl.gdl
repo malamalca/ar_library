@@ -3,7 +3,9 @@
 !parameters nSegments = nSegments, segments = segments, angles = angles, directions = directions
 
 parameters ac_toplevel = ac_toplevel, ac_bottomlevel = ac_bottomlevel
+parameters total_length = total_length
 
+lock "total_length"
 
 if not(override_surface) then
 	lock "surf"

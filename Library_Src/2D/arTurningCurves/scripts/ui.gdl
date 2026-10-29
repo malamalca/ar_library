@@ -1,0 +1,242 @@
+﻿UI_DIALOG "arTurningCurves Settings"
+
+! =============================================================================
+! Tabpage Structure Definition
+! =============================================================================
+
+TABID_ROOT = -1
+_idxTab = 1
+
+TABID_Vehicle			= _idxTab  : _idxTab = _idxTab + 1
+TABID_Points			= _idxTab  : _idxTab = _idxTab + 1
+TABID_Display			= _idxTab  : _idxTab = _idxTab + 1
+TABID_Car				= _idxTab  : _idxTab = _idxTab + 1
+
+! =============================================================================
+! Display actual tabpages
+! =============================================================================
+
+UI_CURRENT_PAGE gs_ui_current_page
+
+ui_page TABID_Vehicle, TABID_ROOT, `Vehicle`, 1
+	_listFieldID = TABID_Vehicle
+	gosub "VehiclePage"
+
+ui_page TABID_Points, TABID_ROOT, `Points`, 1
+	_listFieldID = TABID_Points
+	gosub "PointsPage"
+
+ui_page TABID_Display, TABID_ROOT, `Display`, 1
+	_listFieldID = TABID_Display
+	gosub "DisplayPage"
+
+ui_page TABID_Car, TABID_ROOT, `Car`, 1
+	_listFieldID = TABID_Car
+	gosub "CarPage"
+
+! ==============================================================================
+end
+! ==============================================================================
+
+
+! ------------------------------------------------------------------------------
+!Subroutines
+! ------------------------------------------------------------------------------
+
+! ------------------------------------------------------------------------------
+"VehiclePage":
+! ------------------------------------------------------------------------------
+	_yCurr = 2
+	_x1 = 5
+	_labelHeight = 16
+
+	UI_STYLE 0,1
+	UI_OUTFIELD "Vehicle:", _x1, _yCurr
+	UI_STYLE 0,0
+	UI_INFIELD "vehicletype", _x1, _yCurr+_labelHeight, 150, 24
+
+	_yCurr = _yCurr + 50
+	UI_OUTFIELD "Body width:", _x1, _yCurr
+	UI_OUTFIELD "Track width:", _x1 + 85, _yCurr
+	UI_OUTFIELD "Wheelbase:", _x1 + 170, _yCurr
+	UI_OUTFIELD "Front overhang:", _x1 + 255, _yCurr
+	UI_OUTFIELD "Rear overhang:", _x1 + 340, _yCurr
+	UI_INFIELD "veh_width", _x1, _yCurr+_labelHeight, 75, 24
+	UI_INFIELD "veh_track", _x1 + 85, _yCurr+_labelHeight, 75, 24
+	UI_INFIELD "veh_wheelbase", _x1 + 170, _yCurr+_labelHeight, 75, 24
+	UI_INFIELD "veh_fo", _x1 + 255, _yCurr+_labelHeight, 75, 24
+	UI_INFIELD "veh_ro", _x1 + 340, _yCurr+_labelHeight, 75, 24
+
+	_yCurr = _yCurr + 50
+	UI_OUTFIELD "Max steer (inner wheel):", _x1, _yCurr
+	UI_OUTFIELD "Min turning radius (rear axle):", _x1 + 170, _yCurr
+	UI_OUTFIELD "Tyre length:", _x1 + 255, _yCurr
+	UI_OUTFIELD "Tyre width:", _x1 + 340, _yCurr
+	UI_INFIELD "veh_maxsteer", _x1, _yCurr+_labelHeight, 75, 24
+	UI_INFIELD "minradius", _x1 + 170, _yCurr+_labelHeight, 75, 24
+	UI_INFIELD "veh_tyrelen", _x1 + 255, _yCurr+_labelHeight, 75, 24
+	UI_INFIELD "veh_tyrewid", _x1 + 340, _yCurr+_labelHeight, 75, 24
+
+	_yCurr = _yCurr + 60
+	UI_STYLE 0,1
+	UI_OUTFIELD "Start of the path:", _x1, _yCurr
+	UI_STYLE 0,0
+	_yCurr = _yCurr + _labelHeight
+	UI_OUTFIELD "Start tangent direction:", _x1, _yCurr
+	UI_INFIELD "startangle", _x1 + 190, _yCurr-4, 75, 24
+
+	_yCurr = _yCurr + 30
+	UI_OUTFIELD "End tangent direction:", _x1, _yCurr
+	UI_INFIELD "endangle", _x1 + 190, _yCurr-4, 75, 24
+	UI_INFIELD{3} fixend, _x1 + 275, _yCurr, 130, 16,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Fix End Direction", 0,
+		  2, "Fix End Direction", 1
+
+	_yCurr = _yCurr + 30
+	UI_INFIELD{3} startreverse, _x1, _yCurr, 140, 16,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Start in Reverse", 0,
+		  2, "Start in Reverse", 1
+return
+
+! ------------------------------------------------------------------------------
+"PointsPage":
+! ------------------------------------------------------------------------------
+	_x1 = 5
+	UI_STYLE 0,1
+	UI_OUTFIELD "Mark the points where the car stops and changes direction:", _x1, 2
+	UI_STYLE 0,0
+
+	for _i = 1 to n
+		_col = int((_i - 1) / 10)
+		_row = (_i - 1) - _col * 10
+		_cx = _x1 + _col * 82
+		_cy = 28 + _row * 22
+
+		_lbl = "Point " + str("%.0", _i)
+		if _i = 1 or _i = n then
+			UI_OUTFIELD _lbl, _cx, _cy
+		else
+			UI_INFIELD{3} dirchange[_i], _cx, _cy, 78, 16,
+				  7, "", 2, 2,
+				  0, 0, 0, 0,
+				  1, _lbl, 0,
+				  2, _lbl, 1
+		endif
+	next _i
+return
+
+! ------------------------------------------------------------------------------
+"DisplayPage":
+! ------------------------------------------------------------------------------
+	_x1 = 5
+	_x2 = _x1 + 215
+	_yCurr = 2
+
+	UI_STYLE 0,1
+	UI_INFIELD{3} showaxis, _x1, _yCurr, 150, 14,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Show Path (Rear Axle)", 0,
+		  2, "Show Path (Rear Axle)", 1
+	UI_STYLE 0,0
+	UI_OUTFIELD "Below min radius:", _x2, _yCurr
+	_yCurr = _yCurr + 16
+	UI_INFIELD "axislinetype", _x1, _yCurr, 110, 24
+	UI_INFIELD "axispen", _x1 + 114, _yCurr, 40, 24
+	UI_INFIELD "warnpen", _x2, _yCurr, 40, 24
+
+	_yCurr = _yCurr + 36
+	UI_STYLE 0,1
+	UI_INFIELD{3} showtyres, _x1, _yCurr, 150, 14,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Show Tyre Paths", 0,
+		  2, "Show Tyre Paths", 1
+	UI_STYLE 0,0
+	UI_OUTFIELD "Front tyres:", _x1, _yCurr + 16
+	UI_OUTFIELD "Rear tyres:", _x2, _yCurr + 16
+	_yCurr = _yCurr + 32
+	UI_INFIELD "tyrefrontlinetype", _x1, _yCurr, 110, 24
+	UI_INFIELD "tyrefrontpen", _x1 + 114, _yCurr, 40, 24
+	UI_INFIELD "tyrerearlinetype", _x2, _yCurr, 110, 24
+	UI_INFIELD "tyrerearpen", _x2 + 114, _yCurr, 40, 24
+
+	_yCurr = _yCurr + 36
+	UI_STYLE 0,1
+	UI_INFIELD{3} showenvelope, _x1, _yCurr, 150, 14,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Show Swept Envelope", 0,
+		  2, "Show Swept Envelope", 1
+	UI_STYLE 0,0
+	_yCurr = _yCurr + 16
+	UI_INFIELD "envlinetype", _x1, _yCurr, 110, 24
+	UI_INFIELD "envpen", _x1 + 114, _yCurr, 40, 24
+	UI_INFIELD{3} envexact, _x2, _yCurr, 170, 16,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Exact (Polygon Union)", 0,
+		  2, "Exact (Polygon Union)", 1
+
+	_yCurr = _yCurr + 36
+	UI_STYLE 0,1
+	UI_INFIELD{3} showoutlines, _x1, _yCurr, 150, 14,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Show Car Outlines", 0,
+		  2, "Show Car Outlines", 1
+	UI_STYLE 0,0
+	UI_OUTFIELD "Distance:", _x2, _yCurr
+	_yCurr = _yCurr + 16
+	UI_INFIELD "outlinelinetype", _x1, _yCurr, 110, 24
+	UI_INFIELD "outlinepen", _x1 + 114, _yCurr, 40, 24
+	UI_INFIELD "outlinestep", _x2, _yCurr, 75, 24
+
+	_yCurr = _yCurr + 40
+	UI_OUTFIELD "Calculation step:", _x1, _yCurr
+	UI_INFIELD "samplestep", _x1 + 110, _yCurr - 4, 75, 24
+
+	UI_OUTFIELD "Node circle radius:", _x1, _yCurr + 28
+	UI_INFIELD "nodesize", _x1 + 110, _yCurr + 24, 75, 24
+
+	UI_INFIELD{3} iseditable, _x2, _yCurr - 4, 80, 16,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Is Editable", 0,
+		  2, "Is Editable", 1
+	UI_INFIELD{3} showaddpoints, _x2, _yCurr + 16, 100, 16,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Can Add Points", 0,
+		  2, "Can Add Points", 1
+return
+
+! ------------------------------------------------------------------------------
+"CarPage":
+! ------------------------------------------------------------------------------
+	_x1 = 5
+	_yCurr = 2
+	UI_STYLE 0,1
+	UI_INFIELD{3} showcar, _x1, _yCurr, 180, 14,
+		  7, "", 2, 2,
+		  0, 0, 0, 0,
+		  1, "Show Schematic Car", 0,
+		  2, "Show Schematic Car", 1
+	UI_STYLE 0,0
+
+	_yCurr = _yCurr + 24
+	UI_OUTFIELD "Car body:", _x1, _yCurr
+	UI_OUTFIELD "Tyres pen:", _x1 + 190, _yCurr
+	_yCurr = _yCurr + 16
+	UI_INFIELD "carlinetype", _x1, _yCurr, 110, 24
+	UI_INFIELD "carpen", _x1 + 114, _yCurr, 40, 24
+	UI_INFIELD "carwheelpen", _x1 + 190, _yCurr, 40, 24
+
+	_yCurr = _yCurr + 44
+	UI_OUTFIELD "Drag the hotspot on the car to move it along the path.", _x1, _yCurr
+	UI_OUTFIELD "The front tyres turn for the curvature of the path.", _x1, _yCurr + 16
+return

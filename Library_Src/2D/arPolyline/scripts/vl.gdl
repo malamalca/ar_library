@@ -2,7 +2,7 @@
 parameters x = x, y = y, n = n, xea = xe, yea = ye
 
 if not(showaxis) then
-	lock "axislinetype", "axispen"
+	lock "polylinetype", "polypen"
 endif
 
 if not(showoffset) then

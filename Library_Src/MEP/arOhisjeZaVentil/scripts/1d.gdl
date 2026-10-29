@@ -8,6 +8,9 @@ DISPLAY_SIMPLE = 1
 DISPLAY_DETAILED = 2
 DISPLAY_MVO = 3
 
+ventDiameter = 0.15
+ventThickenss = 0.02
+
 
 DIM arKinds[2]
 arKinds[KIND_INTAKE] = "Zajem"

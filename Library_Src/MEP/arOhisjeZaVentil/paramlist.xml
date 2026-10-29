@@ -58,11 +58,11 @@
 		</Length>
 		<Integer Name="representation2D">
 			<Description><![CDATA["Prikaz"]]></Description>
-			<Value>1</Value>
+			<Value>3</Value>
 		</Integer>
 		<String Name="cKind">
 			<Description><![CDATA["Odvod/dovod"]]></Description>
-			<Value><![CDATA["Zajem"]]></Value>
+			<Value><![CDATA["Izpust"]]></Value>
 		</String>
 		<String Name="cBuiltin">
 			<Description><![CDATA["Vgradnja v"]]></Description>
@@ -76,6 +76,10 @@
 			<Description><![CDATA["Air Volume"]]></Description>
 			<Value>30</Value>
 		</Integer>
+		<Length Name="wallOffset">
+			<Description><![CDATA["Odmik od stene"]]></Description>
+			<Value>0.1</Value>
+		</Length>
 		<String Name="cProstor">
 			<Description><![CDATA["Prostor"]]></Description>
 			<Value><![CDATA[""]]></Value>
@@ -85,7 +89,7 @@
 			<Flags>
 				<ParFlg_Hidden/>
 			</Flags>
-			<Value>1</Value>
+			<Value>2</Value>
 		</Integer>
 		<PenColor Name="penIntake">
 			<Description><![CDATA[""]]></Description>

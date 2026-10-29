@@ -2,8 +2,7 @@
 
 hotspot 0, 0, 0, unId: unId = unId + 1
 
-ventDiameter = 0.15
-ventThickenss = 0.02
+
 
 set material mat_vent
 

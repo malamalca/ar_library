@@ -111,5 +111,13 @@
 			<Description><![CDATA[""]]></Description>
 			<Value>21</Value>
 		</LineType>
+		<Material Name="matShaft">
+			<Description><![CDATA["Shaft Material"]]></Description>
+			<Value>0</Value>
+		</Material>
+		<Material Name="matCover">
+			<Description><![CDATA["Cover Material"]]></Description>
+			<Value>0</Value>
+		</Material>
 	</Parameters>
 </ParamSection>

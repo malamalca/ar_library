@@ -1,0 +1,865 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ParamSection>
+	<ParamSectHeader>
+		<AutoHotspots>false</AutoHotspots>
+		<StatBits>
+			<STBit_FixSize/>
+			<STBit_UIUseHierarchicalPages/>
+		</StatBits>
+		<WDLeftFrame>0</WDLeftFrame>
+		<WDRightFrame>0</WDRightFrame>
+		<WDTopFrame>0</WDTopFrame>
+		<WDBotFrame>0</WDBotFrame>
+		<LayFlags>65535</LayFlags>
+		<WDMirrorThickness>0</WDMirrorThickness>
+		<WDWallInset>0</WDWallInset>
+	</ParamSectHeader>
+	<Parameters SectVersion="27" SectionFlags="0" SubIdent="0">
+		<Length Name="A">
+			<Description><![CDATA["Width"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Length>
+		<Length Name="B">
+			<Description><![CDATA["Length"]]></Description>
+			<Fix/>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Length>
+
+		<!-- vehicle: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Integer Name="vehicletype">
+			<Description><![CDATA["Vehicle"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Length Name="veh_width">
+			<Description><![CDATA["Body Width"]]></Description>
+			<Value>1.8</Value>
+		</Length>
+		<Length Name="veh_wheelbase">
+			<Description><![CDATA["Wheelbase"]]></Description>
+			<Value>2.7</Value>
+		</Length>
+		<Length Name="veh_fo">
+			<Description><![CDATA["Front Overhang"]]></Description>
+			<Value>0.9</Value>
+		</Length>
+		<Length Name="veh_ro">
+			<Description><![CDATA["Rear Overhang"]]></Description>
+			<Value>1.1</Value>
+		</Length>
+		<Length Name="veh_track">
+			<Description><![CDATA["Track Width"]]></Description>
+			<Value>1.55</Value>
+		</Length>
+		<Angle Name="veh_maxsteer">
+			<Description><![CDATA["Max Steering Angle (Inner Wheel)"]]></Description>
+			<Value>32</Value>
+		</Angle>
+		<Length Name="veh_tyrelen">
+			<Description><![CDATA["Tyre Length"]]></Description>
+			<Value>0.65</Value>
+		</Length>
+		<Length Name="veh_tyrewid">
+			<Description><![CDATA["Tyre Width"]]></Description>
+			<Value>0.22</Value>
+		</Length>
+		<Length Name="minradius">
+			<Description><![CDATA["Min Turning Radius (Rear Axle)"]]></Description>
+			<Value>5.096</Value>
+		</Length>
+
+		<!-- start: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Angle Name="startangle">
+			<Description><![CDATA["Start Tangent Direction"]]></Description>
+			<Value>0</Value>
+		</Angle>
+		<Angle Name="endangle">
+			<Description><![CDATA["End Tangent Direction"]]></Description>
+			<Value>-90</Value>
+		</Angle>
+		<Boolean Name="fixend">
+			<Description><![CDATA["Fix End Direction"]]></Description>
+			<Value>0</Value>
+		</Boolean>
+		<Boolean Name="startreverse">
+			<Description><![CDATA["Start in Reverse"]]></Description>
+			<Value>0</Value>
+		</Boolean>
+
+		<!-- editing: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Boolean Name="iseditable">
+			<Description><![CDATA["Editable Path"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Boolean Name="showaddpoints">
+			<Description><![CDATA["Can Add Points"]]></Description>
+			<Value>1</Value>
+		</Boolean>
+
+		<!-- showaxis: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Boolean Name="showaxis">
+			<Description><![CDATA["Show Path (Rear Axle)"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<LineType Name="axislinetype">
+			<Description><![CDATA["Path Line Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</LineType>
+		<PenColor Name="axispen">
+			<Description><![CDATA["Path Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>3</Value>
+		</PenColor>
+		<PenColor Name="warnpen">
+			<Description><![CDATA["Not Drivable (Warning) Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>2</Value>
+		</PenColor>
+		<Length Name="nodesize">
+			<Description><![CDATA["Node Circle Radius"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0.15</Value>
+		</Length>
+
+		<!-- showtyres: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Boolean Name="showtyres">
+			<Description><![CDATA["Show Tyre Paths"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<LineType Name="tyrefrontlinetype">
+			<Description><![CDATA["Front Tyre Line Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</LineType>
+		<PenColor Name="tyrefrontpen">
+			<Description><![CDATA["Front Tyre Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>5</Value>
+		</PenColor>
+		<LineType Name="tyrerearlinetype">
+			<Description><![CDATA["Rear Tyre Line Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</LineType>
+		<PenColor Name="tyrerearpen">
+			<Description><![CDATA["Rear Tyre Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>6</Value>
+		</PenColor>
+
+		<!-- showenvelope: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Boolean Name="showenvelope">
+			<Description><![CDATA["Show Swept Envelope"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<LineType Name="envlinetype">
+			<Description><![CDATA["Envelope Line Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</LineType>
+		<PenColor Name="envpen">
+			<Description><![CDATA["Envelope Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</PenColor>
+		<Boolean Name="envexact">
+			<Description><![CDATA["Exact Envelope (Polygon Union)"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+
+		<!-- showoutlines: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Boolean Name="showoutlines">
+			<Description><![CDATA["Show Car Outlines"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<Length Name="outlinestep">
+			<Description><![CDATA["Outline Distance"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>3</Value>
+		</Length>
+		<LineType Name="outlinelinetype">
+			<Description><![CDATA["Outline Line Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</LineType>
+		<PenColor Name="outlinepen">
+			<Description><![CDATA["Outline Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>4</Value>
+		</PenColor>
+
+		<!-- showcar: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Boolean Name="showcar">
+			<Description><![CDATA["Show Schematic Car"]]></Description>
+			<Flags>
+				<ParFlg_BoldName/>
+			</Flags>
+			<Value>1</Value>
+		</Boolean>
+		<LineType Name="carlinetype">
+			<Description><![CDATA["Car Line Type"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</LineType>
+		<PenColor Name="carpen">
+			<Description><![CDATA["Car Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</PenColor>
+		<PenColor Name="carwheelpen">
+			<Description><![CDATA["Tyres Pen"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>1</Value>
+		</PenColor>
+		<Length Name="carx">
+			<Description><![CDATA["Car Position X (Snaps to Path)"]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>3</Value>
+		</Length>
+		<Length Name="cary">
+			<Description><![CDATA["Car Position Y (Snaps to Path)"]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>-0.4</Value>
+		</Length>
+
+		<!-- calculation: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Length Name="samplestep">
+			<Description><![CDATA["Calculation Step"]]></Description>
+			<Value>0.5</Value>
+		</Length>
+
+		<!-- path points: PARAMETER BLOCK ===== PARAMETER BLOCK ===== PARAMETER BLOCK -->
+
+		<Integer Name="n">
+			<Description><![CDATA["Number of Points"]]></Description>
+			<Flags>
+				<ParFlg_Unique/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>2</Value>
+		</Integer>
+		<Length Name="X">
+			<Description><![CDATA["Node X"]]></Description>
+			<Flags>
+				<ParFlg_Unique/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="50" SecondDimension="0">
+				<AVal Row="1">0</AVal>
+				<AVal Row="2">12</AVal>
+				<AVal Row="3">12</AVal>
+				<AVal Row="4">12</AVal>
+				<AVal Row="5">12</AVal>
+				<AVal Row="6">12</AVal>
+				<AVal Row="7">12</AVal>
+				<AVal Row="8">12</AVal>
+				<AVal Row="9">12</AVal>
+				<AVal Row="10">12</AVal>
+				<AVal Row="11">12</AVal>
+				<AVal Row="12">12</AVal>
+				<AVal Row="13">12</AVal>
+				<AVal Row="14">12</AVal>
+				<AVal Row="15">12</AVal>
+				<AVal Row="16">12</AVal>
+				<AVal Row="17">12</AVal>
+				<AVal Row="18">12</AVal>
+				<AVal Row="19">12</AVal>
+				<AVal Row="20">12</AVal>
+				<AVal Row="21">12</AVal>
+				<AVal Row="22">12</AVal>
+				<AVal Row="23">12</AVal>
+				<AVal Row="24">12</AVal>
+				<AVal Row="25">12</AVal>
+				<AVal Row="26">12</AVal>
+				<AVal Row="27">12</AVal>
+				<AVal Row="28">12</AVal>
+				<AVal Row="29">12</AVal>
+				<AVal Row="30">12</AVal>
+				<AVal Row="31">12</AVal>
+				<AVal Row="32">12</AVal>
+				<AVal Row="33">12</AVal>
+				<AVal Row="34">12</AVal>
+				<AVal Row="35">12</AVal>
+				<AVal Row="36">12</AVal>
+				<AVal Row="37">12</AVal>
+				<AVal Row="38">12</AVal>
+				<AVal Row="39">12</AVal>
+				<AVal Row="40">12</AVal>
+				<AVal Row="41">12</AVal>
+				<AVal Row="42">12</AVal>
+				<AVal Row="43">12</AVal>
+				<AVal Row="44">12</AVal>
+				<AVal Row="45">12</AVal>
+				<AVal Row="46">12</AVal>
+				<AVal Row="47">12</AVal>
+				<AVal Row="48">12</AVal>
+				<AVal Row="49">12</AVal>
+				<AVal Row="50">12</AVal>
+			</ArrayValues>
+		</Length>
+		<Length Name="Y">
+			<Description><![CDATA["Node Y"]]></Description>
+			<Flags>
+				<ParFlg_Unique/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="50" SecondDimension="0">
+				<AVal Row="1">0</AVal>
+				<AVal Row="2">-12</AVal>
+				<AVal Row="3">-12</AVal>
+				<AVal Row="4">-12</AVal>
+				<AVal Row="5">-12</AVal>
+				<AVal Row="6">-12</AVal>
+				<AVal Row="7">-12</AVal>
+				<AVal Row="8">-12</AVal>
+				<AVal Row="9">-12</AVal>
+				<AVal Row="10">-12</AVal>
+				<AVal Row="11">-12</AVal>
+				<AVal Row="12">-12</AVal>
+				<AVal Row="13">-12</AVal>
+				<AVal Row="14">-12</AVal>
+				<AVal Row="15">-12</AVal>
+				<AVal Row="16">-12</AVal>
+				<AVal Row="17">-12</AVal>
+				<AVal Row="18">-12</AVal>
+				<AVal Row="19">-12</AVal>
+				<AVal Row="20">-12</AVal>
+				<AVal Row="21">-12</AVal>
+				<AVal Row="22">-12</AVal>
+				<AVal Row="23">-12</AVal>
+				<AVal Row="24">-12</AVal>
+				<AVal Row="25">-12</AVal>
+				<AVal Row="26">-12</AVal>
+				<AVal Row="27">-12</AVal>
+				<AVal Row="28">-12</AVal>
+				<AVal Row="29">-12</AVal>
+				<AVal Row="30">-12</AVal>
+				<AVal Row="31">-12</AVal>
+				<AVal Row="32">-12</AVal>
+				<AVal Row="33">-12</AVal>
+				<AVal Row="34">-12</AVal>
+				<AVal Row="35">-12</AVal>
+				<AVal Row="36">-12</AVal>
+				<AVal Row="37">-12</AVal>
+				<AVal Row="38">-12</AVal>
+				<AVal Row="39">-12</AVal>
+				<AVal Row="40">-12</AVal>
+				<AVal Row="41">-12</AVal>
+				<AVal Row="42">-12</AVal>
+				<AVal Row="43">-12</AVal>
+				<AVal Row="44">-12</AVal>
+				<AVal Row="45">-12</AVal>
+				<AVal Row="46">-12</AVal>
+				<AVal Row="47">-12</AVal>
+				<AVal Row="48">-12</AVal>
+				<AVal Row="49">-12</AVal>
+				<AVal Row="50">-12</AVal>
+			</ArrayValues>
+		</Length>
+		<Length Name="midalong">
+			<Description><![CDATA["Curve Point - Along Chord"]]></Description>
+			<Flags>
+				<ParFlg_Unique/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="50" SecondDimension="0">
+				<AVal Row="1">0</AVal>
+				<AVal Row="2">0</AVal>
+				<AVal Row="3">0</AVal>
+				<AVal Row="4">0</AVal>
+				<AVal Row="5">0</AVal>
+				<AVal Row="6">0</AVal>
+				<AVal Row="7">0</AVal>
+				<AVal Row="8">0</AVal>
+				<AVal Row="9">0</AVal>
+				<AVal Row="10">0</AVal>
+				<AVal Row="11">0</AVal>
+				<AVal Row="12">0</AVal>
+				<AVal Row="13">0</AVal>
+				<AVal Row="14">0</AVal>
+				<AVal Row="15">0</AVal>
+				<AVal Row="16">0</AVal>
+				<AVal Row="17">0</AVal>
+				<AVal Row="18">0</AVal>
+				<AVal Row="19">0</AVal>
+				<AVal Row="20">0</AVal>
+				<AVal Row="21">0</AVal>
+				<AVal Row="22">0</AVal>
+				<AVal Row="23">0</AVal>
+				<AVal Row="24">0</AVal>
+				<AVal Row="25">0</AVal>
+				<AVal Row="26">0</AVal>
+				<AVal Row="27">0</AVal>
+				<AVal Row="28">0</AVal>
+				<AVal Row="29">0</AVal>
+				<AVal Row="30">0</AVal>
+				<AVal Row="31">0</AVal>
+				<AVal Row="32">0</AVal>
+				<AVal Row="33">0</AVal>
+				<AVal Row="34">0</AVal>
+				<AVal Row="35">0</AVal>
+				<AVal Row="36">0</AVal>
+				<AVal Row="37">0</AVal>
+				<AVal Row="38">0</AVal>
+				<AVal Row="39">0</AVal>
+				<AVal Row="40">0</AVal>
+				<AVal Row="41">0</AVal>
+				<AVal Row="42">0</AVal>
+				<AVal Row="43">0</AVal>
+				<AVal Row="44">0</AVal>
+				<AVal Row="45">0</AVal>
+				<AVal Row="46">0</AVal>
+				<AVal Row="47">0</AVal>
+				<AVal Row="48">0</AVal>
+				<AVal Row="49">0</AVal>
+				<AVal Row="50">0</AVal>
+			</ArrayValues>
+		</Length>
+		<Length Name="midside">
+			<Description><![CDATA["Curve Point - Sideways"]]></Description>
+			<Flags>
+				<ParFlg_Unique/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="50" SecondDimension="0">
+				<AVal Row="1">0</AVal>
+				<AVal Row="2">0</AVal>
+				<AVal Row="3">0</AVal>
+				<AVal Row="4">0</AVal>
+				<AVal Row="5">0</AVal>
+				<AVal Row="6">0</AVal>
+				<AVal Row="7">0</AVal>
+				<AVal Row="8">0</AVal>
+				<AVal Row="9">0</AVal>
+				<AVal Row="10">0</AVal>
+				<AVal Row="11">0</AVal>
+				<AVal Row="12">0</AVal>
+				<AVal Row="13">0</AVal>
+				<AVal Row="14">0</AVal>
+				<AVal Row="15">0</AVal>
+				<AVal Row="16">0</AVal>
+				<AVal Row="17">0</AVal>
+				<AVal Row="18">0</AVal>
+				<AVal Row="19">0</AVal>
+				<AVal Row="20">0</AVal>
+				<AVal Row="21">0</AVal>
+				<AVal Row="22">0</AVal>
+				<AVal Row="23">0</AVal>
+				<AVal Row="24">0</AVal>
+				<AVal Row="25">0</AVal>
+				<AVal Row="26">0</AVal>
+				<AVal Row="27">0</AVal>
+				<AVal Row="28">0</AVal>
+				<AVal Row="29">0</AVal>
+				<AVal Row="30">0</AVal>
+				<AVal Row="31">0</AVal>
+				<AVal Row="32">0</AVal>
+				<AVal Row="33">0</AVal>
+				<AVal Row="34">0</AVal>
+				<AVal Row="35">0</AVal>
+				<AVal Row="36">0</AVal>
+				<AVal Row="37">0</AVal>
+				<AVal Row="38">0</AVal>
+				<AVal Row="39">0</AVal>
+				<AVal Row="40">0</AVal>
+				<AVal Row="41">0</AVal>
+				<AVal Row="42">0</AVal>
+				<AVal Row="43">0</AVal>
+				<AVal Row="44">0</AVal>
+				<AVal Row="45">0</AVal>
+				<AVal Row="46">0</AVal>
+				<AVal Row="47">0</AVal>
+				<AVal Row="48">0</AVal>
+				<AVal Row="49">0</AVal>
+				<AVal Row="50">0</AVal>
+			</ArrayValues>
+		</Length>
+		<Boolean Name="dirchange">
+			<Description><![CDATA["Direction Change"]]></Description>
+			<Flags>
+				<ParFlg_Unique/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="50" SecondDimension="0">
+				<AVal Row="1">0</AVal>
+				<AVal Row="2">0</AVal>
+				<AVal Row="3">0</AVal>
+				<AVal Row="4">0</AVal>
+				<AVal Row="5">0</AVal>
+				<AVal Row="6">0</AVal>
+				<AVal Row="7">0</AVal>
+				<AVal Row="8">0</AVal>
+				<AVal Row="9">0</AVal>
+				<AVal Row="10">0</AVal>
+				<AVal Row="11">0</AVal>
+				<AVal Row="12">0</AVal>
+				<AVal Row="13">0</AVal>
+				<AVal Row="14">0</AVal>
+				<AVal Row="15">0</AVal>
+				<AVal Row="16">0</AVal>
+				<AVal Row="17">0</AVal>
+				<AVal Row="18">0</AVal>
+				<AVal Row="19">0</AVal>
+				<AVal Row="20">0</AVal>
+				<AVal Row="21">0</AVal>
+				<AVal Row="22">0</AVal>
+				<AVal Row="23">0</AVal>
+				<AVal Row="24">0</AVal>
+				<AVal Row="25">0</AVal>
+				<AVal Row="26">0</AVal>
+				<AVal Row="27">0</AVal>
+				<AVal Row="28">0</AVal>
+				<AVal Row="29">0</AVal>
+				<AVal Row="30">0</AVal>
+				<AVal Row="31">0</AVal>
+				<AVal Row="32">0</AVal>
+				<AVal Row="33">0</AVal>
+				<AVal Row="34">0</AVal>
+				<AVal Row="35">0</AVal>
+				<AVal Row="36">0</AVal>
+				<AVal Row="37">0</AVal>
+				<AVal Row="38">0</AVal>
+				<AVal Row="39">0</AVal>
+				<AVal Row="40">0</AVal>
+				<AVal Row="41">0</AVal>
+				<AVal Row="42">0</AVal>
+				<AVal Row="43">0</AVal>
+				<AVal Row="44">0</AVal>
+				<AVal Row="45">0</AVal>
+				<AVal Row="46">0</AVal>
+				<AVal Row="47">0</AVal>
+				<AVal Row="48">0</AVal>
+				<AVal Row="49">0</AVal>
+				<AVal Row="50">0</AVal>
+			</ArrayValues>
+		</Boolean>
+		<Length Name="xe">
+			<Description><![CDATA["Insert Node X"]]></Description>
+			<Flags>
+				<ParFlg_Unique/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="51" SecondDimension="0">
+				<AVal Row="1">0</AVal>
+				<AVal Row="2">0</AVal>
+				<AVal Row="3">0</AVal>
+				<AVal Row="4">0</AVal>
+				<AVal Row="5">0</AVal>
+				<AVal Row="6">0</AVal>
+				<AVal Row="7">0</AVal>
+				<AVal Row="8">0</AVal>
+				<AVal Row="9">0</AVal>
+				<AVal Row="10">0</AVal>
+				<AVal Row="11">0</AVal>
+				<AVal Row="12">0</AVal>
+				<AVal Row="13">0</AVal>
+				<AVal Row="14">0</AVal>
+				<AVal Row="15">0</AVal>
+				<AVal Row="16">0</AVal>
+				<AVal Row="17">0</AVal>
+				<AVal Row="18">0</AVal>
+				<AVal Row="19">0</AVal>
+				<AVal Row="20">0</AVal>
+				<AVal Row="21">0</AVal>
+				<AVal Row="22">0</AVal>
+				<AVal Row="23">0</AVal>
+				<AVal Row="24">0</AVal>
+				<AVal Row="25">0</AVal>
+				<AVal Row="26">0</AVal>
+				<AVal Row="27">0</AVal>
+				<AVal Row="28">0</AVal>
+				<AVal Row="29">0</AVal>
+				<AVal Row="30">0</AVal>
+				<AVal Row="31">0</AVal>
+				<AVal Row="32">0</AVal>
+				<AVal Row="33">0</AVal>
+				<AVal Row="34">0</AVal>
+				<AVal Row="35">0</AVal>
+				<AVal Row="36">0</AVal>
+				<AVal Row="37">0</AVal>
+				<AVal Row="38">0</AVal>
+				<AVal Row="39">0</AVal>
+				<AVal Row="40">0</AVal>
+				<AVal Row="41">0</AVal>
+				<AVal Row="42">0</AVal>
+				<AVal Row="43">0</AVal>
+				<AVal Row="44">0</AVal>
+				<AVal Row="45">0</AVal>
+				<AVal Row="46">0</AVal>
+				<AVal Row="47">0</AVal>
+				<AVal Row="48">0</AVal>
+				<AVal Row="49">0</AVal>
+				<AVal Row="50">0</AVal>
+				<AVal Row="51">0</AVal>
+			</ArrayValues>
+		</Length>
+		<Length Name="ye">
+			<Description><![CDATA["Insert Node Y"]]></Description>
+			<Flags>
+				<ParFlg_Unique/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="51" SecondDimension="0">
+				<AVal Row="1">0</AVal>
+				<AVal Row="2">0</AVal>
+				<AVal Row="3">0</AVal>
+				<AVal Row="4">0</AVal>
+				<AVal Row="5">0</AVal>
+				<AVal Row="6">0</AVal>
+				<AVal Row="7">0</AVal>
+				<AVal Row="8">0</AVal>
+				<AVal Row="9">0</AVal>
+				<AVal Row="10">0</AVal>
+				<AVal Row="11">0</AVal>
+				<AVal Row="12">0</AVal>
+				<AVal Row="13">0</AVal>
+				<AVal Row="14">0</AVal>
+				<AVal Row="15">0</AVal>
+				<AVal Row="16">0</AVal>
+				<AVal Row="17">0</AVal>
+				<AVal Row="18">0</AVal>
+				<AVal Row="19">0</AVal>
+				<AVal Row="20">0</AVal>
+				<AVal Row="21">0</AVal>
+				<AVal Row="22">0</AVal>
+				<AVal Row="23">0</AVal>
+				<AVal Row="24">0</AVal>
+				<AVal Row="25">0</AVal>
+				<AVal Row="26">0</AVal>
+				<AVal Row="27">0</AVal>
+				<AVal Row="28">0</AVal>
+				<AVal Row="29">0</AVal>
+				<AVal Row="30">0</AVal>
+				<AVal Row="31">0</AVal>
+				<AVal Row="32">0</AVal>
+				<AVal Row="33">0</AVal>
+				<AVal Row="34">0</AVal>
+				<AVal Row="35">0</AVal>
+				<AVal Row="36">0</AVal>
+				<AVal Row="37">0</AVal>
+				<AVal Row="38">0</AVal>
+				<AVal Row="39">0</AVal>
+				<AVal Row="40">0</AVal>
+				<AVal Row="41">0</AVal>
+				<AVal Row="42">0</AVal>
+				<AVal Row="43">0</AVal>
+				<AVal Row="44">0</AVal>
+				<AVal Row="45">0</AVal>
+				<AVal Row="46">0</AVal>
+				<AVal Row="47">0</AVal>
+				<AVal Row="48">0</AVal>
+				<AVal Row="49">0</AVal>
+				<AVal Row="50">0</AVal>
+				<AVal Row="51">0</AVal>
+			</ArrayValues>
+		</Length>
+		<Length Name="xea">
+			<Description><![CDATA["xea"]]></Description>
+			<Flags>
+				<ParFlg_Unique/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="51" SecondDimension="0">
+				<AVal Row="1">0</AVal>
+				<AVal Row="2">0</AVal>
+				<AVal Row="3">0</AVal>
+				<AVal Row="4">0</AVal>
+				<AVal Row="5">0</AVal>
+				<AVal Row="6">0</AVal>
+				<AVal Row="7">0</AVal>
+				<AVal Row="8">0</AVal>
+				<AVal Row="9">0</AVal>
+				<AVal Row="10">0</AVal>
+				<AVal Row="11">0</AVal>
+				<AVal Row="12">0</AVal>
+				<AVal Row="13">0</AVal>
+				<AVal Row="14">0</AVal>
+				<AVal Row="15">0</AVal>
+				<AVal Row="16">0</AVal>
+				<AVal Row="17">0</AVal>
+				<AVal Row="18">0</AVal>
+				<AVal Row="19">0</AVal>
+				<AVal Row="20">0</AVal>
+				<AVal Row="21">0</AVal>
+				<AVal Row="22">0</AVal>
+				<AVal Row="23">0</AVal>
+				<AVal Row="24">0</AVal>
+				<AVal Row="25">0</AVal>
+				<AVal Row="26">0</AVal>
+				<AVal Row="27">0</AVal>
+				<AVal Row="28">0</AVal>
+				<AVal Row="29">0</AVal>
+				<AVal Row="30">0</AVal>
+				<AVal Row="31">0</AVal>
+				<AVal Row="32">0</AVal>
+				<AVal Row="33">0</AVal>
+				<AVal Row="34">0</AVal>
+				<AVal Row="35">0</AVal>
+				<AVal Row="36">0</AVal>
+				<AVal Row="37">0</AVal>
+				<AVal Row="38">0</AVal>
+				<AVal Row="39">0</AVal>
+				<AVal Row="40">0</AVal>
+				<AVal Row="41">0</AVal>
+				<AVal Row="42">0</AVal>
+				<AVal Row="43">0</AVal>
+				<AVal Row="44">0</AVal>
+				<AVal Row="45">0</AVal>
+				<AVal Row="46">0</AVal>
+				<AVal Row="47">0</AVal>
+				<AVal Row="48">0</AVal>
+				<AVal Row="49">0</AVal>
+				<AVal Row="50">0</AVal>
+				<AVal Row="51">0</AVal>
+			</ArrayValues>
+		</Length>
+		<Length Name="yea">
+			<Description><![CDATA["yea"]]></Description>
+			<Flags>
+				<ParFlg_Unique/>
+				<ParFlg_Hidden/>
+			</Flags>
+			<ArrayValues FirstDimension="51" SecondDimension="0">
+				<AVal Row="1">0</AVal>
+				<AVal Row="2">0</AVal>
+				<AVal Row="3">0</AVal>
+				<AVal Row="4">0</AVal>
+				<AVal Row="5">0</AVal>
+				<AVal Row="6">0</AVal>
+				<AVal Row="7">0</AVal>
+				<AVal Row="8">0</AVal>
+				<AVal Row="9">0</AVal>
+				<AVal Row="10">0</AVal>
+				<AVal Row="11">0</AVal>
+				<AVal Row="12">0</AVal>
+				<AVal Row="13">0</AVal>
+				<AVal Row="14">0</AVal>
+				<AVal Row="15">0</AVal>
+				<AVal Row="16">0</AVal>
+				<AVal Row="17">0</AVal>
+				<AVal Row="18">0</AVal>
+				<AVal Row="19">0</AVal>
+				<AVal Row="20">0</AVal>
+				<AVal Row="21">0</AVal>
+				<AVal Row="22">0</AVal>
+				<AVal Row="23">0</AVal>
+				<AVal Row="24">0</AVal>
+				<AVal Row="25">0</AVal>
+				<AVal Row="26">0</AVal>
+				<AVal Row="27">0</AVal>
+				<AVal Row="28">0</AVal>
+				<AVal Row="29">0</AVal>
+				<AVal Row="30">0</AVal>
+				<AVal Row="31">0</AVal>
+				<AVal Row="32">0</AVal>
+				<AVal Row="33">0</AVal>
+				<AVal Row="34">0</AVal>
+				<AVal Row="35">0</AVal>
+				<AVal Row="36">0</AVal>
+				<AVal Row="37">0</AVal>
+				<AVal Row="38">0</AVal>
+				<AVal Row="39">0</AVal>
+				<AVal Row="40">0</AVal>
+				<AVal Row="41">0</AVal>
+				<AVal Row="42">0</AVal>
+				<AVal Row="43">0</AVal>
+				<AVal Row="44">0</AVal>
+				<AVal Row="45">0</AVal>
+				<AVal Row="46">0</AVal>
+				<AVal Row="47">0</AVal>
+				<AVal Row="48">0</AVal>
+				<AVal Row="49">0</AVal>
+				<AVal Row="50">0</AVal>
+				<AVal Row="51">0</AVal>
+			</ArrayValues>
+		</Length>
+		<Integer Name="gs_ui_current_page">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Length Name="marx">
+			<Description><![CDATA["Add New Hotspot Distance"]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1.5</Value>
+		</Length>
+	</Parameters>
+</ParamSection>

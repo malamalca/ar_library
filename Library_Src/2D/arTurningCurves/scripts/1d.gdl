@@ -1,0 +1,470 @@
+﻿nix = 0.00001
+MAX_POINTS = 50
+
+VEH_CUSTOM = 0
+VEH_CAR = 1
+
+! The path is a chain of points x[i], y[i] (rear axle centre of the car).
+! Segment i lies between point i and i+1 and has a middle point: the middle of the
+! single arc which leaves with the heading of the path and ends in point i+1, moved
+! by midalong[i] along the chord and midside[i] to the left of it.
+! dirchange[i] marks a point where the car stops and changes direction.
+
+! The points only change in the parameter script runs which follow an edit
+if glob_modpar_name <> "" then
+
+	!----------------------------------------
+	! Insert a point dragged from an add-point hotspot
+	!----------------------------------------
+
+	if glob_modpar_name = "xe" or glob_modpar_name = "ye" then
+		insi = 0
+
+		for i = 1 to n+1
+			if (abs(xe[i]) > nix or abs(ye[i]) > nix) and (abs(xea[i] - xe[i]) > nix or abs(yea[i] - ye[i]) > nix) then
+				insi = i
+				xee = xe[i]
+				yee = ye[i]
+			endif
+		next i
+
+		if insi > 0 and n < MAX_POINTS then
+			for i = n to insi step -1
+				x[i+1] = x[i]
+				y[i+1] = y[i]
+				dirchange[i+1] = dirchange[i]
+			next i
+
+			! the split segment and the new one start out as single smooth arcs
+			for i = n-1 to insi step -1
+				midalong[i+1] = midalong[i]
+				midside[i+1] = midside[i]
+			next i
+			if insi > 1 then
+				midalong[insi-1] = 0
+				midside[insi-1] = 0
+			endif
+			midalong[insi] = 0
+			midside[insi] = 0
+
+			x[insi] = xee
+			y[insi] = yee
+			dirchange[insi] = 0
+
+			n = n + 1
+		endif
+	endif
+
+	!----------------------------------------
+	! CleanUP - drop points which coincide with the previous one
+	!----------------------------------------
+
+	n0 = 0
+
+	for i = 1 to n
+		keep = 1
+		if i > 1 then
+			dx = x[i] - x[i-1]
+			dy = y[i] - y[i-1]
+			if sqr(dx^2 + dy^2) <= nix then keep = 0
+		endif
+
+		if keep then
+			n0 = n0 + 1
+
+			! a point carries the segment which ends in it
+			_ma = 0
+			_ms = 0
+			if i > 1 then
+				_ma = midalong[i-1]
+				_ms = midside[i-1]
+			endif
+			put x[i], y[i], dirchange[i], _ma, _ms
+		endif
+	next i
+
+	n = n0
+
+	for i = 1 to n
+		x[i] = get(1)
+		y[i] = get(1)
+		dirchange[i] = get(1)
+		_ma = get(1)
+		_ms = get(1)
+		if i > 1 then
+			midalong[i-1] = _ma
+			midside[i-1] = _ms
+		endif
+	next i
+
+	! the ends can not be a direction change
+	dirchange[1] = 0
+	dirchange[n] = 0
+
+	! clean empty points to the end
+	for i = n + 1 to MAX_POINTS
+		x[i] = x[n]
+		y[i] = y[n]
+		dirchange[i] = 0
+	next i
+
+	for i = n to MAX_POINTS
+		midalong[i] = 0
+		midside[i] = 0
+	next i
+endif
+
+!----------------------------------------
+! Path of the rear axle centre as a chain of arcs. It is built here so that the
+! parameter script can use it too (taking over the end direction).
+!----------------------------------------
+
+dim segUx[], segUy[], segMx[], segMy[]
+dim aSx[], aSy[], aTh[], aK[], aLen[], aDir[], segFirst[], segLast[], nodeWarn[]
+
+nArcs = 0
+thEnd = startangle
+thEndFree = startangle
+endB = 0
+endSolved = 1
+
+if n >= 2 then
+	for i = 1 to n-1
+		_dx = x[i+1] - x[i]
+		_dy = y[i+1] - y[i]
+		_ll = sqr(_dx^2 + _dy^2)
+		if _ll < nix then _ll = nix
+
+		segUx[i] = _dx / _ll
+		segUy[i] = _dy / _ll
+	next i
+
+	gosub "BuildPath"
+endif
+
+goto "MasterScriptEnd"
+
+! ------------------------------------------------------------------------------
+"ChordAngle":
+! angle of the vector (_sx,_sy) -> (_ex,_ey) in the range 0..360
+! ------------------------------------------------------------------------------
+	_cdx = _ex - _sx
+	_cdy = _ey - _sy
+	_crr = sqr(_cdx^2 + _cdy^2)
+	_ca = 0
+	if _crr > nix then
+		_cc = _cdx / _crr
+		if _cc > 1 then _cc = 1
+		if _cc < -1 then _cc = -1
+		_ca = acs(_cc)
+		if _cdy < 0 then _ca = 360 - _ca
+	endif
+return
+
+! ------------------------------------------------------------------------------
+"BuildPath":
+! fills the arrays aSx, aSy (start), aTh (start heading), aK (curvature, left is
+! positive), aLen, aDir (1 forward, -1 reverse), segFirst, segLast (arcs of a
+! segment), the middle points segMx, segMy and nodeWarn (a node the path can not
+! reach with a continuous heading). thEnd is the direction at the last node,
+! thEndFree the one with the stored side offset of the last segment, endB the side
+! offset solved for the fixed end direction and endSolved whether that worked.
+! ------------------------------------------------------------------------------
+	nArcs = 0
+	_dirMode = 1
+	if startreverse then _dirMode = -1
+
+	for i = 1 to n
+		nodeWarn[i] = 0
+	next i
+
+	! the direction of the path at the first node
+	_th = startangle
+
+	for i = 1 to n-1
+		! the middle point of the single arc from here to the next point, moved by the offsets
+		_sx = x[i]
+		_sy = y[i]
+		_ex = x[i+1]
+		_ey = y[i+1]
+		gosub "DefaultMid"
+
+		_bUse = midside[i]
+		if i = n-1 then
+			_dmx = _mx
+			_dmy = _my
+			_ga = midalong[i]
+			_gux = segUx[i]
+			_guy = segUy[i]
+
+			! direction at the end with the stored side offset
+			_gb = midside[i]
+			gosub "GOfB"
+			thEndFree = _th + _gval
+
+			! side offset for the fixed end direction; also when the fix is just released,
+			! so that the parameter script can keep the path
+			if fixend or glob_modpar_name = "fixend" then
+				gosub "SolveEndB"
+				endB = _bb
+				if fixend then _bUse = _bb
+			endif
+		endif
+
+		segMx[i] = _mx + midalong[i] * segUx[i] - _bUse * segUy[i]
+		segMy[i] = _my + midalong[i] * segUy[i] + _bUse * segUx[i]
+
+		segFirst[i] = nArcs + 1
+
+		_sx = x[i]
+		_sy = y[i]
+		_ex = segMx[i]
+		_ey = segMy[i]
+		gosub "AddArc"
+
+		! the second arc starts where the first one really ends
+		_sx = _aex
+		_sy = _aey
+		_ex = x[i+1]
+		_ey = y[i+1]
+		gosub "AddArc"
+		if _clamped then nodeWarn[i+1] = 1
+
+		segLast[i] = nArcs
+
+		if i < n-1 then
+			if dirchange[i+1] then
+				_th = _th + 180
+				_dirMode = -_dirMode
+			endif
+		endif
+	next i
+
+	thEnd = _th
+	if not(fixend) then endSolved = 1
+return
+
+! ------------------------------------------------------------------------------
+"AddArc":
+! circular arc which leaves (_sx,_sy) with the heading _th and passes (_ex,_ey);
+! an arc can turn by 358 degrees at most, then it ends short of the point:
+! _clamped is set and (_aex,_aey) is its real end
+! ------------------------------------------------------------------------------
+	_aex = _ex
+	_aey = _ey
+	_clamped = 0
+
+	_ddx = _ex - _sx
+	_ddy = _ey - _sy
+	_ld = sqr(_ddx^2 + _ddy^2)
+
+	if _ld > nix then
+		gosub "ChordAngle"
+		_al = _ca - _th
+		_al = _al - 360 * int(_al / 360)
+		if _al > 180 then _al = _al - 360
+		if _al < -180 then _al = _al + 360
+		if _al > 179 then
+			_al = 179
+			_clamped = 1
+		endif
+		if _al < -179 then
+			_al = -179
+			_clamped = 1
+		endif
+
+		_sa = sin(_al)
+		if abs(_sa) < 0.000001 then
+			_k = 0
+			_len = _ld
+		else
+			_k = 2 * _sa / _ld
+			_len = _ld * abs(_al * PI / 180) / abs(_sa)
+		endif
+
+		if _clamped then
+			_the = _th + 2 * _al
+			_aex = _sx + (sin(_the) - sin(_th)) / _k
+			_aey = _sy - (cos(_the) - cos(_th)) / _k
+		endif
+
+		nArcs = nArcs + 1
+		aSx[nArcs] = _sx
+		aSy[nArcs] = _sy
+		aTh[nArcs] = _th
+		aK[nArcs] = _k
+		aLen[nArcs] = _len
+		aDir[nArcs] = _dirMode
+
+		! the heading turns by twice the angle between the tangent and the chord
+		_th = _th + 2 * _al
+	endif
+return
+
+! ------------------------------------------------------------------------------
+"DefaultMid":
+! middle (by length) of the single arc which leaves (_sx,_sy) with the heading
+! _th and ends in (_ex,_ey) -> (_mx,_my)
+! ------------------------------------------------------------------------------
+	_mx = (_sx + _ex) / 2
+	_my = (_sy + _ey) / 2
+
+	_ddx = _ex - _sx
+	_ddy = _ey - _sy
+	_ld = sqr(_ddx^2 + _ddy^2)
+
+	if _ld > nix then
+		gosub "ChordAngle"
+		_al = _ca - _th
+		_al = _al - 360 * int(_al / 360)
+		if _al > 180 then _al = _al - 360
+		if _al < -180 then _al = _al + 360
+		if _al > 179 then _al = 179
+		if _al < -179 then _al = -179
+
+		_sa = sin(_al)
+		if abs(_sa) >= 0.000001 then
+			! the heading at the middle of the arc is _th + _al
+			_k = 2 * _sa / _ld
+			_mx = _sx + (sin(_th + _al) - sin(_th)) / _k
+			_my = _sy - (cos(_th + _al) - cos(_th)) / _k
+		endif
+	endif
+return
+
+! ------------------------------------------------------------------------------
+"ArcAngle":
+! angle between the heading _gth and the chord (_g1x,_g1y) -> (_g2x,_g2y), in the
+! range -179..179 like the arcs are built; 0 for a point which is not apart
+! ------------------------------------------------------------------------------
+	_gal = 0
+	_gdx = _g2x - _g1x
+	_gdy = _g2y - _g1y
+	_gl = sqr(_gdx^2 + _gdy^2)
+	if _gl > nix then
+		_gc = _gdx / _gl
+		if _gc > 1 then _gc = 1
+		if _gc < -1 then _gc = -1
+		_gca = acs(_gc)
+		if _gdy < 0 then _gca = 360 - _gca
+		_gal = _gca - _gth
+		_gal = _gal - 360 * int(_gal / 360)
+		if _gal > 180 then _gal = _gal - 360
+		if _gal < -180 then _gal = _gal + 360
+		if _gal > 179 then _gal = 179
+		if _gal < -179 then _gal = -179
+	endif
+return
+
+! ------------------------------------------------------------------------------
+"GOfB":
+! turn of the heading along the last segment (start _sx,_sy / heading _th, end
+! _ex,_ey) when its middle point is moved by _ga along and _gb to the side of the
+! chord (unit vector _gux,_guy) from the default one (_dmx,_dmy) -> _gval
+! ------------------------------------------------------------------------------
+	_gmx = _dmx + _ga * _gux - _gb * _guy
+	_gmy = _dmy + _ga * _guy + _gb * _gux
+
+	_g1x = _sx
+	_g1y = _sy
+	_g2x = _gmx
+	_g2y = _gmy
+	_gth = _th
+	gosub "ArcAngle"
+	_ga1 = _gal
+
+	_g1x = _gmx
+	_g1y = _gmy
+	_g2x = _ex
+	_g2y = _ey
+	_gth = _th + 2 * _ga1
+	gosub "ArcAngle"
+
+	_gval = 2 * (_ga1 + _gal)
+return
+
+! ------------------------------------------------------------------------------
+"SolveEndB":
+! side offset _bb of the middle point so that the path ends with the direction
+! endangle. The search goes outwards from the default arc, so the first solution
+! found is the one with the smallest bulge. endSolved = 0 when there is none.
+! ------------------------------------------------------------------------------
+	_bb = 0
+	endSolved = 0
+
+	_ldx = _ex - _sx
+	_ldy = _ey - _sy
+	_bmax = 8 * sqr(_ldx^2 + _ldy^2)
+	if _bmax < 1 then _bmax = 1
+	_nst = 160
+	_db = _bmax / _nst
+
+	! the turn along the segment can be the wanted one or one turn less
+	_dt0 = endangle - _th
+	_dt0 = _dt0 - 360 * int(_dt0 / 360)
+	if _dt0 < 0 then _dt0 = _dt0 + 360
+	_tg1 = _dt0
+	_tg2 = _dt0 - 360
+
+	_gb = 0
+	gosub "GOfB"
+	if abs(_gval - _tg1) < 0.05 or abs(_gval - _tg2) < 0.05 then endSolved = 1
+	_gpP = _gval
+	_gpN = _gval
+
+	for _st = 1 to _nst
+		for _sd = 1 to -1 step -2
+			if not(endSolved) then
+				_b0 = _sd * (_st - 1) * _db
+				_b1 = _sd * _st * _db
+				_gb = _b1
+				gosub "GOfB"
+				_g1 = _gval
+				_g0 = _gpP
+				if _sd < 0 then _g0 = _gpN
+
+				for _kt = 1 to 2
+					if not(endSolved) then
+						_tg = _tg1
+						if _kt = 2 then _tg = _tg2
+						_f0 = _g0 - _tg
+						_f1 = _g1 - _tg
+
+						if (_f0 <= 0 and _f1 >= 0) or (_f0 >= 0 and _f1 <= 0) then
+							_lo = _b0
+							_hi = _b1
+							_flo = _f0
+							for _it = 1 to 40
+								_gb = (_lo + _hi) / 2
+								gosub "GOfB"
+								_fm = _gval - _tg
+								if (_flo <= 0 and _fm <= 0) or (_flo >= 0 and _fm >= 0) then
+									_lo = _gb
+									_flo = _fm
+								else
+									_hi = _gb
+								endif
+							next _it
+
+							! a jump of the angles (not a root) leaves a large rest
+							_gb = (_lo + _hi) / 2
+							gosub "GOfB"
+							if abs(_gval - _tg) < 0.05 then
+								_bb = _gb
+								endSolved = 1
+							endif
+						endif
+					endif
+				next _kt
+
+				if _sd > 0 then
+					_gpP = _g1
+				else
+					_gpN = _g1
+				endif
+			endif
+		next _sd
+	next _st
+return
+
+"MasterScriptEnd":

@@ -445,6 +445,13 @@
 			</Flags>
 			<Value>0.08</Value>
 		</Length>
+		<Boolean Name="plaster_outer">
+			<Description><![CDATA["Plaster on Outer Side"]]></Description>
+			<Flags>
+				<ParFlg_Child/>
+			</Flags>
+			<Value>0</Value>
+		</Boolean>
 		<Material Name="mat_reveal">
 			<Description><![CDATA["Reveal Surface"]]></Description>
 			<Flags>

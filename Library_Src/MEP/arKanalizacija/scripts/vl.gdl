@@ -23,10 +23,67 @@ values "ui_shaft_index" ui_shaft_index_range
 if GLOB_MODPAR_NAME = "ui_shaft_index" then
 	ui_shaft_dim1 = shaftDataDimensions[ui_shaft_index][DIM_SHAFT_DIM1]: parameters ui_shaft_dim1 = ui_shaft_dim1
 	ui_shaft_height = shaftDataDimensions[ui_shaft_index][DIM_SHAFT_HEIGHT]: parameters ui_shaft_height = ui_shaft_height
+	ui_shaft_raise = shaftDataDimensions[ui_shaft_index][DIM_RAISE_HEIGHT]: parameters ui_shaft_raise = ui_shaft_raise
 endif
+
+! besedilo nad jaškom v profilu
+if GLOB_MODPAR_NAME = "ui_shaft_profile_text" then
+	shaftProfileTexts[ui_shaft_index] = ui_shaft_profile_text
+else
+	ui_shaft_profile_text = shaftProfileTexts[ui_shaft_index]: parameters ui_shaft_profile_text = ui_shaft_profile_text
+endif
+
+! prikaz posameznih vrstic napisa pri izbranem jašku
+if GLOB_MODPAR_NAME = "ui_shaft_line1" then shaftCaptionLinesShow[ui_shaft_index][1] = ui_shaft_line1
+if GLOB_MODPAR_NAME = "ui_shaft_line2" then shaftCaptionLinesShow[ui_shaft_index][2] = ui_shaft_line2
+if GLOB_MODPAR_NAME = "ui_shaft_line3" then shaftCaptionLinesShow[ui_shaft_index][3] = ui_shaft_line3
+if GLOB_MODPAR_NAME = "ui_shaft_line4" then shaftCaptionLinesShow[ui_shaft_index][4] = ui_shaft_line4
+ui_shaft_line1 = shaftCaptionLinesShow[ui_shaft_index][1]: parameters ui_shaft_line1 = ui_shaft_line1
+ui_shaft_line2 = shaftCaptionLinesShow[ui_shaft_index][2]: parameters ui_shaft_line2 = ui_shaft_line2
+ui_shaft_line3 = shaftCaptionLinesShow[ui_shaft_index][3]: parameters ui_shaft_line3 = ui_shaft_line3
+ui_shaft_line4 = shaftCaptionLinesShow[ui_shaft_index][4]: parameters ui_shaft_line4 = ui_shaft_line4
 
 if GLOB_MODPAR_NAME = "ui_shaft_dim1" then shaftDataDimensions[ui_shaft_index][DIM_SHAFT_DIM1] = ui_shaft_dim1
 if GLOB_MODPAR_NAME = "ui_shaft_height" then shaftDataDimensions[ui_shaft_index][DIM_SHAFT_HEIGHT] = ui_shaft_height
+! kaskada pri izbranem jašku
+if GLOB_MODPAR_NAME = "ui_shaft_cascade" then
+	shaftDataOptions[ui_shaft_index][OPT_CASCADE] = ui_shaft_cascade
+else
+	ui_shaft_cascade = shaftDataOptions[ui_shaft_index][OPT_CASCADE]: parameters ui_shaft_cascade = ui_shaft_cascade
+endif
+
+if GLOB_MODPAR_NAME = "ui_shaft_raise" then shaftDataDimensions[ui_shaft_index][DIM_RAISE_HEIGHT] = ui_shaft_raise
+values "ui_shaft_raise" range[0, ]
+
+! dno in kota pokrova jaška: kota glede na 0,00 ali absolutna kota = nadmorska višina kote 0,00 (vnese uporabnik, elevZeroAbs) + kota
+! (GLOB_ spremenljivke o višini projekta/etaže v parameter skriptu niso na voljo)
+prjElevOffset = 0
+absElevOffset = elevZeroAbs
+if GLOB_MODPAR_NAME = "ui_shaft_bottom_abs" then xyz[ui_shaft_index][3] = ui_shaft_bottom_abs - absElevOffset	! premik jaška, višina ostane
+if GLOB_MODPAR_NAME = "ui_shaft_bottom_prj" then xyz[ui_shaft_index][3] = ui_shaft_bottom_prj - prjElevOffset
+if GLOB_MODPAR_NAME = "ui_shaft_cover_abs" or GLOB_MODPAR_NAME = "ui_shaft_cover_prj" then
+	! sprememba višine jaška pri nespremenjenem dnu
+	if GLOB_MODPAR_NAME = "ui_shaft_cover_abs" then _coverZ = ui_shaft_cover_abs - absElevOffset else _coverZ = ui_shaft_cover_prj - prjElevOffset
+	shaftDataDimensions[ui_shaft_index][DIM_SHAFT_HEIGHT] = max(_coverZ - xyz[ui_shaft_index][3], 0)
+	ui_shaft_height = shaftDataDimensions[ui_shaft_index][DIM_SHAFT_HEIGHT]: parameters ui_shaft_height = ui_shaft_height
+endif
+
+! povišek je del skupne višine jaška - ne sme biti večji od nje
+for i = 1 to n
+	if shaftDataDimensions[i][DIM_RAISE_HEIGHT] < nix then shaftDataDimensions[i][DIM_RAISE_HEIGHT] = 0.0
+	if shaftDataDimensions[i][DIM_RAISE_HEIGHT] > shaftDataDimensions[i][DIM_SHAFT_HEIGHT] then shaftDataDimensions[i][DIM_RAISE_HEIGHT] = shaftDataDimensions[i][DIM_SHAFT_HEIGHT]
+next i
+if ui_shaft_raise > shaftDataDimensions[ui_shaft_index][DIM_RAISE_HEIGHT] + nix then
+	ui_shaft_raise = shaftDataDimensions[ui_shaft_index][DIM_RAISE_HEIGHT]: parameters ui_shaft_raise = ui_shaft_raise
+endif
+
+! osvežitev prikaza kot izbranega jaška
+_bottomZ = xyz[ui_shaft_index][3]
+_coverZ = _bottomZ + shaftDataDimensions[ui_shaft_index][DIM_SHAFT_HEIGHT]
+ui_shaft_bottom_abs = absElevOffset + _bottomZ: parameters ui_shaft_bottom_abs = ui_shaft_bottom_abs
+ui_shaft_cover_abs = absElevOffset + _coverZ: parameters ui_shaft_cover_abs = ui_shaft_cover_abs
+ui_shaft_bottom_prj = prjElevOffset + _bottomZ: parameters ui_shaft_bottom_prj = ui_shaft_bottom_prj
+ui_shaft_cover_prj = prjElevOffset + _coverZ: parameters ui_shaft_cover_prj = ui_shaft_cover_prj
 
 if GLOB_MODPAR_NAME = "shaftDataDimensions" then
 	for i = 1 to n
@@ -37,9 +94,36 @@ endif
 
 
 
+! dodatni vtoki/iztoki izbranega jaška
+dim ui_port_index_range[]
+for k = 1 to MAX_SHAFT_PORTS: ui_port_index_range[k] = k: next k
+values "ui_port_index" ui_port_index_range
+values{2} "ui_port_type" PORT_NONE, "Ni", PORT_INLET, "Vtok", PORT_OUTLET, "Iztok"
+values "ui_port_height" range[0, ]
+values "ui_port_diameter" range[0, ]
+
+portIdx = (ui_shaft_index - 1) * MAX_SHAFT_PORTS + ui_port_index
+if GLOB_MODPAR_NAME = "ui_port_type" then
+	shaftPortTypes[portIdx] = ui_port_type
+	if ui_port_type <> PORT_NONE and shaftPortDiameters[portIdx] < nix then shaftPortDiameters[portIdx] = 0.2
+endif
+if GLOB_MODPAR_NAME = "ui_port_angle" then shaftPortAngles[portIdx] = ui_port_angle
+if GLOB_MODPAR_NAME = "ui_port_height" then shaftPortHeights[portIdx] = ui_port_height
+if GLOB_MODPAR_NAME = "ui_port_diameter" then shaftPortDiameters[portIdx] = ui_port_diameter
+
+! prikaz izbranega vtoka/iztoka (tudi po urejanju s hotspotom)
+ui_port_type = shaftPortTypes[portIdx]: parameters ui_port_type = ui_port_type
+ui_port_angle = shaftPortAngles[portIdx]: parameters ui_port_angle = ui_port_angle
+ui_port_height = shaftPortHeights[portIdx]: parameters ui_port_height = ui_port_height
+ui_port_diameter = shaftPortDiameters[portIdx]: parameters ui_port_diameter = ui_port_diameter
+
+if ui_port_type = PORT_NONE then lock "ui_port_angle", "ui_port_height", "ui_port_diameter"
+
 parameters xyz = xyz, n = n, xyz_ea = xyz_e
 parameters shaftDataDimensions = shaftDataDimensions, shaftDataOptions = shaftDataOptions, pipeDimensions = pipeDimensions
-parameters totalLength = totalLength
+parameters shaftProfileTexts = shaftProfileTexts, shaftCaptionLinesShow = shaftCaptionLinesShow
+parameters shaftPortTypes = shaftPortTypes, shaftPortAngles = shaftPortAngles, shaftPortHeights = shaftPortHeights, shaftPortDiameters = shaftPortDiameters
+parameters totalLength = totalLength, elevZeroAbs = elevZeroAbs
 
 lock "totalLength"
 
@@ -50,6 +134,12 @@ result = request("FONTNAMES_LIST", "", font_names)
 values "pipeCaptionTextFont" font_names
 values "shaftCaptionTextFont" font_names
 values "profileTextFont" font_names
+values "profileShaftCaptionTextFont" font_names
+
+values "shaftCaptionTextSize" range(0, ]
+values "pipeCaptionTextSize" range(0, ]
+values "profileTextSize" range(0, ]
+values "profileShaftCaptionTextSize" range(0, ]
 
 values{2} "showPipeCaption" 	SHOWTEXT_ALWAYS, "Always",
 	SHOWTEXT_NEVER, "Never",
@@ -71,4 +161,8 @@ if shaftCaptionTextStyleByMVO then
 	lock "shaftCaptionTextFont"
 	lock "shaftCaptionTextSize"
 	lock "shaftCaptionTextStyle"
+endif
+
+if not(show3D) then
+	lock "cast_shadow", "surface_mat", "coverMat", "pipeMat"
 endif

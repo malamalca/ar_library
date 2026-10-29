@@ -1,0 +1,87 @@
+﻿! ==============================================================================
+! arFrameTypes - frame type table for arFrame
+!
+! Not part of the library: add this part (arFrameTypes.gsm) to the project's
+! embedded library and edit the table below for that project. arFrame calls it by
+! name, so keep the name. Without it arFrame simply has no Frame Type pop-up.
+!
+! It is a Library Global Settings part (not placeable) on purpose: arFrame first
+! asks LIBRARYGLOBAL for the parameter "isFrameTypesTable" to find out whether the
+! part is there at all - calling a part that is missing freezes ArchiCAD.
+! Keep that parameter (value 1) in any own version.
+!
+! arFrame calls it as
+!     dim frameTypeNames[20], frameTypeDims[20][7]
+!     CALL "arFrameTypes" PARAMETERS ALL RETURNED_PARAMETERS frameTypeNames, frameTypeDims
+!
+! The two returned arrays have a FIXED size (20 types, 7 sizes each), the same on
+! both sides of the call.
+! Do not change the sizes. Fill the rows one under another from the top - the
+! first row without a name ends the list.
+!
+!   frameTypeNames[i]     name of type i, shown in the Frame Type pop-up
+!   frameTypeDims[i][1]   frame width         (B of arFrame)
+!   frameTypeDims[i][2]   bottom plate height (bottomElementHeight)
+!   frameTypeDims[i][3]   top plate height    (topElementHeight)
+!   frameTypeDims[i][4]   stud width          (defaultStudWidth)
+!   frameTypeDims[i][5]   first stud width    (firstStudWidth)
+!   frameTypeDims[i][6]   last stud width     (lastStudWidth)
+!   frameTypeDims[i][7]   support post width  (supportPostWidth)
+!
+! All sizes in METERS.
+! ==============================================================================
+dim frameTypeNames[20]
+dim frameTypeDims[20][7]
+
+for i = 1 to 20
+	frameTypeNames[i] = ""
+	for j = 1 to 7
+		frameTypeDims[i][j] = 0
+	next j
+next i
+
+! ------------------------------------------------------------------------------
+! The table - add or edit rows here
+! ------------------------------------------------------------------------------
+
+row = 1
+frameTypeNames[row] = "Okvir 16 cm"
+frameTypeDims[row][1] = 0.16		! frame width
+frameTypeDims[row][2] = 0.08		! bottom plate
+frameTypeDims[row][3] = 0.08		! top plate
+frameTypeDims[row][4] = 0.08		! stud
+frameTypeDims[row][5] = 0.10		! first stud
+frameTypeDims[row][6] = 0.10		! last stud
+frameTypeDims[row][7] = 0.08		! support post
+
+row = 2
+frameTypeNames[row] = "Okvir 20 cm"
+frameTypeDims[row][1] = 0.20		! frame width
+frameTypeDims[row][2] = 0.08		! bottom plate
+frameTypeDims[row][3] = 0.08		! top plate
+frameTypeDims[row][4] = 0.08		! stud
+frameTypeDims[row][5] = 0.10		! first stud
+frameTypeDims[row][6] = 0.10		! last stud
+frameTypeDims[row][7] = 0.08		! support post
+
+row = 3
+frameTypeNames[row] = "Okvir 24 cm"
+frameTypeDims[row][1] = 0.24		! frame width
+frameTypeDims[row][2] = 0.10		! bottom plate
+frameTypeDims[row][3] = 0.10		! top plate
+frameTypeDims[row][4] = 0.10		! stud
+frameTypeDims[row][5] = 0.12		! first stud
+frameTypeDims[row][6] = 0.12		! last stud
+frameTypeDims[row][7] = 0.10		! support post
+
+row = 4
+frameTypeNames[row] = "Predelna stena 10 cm"
+frameTypeDims[row][1] = 0.10		! frame width
+frameTypeDims[row][2] = 0.06		! bottom plate
+frameTypeDims[row][3] = 0.06		! top plate
+frameTypeDims[row][4] = 0.06		! stud
+frameTypeDims[row][5] = 0.06		! first stud
+frameTypeDims[row][6] = 0.06		! last stud
+frameTypeDims[row][7] = 0.06		! support post
+
+END frameTypeNames, frameTypeDims

@@ -4,6 +4,7 @@
 		<AutoHotspots>false</AutoHotspots>
 		<StatBits>
 			<STBit_FixSize/>
+			<STBit_UIUseHierarchicalPages/>
 		</StatBits>
 		<WDLeftFrame>0</WDLeftFrame>
 		<WDRightFrame>0</WDRightFrame>
@@ -302,6 +303,9 @@
 		</Length>
 		<Angle Name="directions">
 			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
 			<ArrayValues FirstDimension="50" SecondDimension="0">
 				<AVal Row="1">0</AVal>
 				<AVal Row="2">30</AVal>
@@ -802,6 +806,55 @@
 		<Length Name="costumOffset">
 			<Description><![CDATA[""]]></Description>
 			<Value>0</Value>
+		</Length>
+		<Integer Name="gs_ui_current_page">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>2</Value>
+		</Integer>
+		<Integer Name="ui_node_index">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Integer>
+		<Length Name="ui_node_segment_length">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>1</Value>
+		</Length>
+		<Angle Name="ui_node_direction">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Angle>
+		<Angle Name="ui_node_junction">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0</Value>
+		</Angle>
+		<Length Name="ui_node_junction_length">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0.22</Value>
+		</Length>
+		<Length Name="ui_node_junction_width">
+			<Description><![CDATA[""]]></Description>
+			<Flags>
+				<ParFlg_Hidden/>
+			</Flags>
+			<Value>0.11</Value>
 		</Length>
 	</Parameters>
 </ParamSection>

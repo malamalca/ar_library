@@ -1,19 +1,89 @@
 ﻿wallWidth = 0.05
 
+shaftDiameter = shaftDataDimensions[DIM_SHAFT_DIM1]
+totalHeight = shaftDataDimensions[DIM_SHAFT_HEIGHT]
 
-!if kind = KIND_GENERIC_ROUND or kind = KIND_GENERIC_STANDARD then
-	prism_ 12, shaftDataDimensions[DIM_SHAFT_HEIGHT],
-		-shaftDataDimensions[DIM_SHAFT_DIM1] / 2, 0, 13+66,
+! premer pokrova in poviška (privzeto 60cm), ne večji od jaška
+coverDiameter = shaftDataDimensions[DIM_COVER_DIM1]
+if coverDiameter < nix then coverDiameter = 0.6
+if shaftDiameter > nix then coverDiameter = min(coverDiameter, shaftDiameter)
+
+! od zgoraj navzdol: pokrov, povišek, zgornja plošča (če je pokrov manjši od jaška), telo jaška
+coverThickness = min(COVER_THICKNESS, totalHeight)
+raiseHeight = min(max(shaftDataDimensions[DIM_RAISE_HEIGHT], 0), totalHeight - coverThickness)
+hasSlab = shaftDiameter - coverDiameter > nix
+if hasSlab then slabThickness = wallWidth else slabThickness = 0
+bodyHeight = totalHeight - coverThickness - raiseHeight - slabThickness
+if bodyHeight < nix then
+	bodyHeight = 0
+	slabThickness = 0
+	hasSlab = 0
+endif
+
+! telo jaška
+material matShaft
+if bodyHeight > nix and shaftDiameter > nix then
+	prism_ 12, bodyHeight,
+		-shaftDiameter / 2, 0, 13+66,
 		0,0,900,
 		0, 180, 4000+13+66,
 		0,0,900,
 		0, 180, 4000+13+66,
-	
-		-shaftDataDimensions[DIM_SHAFT_DIM1] / 2, 0, -1,
-		shaftDataDimensions[DIM_SHAFT_DIM1] / 2-wallWidth, 0, 13,
+		-shaftDiameter / 2, 0, -1,
+		shaftDiameter / 2-wallWidth, 0, 13,
 		0,0,900,
 		0, -180, 4013,
 		0,0,900,
 		0,-180, 4013,
-		shaftDataDimensions[DIM_SHAFT_DIM1] / 2-wallWidth,0,-1
-!endif
+		shaftDiameter / 2-wallWidth,0,-1
+endif
+addz bodyHeight
+
+! zgornja plošča z odprtino premera pokrova
+if hasSlab then
+	prism_ 12, slabThickness,
+		-shaftDiameter / 2, 0, 13+66,
+		0,0,900,
+		0, 180, 4000+13+66,
+		0,0,900,
+		0, 180, 4000+13+66,
+		-shaftDiameter / 2, 0, -1,
+		-coverDiameter / 2 + wallWidth, 0, 13,
+		0,0,900,
+		0, -180, 4013,
+		0,0,900,
+		0,-180, 4013,
+		-coverDiameter / 2 + wallWidth, 0, -1
+endif
+addz slabThickness
+
+! povišek (obroč s premerom pokrova)
+if raiseHeight > nix then
+	prism_ 12, raiseHeight,
+		-coverDiameter / 2, 0, 13+66,
+		0,0,900,
+		0, 180, 4000+13+66,
+		0,0,900,
+		0, 180, 4000+13+66,
+		-coverDiameter / 2, 0, -1,
+		-coverDiameter / 2 + wallWidth, 0, 13,
+		0,0,900,
+		0, -180, 4013,
+		0,0,900,
+		0,-180, 4013,
+		-coverDiameter / 2 + wallWidth, 0, -1
+endif
+addz raiseHeight
+
+! pokrov
+material matCover
+if coverThickness > nix then
+	if shaftDataOptions[OPT_COVER_TYPE] = COVER_TYPE_RECTANGLE and shaftDataDimensions[DIM_COVER_DIM1] > nix and shaftDataDimensions[DIM_COVER_DIM2] > nix then
+		add -shaftDataDimensions[DIM_COVER_DIM1] / 2, -shaftDataDimensions[DIM_COVER_DIM2] / 2, 0
+		block shaftDataDimensions[DIM_COVER_DIM1], shaftDataDimensions[DIM_COVER_DIM2], coverThickness
+		del 1
+	else
+		cylind coverThickness, coverDiameter / 2
+	endif
+endif
+del 3

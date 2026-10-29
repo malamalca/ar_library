@@ -3,6 +3,14 @@ UI_CURRENT_PAGE gs_ui_current_page
 
 xLeft = 20
 
+! a frame type takes over the depth, the plates and the stud width;
+! those fields are then shown as plain text instead of input fields
+! nFrameTypes and FRAMETYPE_CUSTOM come from the master script, which has
+! already run at this point - that way the pop-up is there the first time round
+frameTypeActive = 0
+IF nFrameTypes > 0 AND frameType <> FRAMETYPE_CUSTOM THEN frameTypeActive = 1
+uiDimRet = REQUEST("Linear_dimension", "", uiDimFormat)
+
 yTop = 5
 yLabel = 14
 yRow = 40
@@ -13,6 +21,7 @@ iPageIDStuds			=  2
 iPageIDBlocking			=  3
 iPageID2DRepr			=  4
 iPageID3DRepr			=  5
+iPageIDFrameView		=  6
 
 
 ! ==============================================================================
@@ -33,6 +42,9 @@ iPageID3DRepr			=  5
 
 	UI_PAGE iPageID3DRepr, iPageIDRoot, '3D Representation', 54
 		gosub "3DRepr"
+
+	UI_PAGE iPageIDFrameView, iPageIDRoot, 'Frame View', 54
+		gosub "frameViewPage"
 END
 
 
@@ -43,15 +55,29 @@ END
 ! ------------------------------------------------------------------------------
 "geometryPage":
 	aRow = 1
-	xOffset = 0
+
+	! with frame types available the first row also carries the type pop-up
+	xColLength = 0 : xColDepth = 90 : xColHeight = 180
+	IF nFrameTypes > 0 THEN
+		xColLength = 160 : xColDepth = 250 : xColHeight = 340
+
+		ui_outfield "Frame Type:", 	xLeft, 					yTop + (aRow - 1) * yRow , 150, 14
+		ui_infield "frameType", 	xLeft, 					yTop + (aRow - 1) * yRow + yLabel, 150, 24
+	ENDIF
+
+	xOffset = xColLength
 	ui_outfield "Length:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
 	ui_infield "A", 		xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
 
-	xOffset = 90
+	xOffset = xColDepth
 	ui_outfield "Depth:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
-	ui_infield "B", 		xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	IF frameTypeActive THEN
+		ui_outfield STR(uiDimFormat, B), xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel + 5, 80, 14
+	ELSE
+		ui_infield "B", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	ENDIF
 
-	xOffset = 180
+	xOffset = xColHeight
 	ui_outfield "Height:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 80, 14
 	ui_infield "ZZYZX", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 80, 24
 
@@ -108,63 +134,122 @@ return
 
 	xOffset = 180
 	ui_outfield "Stud Width:", 			xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 100, 14
-	ui_infield "defaultStudWidth", 		xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	IF frameTypeActive THEN
+		ui_outfield STR(uiDimFormat, defaultStudWidth), xLeft + xOffset, yTop + (aRow - 1) * yRow + yLabel + 5, 80, 14
+	ELSE
+		ui_infield "defaultStudWidth", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	ENDIF
 
-	! ---- Bottom stud ----
+	! ---- End studs: the outermost stud on each side may be thicker ----
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "First Stud Width:", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 100, 14
+	IF frameTypeActive THEN
+		ui_outfield STR(uiDimFormat, firstStudWidth), xLeft + xOffset, yTop + (aRow - 1) * yRow + yLabel + 5, 80, 14
+	ELSE
+		ui_infield "firstStudWidth", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	ENDIF
+
+	xOffset = 90
+	ui_outfield "Last Stud Width:", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 100, 14
+	IF frameTypeActive THEN
+		ui_outfield STR(uiDimFormat, lastStudWidth), xLeft + xOffset, yTop + (aRow - 1) * yRow + yLabel + 5, 80, 14
+	ELSE
+		ui_infield "lastStudWidth", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	ENDIF
+
+	xOffset = 180
+	ui_outfield "Support Post Width:", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 120, 14
+	IF frameTypeActive THEN
+		ui_outfield STR(uiDimFormat, supportPostWidth), xLeft + xOffset, yTop + (aRow - 1) * yRow + yLabel + 5, 80, 14
+	ELSE
+		ui_infield "supportPostWidth", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	ENDIF
+
+	! ---- Bottom and top stud, both plates in one row ----
 	aRow = aRow + 1.4
 	xOffset = 0
 	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
 	ui_infield "lblBottomElement", 		xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel - 1, 15, 24
-	ui_outfield "Bottom Stud", 			xLeft + xOffset + 20, yTop + (aRow - 1) * yRow + yLabel + 4, 110, 14
-	ui_separator xLeft + xOffset + 110, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+	ui_outfield "Bottom Stud", 			xLeft + xOffset + 20, yTop + (aRow - 1) * yRow + yLabel + 4, 90, 14
+	ui_separator xLeft + xOffset + 110, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 168, 		yTop + (aRow - 1) * yRow + 25
+	ui_infield "lblTopElement", 		xLeft + xOffset + 175, yTop + (aRow - 1) * yRow + yLabel - 1, 15, 24
+	ui_outfield "Top Stud", 			xLeft + xOffset + 195, yTop + (aRow - 1) * yRow + yLabel + 4, 90, 14
+	ui_separator xLeft + xOffset + 290, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
 
 	aRow = aRow + 1
 	xOffset = 0
-	ui_outfield "Height:", 				xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 80, 14
-	ui_infield "bottomElementHeight", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	ui_outfield "Bottom Height:", 		xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 100, 14
+	IF frameTypeActive THEN
+		ui_outfield STR(uiDimFormat, bottomElementHeight), xLeft + xOffset, yTop + (aRow - 1) * yRow + yLabel + 5, 80, 14
+	ELSE
+		ui_infield "bottomElementHeight", xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	ENDIF
 
-	! ---- Top stud ----
-	aRow = aRow + 1.4
-	xOffset = 0
-	ui_separator xLeft + xOffset - 10, 						yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
-	ui_infield "lblTopElement", 		xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel - 1, 15, 24
-	ui_outfield "Top Stud", 			xLeft + xOffset + 20, yTop + (aRow - 1) * yRow + yLabel + 4, 110, 14
-	ui_separator xLeft + xOffset + 110, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
-
-	aRow = aRow + 1
-	xOffset = 0
-	ui_outfield "Height:", 				xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 80, 14
-	ui_infield "topElementHeight", 		xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	xOffset = 180
+	ui_outfield "Top Height:", 			xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 100, 14
+	IF frameTypeActive THEN
+		ui_outfield STR(uiDimFormat, topElementHeight), xLeft + xOffset, yTop + (aRow - 1) * yRow + yLabel + 5, 80, 14
+	ELSE
+		ui_infield "topElementHeight", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	ENDIF
 return
 
 ! ------------------------------------------------------------------------------
 "blockingPage":
-	aRow = 1
-	xOffset = 0
-	ui_outfield "Horizontal blocking (noggins) between studs. Pick a stud bay,", xLeft + xOffset, yTop + (aRow - 1) * yRow, 430, 14
-	ui_outfield "then enter up to three blocking heights (0 = none).", xLeft + xOffset, yTop + (aRow - 1) * yRow + 14, 430, 14
+	! compact layout (fits the UI page height): bay, the three blocking bars as a table,
+	! then the plates and the support posts of the bay
+	ui_outfield "Pick a stud bay: up to three blocking bars, plates and support posts.", xLeft, yTop, 430, 14
 
 	! ---- bay selector ----
-	aRow = aRow + 1
-	xOffset = 0
-	ui_separator xLeft + xOffset - 10, 					yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset - 2,	 	yTop + (aRow - 1) * yRow + 25
-	ui_outfield "Stud Bay:", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel + 4, 70, 14
-	ui_infield "ui_hz_bay", xLeft + xOffset + 65, 		yTop + (aRow - 1) * yRow + yLabel, 50, 22
-	ui_separator xLeft + xOffset + 125, 				yTop + (aRow - 1) * yRow + 25, 		xLeft + xOffset + 450, 		yTop + (aRow - 1) * yRow + 25
+	yBay = yTop + 20
+	ui_outfield "Stud Bay:", xLeft, 					yBay + 4, 70, 14
+	ui_infield "ui_hz_bay", xLeft + 65, 				yBay, 70, 22
 
-	! ---- blocking heights for the selected bay ----
-	aRow = aRow + 1
-	xOffset = 0
-	ui_outfield "Height 1:", 	xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
-	ui_infield "ui_hz_1", 		xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	! ---- the three blocking bars of the selected bay ----
+	! offset = height of the bar bottom edge above the frame bottom; depth / height 0 = the
+	! default size (frame depth x stud width); delta Y shifts the bar sideways (0 = axis)
+	yTab = yBay + 30
+	ui_outfield "Offset (bottom)", xLeft + 20, 	yTab, 90, 14
+	ui_outfield "Depth", 	xLeft + 110, 	yTab, 80, 14
+	ui_outfield "Height", 	xLeft + 200, 	yTab, 80, 14
+	ui_outfield "Delta Y", 	xLeft + 290, 	yTab, 80, 14
 
-	xOffset = 90
-	ui_outfield "Height 2:", 	xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
-	ui_infield "ui_hz_2", 		xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	ui_outfield "1.", xLeft, yTab + 20 + 4, 18, 14
+	ui_infield "ui_hz_1", xLeft + 20, 	yTab + 20, 80, 22
+	ui_infield "ui_hz_d1", xLeft + 110, yTab + 20, 80, 22
+	ui_infield "ui_hz_h1", xLeft + 200, yTab + 20, 80, 22
+	ui_infield "ui_hz_y1", xLeft + 290, yTab + 20, 80, 22
 
-	xOffset = 180
-	ui_outfield "Height 3:", 	xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 80, 14
-	ui_infield "ui_hz_3", 		xLeft + xOffset, 		yTop + (aRow - 1) * yRow + yLabel, 80, 24
+	ui_outfield "2.", xLeft, yTab + 46 + 4, 18, 14
+	ui_infield "ui_hz_2", xLeft + 20, 	yTab + 46, 80, 22
+	ui_infield "ui_hz_d2", xLeft + 110, yTab + 46, 80, 22
+	ui_infield "ui_hz_h2", xLeft + 200, yTab + 46, 80, 22
+	ui_infield "ui_hz_y2", xLeft + 290, yTab + 46, 80, 22
+
+	ui_outfield "3.", xLeft, yTab + 72 + 4, 18, 14
+	ui_infield "ui_hz_3", xLeft + 20, 	yTab + 72, 80, 22
+	ui_infield "ui_hz_d3", xLeft + 110, yTab + 72, 80, 22
+	ui_infield "ui_hz_h3", xLeft + 200, yTab + 72, 80, 22
+	ui_infield "ui_hz_y3", xLeft + 290, yTab + 72, 80, 22
+
+	! ---- main plates of the selected bay (only across the width of the bay) ----
+	yPl = yTab + 106
+	ui_outfield "Main Plates In This Bay", xLeft, 		yPl, 150, 14
+	ui_separator xLeft + 150, yPl + 7, xLeft + 450, yPl + 7
+	ui_infield "ui_hz_showBot", xLeft, 					yPl + 18, 15, 22
+	ui_outfield "Show Bottom Plate", xLeft + 20, 		yPl + 22, 140, 14
+	ui_infield "ui_hz_showTop", xLeft + 180, 			yPl + 18, 15, 22
+	ui_outfield "Show Top Plate", xLeft + 200, 			yPl + 22, 140, 14
+
+	! ---- support posts: against the side studs, from the bottom up to the highest bar ----
+	yPo = yPl + 48
+	ui_outfield "Support Posts", xLeft, 				yPo, 150, 14
+	ui_separator xLeft + 100, yPo + 7, xLeft + 450, yPo + 7
+	ui_infield "ui_hz_vL", xLeft, 						yPo + 18, 15, 22
+	ui_outfield "Left", xLeft + 20, 					yPo + 22, 140, 14
+	ui_infield "ui_hz_vR", xLeft + 180, 				yPo + 18, 15, 22
+	ui_outfield "Right", xLeft + 200, 					yPo + 22, 140, 14
 return
 
 ! ------------------------------------------------------------------------------
@@ -178,6 +263,10 @@ return
 	xOffset = 0
 	ui_outfield "Frame Fill:", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow , 100, 14
 	ui_infield "frameFill", 	xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 160, 24
+
+	xOffset = 180
+	ui_outfield "Plate Line Type:", xLeft + xOffset, 		yTop + (aRow - 1) * yRow , 100, 14
+	ui_infield "plateLineType", xLeft + xOffset, 			yTop + (aRow - 1) * yRow + yLabel, 160, 24
 
 	aRow = aRow + 1.2
 	xOffset = 0
@@ -230,4 +319,70 @@ return
 	xOffset = 0
 	ui_outfield "Stud Material 2:", 	xLeft + xOffset, 	yTop + (aRow - 1) * yRow , 120, 14
 	ui_infield "studMat2", 				xLeft + xOffset, 	yTop + (aRow - 1) * yRow + yLabel, 200, 24
+return
+
+! ------------------------------------------------------------------------------
+"frameViewPage":
+	! compact layout: one hint line, then two groups of two rows (fits the UI page height)
+	yHead = yTop + 20
+
+	ui_outfield "Line drawing of the frame (elevation), drag it with its hotspot.", xLeft, yTop, 430, 14
+
+	! ---- View ----
+	aRow = 1
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 					yHead + (aRow - 1) * yRow + 25, 	xLeft + xOffset - 2,	 	yHead + (aRow - 1) * yRow + 25
+	ui_infield "lblFrameView", 		xLeft + xOffset, 	yHead + (aRow - 1) * yRow + yLabel - 1, 15, 24
+	ui_outfield "Show Frame View", 	xLeft + xOffset + 20, yHead + (aRow - 1) * yRow + yLabel + 4, 110, 14
+	ui_separator xLeft + xOffset + 130, 				yHead + (aRow - 1) * yRow + 25, 	xLeft + xOffset + 168, 		yHead + (aRow - 1) * yRow + 25
+	ui_infield "frameViewMirror", 	xLeft + xOffset + 175, yHead + (aRow - 1) * yRow + yLabel - 1, 15, 24
+	ui_outfield "Mirror (X Axis)", 	xLeft + xOffset + 195, yHead + (aRow - 1) * yRow + yLabel + 4, 100, 14
+	ui_separator xLeft + xOffset + 300, 				yHead + (aRow - 1) * yRow + 25, 	xLeft + xOffset + 450, 		yHead + (aRow - 1) * yRow + 25
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Offset X:", 		xLeft + xOffset, 	yHead + (aRow - 1) * yRow , 80, 14
+	ui_infield "frameViewOffsetX", 	xLeft + xOffset, 	yHead + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 90
+	ui_outfield "Offset Y:", 		xLeft + xOffset, 	yHead + (aRow - 1) * yRow , 80, 14
+	ui_infield "frameViewOffsetY", 	xLeft + xOffset, 	yHead + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 180
+	ui_outfield "Line Type:", 		xLeft + xOffset, 	yHead + (aRow - 1) * yRow , 80, 14
+	ui_infield "frameViewLineType", xLeft + xOffset, 	yHead + (aRow - 1) * yRow + yLabel, 160, 24
+
+	xOffset = 350
+	ui_outfield "Pen:", 			xLeft + xOffset, 	yHead + (aRow - 1) * yRow , 40, 14
+	ui_infield "frameViewPen", 		xLeft + xOffset, 	yHead + (aRow - 1) * yRow + yLabel, 40, 24
+
+	! ---- Dimensions ----
+	aRow = aRow + 1.4
+	xOffset = 0
+	ui_separator xLeft + xOffset - 10, 					yHead + (aRow - 1) * yRow + 25, 	xLeft + xOffset - 2,	 	yHead + (aRow - 1) * yRow + 25
+	ui_infield "lblFrameViewDims", 	xLeft + xOffset, 	yHead + (aRow - 1) * yRow + yLabel - 1, 15, 24
+	ui_outfield "Dimensions", 		xLeft + xOffset + 20, yHead + (aRow - 1) * yRow + yLabel + 4, 120, 14
+	ui_separator xLeft + xOffset + 110, 				yHead + (aRow - 1) * yRow + 25, 	xLeft + xOffset + 450, 		yHead + (aRow - 1) * yRow + 25
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Distance:", 		xLeft + xOffset, 	yHead + (aRow - 1) * yRow , 80, 14
+	ui_infield "frameViewDimDist", 	xLeft + xOffset, 	yHead + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 90
+	ui_outfield "Spacing:", 		xLeft + xOffset, 	yHead + (aRow - 1) * yRow , 80, 14
+	ui_infield "frameViewDimGap", 	xLeft + xOffset, 	yHead + (aRow - 1) * yRow + yLabel, 80, 24
+
+	xOffset = 180
+	ui_outfield "Pen:", 			xLeft + xOffset, 	yHead + (aRow - 1) * yRow , 40, 14
+	ui_infield "frameViewDimPen", 	xLeft + xOffset, 	yHead + (aRow - 1) * yRow + yLabel, 40, 24
+
+	aRow = aRow + 1
+	xOffset = 0
+	ui_outfield "Font:", 			xLeft + xOffset, 	yHead + (aRow - 1) * yRow , 80, 14
+	ui_infield "frameViewFont", 	xLeft + xOffset, 	yHead + (aRow - 1) * yRow + yLabel, 160, 24
+
+	xOffset = 180
+	ui_outfield "Text Size [mm]:", 	xLeft + xOffset, 	yHead + (aRow - 1) * yRow , 100, 14
+	ui_infield "frameViewTextSize", xLeft + xOffset, 	yHead + (aRow - 1) * yRow + yLabel, 80, 24
 return

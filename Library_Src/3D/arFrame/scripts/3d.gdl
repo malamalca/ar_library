@@ -1,6 +1,11 @@
 ﻿model solid
 studId = 1
 paramDrawBeamLength = A
+! cross section of every beam: height paramDrawBeamWidth, depth paramDrawBeamDepth, and
+! paramDrawBeamY = where its depth starts along Y (the plates and the blocking use the
+! full frame depth by default)
+paramDrawBeamDepth = B
+paramDrawBeamY = 0
 
 ! Second (right-side) diagonal cut is active only when a height and an angle are given.
 ! When it is OFF (the default for every existing placement), the original single-cut
@@ -15,6 +20,8 @@ paramDrawBeamWidth = bottomElementHeight
 
 ! show only if checked
 if lblBottomElement then
+for pSeg = 1 to nBotSeg
+	gSegA = botSegA[pSeg] : gSegB = botSegB[pSeg] : GOSUB "plateSegBegin"
 	if cutAngle < -NIX and cutHeight > NIX then
 		! dolžina podaljška za fillet zgornjega kota
 		deltaLen = tan(-cutAngle) * topElementHeight
@@ -64,6 +71,8 @@ if lblBottomElement then
 	else
 		GOSUB "drawBeam3d"
 	endif
+	GOSUB "plateSegEnd"
+next pSeg
 endif
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -76,6 +85,8 @@ hotspot 0,0, -1, unID, cutHeight, 3 : unID = unID+1
 
 ! show only if checked (matches bottom plate + two-sided cut path)
 if lblTopElement then
+for pSeg = 1 to nTopSeg
+	gSegA = topSegA[pSeg] : gSegB = topSegB[pSeg] : GOSUB "plateSegBegin"
 if cutHeight > NIX and cutHeight < ZZYZX and cutAngle > 0 then
 	! višina poševnine (notranja in spodnja stran)
 	deltaHeight = (ZZYZX - topElementHeight) - (cutHeight - topElementHeight / cos(cutAngle))
@@ -141,17 +152,27 @@ else
 	endif
 	DEL 1
 endif
+	GOSUB "plateSegEnd"
+next pSeg
 endif ! lblTopElement
 
 HOTSPOT 0,0,0, unID : unID = unID+1
+HOTSPOT 0,B,0, unID : unID = unID+1
 HOTSPOT 0,0,ZZYZX, unID : unID = unID+1
+HOTSPOT 0,B,ZZYZX, unID : unID = unID+1
 HOTSPOT A,0,0, unID : unID = unID+1
+HOTSPOT A,B,0, unID : unID = unID+1
 HOTSPOT A,0,ZZYZX, unID : unID = unID+1
+HOTSPOT A,B,ZZYZX, unID : unID = unID+1
 
 HOTSPOT 0,0,bottomElementHeight, unID : unID = unID+1
+HOTSPOT 0,B,bottomElementHeight, unID : unID = unID+1
 HOTSPOT 0,0,ZZYZX-topElementHeight, unID : unID = unID+1
+HOTSPOT 0,B,ZZYZX-topElementHeight, unID : unID = unID+1
 HOTSPOT A,0,bottomElementHeight, unID : unID = unID+1
+HOTSPOT A,B,bottomElementHeight, unID : unID = unID+1
 HOTSPOT A,0,ZZYZX-topElementHeight, unID : unID = unID+1
+HOTSPOT A,B,ZZYZX-topElementHeight, unID : unID = unID+1
 
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -174,11 +195,16 @@ endif
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Draw In-Between Studs
-paramDrawStudHeight = ZZYZX- topElementHeight -bottomElementHeight
-addz bottomElementHeight
+! effective plate heights: a hidden plate must not shorten or offset the studs
+botH = 0 : if lblBottomElement then botH = bottomElementHeight
+topH = 0 : if lblTopElement    then topH = topElementHeight
+
+paramDrawStudHeight = ZZYZX - topH - botH
+paramDrawBeamWidth  = defaultStudWidth      ! blocking is cut from stud stock
+addz botH
 
 FOR i = 1 TO n
-	paramDrawStudWidth = defaultStudWidth
+	paramDrawStudWidth = studWidths[i]
 
 	HOTSPOT 0, 0, 0, unID, X[i], 1+128   : unID = unID+1
 	HOTSPOT X[i], 0, 0, unID, X[i], 2    : unID = unID+1
@@ -188,19 +214,47 @@ FOR i = 1 TO n
 	GOSUB "drawStud3d"
 
 	for ii = 1 to 3
-		if abs(horizontals[i][ii]) > nix then
-			paramDrawBeamLength = tmpX[i+1] - tmpX[i] - paramDrawStudWidth
-		
-			HOTSPOT tmpX[i] + paramDrawStudWidth/2, 0, horizontals[i][ii] - bottomElementHeight, unID : unID = unID+1
-			HOTSPOT tmpX[i+1] - paramDrawStudWidth/2, 0, horizontals[i][ii] - bottomElementHeight, unID : unID = unID+1
+		if abs(horizontals[i][ii]) > nix and i < n then
+			! right edge of the bay: the next stud, or the frame edge for the last stud
+			bayNear = tmpX[i] + tmpW[i]/2
+			if i < n then
+				bayFar = tmpX[i+1] - tmpW[i+1]/2
+			else
+				bayFar = A
+			endif
+			! the bar runs between the support posts of the bay, if it has any
+			bayNear = barNear[i][ii]
+			bayFar = barFar[i][ii]
+			paramDrawBeamLength = bayFar - bayNear
 
-			addx tmpX[i] + paramDrawStudWidth/2 
-			addz horizontals[i][ii] - 3 * bottomElementHeight / 2
+			if paramDrawBeamLength > NIX then
+				HOTSPOT bayNear, 0, horizontals[i][ii] - botH, unID : unID = unID+1
+				HOTSPOT bayFar,  0, horizontals[i][ii] - botH, unID : unID = unID+1
 
-			GOSUB "drawBeam3d"
-			del 2
+				GOSUB "setBlockingBar"
+				! hotspots that move the bar up / down: its bottom edge, measured from the frame bottom
+				! (z = -botH here, the studs are raised by botH), in the middle of the bar
+				hsX = (bayNear + bayFar) / 2
+				hsY = paramDrawBeamY + paramDrawBeamDepth / 2
+				HOTSPOT hsX, hsY, -botH,     unID, horizontals[i][ii], 1+128 : unID = unID+1
+				HOTSPOT hsX, hsY, horizontals[i][ii] - botH, unID, horizontals[i][ii], 2 : unID = unID+1
+				HOTSPOT hsX, hsY, -botH - 1, unID, horizontals[i][ii], 3 : unID = unID+1
+				! hotspots that shift the bar along Y (delta Y, 0 = the frame axis), at the middle of its height
+				hsDyCol = (ii - 1) * 3 + 3
+				hsZ = horizontals[i][ii] + paramDrawBeamWidth / 2 - botH
+				HOTSPOT hsX, B/2, hsZ,     unID, horizontalsDim[i][hsDyCol], 1+128 : unID = unID+1
+				HOTSPOT hsX, B/2 + horizontalsDim[i][hsDyCol], hsZ, unID, horizontalsDim[i][hsDyCol], 2 : unID = unID+1
+				HOTSPOT hsX, B/2 - 1, hsZ, unID, horizontalsDim[i][hsDyCol], 3 : unID = unID+1
+				addx bayNear
+				addz horizontals[i][ii] - botH
+
+				GOSUB "drawBeam3d"
+				GOSUB "resetBeamDims"
+				del 2
+			endif
 		endif
 	next ii
+	GOSUB "drawBayVerticals3d"
 NEXT i
 
 if cutHeight > NIX then
@@ -247,6 +301,8 @@ else
 	! Bottom plate
 	paramDrawBeamWidth = bottomElementHeight
 	if lblBottomElement then
+		for pSeg = 1 to nBotSeg
+			gSegA = botSegA[pSeg] : gSegB = botSegB[pSeg] : GOSUB "plateSegBegin"
 		if botLeftOn or botRightOn then
 			botValley = botLeftOn and botRightOn and (runLbot + runRbot > A + NIX)
 			if botValley then
@@ -272,12 +328,16 @@ else
 			paramDrawBeamLength = A
 			GOSUB "drawBeam3d"
 		endif
+			GOSUB "plateSegEnd"
+		next pSeg
 	endif
 
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	! Top plate
 	paramDrawBeamWidth = topElementHeight
 	if lblTopElement then
+		for pSeg = 1 to nTopSeg
+			gSegA = topSegA[pSeg] : gSegB = topSegB[pSeg] : GOSUB "plateSegBegin"
 		if topLeftOn or topRightOn then
 			topRidge = topLeftOn and topRightOn and (runLtop + runRtop > A + NIX)
 			if topRidge then
@@ -305,6 +365,8 @@ else
 			GOSUB "drawBeam3d"
 			DEL 1
 		endif
+			GOSUB "plateSegEnd"
+		next pSeg
 	endif
 
 	! cut-height editing hotspots (left at X=0, right at X=A)
@@ -329,27 +391,62 @@ else
 		nStudCuts = nStudCuts + 1
 	endif
 
-	paramDrawStudHeight = ZZYZX - topElementHeight - bottomElementHeight
-	paramDrawBeamWidth  = topElementHeight
-	addz bottomElementHeight
+	! effective plate heights: a hidden plate must not shorten or offset the studs
+	botH = 0 : if lblBottomElement then botH = bottomElementHeight
+	topH = 0 : if lblTopElement    then topH = topElementHeight
+
+	paramDrawStudHeight = ZZYZX - topH - botH
+	paramDrawBeamWidth  = defaultStudWidth      ! blocking is cut from stud stock
+	addz botH
 	FOR i = 1 TO n
-		paramDrawStudWidth = defaultStudWidth
+		paramDrawStudWidth = studWidths[i]
 		HOTSPOT 0, 0, 0, unID, X[i], 1+128   : unID = unID+1
 		HOTSPOT X[i], 0, 0, unID, X[i], 2    : unID = unID+1
 		HOTSPOT -1, 0, 0, unID, X[i], 3      : unID = unID+1
 		paramDrawStudOffset = X[i]
 		GOSUB "drawStud3d"
 		for ii = 1 to 3
-			if abs(horizontals[i][ii]) > nix then
-				paramDrawBeamLength = tmpX[i+1] - tmpX[i] - paramDrawStudWidth
-				HOTSPOT tmpX[i] + paramDrawStudWidth/2, 0, horizontals[i][ii] - bottomElementHeight, unID : unID = unID+1
-				HOTSPOT tmpX[i+1] - paramDrawStudWidth/2, 0, horizontals[i][ii] - bottomElementHeight, unID : unID = unID+1
-				addx tmpX[i] + paramDrawStudWidth/2
-				addz horizontals[i][ii] - 3 * bottomElementHeight / 2
-				GOSUB "drawBeam3d"
-				del 2
+			if abs(horizontals[i][ii]) > nix and i < n then
+				! right edge of the bay: the next stud, or the frame edge for the last stud
+				bayNear = tmpX[i] + tmpW[i]/2
+				if i < n then
+					bayFar = tmpX[i+1] - tmpW[i+1]/2
+				else
+					bayFar = A
+				endif
+				! the bar runs between the support posts of the bay, if it has any
+				bayNear = barNear[i][ii]
+				bayFar = barFar[i][ii]
+				paramDrawBeamLength = bayFar - bayNear
+
+				if paramDrawBeamLength > NIX then
+					HOTSPOT bayNear, 0, horizontals[i][ii] - botH, unID : unID = unID+1
+					HOTSPOT bayFar,  0, horizontals[i][ii] - botH, unID : unID = unID+1
+
+					GOSUB "setBlockingBar"
+					! hotspots that move the bar up / down: its bottom edge, measured from the frame bottom
+					! (z = -botH here, the studs are raised by botH), in the middle of the bar
+					hsX = (bayNear + bayFar) / 2
+					hsY = paramDrawBeamY + paramDrawBeamDepth / 2
+					HOTSPOT hsX, hsY, -botH,     unID, horizontals[i][ii], 1+128 : unID = unID+1
+					HOTSPOT hsX, hsY, horizontals[i][ii] - botH, unID, horizontals[i][ii], 2 : unID = unID+1
+					HOTSPOT hsX, hsY, -botH - 1, unID, horizontals[i][ii], 3 : unID = unID+1
+					! hotspots that shift the bar along Y (delta Y, 0 = the frame axis), at the middle of its height
+					hsDyCol = (ii - 1) * 3 + 3
+					hsZ = horizontals[i][ii] + paramDrawBeamWidth / 2 - botH
+					HOTSPOT hsX, B/2, hsZ,     unID, horizontalsDim[i][hsDyCol], 1+128 : unID = unID+1
+					HOTSPOT hsX, B/2 + horizontalsDim[i][hsDyCol], hsZ, unID, horizontalsDim[i][hsDyCol], 2 : unID = unID+1
+					HOTSPOT hsX, B/2 - 1, hsZ, unID, horizontalsDim[i][hsDyCol], 3 : unID = unID+1
+					addx bayNear
+					addz horizontals[i][ii] - botH
+
+					GOSUB "drawBeam3d"
+					GOSUB "resetBeamDims"
+					del 2
+				endif
 			endif
 		next ii
+		GOSUB "drawBayVerticals3d"
 	NEXT i
 	del 1
 	for kStud = 1 to nStudCuts : cutend : next kStud
@@ -357,13 +454,21 @@ else
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	! Corner hotspots
 	HOTSPOT 0,0,0, unID : unID = unID+1
+	HOTSPOT 0,B,0, unID : unID = unID+1
 	HOTSPOT 0,0,ZZYZX, unID : unID = unID+1
+	HOTSPOT 0,B,ZZYZX, unID : unID = unID+1
 	HOTSPOT A,0,0, unID : unID = unID+1
+	HOTSPOT A,B,0, unID : unID = unID+1
 	HOTSPOT A,0,ZZYZX, unID : unID = unID+1
+	HOTSPOT A,B,ZZYZX, unID : unID = unID+1
 	HOTSPOT 0,0,bottomElementHeight, unID : unID = unID+1
+	HOTSPOT 0,B,bottomElementHeight, unID : unID = unID+1
 	HOTSPOT 0,0,ZZYZX-topElementHeight, unID : unID = unID+1
+	HOTSPOT 0,B,ZZYZX-topElementHeight, unID : unID = unID+1
 	HOTSPOT A,0,bottomElementHeight, unID : unID = unID+1
+	HOTSPOT A,B,bottomElementHeight, unID : unID = unID+1
 	HOTSPOT A,0,ZZYZX-topElementHeight, unID : unID = unID+1
+	HOTSPOT A,B,ZZYZX-topElementHeight, unID : unID = unID+1
 endif
 
 END
@@ -391,6 +496,7 @@ RETURN
 ! Parameters:
 !	paramDrawBeamWidth
 "drawBeam3d":
+	ADDY paramDrawBeamY
 	ADDZ paramDrawBeamWidth
 	ROTY 90
 
@@ -399,18 +505,18 @@ RETURN
 
 	set building_material studMat1
 	! levo
-	PRISM 3, paramDrawBeamLength, paramDrawBeamWidth/2, B/2, paramDrawBeamWidth, 0, 0,0
+	PRISM 3, paramDrawBeamLength, paramDrawBeamWidth/2, paramDrawBeamDepth/2, paramDrawBeamWidth, 0, 0,0
 
 	! desno
-	PRISM 3, paramDrawBeamLength, 0, B, paramDrawBeamWidth, B, paramDrawBeamWidth/2, B/2
+	PRISM 3, paramDrawBeamLength, 0, paramDrawBeamDepth, paramDrawBeamWidth, paramDrawBeamDepth, paramDrawBeamWidth/2, paramDrawBeamDepth/2
 
 
 	set building_material studMat2
 	! zgoraj
-	PRISM 3, paramDrawBeamLength, 0, 0, paramDrawBeamWidth/2, B/2, 0, B
+	PRISM 3, paramDrawBeamLength, 0, 0, paramDrawBeamWidth/2, paramDrawBeamDepth/2, 0, paramDrawBeamDepth
 
 	! spodaj
-	PRISM 3, paramDrawBeamLength, paramDrawBeamWidth, 0, paramDrawBeamWidth, B, paramDrawBeamWidth/2, B/2
+	PRISM 3, paramDrawBeamLength, paramDrawBeamWidth, 0, paramDrawBeamWidth, paramDrawBeamDepth, paramDrawBeamWidth/2, paramDrawBeamDepth/2
 
 	endgroup
 
@@ -422,7 +528,7 @@ RETURN
 	!brez sekcij (rezerva)
 	!PRISM 4, A, 0,0, paramDrawBeamWidth, 0, paramDrawBeamWidth, B, 0, B
 
-	DEL 2
+	DEL 3
 RETURN
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -606,4 +712,72 @@ RETURN
 		addz gCH - topElementHeight/cos(gCA)
 		rotz -90 : cutplane{2} gCA : del 2
 	endif
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ===== Plates in bays =====
+! A plate is drawn once per stretch that has it (botSeg / topSeg from the master
+! script), each time trimmed by two vertical cutting planes, gSegA ... gSegB. When no
+! bay leaves a plate out, nothing is trimmed and the plate is drawn exactly as before.
+"plateSegBegin":
+	if anyPlateOmit then
+		add gSegA, 0, 0 : rotz -90 : cutplane{2} 90 : del 2   ! keep x > gSegA
+		add gSegB, 0, 0 : rotz 90  : cutplane{2} 90 : del 2   ! keep x < gSegB
+	endif
+RETURN
+
+"plateSegEnd":
+	if anyPlateOmit then
+		cutend
+		cutend
+	endif
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Vertical bars of bay i (left and/or right, along the studs): they run between the
+! lowest and the highest blocking of the bay, so the bay needs at least two.
+! Called inside the stud frame (already raised by botH) with the stud loop index i.
+"drawBayVerticals3d":
+	if postOk[i] then
+		vSaveW = paramDrawStudWidth
+		vSaveH = paramDrawStudHeight
+		vSaveO = paramDrawStudOffset
+		paramDrawStudWidth = supportPostWidth
+		paramDrawStudHeight = postZ1[i] - postZ0[i]
+		addz postZ0[i] - botH
+		if bayVertLeft[i] <> 0 then
+			paramDrawStudOffset = postNear[i] + supportPostWidth/2
+			GOSUB "drawStud3d"
+		endif
+		if bayVertRight[i] <> 0 then
+			paramDrawStudOffset = postFar[i] - supportPostWidth/2
+			GOSUB "drawStud3d"
+		endif
+		del 1
+		paramDrawStudWidth = vSaveW
+		paramDrawStudHeight = vSaveH
+		paramDrawStudOffset = vSaveO
+	endif
+RETURN
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Blocking bar ii of bay i: its own depth / height / shift along Y (0 = the default)
+! horizontals[i][ii] is the height of the bottom edge of the bar above the frame bottom;
+! the shift along Y is measured from the frame axis (Y = B/2).
+"setBlockingBar":
+	bbBase = (ii - 1) * 3
+	bbD = horizontalsDim[i][bbBase+1]
+	if bbD < nix then bbD = B
+	bbH = horizontalsDim[i][bbBase+2]
+	if bbH < nix then bbH = defaultStudWidth
+	bbY = horizontalsDim[i][bbBase+3]
+	paramDrawBeamDepth = bbD
+	paramDrawBeamWidth = bbH
+	paramDrawBeamY = B/2 + bbY - bbD/2
+RETURN
+
+"resetBeamDims":
+	paramDrawBeamDepth = B
+	paramDrawBeamWidth = defaultStudWidth
+	paramDrawBeamY = 0
 RETURN

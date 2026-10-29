@@ -1,0 +1,929 @@
+﻿if n < 2 then end
+
+! ==============================================================================
+! Turning curves of a car (kinematic single-track model)
+!
+! The path is the track of the rear axle centre. Every segment between two
+! path points is built from two circular arcs which touch each other, so the
+! heading of the car is continuous:
+!   arc 1 starts with the heading of the previous arc and passes the middle point
+!   arc 2 continues from the middle point and ends in the next path point
+! The middle point is the middle of the single arc which leaves with the heading
+! of the previous arc and ends in the next path point, moved by midalong (along
+! the chord) and midside (to the left of the chord). With no offset a segment is
+! one smooth arc.
+! At a direction change the car stops with its heading unchanged and drives off
+! in the opposite direction.
+! The arcs (aSx ... aDir), the middle points (segMx, segMy) and thEnd come from the
+! master script.
+! ==============================================================================
+
+WB = veh_wheelbase
+VW = veh_width
+FO = veh_fo
+RO = veh_ro
+TR = veh_track
+TL = veh_tyrelen
+TW = veh_tyrewid
+
+! the steering angle is the one of the inner front wheel; the rear axle centre
+! then turns on a circle half a track wider than the inner rear wheel
+_steer = veh_maxsteer
+if _steer < 1 then _steer = 1
+if _steer > 89 then _steer = 89
+Rmin = WB / tan(_steer) + TR / 2
+kmax = 1 / Rmin
+
+! -------------------------hotspots--------------------------
+! every kind of hotspot has its own block of ids, so the ids of one kind do not
+! move when hotspots of another kind come or go
+unId = 1
+hotspot2 0, 0
+
+if iseditable then
+	for i = 1 to n
+		unId = 1 + (i - 1) * 6
+		hotspot2 0,		y[i],	unId,	x[i],	129: unId = unId + 1
+		hotspot2 x[i],	y[i],	unId,	x[i],	2: unId = unId + 1
+		hotspot2 -1,	y[i],	unId,	x[i],	3: unId = unId + 1
+
+		hotspot2 x[i],	0,		unId,	y[i],	129: unId = unId + 1
+		hotspot2 x[i],	y[i],	unId,	y[i],	2: unId = unId + 1
+		hotspot2 x[i],	-1,		unId,	y[i],	3: unId = unId + 1
+	next i
+
+	! direction of the path at the first node (behind it, where no other hotspot is)
+	! and at the last node (ahead of it)
+	_hl = 2 * marx
+	_shx = x[1] - _hl * cos(startangle)
+	_shy = y[1] - _hl * sin(startangle)
+	unId = 301
+	hotspot2 x[1] - 1,	y[1],	unId,	startangle,	4+128: unId = unId + 1
+	hotspot2 _shx,		_shy,	unId,	startangle,	5: unId = unId + 1
+	hotspot2 x[1],		y[1],	unId,	startangle,	6: unId = unId + 1
+	hotspot2 x[1] + 1,	y[1],	unId,	startangle,	7: unId = unId + 1
+
+	hotspot2 x[n] + 1,	y[n],	unId,	endangle,	4+128: unId = unId + 1
+	hotspot2 x[n] + _hl * cos(thEnd),	y[n] + _hl * sin(thEnd),	unId,	endangle,	5: unId = unId + 1
+	hotspot2 x[n],		y[n],	unId,	endangle,	6: unId = unId + 1
+	hotspot2 x[n] - 1,	y[n],	unId,	endangle,	7: unId = unId + 1
+
+	! middle points are edited in the frame of the segment chord
+	for i = 1 to n-1
+		unId = 401 + (i - 1) * 6
+		_bx = segMx[i] - midalong[i] * segUx[i]
+		_by = segMy[i] - midalong[i] * segUy[i]
+		hotspot2 _bx,				_by,				unId,	midalong[i],	129: unId = unId + 1
+		hotspot2 segMx[i],			segMy[i],			unId,	midalong[i],	2: unId = unId + 1
+		hotspot2 _bx - segUx[i],	_by - segUy[i],		unId,	midalong[i],	3: unId = unId + 1
+
+		if not(fixend and i = n-1) then
+			_bx = segMx[i] + midside[i] * segUy[i]
+			_by = segMy[i] - midside[i] * segUx[i]
+			hotspot2 _bx,				_by,				unId,	midside[i],		129: unId = unId + 1
+			hotspot2 segMx[i],			segMy[i],			unId,	midside[i],		2: unId = unId + 1
+			hotspot2 _bx + segUy[i],	_by - segUx[i],		unId,	midside[i],		3: unId = unId + 1
+		endif
+	next i
+
+	if showaddpoints and n < MAX_POINTS then
+		! insert a point into a segment
+		for i = 1 to n-1
+			_sgi = i
+			_frac = 0.25
+			gosub "SegPoint"
+			_qx = _px
+			_qy = _py
+
+			unId = 701 + (i - 1) * 6
+			hotspot2 0,		_qy,	unId,	xe[i+1],	129: unId = unId + 1
+			hotspot2 _qx,	_qy,	unId,	xe[i+1],	2: unId = unId + 1
+			hotspot2 -1,	_qy,	unId,	xe[i+1],	3: unId = unId + 1
+
+			hotspot2 _qx,	0,		unId,	ye[i+1],	129: unId = unId + 1
+			hotspot2 _qx,	_qy,	unId,	ye[i+1],	2: unId = unId + 1
+			hotspot2 _qx,	-1,		unId,	ye[i+1],	3: unId = unId + 1
+		next i
+
+		! add a point at the end
+		_qx = x[n] + cos(thEnd) * marx
+		_qy = y[n] + sin(thEnd) * marx
+
+		unId = 701 + (n - 1) * 6
+		hotspot2 0,		_qy,	unId,	xe[n+1],	129: unId = unId + 1
+		hotspot2 _qx,	_qy,	unId,	xe[n+1],	2: unId = unId + 1
+		hotspot2 -1,	_qy,	unId,	xe[n+1],	3: unId = unId + 1
+
+		hotspot2 _qx,	0,		unId,	ye[n+1],	129: unId = unId + 1
+		hotspot2 _qx,	_qy,	unId,	ye[n+1],	2: unId = unId + 1
+		hotspot2 _qx,	-1,		unId,	ye[n+1],	3: unId = unId + 1
+	endif
+endif
+!----------------------ende hotspots-----------------------
+
+if nArcs < 1 then end
+
+! ------------------------------------------------------------------------------
+! Samples along the path
+! ------------------------------------------------------------------------------
+_total = 0
+for ia = 1 to nArcs
+	_total = _total + aLen[ia]
+next ia
+
+_step = samplestep
+if _step < 0.02 then _step = 0.02
+if _total / _step > 600 then _step = _total / 600
+
+dim sX[], sY[], sPsi[], sCs[], sDist[], sCusp[], sWarn[], sArc[]
+dim rV[5][3], rC[1]
+dim accV[][3], accC[], btV[][3], btC[], tmV[][3], tmC[], resId[], resV[], resC[]
+dim wIdx[], wCos[], wSin[]
+gosub "BuildSamples"
+
+! ------------------------------------------------------------------------------
+! Car outlines at the ends and at a distance
+! ------------------------------------------------------------------------------
+if showoutlines and outlinestep > nix then
+	set line_type outlinelinetype
+	_bodyArrow = 1
+
+	_next = outlinestep
+	for j = 1 to nS
+		if j = 1 or j = nS or sDist[j] >= _next - nix then
+			pen outlinepen
+			if sWarn[j] then pen warnpen
+			_bx = sX[j]
+			_by = sY[j]
+			_bpsi = sPsi[j]
+			gosub "DrawBody"
+			_next = outlinestep * (int(sDist[j] / outlinestep + nix) + 1)
+		endif
+	next j
+endif
+
+! ------------------------------------------------------------------------------
+! Tyre tracks
+! ------------------------------------------------------------------------------
+if showtyres and nS > 1 then
+	set line_type tyrefrontlinetype
+	_trackPen = tyrefrontpen
+	_tl = WB: _tt = TR / 2: gosub "DrawTrack"
+	_tl = WB: _tt = -TR / 2: gosub "DrawTrack"
+
+	set line_type tyrerearlinetype
+	_trackPen = tyrerearpen
+	_tl = 0: _tt = TR / 2: gosub "DrawTrack"
+	_tl = 0: _tt = -TR / 2: gosub "DrawTrack"
+endif
+
+! ------------------------------------------------------------------------------
+! Swept envelope
+! The outline of the area swept by the body is the union of the car outlines
+! along the path (PolyOperations add-on). Without the add-on, or if it does not
+! return the expected data, the boundary is built from the traces of the car
+! corners instead, which is exact for single turns and straights only.
+! ------------------------------------------------------------------------------
+if showenvelope then
+	set line_type envlinetype
+	pen envpen
+
+	_envDone = 0
+	if envexact then
+		gosub "UnionEnvelope"
+	endif
+	if not(_envDone) then
+		gosub "TraceEnvelope"
+	endif
+endif
+
+! ------------------------------------------------------------------------------
+! Rear axle path with the direction changes
+! ------------------------------------------------------------------------------
+if showaxis then
+	set line_type axislinetype
+
+	for ia = 1 to nArcs
+		pen axispen
+		if abs(aK[ia]) > kmax * 1.0001 then pen warnpen
+
+		if abs(aK[ia]) < 0.0000001 then
+			_ex = aSx[ia] + aLen[ia] * cos(aTh[ia])
+			_ey = aSy[ia] + aLen[ia] * sin(aTh[ia])
+			line2 aSx[ia], aSy[ia], _ex, _ey
+			hotline2 aSx[ia], aSy[ia], _ex, _ey
+		else
+			_rad = 1 / abs(aK[ia])
+			_cx = aSx[ia] - sin(aTh[ia]) / aK[ia]
+			_cy = aSy[ia] + cos(aTh[ia]) / aK[ia]
+			_turn = aK[ia] * aLen[ia] * 180 / PI
+
+			if aK[ia] > 0 then
+				_a1 = aTh[ia] - 90
+			else
+				_a1 = aTh[ia] + 90 + _turn
+			endif
+			_a1 = _a1 - 360 * int(_a1 / 360)
+			if _a1 < 0 then _a1 = _a1 + 360
+			_a2 = _a1 + abs(_turn)
+
+			arc2 _cx, _cy, _rad, _a1, _a2
+			hotarc2 _cx, _cy, _rad, _a1, _a2
+		endif
+	next ia
+
+	! a small circle marks every node, a second ring the direction changes; a node the
+	! path can not reach with a continuous direction gets the warning pen
+	set line_type 1
+	for i = 1 to n
+		pen axispen
+		if nodeWarn[i] then pen warnpen
+		circle2 x[i], y[i], nodesize
+		if i > 1 and i < n then
+			if dirchange[i] then circle2 x[i], y[i], nodesize * 2
+		endif
+	next i
+endif
+
+! a fixed end direction which can not be reached is shown in the warning pen
+if fixend and not(endSolved) then
+	pen warnpen
+	set line_type 1
+	line2 x[n], y[n], x[n] + 2 * marx * cos(endangle), y[n] + 2 * marx * sin(endangle)
+	circle2 x[n], y[n], nodesize * 3
+endif
+
+! ------------------------------------------------------------------------------
+! Schematic car
+! The car stands on the path at the point where the centre of the car (half way
+! between the axles) is the closest to the dragged hotspot (carx, cary). The rear
+! wheels point along the car, the front wheels are steered for the curvature of the
+! path (Ackermann, the inner wheel turns more).
+! ------------------------------------------------------------------------------
+if showcar and nS > 1 then
+	gosub "CarPosition"
+
+	_dnL = 1 - _ccs * TR / 2
+	_dnR = 1 + _ccs * TR / 2
+	if abs(_dnL) < 0.05 then
+		if _dnL < 0 then
+			_dnL = -0.05
+		else
+			_dnL = 0.05
+		endif
+	endif
+	if abs(_dnR) < 0.05 then
+		if _dnR < 0 then
+			_dnR = -0.05
+		else
+			_dnR = 0.05
+		endif
+	endif
+	_dL = atn(WB * _ccs / _dnL)
+	_dR = atn(WB * _ccs / _dnR)
+
+	gosub "DrawCar"
+
+	if iseditable then
+		unId = 1001
+		hotspot2 0,		_hcy,	unId,	carx,	129: unId = unId + 1
+		hotspot2 _hcx,	_hcy,	unId,	carx,	2: unId = unId + 1
+		hotspot2 -1,	_hcy,	unId,	carx,	3: unId = unId + 1
+
+		hotspot2 _hcx,	0,		unId,	cary,	129: unId = unId + 1
+		hotspot2 _hcx,	_hcy,	unId,	cary,	2: unId = unId + 1
+		hotspot2 _hcx,	-1,		unId,	cary,	3: unId = unId + 1
+	endif
+endif
+
+end
+! ==============================================================================
+
+! ------------------------------------------------------------------------------
+"SegPoint":
+! point (_px,_py) at the fraction _frac of the length of segment _sgi
+! ------------------------------------------------------------------------------
+	_px = (x[_sgi] + x[_sgi+1]) / 2
+	_py = (y[_sgi] + y[_sgi+1]) / 2
+
+	if segLast[_sgi] >= segFirst[_sgi] then
+		_tot = 0
+		for _ja = segFirst[_sgi] to segLast[_sgi]
+			_tot = _tot + aLen[_ja]
+		next _ja
+
+		_rem = _tot * _frac
+		_found = 0
+		for _ja = segFirst[_sgi] to segLast[_sgi]
+			if not(_found) then
+				if _rem <= aLen[_ja] then
+					_ia = _ja
+					_u = _rem
+					gosub "ArcPoint"
+					_found = 1
+				else
+					_rem = _rem - aLen[_ja]
+				endif
+			endif
+		next _ja
+	endif
+return
+
+! ------------------------------------------------------------------------------
+"ArcPoint":
+! point (_px,_py) at the distance _u along arc _ia
+! ------------------------------------------------------------------------------
+	if abs(aK[_ia]) < 0.0000001 then
+		_px = aSx[_ia] + _u * cos(aTh[_ia])
+		_py = aSy[_ia] + _u * sin(aTh[_ia])
+	else
+		_thu = aTh[_ia] + aK[_ia] * _u * 180 / PI
+		_px = aSx[_ia] + (sin(_thu) - sin(aTh[_ia])) / aK[_ia]
+		_py = aSy[_ia] - (cos(_thu) - cos(aTh[_ia])) / aK[_ia]
+	endif
+return
+
+! ------------------------------------------------------------------------------
+"BuildSamples":
+! samples of the rear axle centre with the heading of the car (psi), the
+! curvature relative to the car (cs, left is positive), the driven distance and
+! the arc they lie on
+! ------------------------------------------------------------------------------
+	nS = 0
+	_cum = 0
+
+	for ia = 1 to nArcs
+		_k = aK[ia]
+		_len = aLen[ia]
+		_th0 = aTh[ia]
+		_sx0 = aSx[ia]
+		_sy0 = aSy[ia]
+
+		_turn = abs(_k * _len * 180 / PI)
+		_nsub = ceil(_len / _step)
+		if ceil(_turn / 3) > _nsub then _nsub = ceil(_turn / 3)
+		if _nsub < 1 then _nsub = 1
+
+		! the first sample is the last one of the previous arc
+		_j0 = 1
+		_cuspHere = 0
+		if ia > 1 then
+			_pd = aDir[ia-1]
+			if aDir[ia] <> _pd then _cuspHere = 1
+		endif
+		if ia = 1 or _cuspHere = 1 then _j0 = 0
+
+		for j = _j0 to _nsub
+			_u = _len * j / _nsub
+
+			if abs(_k) < 0.0000001 then
+				_thu = _th0
+				_px = _sx0 + _u * cos(_th0)
+				_py = _sy0 + _u * sin(_th0)
+			else
+				_thu = _th0 + _k * _u * 180 / PI
+				_px = _sx0 + (sin(_thu) - sin(_th0)) / _k
+				_py = _sy0 - (cos(_thu) - cos(_th0)) / _k
+			endif
+
+			nS = nS + 1
+			sX[nS] = _px
+			sY[nS] = _py
+			sPsi[nS] = _thu
+			if aDir[ia] < 0 then sPsi[nS] = _thu + 180
+			sCs[nS] = _k * aDir[ia]
+			sDist[nS] = _cum + _u
+			sArc[nS] = ia
+			sCusp[nS] = 0
+			sWarn[nS] = 0
+			if abs(_k) > kmax * 1.0001 then sWarn[nS] = 1
+			if j = 0 and _cuspHere = 1 then sCusp[nS] = 1
+		next j
+
+		_cum = _cum + _len
+	next ia
+return
+
+! ------------------------------------------------------------------------------
+"BodyPt":
+! point of the car: _bl in front of the rear axle centre, _bt to the left of it
+! ------------------------------------------------------------------------------
+	_rx = _bx + _bl * cos(_bpsi) - _bt * sin(_bpsi)
+	_ry = _by + _bl * sin(_bpsi) + _bt * cos(_bpsi)
+return
+
+! ------------------------------------------------------------------------------
+"DrawTrack":
+! track of the tyre at _tl / _tt
+! ------------------------------------------------------------------------------
+	_bx = sX[1]
+	_by = sY[1]
+	_bpsi = sPsi[1]
+	_bl = _tl
+	_bt = _tt
+	gosub "BodyPt"
+	_qx = _rx
+	_qy = _ry
+
+	for j = 2 to nS
+		_bx = sX[j]
+		_by = sY[j]
+		_bpsi = sPsi[j]
+		gosub "BodyPt"
+		pen _trackPen
+		if sWarn[j] then pen warnpen
+		if (_rx - _qx)^2 + (_ry - _qy)^2 > nix^2 then line2 _qx, _qy, _rx, _ry
+		_qx = _rx
+		_qy = _ry
+	next j
+return
+
+! ------------------------------------------------------------------------------
+"TraceEnvelope":
+! Each side of the car is followed by its outer front corner while the turning
+! centre is on the other side and by the body side point at the rear axle (the
+! one closest to the turning centre) otherwise. The side edge joining the two is
+! only drawn when the car enters an outer turn, otherwise it is covered.
+! Where the path is tighter than the car can steer the lines get the warning pen.
+! The outlines at the ends and at the direction changes close the envelope.
+! ------------------------------------------------------------------------------
+	for _side = 1 to -1 step -2
+		_prevOuter = 0
+		for j = 1 to nS
+			_outer = 0
+			if _side * sCs[j] < -0.000001 then _outer = 1
+
+			_bx = sX[j]
+			_by = sY[j]
+			_bpsi = sPsi[j]
+			_bl = 0
+			if _outer then _bl = WB + FO
+			_bt = _side * VW / 2
+			gosub "BodyPt"
+
+			if j > 1 then
+				if not(_prevOuter and not(_outer)) then
+					pen envpen
+					if sWarn[j] then pen warnpen
+					if (_rx - _qx)^2 + (_ry - _qy)^2 > nix^2 then line2 _qx, _qy, _rx, _ry
+				endif
+			endif
+			_qx = _rx
+			_qy = _ry
+			_prevOuter = _outer
+		next j
+	next _side
+
+	pen envpen
+	_bodyArrow = 0
+	for j = 1 to nS
+		if j = 1 or j = nS or sCusp[j] then
+			_bx = sX[j]
+			_by = sY[j]
+			_bpsi = sPsi[j]
+			gosub "DrawBody"
+		endif
+	next j
+return
+
+! ------------------------------------------------------------------------------
+"EnvRect":
+! outline of the car at sample j as a closed polygon (counter-clockwise)
+! ------------------------------------------------------------------------------
+	_bx = sX[j]
+	_by = sY[j]
+	_bpsi = sPsi[j]
+	_lmin = -RO
+	_lmax = WB + FO
+	gosub "RectFromL"
+return
+
+! ------------------------------------------------------------------------------
+"StraightRect":
+! all the area swept by the car along the straight arc _ias: one rectangle from
+! the rear of the car at the start of the arc to its front at the end
+! ------------------------------------------------------------------------------
+	_bx = aSx[_ias]
+	_by = aSy[_ias]
+	_bpsi = aTh[_ias]
+	if aDir[_ias] < 0 then _bpsi = _bpsi + 180
+
+	! the end of the arc along the car axis (behind the car when it reverses)
+	_lend = aLen[_ias] * aDir[_ias]
+	_lmin = -RO
+	_lmax = WB + FO
+	if _lend < 0 then
+		_lmin = _lend - RO
+	else
+		_lmax = _lend + WB + FO
+	endif
+	gosub "RectFromL"
+return
+
+! ------------------------------------------------------------------------------
+"RectFromL":
+! rectangle of the body width from _lmin to _lmax along the car at (_bx,_by,_bpsi)
+! -> rV (closed, counter-clockwise)
+! ------------------------------------------------------------------------------
+	_bl = _lmin: _bt = VW / 2: gosub "BodyPt": rV[1][1] = _rx: rV[1][2] = _ry
+	_bl = _lmin: _bt = -VW / 2: gosub "BodyPt": rV[2][1] = _rx: rV[2][2] = _ry
+	_bl = _lmax: _bt = -VW / 2: gosub "BodyPt": rV[3][1] = _rx: rV[3][2] = _ry
+	_bl = _lmax: _bt = VW / 2: gosub "BodyPt": rV[4][1] = _rx: rV[4][2] = _ry
+	rV[5][1] = rV[1][1]
+	rV[5][2] = rV[1][2]
+	for _q = 1 to 5
+		rV[_q][3] = 0
+	next _q
+return
+
+! ------------------------------------------------------------------------------
+"UnionEnvelope":
+! Unites the car outlines along the path. A straight arc adds one rectangle for
+! all of it. The outlines are first united in small batches, which are then added
+! to the whole, so the large polygon is handed over less often. Every result of the
+! add-on is checked; on any surprise the envelope is left to the trace method.
+! ------------------------------------------------------------------------------
+	_envDone = 0
+	_fail = 0
+	_accN = 0
+	_accNC = 0
+
+	! --- union of the car outlines ---
+	CHU = initAddonScope("PolyOperations", "", "")
+	if CHU <= 0 then return
+
+	prepareFunction CHU, "CreateContainer", "arTcSrc", ""
+	prepareFunction CHU, "CreateContainer", "arTcDst", ""
+	prepareFunction CHU, "SetSourceContainer", "arTcSrc", ""
+	prepareFunction CHU, "SetDestinationContainer", "arTcDst", ""
+
+	rC[1] = 5
+	_btN = 0
+	_btNC = 0
+	_btCount = 0
+	_lastStraight = 0
+	_haveLast = 0
+
+	for j = 1 to nS
+		if not(_fail) then
+			_ias = sArc[j]
+			_use = 0
+			if abs(aK[_ias]) < 0.0000001 then
+				if _ias <> _lastStraight then
+					_lastStraight = _ias
+					gosub "StraightRect"
+					_use = 1
+				endif
+			else
+				! a sample which repeats the previous outline (direction change) adds nothing
+				_same = 0
+				if _haveLast then
+					_dpsi = sPsi[j] - _lastPsi
+					_dpsi = _dpsi - 360 * int(_dpsi / 360)
+					if _dpsi > 180 then _dpsi = _dpsi - 360
+					if _dpsi < -180 then _dpsi = _dpsi + 360
+					if (sX[j] - _lastX)^2 + (sY[j] - _lastY)^2 < nix^2 and abs(_dpsi) < 0.0001 then _same = 1
+				endif
+				if not(_same) then
+					gosub "EnvRect"
+					_use = 1
+					_haveLast = 1
+					_lastX = sX[j]
+					_lastY = sY[j]
+					_lastPsi = sPsi[j]
+				endif
+			endif
+
+			if _use then
+				gosub "AddToBatch"
+				if _btCount >= 8 then gosub "FlushBatch"
+			endif
+		endif
+	next j
+
+	if not(_fail) then gosub "FlushBatch"
+
+	closeAddonScope(CHU)
+	! --- end of the union ---
+
+	if _fail or _accN < 4 then return
+
+	! samples where the path is tighter than the car can steer, with the direction of
+	! the car, and the radius around the rear axle centre which holds the whole car
+	_nW = 0
+	for j = 1 to nS
+		if sWarn[j] then
+			_nW = _nW + 1
+			wIdx[_nW] = j
+			wCos[_nW] = cos(sPsi[j])
+			wSin[_nW] = sin(sPsi[j])
+		endif
+	next j
+	_rbl = WB + FO
+	if RO > _rbl then _rbl = RO
+	_rb2 = (_rbl + 0.03)^2 + (VW / 2 + 0.03)^2
+
+	! draw the rings of the united outline; the pieces which lie on the outline of the
+	! car at a sample which is not drivable get the warning pen
+	_s = 1
+	for _c = 1 to _accNC
+		for _q = _s + 1 to accC[_c]
+			_p1x = accV[_q-1][1]
+			_p1y = accV[_q-1][2]
+			_p2x = accV[_q][1]
+			_p2y = accV[_q][2]
+			_pdx = _p2x - _p1x
+			_pdy = _p2y - _p1y
+			_pl = sqr(_pdx^2 + _pdy^2)
+
+			if _nW = 0 or _pl < nix then
+				pen envpen
+				line2 _p1x, _p1y, _p2x, _p2y
+			else
+				_np = ceil(_pl / 0.3)
+				for _pc = 1 to _np
+					_u0 = (_pc - 1) / _np
+					_u1 = _pc / _np
+					_cx0 = _p1x + _pdx * (_u0 + _u1) / 2
+					_cy0 = _p1y + _pdy * (_u0 + _u1) / 2
+
+					_hit = 0
+					for _w = 1 to _nW
+						if not(_hit) then
+							_jw = wIdx[_w]
+							_ddx = _cx0 - sX[_jw]
+							_ddy = _cy0 - sY[_jw]
+							if _ddx^2 + _ddy^2 <= _rb2 then
+								_lc = _ddx * wCos[_w] + _ddy * wSin[_w]
+								_tc = -_ddx * wSin[_w] + _ddy * wCos[_w]
+								if _lc >= -RO - 0.03 and _lc <= WB + FO + 0.03 and abs(_tc) <= VW / 2 + 0.03 then _hit = 1
+							endif
+						endif
+					next _w
+
+					pen envpen
+					if _hit then pen warnpen
+					line2 _p1x + _pdx * _u0, _p1y + _pdy * _u0, _p1x + _pdx * _u1, _p1y + _pdy * _u1
+				next _pc
+			endif
+		next _q
+		_s = accC[_c] + 1
+	next _c
+
+	_envDone = 1
+return
+
+! ------------------------------------------------------------------------------
+"AddToBatch":
+! unites the outline rV with the batch btV
+! ------------------------------------------------------------------------------
+	if _btN = 0 then
+		dim btV[][3], btC[]
+		for _q = 1 to 5
+			btV[_q][1] = rV[_q][1]
+			btV[_q][2] = rV[_q][2]
+			btV[_q][3] = 0
+		next _q
+		btC[1] = 5
+		_btN = 5
+		_btNC = 1
+	else
+		prepareFunction CHU, "EmptyContainer", "arTcSrc", ""
+		prepareFunction CHU, "EmptyContainer", "arTcDst", ""
+		prepareFunction CHU, "Store", "p1", _btN, _btNC, btV, btC
+		prepareFunction CHU, "Store", "p2", 5, 1, rV, rC
+		gosub "UniteP1P2"
+		if not(_fail) then
+			dim btV[][3], btC[]
+			for _q = 1 to _tmN
+				btV[_q][1] = tmV[_q][1]
+				btV[_q][2] = tmV[_q][2]
+				btV[_q][3] = tmV[_q][3]
+			next _q
+			for _q = 1 to _tmNC
+				btC[_q] = tmC[_q]
+			next _q
+			_btN = _tmN
+			_btNC = _tmNC
+		endif
+	endif
+	_btCount = _btCount + 1
+return
+
+! ------------------------------------------------------------------------------
+"FlushBatch":
+! adds the batch to the whole outline accV and empties it
+! ------------------------------------------------------------------------------
+	if _btN > 0 and not(_fail) then
+		if _accN = 0 then
+			dim accV[][3], accC[]
+			for _q = 1 to _btN
+				accV[_q][1] = btV[_q][1]
+				accV[_q][2] = btV[_q][2]
+				accV[_q][3] = btV[_q][3]
+			next _q
+			for _q = 1 to _btNC
+				accC[_q] = btC[_q]
+			next _q
+			_accN = _btN
+			_accNC = _btNC
+		else
+			prepareFunction CHU, "EmptyContainer", "arTcSrc", ""
+			prepareFunction CHU, "EmptyContainer", "arTcDst", ""
+			prepareFunction CHU, "Store", "p1", _accN, _accNC, accV, accC
+			prepareFunction CHU, "Store", "p2", _btN, _btNC, btV, btC
+			gosub "UniteP1P2"
+			if not(_fail) then
+				dim accV[][3], accC[]
+				for _q = 1 to _tmN
+					accV[_q][1] = tmV[_q][1]
+					accV[_q][2] = tmV[_q][2]
+					accV[_q][3] = tmV[_q][3]
+				next _q
+				for _q = 1 to _tmNC
+					accC[_q] = tmC[_q]
+				next _q
+				_accN = _tmN
+				_accNC = _tmNC
+			endif
+		endif
+	endif
+	_btN = 0
+	_btNC = 0
+	_btCount = 0
+return
+
+! ------------------------------------------------------------------------------
+"UniteP1P2":
+! "p1 + p2" of the stored polygons -> tmV, tmC (_tmN vertices, _tmNC rings, every
+! ring closed by repeating its first vertex); _fail on any unexpected result
+! ------------------------------------------------------------------------------
+	dim resId[]
+	_nRes = callFunction(CHU, "p1 + p2", "", resId)
+	if _nRes <> 1 or vardim1(resId) < 1 then
+		_fail = 1
+	else
+		dim resV[], resC[]
+		_r = callFunction(CHU, "GetVertices", resId[1], resV)
+		_r = callFunction(CHU, "GetContourEnds", resId[1], resC)
+		_rows = vardim1(resV) / 3
+		_nCe = vardim1(resC)
+		if _nCe < 1 or _rows < 3 or resC[_nCe] > _rows then _fail = 1
+
+		if not(_fail) then
+			dim tmV[][3], tmC[]
+			_k = 0
+			_s = 1
+			for _c = 1 to _nCe
+				_e = resC[_c]
+				if _e < _s then _fail = 1
+				if not(_fail) then
+					for _q = _s to _e
+						_k = _k + 1
+						tmV[_k][1] = resV[(_q - 1) * 3 + 1]
+						tmV[_k][2] = resV[(_q - 1) * 3 + 2]
+						tmV[_k][3] = resV[(_q - 1) * 3 + 3]
+					next _q
+					_f = _k - (_e - _s)
+					if (tmV[_k][1] - tmV[_f][1])^2 + (tmV[_k][2] - tmV[_f][2])^2 > nix^2 then
+						_k = _k + 1
+						tmV[_k][1] = tmV[_f][1]
+						tmV[_k][2] = tmV[_f][2]
+						tmV[_k][3] = 0
+					endif
+					tmC[_c] = _k
+					_s = _e + 1
+				endif
+			next _c
+			_tmN = _k
+			_tmNC = _nCe
+		endif
+	endif
+return
+
+! ------------------------------------------------------------------------------
+"DrawBody":
+! outline of the car, with _bodyArrow also an arrow from the rear to the front axle
+! ------------------------------------------------------------------------------
+	_bl = -RO: _bt = VW / 2: gosub "BodyPt": _c1x = _rx: _c1y = _ry
+	_bl = WB + FO: _bt = VW / 2: gosub "BodyPt": _c2x = _rx: _c2y = _ry
+	_bl = WB + FO: _bt = -VW / 2: gosub "BodyPt": _c3x = _rx: _c3y = _ry
+	_bl = -RO: _bt = -VW / 2: gosub "BodyPt": _c4x = _rx: _c4y = _ry
+
+	line2 _c1x, _c1y, _c2x, _c2y
+	line2 _c2x, _c2y, _c3x, _c3y
+	line2 _c3x, _c3y, _c4x, _c4y
+	line2 _c4x, _c4y, _c1x, _c1y
+
+	if _bodyArrow then
+		_bl = 0: _bt = 0: gosub "BodyPt": _c1x = _rx: _c1y = _ry
+		_bl = WB: _bt = 0: gosub "BodyPt": _c2x = _rx: _c2y = _ry
+		line2 _c1x, _c1y, _c2x, _c2y
+
+		_bl = WB - 0.4: _bt = 0.15: gosub "BodyPt": _c3x = _rx: _c3y = _ry
+		_bl = WB - 0.4: _bt = -0.15: gosub "BodyPt": _c4x = _rx: _c4y = _ry
+		line2 _c2x, _c2y, _c3x, _c3y
+		line2 _c2x, _c2y, _c4x, _c4y
+	endif
+return
+
+! ------------------------------------------------------------------------------
+"CarPosition":
+! The centre of the car (half a wheelbase in front of the rear axle) runs on a
+! curve of its own. The point of that curve closest to (carx,cary) gives the
+! position of the rear axle centre (_cpx,_cpy), the heading of the car _cpsi, the
+! curvature relative to the car _ccs, _cwarn when it can not steer, and the place
+! of the hotspot (_hcx,_hcy).
+! ------------------------------------------------------------------------------
+	_hw = WB / 2
+	_cbest = 1000000000
+	_cbj = 1
+	_cbt = 0
+
+	_cax = sX[1] + _hw * cos(sPsi[1])
+	_cay = sY[1] + _hw * sin(sPsi[1])
+	for j = 1 to nS - 1
+		_cnx = sX[j+1] + _hw * cos(sPsi[j+1])
+		_cny = sY[j+1] + _hw * sin(sPsi[j+1])
+		_cbx = _cnx - _cax
+		_cby = _cny - _cay
+		_cl2 = _cbx^2 + _cby^2
+		if _cl2 > nix^2 then
+			_ctt = ((carx - _cax) * _cbx + (cary - _cay) * _cby) / _cl2
+			if _ctt < 0 then _ctt = 0
+			if _ctt > 1 then _ctt = 1
+			_cdd = (_cax + _ctt * _cbx - carx)^2 + (_cay + _ctt * _cby - cary)^2
+			if _cdd < _cbest then
+				_cbest = _cdd
+				_cbj = j
+				_cbt = _ctt
+			endif
+		endif
+		_cax = _cnx
+		_cay = _cny
+	next j
+
+	_cpx = sX[_cbj] + _cbt * (sX[_cbj+1] - sX[_cbj])
+	_cpy = sY[_cbj] + _cbt * (sY[_cbj+1] - sY[_cbj])
+
+	_cdp = sPsi[_cbj+1] - sPsi[_cbj]
+	_cdp = _cdp - 360 * int(_cdp / 360)
+	if _cdp > 180 then _cdp = _cdp - 360
+	if _cdp < -180 then _cdp = _cdp + 360
+	_cpsi = sPsi[_cbj] + _cbt * _cdp
+
+	! the part between the two samples lies on the arc of the later one
+	_ccs = sCs[_cbj+1]
+	_cwarn = sWarn[_cbj+1]
+
+	_hcx = _cpx + _hw * cos(_cpsi)
+	_hcy = _cpy + _hw * sin(_cpsi)
+return
+
+! ------------------------------------------------------------------------------
+"DrawCar":
+! body, axles and the four wheels of the car at (_cpx,_cpy) with the heading _cpsi;
+! the front wheels are turned by _dL and _dR
+! ------------------------------------------------------------------------------
+	set line_type carlinetype
+	pen carpen
+	if _cwarn then pen warnpen
+
+	add2 _cpx, _cpy
+	rot2 _cpsi
+		! body
+		line2 -RO, VW / 2, WB + FO, VW / 2
+		line2 WB + FO, VW / 2, WB + FO, -VW / 2
+		line2 WB + FO, -VW / 2, -RO, -VW / 2
+		line2 -RO, -VW / 2, -RO, VW / 2
+
+		! axles and the longitudinal axis with an arrow to the front
+		line2 0, -TR / 2, 0, TR / 2
+		line2 WB, -TR / 2, WB, TR / 2
+		line2 0, 0, WB, 0
+		line2 WB, 0, WB - 0.4, 0.15
+		line2 WB, 0, WB - 0.4, -0.15
+
+		pen carwheelpen
+		if _cwarn then pen warnpen
+
+		_wx = 0: _wy = TR / 2: _wa = 0: gosub "DrawWheel"
+		_wx = 0: _wy = -TR / 2: _wa = 0: gosub "DrawWheel"
+		_wx = WB: _wy = TR / 2: _wa = _dL: gosub "DrawWheel"
+		_wx = WB: _wy = -TR / 2: _wa = _dR: gosub "DrawWheel"
+	del 2
+return
+
+! ------------------------------------------------------------------------------
+"DrawWheel":
+! tyre centred at (_wx,_wy) of the car, turned by _wa; the line shows the rolling direction
+! ------------------------------------------------------------------------------
+	add2 _wx, _wy
+	rot2 _wa
+		line2 -TL / 2, -TW / 2, TL / 2, -TW / 2
+		line2 TL / 2, -TW / 2, TL / 2, TW / 2
+		line2 TL / 2, TW / 2, -TL / 2, TW / 2
+		line2 -TL / 2, TW / 2, -TL / 2, -TW / 2
+		line2 -TL / 2, 0, TL / 2, 0
+	del 2
+return

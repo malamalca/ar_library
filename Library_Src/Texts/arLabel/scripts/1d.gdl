@@ -99,6 +99,17 @@ if GLOB_ELEM_TYPE = ET_OBJECT then
 	variables[ix][1] = "Z"
 	variables[ix][2] = str{2}(linear_format, z) + " " + linear_unit
 
+	! arStud: horizontal stud has A = profile height and B = width, so swap to match the schema (width/height)
+	if strsub(objectName, 1, 6) = "arStud" or strsub(objectName, 1, 6) = "ArStud" then
+		result = request("ASSOCLP_PARVALUE", "orientation", index, type, flags, dim1, dim2, studOrientation)
+		if result and studOrientation = 2 then
+			for i = 1 to ix
+				if variables[i][1] = "A" then variables[i][2] = str{2}("%*1.0cm", b)
+				if variables[i][1] = "B" then variables[i][2] = str{2}("%*1.0cm", a)
+			next i
+		endif
+	endif
+
 	if strsub(objectName,1,11)="Collar Beam" or strsub(objectName,1,6)="Purlin" or strsub(objectName,1,5)="Strut" or strsub(objectName,1,14)="Block Inclined" or objectName="Beam 02" or objectName="Stud_01" then
 		result = request("ASSOCLP_PARVALUE", "h", index, type, flags, dim1, dim2, h)
 		ix = ix+1
@@ -180,6 +191,21 @@ if GLOB_ELEM_TYPE = ET_OBJECT then
 		variables[ix][2] = str{2}(linear_format, totalLength) + " " + linear_unit	
 
 		defaultCaption = "<totalLength>"
+
+	endif
+
+	if strsub(objectName, 1, 11) = "arVertikala" then
+		result = request("ASSOCLP_PARVALUE", "total_length", index, type, flags, dim1, dim2, totalLength)
+
+		ix = ix+1
+		variables[ix][1] = "totalLength"
+		variables[ix][2] = str{2}(linear_format, totalLength) + " " + linear_unit	
+
+		ix = ix+1
+		variables[ix][1] = "DN"
+		variables[ix][2] = str{2}("%1.0mm", A)
+
+		defaultCaption = "DN<DN>, l=<totalLength>"
 
 	endif
 

@@ -8,6 +8,15 @@ SHOWTEXT_ALWAYS = 0
 SHOWTEXT_NEVER = 1
 SHOWTEXT_MVO = 2
 
+! razmerje velikosti manjše pisave v profilu (koti, padci) glede na profileTextSize
+PROFILE_SMALL_TEXT_FACTOR = 0.5
+
+! razmik med robom mreže profila in robom prvega/zadnjega jaška, v mm na papirju
+PROFILE_CANVAS_PADDING = 10
+
+! razmik kaskadne cevi od leve stene jaška v profilu [m]
+CASCADE_GAP = 0.1
+
 SHAFT_DATA_OPTIONS_COUNT = 5
 SHAFT_DATA_DIMENSIONS_COUNT = 10
 
@@ -20,6 +29,7 @@ SEGMENT_SLOPE = 3
 OPT_SHOW_SHAFT = 1
 OPT_SHAFT_TYPE = 2
 OPT_COVER_TYPE = 3
+OPT_CASCADE = 4			! kaskada na dotoku v jašek (1 = da)
 
 DIM_SHAFT_HEIGHT = 1
 DIM_SHAFT_DIM1 = 2
@@ -30,6 +40,14 @@ DIM_INLET_HEIGHT = 6
 DIM_OUTLET_HEIGHT = 7
 DIM_MARKER_POSX = 8
 DIM_MARKER_POSY = 9
+DIM_RAISE_HEIGHT = 10		! višina poviška do pokrova (del skupne višine DIM_SHAFT_HEIGHT)
+
+! dodatni vtoki/iztoki jaška: podatki so v vzporednih tabelah shaftPort*, vrstica = (jašek - 1) * MAX_SHAFT_PORTS + zaporedna številka
+MAX_SHAFT_PORTS = 4
+PORT_NONE = 0
+PORT_INLET = 1
+PORT_OUTLET = 2
+PORT_ARROW_LENGTH = 0.5			! dolžina puščice v tlorisu [m]
 
 COVER_TYPE_ROUND = 0
 COVER_TYPE_RECTANGLE = 1
@@ -79,12 +97,28 @@ if glob_modpar_name = "xyz_e" then
 			shaftDataOptions[i+1] = shaftDataOptions[i]
 			shaftDataDimensions[i+1] = shaftDataDimensions[i]
 			pipeDimensions[i+1] = pipeDimensions[i] 
+			shaftProfileTexts[i+1] = shaftProfileTexts[i]
+			for j = 1 to 4: shaftCaptionLinesShow[i+1][j] = shaftCaptionLinesShow[i][j]: next j
+			for j = 1 to MAX_SHAFT_PORTS
+				shaftPortTypes[i*MAX_SHAFT_PORTS + j] = shaftPortTypes[(i-1)*MAX_SHAFT_PORTS + j]
+				shaftPortAngles[i*MAX_SHAFT_PORTS + j] = shaftPortAngles[(i-1)*MAX_SHAFT_PORTS + j]
+				shaftPortHeights[i*MAX_SHAFT_PORTS + j] = shaftPortHeights[(i-1)*MAX_SHAFT_PORTS + j]
+				shaftPortDiameters[i*MAX_SHAFT_PORTS + j] = shaftPortDiameters[(i-1)*MAX_SHAFT_PORTS + j]
+			next j
 		next i
 
 		xyz[insi] = xyz_ee
 		for i = 1 to SHAFT_DATA_OPTIONS_COUNT: shaftDataOptions[insi][i] = 0: next i
 		for i = 1 to SHAFT_DATA_DIMENSIONS_COUNT: shaftDataDimensions[insi][i] = 0: next i
 		pipeDimensions[insi] = pipeDimensions[insi-1] 
+		shaftProfileTexts[insi] = ""
+		for j = 1 to 4: shaftCaptionLinesShow[insi][j] = 1: next j
+		for j = 1 to MAX_SHAFT_PORTS
+			shaftPortTypes[(insi-1)*MAX_SHAFT_PORTS + j] = PORT_NONE
+			shaftPortAngles[(insi-1)*MAX_SHAFT_PORTS + j] = 0
+			shaftPortHeights[(insi-1)*MAX_SHAFT_PORTS + j] = 0
+			shaftPortDiameters[(insi-1)*MAX_SHAFT_PORTS + j] = 0
+		next j
 
 		n = n + 1
 	endif
@@ -95,6 +129,15 @@ if glob_modpar_name = "xyz_e" or glob_modpar_name = "xyz" then
 	! CleanUP 
 	!----------------------------------------
 	n0 = 1
+	dim tmpShaftProfileTexts[]
+	tmpShaftProfileTexts[1] = shaftProfileTexts[1]
+	dim tmpShaftCaptionLinesShow[][4]
+	for j = 1 to 4: tmpShaftCaptionLinesShow[1][j] = shaftCaptionLinesShow[1][j]: next j
+	dim tmpPortTypes[], tmpPortAngles[], tmpPortHeights[], tmpPortDiameters[]
+	for j = 1 to MAX_SHAFT_PORTS
+		tmpPortTypes[j] = shaftPortTypes[j]: tmpPortAngles[j] = shaftPortAngles[j]
+		tmpPortHeights[j] = shaftPortHeights[j]: tmpPortDiameters[j] = shaftPortDiameters[j]
+	next j
 	put xyz[1][1], xyz[1][2], xyz[1][3]
 	put shaftDataOptions[1], shaftDataDimensions[1]
 	put 0 ! pipedimension
@@ -108,6 +151,14 @@ if glob_modpar_name = "xyz_e" or glob_modpar_name = "xyz" then
 
 		if rd > nix then
 			n0 = n0 + 1
+			tmpShaftProfileTexts[n0] = shaftProfileTexts[i]
+			for j = 1 to 4: tmpShaftCaptionLinesShow[n0][j] = shaftCaptionLinesShow[i][j]: next j
+			for j = 1 to MAX_SHAFT_PORTS
+				tmpPortTypes[(n0-1)*MAX_SHAFT_PORTS + j] = shaftPortTypes[(i-1)*MAX_SHAFT_PORTS + j]
+				tmpPortAngles[(n0-1)*MAX_SHAFT_PORTS + j] = shaftPortAngles[(i-1)*MAX_SHAFT_PORTS + j]
+				tmpPortHeights[(n0-1)*MAX_SHAFT_PORTS + j] = shaftPortHeights[(i-1)*MAX_SHAFT_PORTS + j]
+				tmpPortDiameters[(n0-1)*MAX_SHAFT_PORTS + j] = shaftPortDiameters[(i-1)*MAX_SHAFT_PORTS + j]
+			next j
 			put xyz[i]
 			put shaftDataOptions[i], shaftDataDimensions[i]
 			put pipeDimensions[i-1]
@@ -122,6 +173,19 @@ if glob_modpar_name = "xyz_e" or glob_modpar_name = "xyz" then
 		for j = 1 to SHAFT_DATA_OPTIONS_COUNT: shaftDataOptions[i][j] = get(1): next j
 		for j = 1 to SHAFT_DATA_DIMENSIONS_COUNT: shaftDataDimensions[i][j] = get(1): next j
 		if i > 1 then pipeDimensions[i-1] = get(1) else tmpWaste = get(1)
+		shaftProfileTexts[i] = tmpShaftProfileTexts[i]
+		for j = 1 to 4: shaftCaptionLinesShow[i][j] = tmpShaftCaptionLinesShow[i][j]: next j
+		for j = 1 to MAX_SHAFT_PORTS
+			shaftPortTypes[(i-1)*MAX_SHAFT_PORTS + j] = tmpPortTypes[(i-1)*MAX_SHAFT_PORTS + j]
+			shaftPortAngles[(i-1)*MAX_SHAFT_PORTS + j] = tmpPortAngles[(i-1)*MAX_SHAFT_PORTS + j]
+			shaftPortHeights[(i-1)*MAX_SHAFT_PORTS + j] = tmpPortHeights[(i-1)*MAX_SHAFT_PORTS + j]
+			shaftPortDiameters[(i-1)*MAX_SHAFT_PORTS + j] = tmpPortDiameters[(i-1)*MAX_SHAFT_PORTS + j]
+		next j
+	next i
+
+	! vtoki/iztoki odstranjenih točk
+	for i = n * MAX_SHAFT_PORTS + 1 to (MAX_POINTS + 1) * MAX_SHAFT_PORTS
+		shaftPortTypes[i] = PORT_NONE: shaftPortAngles[i] = 0: shaftPortHeights[i] = 0: shaftPortDiameters[i] = 0
 	next i
 
 	! clean empty points to the end
@@ -133,6 +197,7 @@ endif
 
 ! total length
 dim segmentData[50][3]
+dim shaftDirAngle[50]		! smer cevovoda v jašku (kot v tlorisu) - dotok, pri prvem jašku odtok
 totalLength = 0
 totalLength2D = 0
 minZValue = xyz[1][3]
@@ -155,8 +220,12 @@ for i = 2 to n
 	else
 		segmentData[i-1][SEGMENT_SLOPE] = 0
 	endif
+	shaftDirAngle[i] = 0
+	if segmentData[i-1][SEGMENT_LENGTH_2D] > nix then
+		shaftDirAngle[i] = acs((x2-x1) / segmentData[i-1][SEGMENT_LENGTH_2D])
+		if y2 < y1 then shaftDirAngle[i] = -shaftDirAngle[i]
+	endif
 	totalLength = totalLength + segmentData[i-1][SEGMENT_LENGTH_3D] 
 	totalLength2D = totalLength2D + segmentData[i-1][SEGMENT_LENGTH_2D] 
 next i	
-
-
+if n >= 2 then shaftDirAngle[1] = shaftDirAngle[2]

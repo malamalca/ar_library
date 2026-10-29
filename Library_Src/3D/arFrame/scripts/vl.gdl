@@ -1,31 +1,85 @@
-﻿VALUES "n" RANGE[1, MAX_STUD_COUNT]
+﻿! the parameters are edited in the custom interface only, none of them in the list
+HIDEPARAMETER ALL
+
+VALUES "n" RANGE[0, MAX_STUD_COUNT]
+
+! font list for the elevation view dimensions
+DIM fvFontNames[]
+fvFontRes = REQUEST("FONTNAMES_LIST", "", fvFontNames)
+VALUES "frameViewFont", fvFontNames, CUSTOM
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! When extending, add nodes
+! When extending, add nodes - when shortening, drop the studs left outside
 IF GLOB_MODPAR_NAME = "A" THEN
-	maxStudX = 0
-	for i = 1 to n
-		if X[i] > maxStudX then
-			maxStudX = X[i]
-		endif
-	next i
+	! ---- shortening: keep only the studs whose axis is still inside the frame.
+	! X[] is not sorted, so the kept studs are compacted and their blocking rows
+	! are moved along with them, otherwise the blocking would change bays.
+	keepCount = 0
+	FOR i = 1 TO n
+		IF X[i] < A + NIX THEN
+			keepCount = keepCount + 1
+			X[keepCount] = X[i]
+			FOR ii = 1 TO 3
+				horizontals[keepCount][ii] = horizontals[i][ii]
+			NEXT ii
+			bayNoBottomPlate[keepCount] = bayNoBottomPlate[i]
+			bayNoTopPlate[keepCount] = bayNoTopPlate[i]
+			FOR ii = 1 TO 9
+				horizontalsDim[keepCount][ii] = horizontalsDim[i][ii]
+			NEXT ii
+			bayVertLeft[keepCount] = bayVertLeft[i]
+			bayVertRight[keepCount] = bayVertRight[i]
+		ENDIF
+	NEXT i
 
-	IF defaultStudSpacing > NIX AND A > maxStudX+defaultStudSpacing AND n < MAX_STUD_COUNT THEN
-		addCount = INT((A-maxStudX) / defaultStudSpacing)
-		! never write past the fixed-size X[] array
-		IF n + addCount > MAX_STUD_COUNT THEN addCount = MAX_STUD_COUNT - n
-		! anchor new studs off the true rightmost stud (X[] is not sorted here)
-		FOR i = 1 TO addCount
-			X[n+i] = maxStudX + i * defaultStudSpacing
+	studsRemoved = n - keepCount
+	IF studsRemoved > 0 THEN
+		FOR i = keepCount + 1 TO n
+			X[i] = 0
+			FOR ii = 1 TO 3
+				horizontals[i][ii] = 0
+			NEXT ii
+			bayNoBottomPlate[i] = 0
+			bayNoTopPlate[i] = 0
+			FOR ii = 1 TO 9
+				horizontalsDim[i][ii] = 0
+			NEXT ii
+			bayVertLeft[i] = 0
+			bayVertRight[i] = 0
 		NEXT i
-		n = n + addCount
+		n = keepCount
+		PARAMETERS horizontals = horizontals, horizontalsDim = horizontalsDim, bayNoBottomPlate = bayNoBottomPlate, bayNoTopPlate = bayNoTopPlate,
+			bayVertLeft = bayVertLeft, bayVertRight = bayVertRight
+	ENDIF
+
+	! ---- extending: add nodes (skipped when the frame was just shortened,
+	! otherwise an emptied frame would immediately be refilled with new studs)
+	IF studsRemoved = 0 THEN
+		maxStudX = 0
+		for i = 1 to n
+			if X[i] > maxStudX then
+				maxStudX = X[i]
+			endif
+		next i
+
+		IF defaultStudSpacing > NIX AND A > maxStudX+defaultStudSpacing AND n < MAX_STUD_COUNT THEN
+			addCount = INT((A-maxStudX) / defaultStudSpacing)
+			! never write past the fixed-size X[] array
+			IF n + addCount > MAX_STUD_COUNT THEN addCount = MAX_STUD_COUNT - n
+			! anchor new studs off the true rightmost stud (X[] is not sorted here)
+			FOR i = 1 TO addCount
+				X[n+i] = maxStudX + i * defaultStudSpacing
+			NEXT i
+			n = n + addCount
+		ENDIF
 	ENDIF
 ENDIF
 
 
+! n and X are recomputed in the master script (new studs dropped in with the
+! "add stud" hotspot, duplicates removed); these two commit them back
 PARAMETERS n = n
 PARAMETERS X = X
-
 
 
 parameters lumberVol = lumberVol
@@ -35,19 +89,77 @@ parameters frameArea = frameArea
 
 
 ! ============================================================
+! Frame types - the table itself is read in the master script, which runs first
+! so the user interface script sees it in the same cycle (see 1d.gdl).
+! ============================================================
+parameters frameTypeCount = nFrameTypes
+
+! pop-up list of the available types
+if nFrameTypes > 0 then
+	dim frameTypeList[]
+	frameTypeList[1] = FRAMETYPE_CUSTOM
+
+	for i = 1 to nFrameTypes
+		frameTypeList[i+1] = frameTypeNames[i]
+	next i
+
+	values "frameType" frameTypeList
+else
+	hideparameter "frameType"
+endif
+
+! macro or type gone: fall back to custom so the dimensions are editable again
+! only when a table was read: if it could not be read here, the choice is left alone
+if nFrameTypes > 0 and frameTypeIndex = 0 and frameType <> FRAMETYPE_CUSTOM then
+	frameType = FRAMETYPE_CUSTOM
+	parameters frameType = frameType
+endif
+
+if frameTypeIndex > 0 then
+	B                   = frameTypeDims[frameTypeIndex][1]
+	bottomElementHeight = frameTypeDims[frameTypeIndex][2]
+	topElementHeight    = frameTypeDims[frameTypeIndex][3]
+	defaultStudWidth    = frameTypeDims[frameTypeIndex][4]
+
+	! columns 5 and 6 are optional - a table without them keeps the end studs
+	! at the ordinary stud width
+	firstStudWidth  = frameTypeDims[frameTypeIndex][5]
+	lastStudWidth   = frameTypeDims[frameTypeIndex][6]
+	supportPostWidth = frameTypeDims[frameTypeIndex][7]
+
+	parameters B = B,
+		bottomElementHeight = bottomElementHeight,
+		topElementHeight = topElementHeight,
+		defaultStudWidth = defaultStudWidth,
+		firstStudWidth = firstStudWidth,
+		lastStudWidth = lastStudWidth,
+		supportPostWidth = supportPostWidth
+
+	hideparameter "B", "bottomElementHeight", "topElementHeight",
+		"defaultStudWidth", "firstStudWidth", "lastStudWidth", "supportPostWidth"
+endif
+
+
+! ============================================================
 ! Blocking (horizontals) editor
 ! Maps the UI proxy fields <-> the horizontals[bay][1..3] array,
 ! mirroring the ui_segment_index pattern used in arVertikala.
 ! horizontals[i][ii] holds the absolute Z height of blocking
 ! piece ii in the bay to the right of stud i (0 = none).
 ! ============================================================
-hideparameter "ui_hz_bay", "ui_hz_1", "ui_hz_2", "ui_hz_3"
+hideparameter "ui_hz_bay", "ui_hz_1", "ui_hz_2", "ui_hz_3", "ui_hz_showBot", "ui_hz_showTop", "ui_hz_vL", "ui_hz_vR",
+	"ui_hz_d1", "ui_hz_h1", "ui_hz_y1", "ui_hz_d2", "ui_hz_h2", "ui_hz_y2", "ui_hz_d3", "ui_hz_h3", "ui_hz_y3"
 
-values "ui_hz_bay" range[1, n]
+! a list instead of a range, so the interface shows a pop-up with the bay numbers
+dim uiBayList[]
+for uiBay = 1 to MAX(n - 1, 1)
+	uiBayList[uiBay] = uiBay
+next uiBay
+values "ui_hz_bay" uiBayList
 
-! keep the selected bay in range if the stud count shrinks
-if ui_hz_bay > n then
-	ui_hz_bay = n
+! keep the selected bay in range if the stud count shrinks (n studs = n - 1 bays)
+if ui_hz_bay > n - 1 then
+	ui_hz_bay = n - 1
 	parameters ui_hz_bay = ui_hz_bay
 endif
 if ui_hz_bay < 1 then
@@ -55,8 +167,12 @@ if ui_hz_bay < 1 then
 	parameters ui_hz_bay = ui_hz_bay
 endif
 
-! selecting a bay loads its three blocking heights into the edit fields
-if GLOB_MODPAR_NAME = "ui_hz_bay" then
+! the edit fields always mirror the selected bay: when another bay is picked, and also
+! when the heights were changed some other way (the hotspots drag horizontals[][]
+! directly) - only a field that is being typed into is left alone
+hzEdited = 0
+if GLOB_MODPAR_NAME = "ui_hz_1" or GLOB_MODPAR_NAME = "ui_hz_2" or GLOB_MODPAR_NAME = "ui_hz_3" then hzEdited = 1
+if hzEdited = 0 then
 	ui_hz_1 = horizontals[ui_hz_bay][1]
 	ui_hz_2 = horizontals[ui_hz_bay][2]
 	ui_hz_3 = horizontals[ui_hz_bay][3]
@@ -75,4 +191,96 @@ endif
 if GLOB_MODPAR_NAME = "ui_hz_3" then
 	horizontals[ui_hz_bay][3] = ui_hz_3
 	parameters horizontals = horizontals
+endif
+
+! per bay: show the bottom / top plate (stored as "left out" flags, so every existing
+! frame keeps both plates) and two extra vertical bars along the studs; the check
+! boxes always mirror the selected bay, unless one of them is being edited
+fieldEdited = 0
+if GLOB_MODPAR_NAME = "ui_hz_showBot" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_showTop" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_vL" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_vR" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_d1" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_h1" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_y1" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_d2" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_h2" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_y2" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_d3" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_h3" then fieldEdited = 1
+if GLOB_MODPAR_NAME = "ui_hz_y3" then fieldEdited = 1
+if fieldEdited = 0 then
+	ui_hz_showBot = 1 : if bayNoBottomPlate[ui_hz_bay] <> 0 then ui_hz_showBot = 0
+	ui_hz_showTop = 1 : if bayNoTopPlate[ui_hz_bay] <> 0 then ui_hz_showTop = 0
+	ui_hz_vL = 0 : if bayVertLeft[ui_hz_bay] <> 0 then ui_hz_vL = 1
+	ui_hz_vR = 0 : if bayVertRight[ui_hz_bay] <> 0 then ui_hz_vR = 1
+	ui_hz_d1 = horizontalsDim[ui_hz_bay][1]
+	ui_hz_h1 = horizontalsDim[ui_hz_bay][2]
+	ui_hz_y1 = horizontalsDim[ui_hz_bay][3]
+	ui_hz_d2 = horizontalsDim[ui_hz_bay][4]
+	ui_hz_h2 = horizontalsDim[ui_hz_bay][5]
+	ui_hz_y2 = horizontalsDim[ui_hz_bay][6]
+	ui_hz_d3 = horizontalsDim[ui_hz_bay][7]
+	ui_hz_h3 = horizontalsDim[ui_hz_bay][8]
+	ui_hz_y3 = horizontalsDim[ui_hz_bay][9]
+	parameters ui_hz_showBot = ui_hz_showBot, ui_hz_showTop = ui_hz_showTop,
+		ui_hz_vL = ui_hz_vL, ui_hz_vR = ui_hz_vR,
+		ui_hz_d1 = ui_hz_d1, ui_hz_h1 = ui_hz_h1, ui_hz_y1 = ui_hz_y1,
+		ui_hz_d2 = ui_hz_d2, ui_hz_h2 = ui_hz_h2, ui_hz_y2 = ui_hz_y2,
+		ui_hz_d3 = ui_hz_d3, ui_hz_h3 = ui_hz_h3, ui_hz_y3 = ui_hz_y3
+endif
+if GLOB_MODPAR_NAME = "ui_hz_showBot" then
+	bayNoBottomPlate[ui_hz_bay] = 0 : if ui_hz_showBot = 0 then bayNoBottomPlate[ui_hz_bay] = 1
+	parameters bayNoBottomPlate = bayNoBottomPlate
+endif
+if GLOB_MODPAR_NAME = "ui_hz_showTop" then
+	bayNoTopPlate[ui_hz_bay] = 0 : if ui_hz_showTop = 0 then bayNoTopPlate[ui_hz_bay] = 1
+	parameters bayNoTopPlate = bayNoTopPlate
+endif
+if GLOB_MODPAR_NAME = "ui_hz_vL" then
+	bayVertLeft[ui_hz_bay] = 0 : if ui_hz_vL then bayVertLeft[ui_hz_bay] = 1
+	parameters bayVertLeft = bayVertLeft
+endif
+if GLOB_MODPAR_NAME = "ui_hz_vR" then
+	bayVertRight[ui_hz_bay] = 0 : if ui_hz_vR then bayVertRight[ui_hz_bay] = 1
+	parameters bayVertRight = bayVertRight
+endif
+
+! per bar of the bay: depth, height (0 = the stud size) and the shift along Y (0 = centre line)
+if GLOB_MODPAR_NAME = "ui_hz_d1" then
+	horizontalsDim[ui_hz_bay][1] = ui_hz_d1
+	parameters horizontalsDim = horizontalsDim
+endif
+if GLOB_MODPAR_NAME = "ui_hz_h1" then
+	horizontalsDim[ui_hz_bay][2] = ui_hz_h1
+	parameters horizontalsDim = horizontalsDim
+endif
+if GLOB_MODPAR_NAME = "ui_hz_y1" then
+	horizontalsDim[ui_hz_bay][3] = ui_hz_y1
+	parameters horizontalsDim = horizontalsDim
+endif
+if GLOB_MODPAR_NAME = "ui_hz_d2" then
+	horizontalsDim[ui_hz_bay][4] = ui_hz_d2
+	parameters horizontalsDim = horizontalsDim
+endif
+if GLOB_MODPAR_NAME = "ui_hz_h2" then
+	horizontalsDim[ui_hz_bay][5] = ui_hz_h2
+	parameters horizontalsDim = horizontalsDim
+endif
+if GLOB_MODPAR_NAME = "ui_hz_y2" then
+	horizontalsDim[ui_hz_bay][6] = ui_hz_y2
+	parameters horizontalsDim = horizontalsDim
+endif
+if GLOB_MODPAR_NAME = "ui_hz_d3" then
+	horizontalsDim[ui_hz_bay][7] = ui_hz_d3
+	parameters horizontalsDim = horizontalsDim
+endif
+if GLOB_MODPAR_NAME = "ui_hz_h3" then
+	horizontalsDim[ui_hz_bay][8] = ui_hz_h3
+	parameters horizontalsDim = horizontalsDim
+endif
+if GLOB_MODPAR_NAME = "ui_hz_y3" then
+	horizontalsDim[ui_hz_bay][9] = ui_hz_y3
+	parameters horizontalsDim = horizontalsDim
 endif

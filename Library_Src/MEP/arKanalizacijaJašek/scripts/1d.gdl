@@ -19,6 +19,9 @@ DIM_COVER_DIM2 = 5
 DIM_INLET_HEIGHT = 6
 DIM_POSX = 7
 DIM_POSY = 8
+COVER_THICKNESS = 0.05		! debelina pokrova v 3D
+
+DIM_RAISE_HEIGHT = 10		! višina poviška do pokrova (del skupne višine DIM_SHAFT_HEIGHT)
 
 
 COVER_TYPE_ROUND = 0
